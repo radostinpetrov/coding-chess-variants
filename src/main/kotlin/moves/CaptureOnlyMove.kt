@@ -3,7 +3,7 @@ package moves
 import Board
 import Coordinate
 
-class Slider(val H: Boolean, val V: Boolean, val A: Boolean, val  D: Boolean): Move {
+class CaptureOnlyMove(val move: Move): Move {
     override fun getCoordinates(board: Board): List<Coordinate> {
         TODO("Not yet implemented")
     }

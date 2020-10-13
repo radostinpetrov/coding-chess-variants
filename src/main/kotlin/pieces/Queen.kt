@@ -1,0 +1,4 @@
+package pieces
+
+class Queen {
+}

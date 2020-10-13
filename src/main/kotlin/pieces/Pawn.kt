@@ -1,13 +1,13 @@
 package pieces
 
 import moves.Move
+import moves.Stepper
 
 class Pawn : Piece {
-    override fun getSymbol(): String {
-        TODO("Not yet implemented")
-    }
+    override val move: List<Move>
+        get() = listOf(Stepper(Direction.NORTH, 1))
 
-    override fun getMove(): Move {
+    override fun getSymbol(): String {
         TODO("Not yet implemented")
     }
 }
