@@ -3,5 +3,6 @@ package pieces
 import moves.Move
 
 interface Piece {
-    fun possibleMoves(): List<Move>
+    fun getSymbol(): String
+    fun getMove(): Move
 }
