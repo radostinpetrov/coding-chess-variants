@@ -4,7 +4,7 @@ import Board
 import Coordinate
 
 class Leaper: Move {
-    override fun getCoordinates(board: Board): List<Coordinate> {
+    override fun getCoordinates(board: Board, from: Coordinate): List<Coordinate> {
         TODO("Not yet implemented")
     }
 }
