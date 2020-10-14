@@ -3,6 +3,7 @@ package boards
 import Coordinate
 import pieces.Piece
 import players.Player
+import java.lang.Exception
 
 class Board2D(val n: Int, val m: Int): Board<Piece> {
     var board:Array<Array<Piece?>> = Array(n) { Array(m) { null } }
@@ -35,8 +36,15 @@ class Board2D(val n: Int, val m: Int): Board<Piece> {
         return board[coordinate.y][coordinate.x]
     }
 
-    override fun getPieceCoordinate(piece: Piece): Coordinate {
-        TODO("Not yet implemented")
+    override fun getPieceCoordinate(piece: Piece): Coordinate? {
+        for (y in 0 until n) {
+            for (x in 0 until m) {
+                if (piece === board[y][x]) {
+                    return Coordinate(x,y)
+                }
+            }
+        }
+        return null
     }
 
     override fun addPiece(coordinate: Coordinate, piece: Piece) {
@@ -50,10 +58,13 @@ class Board2D(val n: Int, val m: Int): Board<Piece> {
         if (!isInBounds(coordinate)) {
             throw ArrayIndexOutOfBoundsException()
         }
+        if (board[coordinate.y][coordinate.x] != piece){
+            throw Exception("Cannot remove non-existing piece")
+        }
         board[coordinate.y][coordinate.x] = null
     }
 
-    fun isInBounds(coordinate: Coordinate): Boolean {
+    private fun isInBounds(coordinate: Coordinate): Boolean {
         return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
     }
 }

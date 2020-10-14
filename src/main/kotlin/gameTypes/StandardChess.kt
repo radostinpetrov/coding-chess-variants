@@ -65,6 +65,14 @@ class StandardChess() : GameType{
     // }
 
     override fun makeMove(gameMove: GameMove) {
-        TODO("Not yet implemented")
+        board.removePiece(gameMove.from, gameMove.pieceMoved)
+        if (gameMove.pieceCaptured != null) {
+            board.removePiece(board.getPieceCoordinate(gameMove.pieceCaptured)!!, gameMove.pieceCaptured)
+        }
+        if (gameMove.piecePromotedTo != null) {
+            board.addPiece(gameMove.to, gameMove.piecePromotedTo)
+        } else {
+            board.addPiece(gameMove.to, gameMove.pieceMoved)
+        }
     }
 }
