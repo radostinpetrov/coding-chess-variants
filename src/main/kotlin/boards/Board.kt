@@ -12,5 +12,5 @@ interface Board <T: Piece> {
     fun getPieces(): List<Pair<T, Coordinate>>
     fun getPieces(player: Player): List<Pair<T, Coordinate>>
     fun getPiece(coordinate: Coordinate): T?
-    fun getPieceCoordinate(piece: T): Coordinate
+    fun getPieceCoordinate(piece: T): Coordinate?
 }
