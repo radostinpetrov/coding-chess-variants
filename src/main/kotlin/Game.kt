@@ -1,5 +1,6 @@
 import boards.Board
 import gameTypes.GameType
+import pieces.Pawn
 import pieces.Piece
 
 
@@ -27,6 +28,10 @@ class Game(val gameType: GameType) {
         Thread.sleep(1000)
         this.display()
         Thread.sleep(1000)
+        gameType.makeMove(GameMove(Coordinate(1, 1), Coordinate(1, 3), gameType.board.getPiece(Coordinate(1,1))!!))
+        this.display()
+        Thread.sleep(1000)
+        gameType.makeMove(GameMove(Coordinate(0, 6), Coordinate(0, 5), gameType.board.getPiece(Coordinate(0,6))!!))
         this.display()
 
     }
