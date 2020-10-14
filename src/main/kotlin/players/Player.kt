@@ -4,5 +4,5 @@ import GameMove
 
 interface Player {
     //returns the valid chosen move
-    fun getTurn(): GameMove
+    fun getTurn(choiceOfMoves: List<GameMove>): GameMove
 }

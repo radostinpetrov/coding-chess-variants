@@ -1,32 +1,12 @@
 import boards.Board
 import gameTypes.GameType
-import players.Player
-
-class  Game(val gameType: GameType, val board: Board) {
-    var players: MutableList<Player> = ArrayList()
-
-    var playerTurn: Int = 0
-
-    fun addPlayer(player: Player) {
-        players.add(player)
-    }
-
-    fun turn(player: Player) {
-
-        var move = player.getTurn()
-
-        gameType.makeMove(move)
-    }
-
-    fun nextPlayer() {
-        playerTurn++
-        playerTurn %= players.size
-    }
+import pieces.Piece
 
 
+class Game(val gameType: GameType) {
     fun start() {
-        if (players.size < 2) {
-            print("not enough players")
+
+        if (!gameType.checkValidGame()) {
             return
         }
 
@@ -36,12 +16,24 @@ class  Game(val gameType: GameType, val board: Board) {
                 break
             }
 
-            turn(players[playerTurn])
-
-            nextPlayer()
+            gameType.turn()
+            this.display()
         }
-
-        //gameType.getWinner()
     }
 
+    fun display() {
+        val board = gameType.board
+
+        for (row in board.getBoardState()) {
+            for (piece in row) {
+                if (piece != null) {
+                    print('P')
+                } else {
+                    print('!')
+                }
+            }
+            println()
+        }
+
+    }
 }
