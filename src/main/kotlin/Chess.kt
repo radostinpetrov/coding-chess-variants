@@ -8,4 +8,5 @@ fun main(args: Array<String>) {
     chess.addPlayer(HumanPlayer())
 
     val game = Game(chess)
+    game.start()
 }

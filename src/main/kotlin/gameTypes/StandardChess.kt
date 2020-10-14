@@ -3,7 +3,7 @@ package gameTypes
 import Coordinate
 import boards.Board
 import GameMove
-import History
+//import History
 import boards.Board2D
 import pieces.Pawn
 import pieces.Piece
@@ -13,7 +13,7 @@ import players.HumanPlayer
 class StandardChess() : GameType{
 
     override val board: Board<Piece> = Board2D(8, 8)
-    override val history: MutableList<History> = mutableListOf()
+//    override val history: MutableList<History> = mutableListOf()
 
     override val players: MutableList<Player> = ArrayList()
     override var playerTurn: Int = 0
