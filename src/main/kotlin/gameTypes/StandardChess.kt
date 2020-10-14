@@ -5,8 +5,10 @@ import boards.Board
 import GameMove
 import History
 import boards.Board2D
+import pieces.Pawn
 import pieces.Piece
 import players.Player
+import players.HumanPlayer
 
 class StandardChess() : GameType{
 
@@ -19,15 +21,28 @@ class StandardChess() : GameType{
     val NUM_PLAYERS = 2
 
     override fun initGame() {
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
-        // board.addPiece()
+        val player1 = HumanPlayer()
+        val player2 = HumanPlayer()
+        for (i in 0..7){
+            board.addPiece(Coordinate(i, 1), Pawn(player1))
+            board.addPiece(Coordinate(i, 6), Pawn(player2))
+        }
+        // board.addPiece(Coordinate(0, 0), Rook(player1))
+        // board.addPiece(Coordinate(7, 0), Rook(player1))
+        // board.addPiece(Coordinate(0, 7), Rook(player2))
+        // board.addPiece(Coordinate(7, 7), Rook(player2))
+        // board.addPiece(Coordinate(1, 0), Knight(player1))
+        // board.addPiece(Coordinate(6, 0), Knight(player1))
+        // board.addPiece(Coordinate(1, 7), Knight(player2))
+        // board.addPiece(Coordinate(6, 7), Knight(player2))
+        // board.addPiece(Coordinate(2, 0), Bishop(player1))
+        // board.addPiece(Coordinate(5, 0), Bishop(player1))
+        // board.addPiece(Coordinate(2, 7), Bishop(player2))
+        // board.addPiece(Coordinate(5, 7), Bishop(player2))
+        // board.addPiece(Coordinate(4, 0), King(player1))
+        // board.addPiece(Coordinate(4, 7), King(player2))
+        // board.addPiece(Coordinate(3, 0), Queen(player1))
+        // board.addPiece(Coordinate(3, 7), Queen(player2))
     }
 
     override fun isOver(): Boolean {
