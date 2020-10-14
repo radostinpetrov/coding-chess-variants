@@ -29,6 +29,9 @@ class Board2D(val n: Int, val m: Int): Board<Piece> {
     }
 
     override fun getPiece(coordinate: Coordinate): Piece? {
+        if (!isInBounds(coordinate)) {
+            return null
+        }
         return board[coordinate.y][coordinate.x]
     }
 
@@ -37,10 +40,20 @@ class Board2D(val n: Int, val m: Int): Board<Piece> {
     }
 
     override fun addPiece(coordinate: Coordinate, piece: Piece) {
+        if (!isInBounds(coordinate)) {
+            throw ArrayIndexOutOfBoundsException()
+        }
         board[coordinate.y][coordinate.x] = piece
     }
 
     override fun removePiece(coordinate: Coordinate, piece: Piece) {
+        if (!isInBounds(coordinate)) {
+            throw ArrayIndexOutOfBoundsException()
+        }
         board[coordinate.y][coordinate.x] = null
+    }
+
+    fun isInBounds(coordinate: Coordinate): Boolean {
+        return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
     }
 }
