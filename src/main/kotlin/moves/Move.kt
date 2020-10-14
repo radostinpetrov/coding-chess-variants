@@ -1,8 +1,10 @@
 package moves
 
-import Board
 import Coordinate
+import GameMove
+import gameTypes.GameType
 
 interface Move {
-    fun getCoordinates(board: Board, from: Coordinate): List<Coordinate>
+    // checks for valid moves other than checkmate, stalemate, en passant and castles
+    fun getPossibleMoves(gameType: GameType, from: Coordinate): List<GameMove>
 }

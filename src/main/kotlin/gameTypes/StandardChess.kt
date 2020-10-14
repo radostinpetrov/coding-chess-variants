@@ -1,12 +1,16 @@
 package gameTypes
 
-import Board
 import Coordinate
+import boards.Board
 import GameMove
-import moves.Move
-import pieces.Piece
+import History
+import boards.Board2D
 
-class StandardChess: GameType{
+class StandardChess() : GameType{
+
+    override val board: Board = Board2D()
+    override val history: MutableList<History> = mutableListOf()
+
     override fun initGame() {
         TODO("Not yet implemented")
     }
@@ -15,25 +19,21 @@ class StandardChess: GameType{
         TODO("Not yet implemented")
     }
 
-    override fun canMove(gameMove: GameMove): Boolean {
-        TODO("Not yet implemented")
+    override fun getValidMoves(coordinate: Coordinate): List<GameMove> {
+        val piece = board.getPiece(coordinate)
+        val moveTypes = piece.moveTypes
+        val possibleMoves = mutableListOf<GameMove>()
+        for (moveType in moveTypes) {
+            possibleMoves.addAll(moveType.getPossibleMoves(this, coordinate))
+        }
+        //filter checkmate and stalemate
+
+        return possibleMoves
     }
 
-    override fun getPieces(): List<Pair<Piece, Coordinate>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPiece(coordinate: Coordinate): Piece {
-        TODO("Not yet implemented")
-    }
-
-    override fun getPieceCoordinate(piece: Piece): Coordinate {
-        TODO("Not yet implemented")
-    }
-
-    override fun getHistory(): List<Pair<Board, GameMove>> {
-        TODO("Not yet implemented")
-    }
+    // override fun getHistory(): List<Pair<Board, GameMove>> {
+    //     TODO("Not yet implemented")
+    // }
 
     override fun makeMove(gameMove: GameMove) {
         TODO("Not yet implemented")

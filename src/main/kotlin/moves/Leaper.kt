@@ -1,10 +1,11 @@
 package moves
 
-import Board
 import Coordinate
+import GameMove
+import gameTypes.GameType
 
 class Leaper: Move {
-    override fun getCoordinates(board: Board, from: Coordinate): List<Coordinate> {
+    override fun getPossibleMoves(gameType: GameType, from: Coordinate): List<GameMove> {
         TODO("Not yet implemented")
     }
 }

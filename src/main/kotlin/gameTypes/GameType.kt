@@ -1,19 +1,19 @@
 package gameTypes
 
-import Board
 import Coordinate
+import boards.Board
 import GameMove
-import moves.Move
-import pieces.Piece
+import History
 
 interface GameType {
+    val board: Board
+    val history: MutableList<History>
+
     fun initGame()
     fun isOver(): Boolean
     // fun getWinner()
-    fun canMove(gameMove: GameMove): Boolean
-    fun getPieces(): List<Pair<Piece, Coordinate>>
-    fun getPiece(coordinate: Coordinate): Piece
-    fun getPieceCoordinate(piece: Piece): Coordinate
-    fun getHistory(): List<Pair<Board, GameMove>>
+    fun getValidMoves(coordinate: Coordinate): List<GameMove>
+
+    //fun getHistory(): List<Pair<Board, GameMove>>
     fun makeMove(gameMove: GameMove)
 }

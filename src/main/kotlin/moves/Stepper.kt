@@ -1,11 +1,12 @@
 package moves
 
-import Board
 import Coordinate
+import GameMove
 import Direction
+import gameTypes.GameType
 
 class Stepper(val dir:Direction, val dy:Int): Move {
-    override fun getCoordinates(board: Board, from: Coordinate): List<Coordinate> {
+    override fun getPossibleMoves(gameType: GameType, from: Coordinate): List<GameMove> {
         TODO("Not yet implemented")
     }
 }
