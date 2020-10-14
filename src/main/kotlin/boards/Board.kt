@@ -3,11 +3,14 @@ package boards
 import Coordinate
 import GameMove
 import pieces.Piece
+import players.Player
 
-interface Board {
-    fun getBoardState(): Array<Array<Piece>>
-
-    fun getPieces(): List<Pair<Piece, Coordinate>>
-    fun getPiece(coordinate: Coordinate): Piece
-    fun getPieceCoordinate(piece: Piece): Coordinate
+interface Board <T: Piece> {
+    fun getBoardState(): Array<Array<T?>>
+    fun addPiece(coordinate: Coordinate, piece: T)
+    fun removePiece(coordinate: Coordinate, piece: T)
+    fun getPieces(): List<Pair<T, Coordinate>>
+    fun getPieces(player: Player): List<Pair<T, Coordinate>>
+    fun getPiece(coordinate: Coordinate): T?
+    fun getPieceCoordinate(piece: T): Coordinate
 }

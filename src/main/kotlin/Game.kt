@@ -2,7 +2,7 @@ import boards.Board
 import gameTypes.GameType
 import players.Player
 
-class Game(val gameType: GameType, val board: Board) {
+class  Game(val gameType: GameType, val board: Board) {
     var players: MutableList<Player> = ArrayList()
 
     var playerTurn: Int = 0

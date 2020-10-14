@@ -5,14 +5,23 @@ import boards.Board
 import GameMove
 import History
 import boards.Board2D
+import pieces.Piece
 
 class StandardChess() : GameType{
 
-    override val board: Board = Board2D()
+    override val board: Board<Piece> = Board2D(8, 8)
     override val history: MutableList<History> = mutableListOf()
 
     override fun initGame() {
-        TODO("Not yet implemented")
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
+        // board.addPiece()
     }
 
     override fun isOver(): Boolean {
