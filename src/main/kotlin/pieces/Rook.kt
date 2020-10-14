@@ -9,6 +9,6 @@ class Rook(override val player: Player) : Piece {
         get() = listOf(Slider(H = true, V = true, A = false, D = false))
 
     override fun getSymbol(): String {
-        TODO("Not yet implemented")
+        return "R"
     }
 }

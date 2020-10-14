@@ -9,6 +9,6 @@ class King(override val player: Player) : Piece {
         get() = listOf(Leaper(1, 0), Leaper(1, 1))
 
     override fun getSymbol(): String {
-        TODO("Not yet implemented")
+        return "K"
     }
 }
