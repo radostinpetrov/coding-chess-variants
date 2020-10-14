@@ -1,10 +1,15 @@
 package moves
 
 import Coordinate
+import Direction
 import GameMove
 import gameTypes.GameType
 
-interface Move {
+sealed class Move {
     // checks for valid moves other than checkmate, stalemate, en passant and castles
-    fun getPossibleMoves(gameType: GameType, from: Coordinate): List<GameMove>
+    data class Slider(val directions: Array<Direction>): Move()
+    data class Stepper(val direction: Direction): Move()
+    data class Leaper(val dx: Int, val dy: Int): Move()
 }
+
+//sealed class
