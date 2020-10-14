@@ -1,7 +1,7 @@
 package pieces
 
 import moves.Move
-import moves.Slider
+import moves.Move.*
 import players.Player
 
 class Queen(override val player: Player) : Piece {

@@ -1,7 +1,7 @@
 package pieces
 
 import moves.Move
-import moves.Stepper
+import moves.Move.Stepper
 import players.Player
 
 class Pawn(override val player: Player) : Piece {
