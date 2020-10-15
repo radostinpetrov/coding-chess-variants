@@ -11,14 +11,14 @@ import pieces.*
 import players.Player
 import players.HumanPlayer
 
-class StandardChess() : GameType{
+open class StandardChess() : GameType{
 
     override val board = Board2D(8, 8)
 //    override val history: MutableList<History> = mutableListOf()
 
     override val players: MutableList<Player> = ArrayList()
-    override var playerTurn: Int = 0
-    val moveVisitor = MoveVisitor(board)
+    override var playerTurn: Int = 1
+    val moveVisitor by lazy { MoveVisitor(board) }
     val moveLog: MutableList<GameMove> = mutableListOf()
 
     val NUM_PLAYERS = 2
