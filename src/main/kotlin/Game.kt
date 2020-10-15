@@ -20,7 +20,7 @@ class Game(val gameType: GameType) {
 
             gameType.turn()
             this.display()
-            Thread.sleep(5)
+            Thread.sleep(1000)
         }
     }
 

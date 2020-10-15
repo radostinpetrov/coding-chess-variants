@@ -69,18 +69,32 @@ class StandardChess() : GameType{
         val res = mutableListOf<GameMove>()
         for (i in 0..possibleMoves.size-1){
             makeMove(possibleMoves[i])
-            val opponentMoves = getPossibleMoves(players[(playerTurn+1)%2])
-            for (j in 0..opponentMoves.size-1) {
-
+            if (!inCheck(player)) {
+                res.add(possibleMoves[i])
             }
             undoMove()
         }
-        return possibleMoves
+        return res
+    }
+
+    fun inCheck(player: Player): Boolean {
+        val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
+        return squareUnderAttack(kingCoordinate)
+    }
+
+    fun squareUnderAttack(coordinate: Coordinate): Boolean {
+        val nextPlayer = players[(playerTurn+1)%2]
+        val moves = getPossibleMoves(nextPlayer)
+        for (m in moves) {
+            if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
+                return true
+            }
+        }
+        return false
     }
 
     fun undoMove() {
         if (moveLog.size == 0) {
-            print("HERE")
             return
         }
         val gameMove = moveLog.removeAt(moveLog.size - 1)
@@ -238,7 +252,6 @@ class StandardChess() : GameType{
         val move = player.getTurn(getValidMoves(player))
 
         this.makeMove(move)
-        this.undoMove()
 
         nextPlayer()
     }
