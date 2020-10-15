@@ -1,54 +1,44 @@
 package players
 
-import Coordinate
 import GameMove
+import NotationFormatter
 
-class HumanPlayer: Player {
+class HumanPlayer(val notationFormatter: NotationFormatter): Player {
+    fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
+
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
-        fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-
         var possibleMoves: List<GameMove> = mutableListOf()
         var input: String?
-
-        print("Enter the coordinate of the piece to move: ")
-
         while (possibleMoves.isEmpty()) {
-            // number number e.g 0 1
+            print("Enter the coordinate of the piece to move: ")
             input = readLine()
-            while (input == null || input.split(" ").size < 2) {
-                input = readLine()
+            if (input == null) {
+                println("Empty Input, try again")
+                continue
             }
-
-            val (x, y) = input.split(" ")
-
-            if (isInteger(x) || isInteger(y)) {
-                val pieceCoordinate = Coordinate(x.toInt(), y.toInt())
-
-                possibleMoves = choiceOfMoves.filter { m -> m.from == pieceCoordinate}
-
-                if (possibleMoves.isEmpty()) {
-                    print("No possible moves. Try again: ")
-                }
+            val coordinate = notationFormatter.strToCoordinate(input)
+            if (coordinate == null) {
+                println("Invalid coordinate, try again")
+                continue
+            }
+            possibleMoves = choiceOfMoves.filter { m -> m.from == coordinate }
+            if (possibleMoves.isEmpty()) {
+                println("No possible moves, try again")
             }
         }
 
-        println("Select a move from the following: ")
+        println("Select the move index from the following: ")
         for (i in possibleMoves.indices) {
-            println((i + 1).toString() + ": " + possibleMoves[i])
+            println((i + 1).toString() + ": " + notationFormatter.gameMoveToStr(possibleMoves[i]))
         }
 
         var index = -1
-        while (index <= 0) {
-            input = null
-            while (input == null) {
-                input = readLine()
-            }
-
-            if (isInteger(input)) {
+        while (index < 1 || index > possibleMoves.size) {
+            input = readLine()
+            if (input != null && isInteger(input)) {
                 index = input.toInt()
-                if (1 > index || possibleMoves.size < index) {
-                    index = -1
-                }
+            } else {
+                println("Please enter valid index")
             }
         }
 

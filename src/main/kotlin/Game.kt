@@ -21,7 +21,7 @@ class Game(val gameType: GameType) {
 
             gameType.turn()
             this.display()
-            Thread.sleep(5)
+            Thread.sleep(100)
         }
     }
 
@@ -31,8 +31,10 @@ class Game(val gameType: GameType) {
         val colour2 = "\u001B[34m"
         val resetColour = "\u001B[0m"
         val player1 = gameType.players[0]
-
-        for (row in board.getBoardState()) {
+        val n = board.getBoardState().size
+        val m = board.getBoardState()[0].size
+        for ((i, row) in board.getBoardState().withIndex()) {
+            print("${n-i} ")
             for (piece in row) {
                 if (piece != null) {
                     print((if (piece.player == player1)  colour1 else colour2 ) + piece.getSymbol() + ' ' + resetColour)
@@ -42,8 +44,14 @@ class Game(val gameType: GameType) {
             }
             println()
         }
+        print("  ")
 
-        println("--------------- turn: $turn")
+        for (i in board.getBoardState()[0].indices) {
+            print("${(i + 'a'.toInt()).toChar()} ")
+        }
+        println()
+
+        println("----------------- turn: $turn")
         turn++
 
     }

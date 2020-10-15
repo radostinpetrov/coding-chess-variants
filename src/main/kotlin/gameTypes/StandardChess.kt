@@ -20,6 +20,8 @@ open class StandardChess() : GameType{
     override var playerTurn: Int = 1
     val moveVisitor by lazy { MoveVisitor(board) }
     val moveLog: MutableList<GameMove> = mutableListOf()
+    var stalemate = false
+    var checkmate = false
 
     val NUM_PLAYERS = 2
 
@@ -49,13 +51,23 @@ open class StandardChess() : GameType{
     }
 
     override fun isOver(): Boolean {
-        return false
+        return checkmate || stalemate
     }
 
     override fun getValidMoves(player: Player): List<GameMove> {
         val possibleMoves = getPossibleMoves(player)
-
-        return filterForCheck(player, possibleMoves)
+        val moves = filterForCheck(player, possibleMoves)
+        if (moves.isEmpty()) {
+            if (inCheck(player)) {
+                checkmate = true
+            } else {
+                stalemate = true
+            }
+        } else {
+            checkmate = false
+            stalemate = false
+        }
+        return moves
     }
 
     fun getPossibleMoves(player: Player): List<GameMove> {
@@ -152,8 +164,12 @@ open class StandardChess() : GameType{
 
     override fun turn() {
         val player = players[playerTurn]
+        val moves = getValidMoves(player)
+        if (moves.isEmpty()) {
+            return
+        }
 
-        val move = player.getTurn(getValidMoves(player))
+        val move = player.getTurn(moves)
 
         this.makeMove(move)
 
