@@ -1,34 +1,16 @@
-import boards.Board
 import gameTypes.GameType
-import players.Player
 
-class Game(val gameType: GameType, val board: Board) {
-    var players: MutableList<Player> = ArrayList()
 
-    var playerTurn: Int = 0
-
-    fun addPlayer(player: Player) {
-        players.add(player)
-    }
-
-    fun turn(player: Player) {
-
-        var move = player.getTurn()
-
-        gameType.makeMove(move)
-    }
-
-    fun nextPlayer() {
-        playerTurn++
-        playerTurn %= players.size
-    }
-
+class Game(val gameType: GameType) {
+    var turn = 0
 
     fun start() {
-        if (players.size < 2) {
-            print("not enough players")
+
+        if (!gameType.checkValidGame()) {
             return
         }
+
+        gameType.initGame()
 
         while (true) {
 
@@ -36,12 +18,32 @@ class Game(val gameType: GameType, val board: Board) {
                 break
             }
 
-            turn(players[playerTurn])
-
-            nextPlayer()
+            gameType.turn()
+            this.display()
+            Thread.sleep(5)
         }
-
-        //gameType.getWinner()
     }
 
+    fun display() {
+        val board = gameType.board
+        val colour1 = "\u001B[31m"
+        val colour2 = "\u001B[34m"
+        val resetColour = "\u001B[0m"
+        val player1 = gameType.players[0]
+
+        for (row in board.getBoardState()) {
+            for (piece in row) {
+                if (piece != null) {
+                    print((if (piece.player == player1)  colour1 else colour2 ) + piece.getSymbol() + ' ' + resetColour)
+                } else {
+                    print("_ ")
+                }
+            }
+            println()
+        }
+
+        println("--------------- turn: $turn")
+        turn++
+
+    }
 }

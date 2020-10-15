@@ -9,6 +9,6 @@ class Bishop(override val player: Player) : Piece {
         get() = listOf(Slider(A = true, D = true))
 
     override fun getSymbol(): String {
-        TODO("Not yet implemented")
+        return "B"
     }
 }

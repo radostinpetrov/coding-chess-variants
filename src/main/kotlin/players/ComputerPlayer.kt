@@ -2,9 +2,8 @@ package players
 
 import GameMove
 
-class HumanPlayer: Player {
+class ComputerPlayer: Player {
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
-        TODO("Not yet implemented")
-//        return choiceOfMoves[0]
+        return choiceOfMoves[(0 .. choiceOfMoves.size - 1).random()]
     }
 }

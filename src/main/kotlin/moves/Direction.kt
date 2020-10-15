@@ -2,7 +2,7 @@ package moves
 
 import Coordinate
 
-enum class Direction(coordinate: Coordinate) {
+enum class Direction(val coordinate: Coordinate) {
     NORTH(Coordinate(0,1)) {
         override fun rotate(dx : Int, dy: Int): Coordinate {
             return Coordinate(dx, dy)
