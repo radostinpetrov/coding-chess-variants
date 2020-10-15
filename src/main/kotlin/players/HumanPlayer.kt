@@ -32,6 +32,7 @@ class HumanPlayer(val notationFormatter: NotationFormatter): Player {
             println((i + 1).toString() + ": " + notationFormatter.gameMoveToStr(possibleMoves[i]))
         }
 
+        /* Ask user which move they want to make until they give a valid index. */
         var index = -1
         while (index < 1 || index > possibleMoves.size) {
             input = readLine()

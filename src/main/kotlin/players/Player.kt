@@ -3,6 +3,6 @@ package players
 import GameMove
 
 interface Player {
-    //returns the valid chosen move
+    // Returns the chosen move of the player.
     fun getTurn(choiceOfMoves: List<GameMove>): GameMove
 }
