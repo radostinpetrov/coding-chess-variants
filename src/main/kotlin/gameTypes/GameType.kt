@@ -3,12 +3,13 @@ package gameTypes
 import Coordinate
 import boards.Board
 import GameMove
+import boards.Board2D
 //import History
 import pieces.Piece
 import players.Player
 
 interface GameType {
-    val board: Board<Piece>
+    val board: Board2D
 //    val history: MutableList<History>
     val players: MutableList<Player>
     var playerTurn: Int

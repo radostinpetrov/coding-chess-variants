@@ -64,7 +64,7 @@ class Board2D(val n: Int, val m: Int): Board<Piece> {
         board[coordinate.y][coordinate.x] = null
     }
 
-    private fun isInBounds(coordinate: Coordinate): Boolean {
+    fun isInBounds(coordinate: Coordinate): Boolean {
         return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
     }
 }
