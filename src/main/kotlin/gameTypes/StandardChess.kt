@@ -17,6 +17,7 @@ class StandardChess() : GameType{
 
     override val players: MutableList<Player> = ArrayList()
     override var playerTurn: Int = 0
+    val moveLog: MutableList<GameMove> = mutableListOf()
 
     val NUM_PLAYERS = 2
 
@@ -50,13 +51,49 @@ class StandardChess() : GameType{
     }
 
     override fun getValidMoves(player: Player): List<GameMove> {
+        val possibleMoves = getPossibleMoves(player)
+
+        return filterForCheck(player, possibleMoves)
+    }
+
+    fun getPossibleMoves(player: Player): List<GameMove> {
         val pieces = board.getPieces(player)
         val possibleMoves = mutableListOf<GameMove>()
         for (piece in pieces) {
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
-
         return possibleMoves
+    }
+
+    fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
+        val res = mutableListOf<GameMove>()
+        for (i in 0..possibleMoves.size-1){
+            makeMove(possibleMoves[i])
+            val opponentMoves = getPossibleMoves(players[playerTurn+1%2])
+            for (j in 0..opponentMoves.size-1) {
+
+            }
+            undoMove()
+        }
+        return res
+    }
+
+    fun undoMove() {
+        if (moveLog.size == 0) {
+            return
+        }
+        val gameMove = moveLog.removeAt(moveLog.size - 1)
+        if (gameMove.piecePromotedTo != null) {
+            board.removePiece(gameMove.to, gameMove.piecePromotedTo)
+        } else {
+            board.removePiece(gameMove.to, gameMove.pieceMoved)
+        }
+
+        if (gameMove.pieceCaptured != null) {
+            // CHECK FOR BUG HERE
+            board.addPiece(gameMove.to, gameMove.pieceCaptured)
+        }
+        board.addPiece(gameMove.from, gameMove.pieceMoved)
     }
 
     fun getValidMoveForPiece(pair: Pair<Piece, Coordinate>): List<GameMove> {
@@ -186,6 +223,7 @@ class StandardChess() : GameType{
         } else {
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
+
     }
 
 
