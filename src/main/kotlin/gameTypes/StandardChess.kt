@@ -20,8 +20,8 @@ class StandardChess() : GameType{
     val NUM_PLAYERS = 2
 
     override fun initGame() {
-        val player1 = HumanPlayer()
-        val player2 = HumanPlayer()
+        val player1 = players[0]
+        val player2 = players[1]
         for (i in 0..7){
             board.addPiece(Coordinate(i, 1), Pawn(player1))
             board.addPiece(Coordinate(i, 6), Pawn(player2))
