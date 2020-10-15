@@ -6,10 +6,9 @@ import players.HumanPlayer
 fun main(args: Array<String>) {
     println("Let's play chess!")
 
-//    val chess = StandardChess()
-    val chess = GrandChess()
-    chess.addPlayer(ComputerPlayer())
-    chess.addPlayer(ComputerPlayer())
+    val chess = StandardChess()
+    chess.addPlayer(HumanPlayer())
+    chess.addPlayer(HumanPlayer())
 
     val game = Game(chess)
     game.start()

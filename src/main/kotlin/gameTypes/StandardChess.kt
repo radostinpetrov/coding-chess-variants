@@ -168,11 +168,9 @@ open class StandardChess() : GameType{
 
     override fun checkValidGame(): Boolean {
         if (players.size != NUM_PLAYERS) {
-            print("incorrect number of players")
+            print("Incorrect number of players")
             return false
         }
         return true
     }
-
-
 }

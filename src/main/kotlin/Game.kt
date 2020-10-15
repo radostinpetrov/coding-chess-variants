@@ -5,7 +5,6 @@ class Game(val gameType: GameType) {
     var turn = 0
 
     fun start() {
-
         if (!gameType.checkValidGame()) {
             return
         }
@@ -22,7 +21,7 @@ class Game(val gameType: GameType) {
 
             gameType.turn()
             this.display()
-            Thread.sleep(1000)
+            Thread.sleep(5)
         }
     }
 
