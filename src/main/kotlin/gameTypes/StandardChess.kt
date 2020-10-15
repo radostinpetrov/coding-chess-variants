@@ -69,17 +69,18 @@ class StandardChess() : GameType{
         val res = mutableListOf<GameMove>()
         for (i in 0..possibleMoves.size-1){
             makeMove(possibleMoves[i])
-            val opponentMoves = getPossibleMoves(players[playerTurn+1%2])
+            val opponentMoves = getPossibleMoves(players[(playerTurn+1)%2])
             for (j in 0..opponentMoves.size-1) {
 
             }
             undoMove()
         }
-        return res
+        return possibleMoves
     }
 
     fun undoMove() {
         if (moveLog.size == 0) {
+            print("HERE")
             return
         }
         val gameMove = moveLog.removeAt(moveLog.size - 1)
@@ -223,7 +224,7 @@ class StandardChess() : GameType{
         } else {
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
-
+        moveLog.add(gameMove)
     }
 
 
@@ -237,6 +238,7 @@ class StandardChess() : GameType{
         val move = player.getTurn(getValidMoves(player))
 
         this.makeMove(move)
+        this.undoMove()
 
         nextPlayer()
     }
