@@ -11,6 +11,8 @@ class Game(val gameType: GameType) {
         }
 
         gameType.initGame()
+        this.display()
+        Thread.sleep(1000)
 
         while (true) {
 
