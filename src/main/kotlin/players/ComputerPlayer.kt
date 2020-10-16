@@ -2,10 +2,10 @@ package players
 
 import GameMove
 
-class ComputerPlayer: Player {
+class ComputerPlayer(val delay:Long): Player {
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
-        print(choiceOfMoves.size)
-        println()
-        return choiceOfMoves[(0 .. choiceOfMoves.size - 1).random()]
+        println("Computer is thinking...")
+        Thread.sleep(delay)
+        return choiceOfMoves[(choiceOfMoves.indices).random()]
     }
 }
