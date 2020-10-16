@@ -1,6 +1,7 @@
-class ChessNotationInput(val height: Int): NotationFormatter {
+class ChessNotationInput(val height: Int) : NotationFormatter {
     override fun strToCoordinate(s: String): Coordinate? {
-        val regex = """([a-z]+)(\d+)""".toRegex()
+        val regex =
+            """([a-z]+)(\d+)""".toRegex()
         val matchResult = regex.matchEntire(s) ?: return null
         val (l, n) = matchResult.destructured
         val c1 = l[0].toInt() - 'a'.toInt()
@@ -11,7 +12,7 @@ class ChessNotationInput(val height: Int): NotationFormatter {
     override fun coordinateToStr(c: Coordinate): String? {
         val c1 = (c.x + 'a'.toInt()).toChar()
         val c2 = height - c.y
-        return "${c1}${c2}"
+        return "${c1}$c2"
     }
 
     override fun gameMoveToStr(gameMove: GameMove): String {

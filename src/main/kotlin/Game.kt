@@ -1,6 +1,5 @@
 import gameTypes.GameType
 
-
 class Game(val gameType: GameType) {
     var turn = 0
 
@@ -34,10 +33,10 @@ class Game(val gameType: GameType) {
         val n = board.getBoardState().size
         val m = board.getBoardState()[0].size
         for ((i, row) in board.getBoardState().withIndex()) {
-            print("${n-i} ")
+            print("${n - i} ")
             for (piece in row) {
                 if (piece != null) {
-                    print((if (piece.player == player1)  colour1 else colour2 ) + piece.getSymbol() + ' ' + resetColour)
+                    print((if (piece.player == player1) colour1 else colour2) + piece.getSymbol() + ' ' + resetColour)
                 } else {
                     print("_ ")
                 }
@@ -53,6 +52,5 @@ class Game(val gameType: GameType) {
 
         println("----------------- turn: $turn")
         turn++
-
     }
 }

@@ -2,15 +2,23 @@ package gameTypes
 
 import Coordinate
 import boards.Board2D
-import pieces.*
+import pieces.Bishop
+import pieces.BlackPawn
+import pieces.Cardinal
+import pieces.King
+import pieces.Knight
+import pieces.Marshal
+import pieces.Queen
+import pieces.Rook
+import pieces.WhitePawn
 
-class GrandChess: StandardChess() {
+class GrandChess : StandardChess() {
     override val board = Board2D(10, 10)
 
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
-        for (i in 0..9){
+        for (i in 0..9) {
             board.addPiece(Coordinate(i, 2), WhitePawn(player1))
             board.addPiece(Coordinate(i, 7), BlackPawn(player2))
         }
@@ -35,5 +43,4 @@ class GrandChess: StandardChess() {
         board.addPiece(Coordinate(4, 1), King(player1))
         board.addPiece(Coordinate(4, 8), King(player2))
     }
-
 }

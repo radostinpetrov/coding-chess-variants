@@ -5,9 +5,7 @@ import GameMove
 import boards.Board2D
 import moves.Direction
 import moves.Move
-import pieces.BlackPawn
 import pieces.Piece
-import pieces.WhitePawn
 
 class MoveVisitor(private val board: Board2D) {
     fun getValidMoveHelper(coordinate: Coordinate, piece: Piece, move: Move): List<GameMove> {
@@ -51,16 +49,15 @@ class MoveVisitor(private val board: Board2D) {
                 }
             }
             is Move.AddForcedPromotion -> {
-                val result : MutableList<GameMove> = mutableListOf()
+                val result: MutableList<GameMove> = mutableListOf()
                 getValidMoveHelper(coordinate, piece, move.move).forEach {
                     val validX = move.x.isEmpty() || move.x.contains(it.to.x)
                     val validY = move.y.isEmpty() || move.y.contains(it.to.y)
                     if (validX && validY) {
-                        for(promoPiece in move.promoPieces) {
+                        for (promoPiece in move.promoPieces) {
                             result.add(GameMove(it.from, it.to, it.pieceMoved, it.pieceCaptured, promoPiece))
                         }
-                    }
-                    else {
+                    } else {
                         result.add(it)
                     }
                 }

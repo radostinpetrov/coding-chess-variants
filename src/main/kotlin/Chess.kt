@@ -1,7 +1,5 @@
 import gameTypes.GrandChess
-import gameTypes.StandardChess
 import players.ComputerPlayer
-import players.HumanPlayer
 
 fun main(args: Array<String>) {
     println("Let's play chess!")

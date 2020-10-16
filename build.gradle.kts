@@ -13,8 +13,11 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("io.mockk:mockk:1.10.2")
+    // testImplementation(kotlin("test-junit5"))
+    implementation(kotlin("stdlib-jdk8"))
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("io.mockk:mockk:1.9.3")
 }
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "11"
@@ -24,4 +27,8 @@ tasks.withType<ShadowJar>() {
     manifest {
         attributes["Main-Class"] = "ChessKt"
     }
+}
+
+tasks.test() {
+    useJUnitPlatform()
 }

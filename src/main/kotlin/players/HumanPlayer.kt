@@ -3,7 +3,7 @@ package players
 import GameMove
 import NotationFormatter
 
-class HumanPlayer(val notationFormatter: NotationFormatter): Player {
+class HumanPlayer(val notationFormatter: NotationFormatter) : Player {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
 
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
