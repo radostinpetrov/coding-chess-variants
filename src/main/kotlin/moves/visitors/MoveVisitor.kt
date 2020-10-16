@@ -31,7 +31,7 @@ class MoveVisitor(private val board: Board2D) {
                 result
             }
             is Move.Stepper -> {
-                stepperHelper(coordinate, piece, move.direction, move.step)
+                stepperHelper(coordinate, piece, move.direction, move.step, move.canCapture)
             }
             is Move.Leaper -> {
                 leaperHelper(coordinate, piece, move.dx, move.dy)
@@ -84,7 +84,7 @@ class MoveVisitor(private val board: Board2D) {
         return result
     }
 
-    private fun stepperHelper(coordinate: Coordinate, piece: Piece, direction: Direction, steps: Int): List<GameMove> {
+    private fun stepperHelper(coordinate: Coordinate, piece: Piece, direction: Direction, steps: Int, canCapture: Boolean): List<GameMove> {
         val result = mutableListOf<GameMove>()
         var step = 1
         var nextCoordinate = Coordinate(
@@ -103,8 +103,10 @@ class MoveVisitor(private val board: Board2D) {
         }
 
         val destPiece = board.getPiece(nextCoordinate)
-        if (board.isInBounds(nextCoordinate) && destPiece == null) {
-            result.add(GameMove(coordinate, nextCoordinate, piece, null, null))
+        if (board.isInBounds(nextCoordinate)) {
+            if (destPiece == null || (canCapture && destPiece.player != piece.player)) {
+                result.add(GameMove(coordinate, nextCoordinate, piece, destPiece, null))
+            }
         }
 
         return result
@@ -121,7 +123,7 @@ class MoveVisitor(private val board: Board2D) {
             Coordinate(coordinate.x + dy, coordinate.y - dx),
             Coordinate(coordinate.x - dy, coordinate.y + dx),
             Coordinate(coordinate.x - dy, coordinate.y - dx),
-        )
+        ).distinct()
 
         for (destCoordinate in destCoordinates) {
             if (board.isInBounds(destCoordinate)) {
