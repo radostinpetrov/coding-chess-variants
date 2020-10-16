@@ -14,6 +14,7 @@ repositories {
 }
 dependencies {
     testImplementation(kotlin("test-junit5"))
+    testImplementation("io.mockk:mockk:1.10.2")
 }
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "11"

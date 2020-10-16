@@ -10,7 +10,7 @@ class Game(val gameType: GameType) {
 
         gameType.initGame()
         this.display()
-        Thread.sleep(1000)
+//        Thread.sleep(1000)
 
         while (true) {
             if (gameType.isOver()) {
@@ -19,7 +19,7 @@ class Game(val gameType: GameType) {
 
             gameType.turn()
             this.display()
-            Thread.sleep(100)
+//            Thread.sleep(100)
         }
     }
 
