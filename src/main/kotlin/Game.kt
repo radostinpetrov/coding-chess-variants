@@ -13,7 +13,6 @@ class Game(val gameType: GameType) {
 //        Thread.sleep(1000)
 
         while (true) {
-
             if (gameType.isOver()) {
                 break
             }
@@ -24,6 +23,7 @@ class Game(val gameType: GameType) {
         }
     }
 
+    /* Display the board in terminal. */
     fun display() {
         val board = gameType.board
         val colour1 = "\u001B[31m"
@@ -31,7 +31,7 @@ class Game(val gameType: GameType) {
         val resetColour = "\u001B[0m"
         val player1 = gameType.players[0]
         val n = board.getBoardState().size
-        val m = board.getBoardState()[0].size
+
         for ((i, row) in board.getBoardState().withIndex()) {
             print("${n - i} ")
             for (piece in row) {
@@ -48,9 +48,7 @@ class Game(val gameType: GameType) {
         for (i in board.getBoardState()[0].indices) {
             print("${(i + 'a'.toInt()).toChar()} ")
         }
-        println()
-
-        println("----------------- turn: $turn")
+        println("\n----------------- turn: $turn")
         turn++
     }
 }
