@@ -48,6 +48,21 @@ class MoveVisitor(private val board: Board2D) {
                     validX && validY
                 }
             }
+            is Move.AddForcedPromotion -> {
+                val result: MutableList<GameMove> = mutableListOf()
+                getValidMoveHelper(coordinate, piece, move.move).forEach {
+                    val validX = move.x.isEmpty() || move.x.contains(it.to.x)
+                    val validY = move.y.isEmpty() || move.y.contains(it.to.y)
+                    if (validX && validY) {
+                        for (promoPiece in move.promoPieces) {
+                            result.add(GameMove(it.from, it.to, it.pieceMoved, it.pieceCaptured, promoPiece))
+                        }
+                    } else {
+                        result.add(it)
+                    }
+                }
+                return result
+            }
         }
     }
 

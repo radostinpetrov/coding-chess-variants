@@ -2,16 +2,19 @@ package gameTypes
 
 import Coordinate
 import GameMove
-//import History
 import boards.Board2D
-import moves.Direction
-import moves.Move
 import moves.visitors.MoveVisitor
-import pieces.*
+import pieces.Bishop
+import pieces.BlackPawn
+import pieces.King
+import pieces.Knight
+import pieces.Piece
+import pieces.Queen
+import pieces.Rook
+import pieces.WhitePawn
 import players.Player
-import players.HumanPlayer
 
-open class StandardChess() : GameType{
+open class StandardChess() : GameType {
 
     override val board = Board2D(8, 8)
 //    override val history: MutableList<History> = mutableListOf()
@@ -28,26 +31,26 @@ open class StandardChess() : GameType{
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
-        for (i in 0..7){
+        for (i in 0..7) {
             board.addPiece(Coordinate(i, 1), WhitePawn(player1))
             board.addPiece(Coordinate(i, 6), BlackPawn(player2))
         }
-         board.addPiece(Coordinate(0, 0), Rook(player1))
-         board.addPiece(Coordinate(7, 0), Rook(player1))
-         board.addPiece(Coordinate(0, 7), Rook(player2))
-         board.addPiece(Coordinate(7, 7), Rook(player2))
-         board.addPiece(Coordinate(1, 0), Knight(player1))
-         board.addPiece(Coordinate(6, 0), Knight(player1))
-         board.addPiece(Coordinate(1, 7), Knight(player2))
-         board.addPiece(Coordinate(6, 7), Knight(player2))
-         board.addPiece(Coordinate(2, 0), Bishop(player1))
-         board.addPiece(Coordinate(5, 0), Bishop(player1))
-         board.addPiece(Coordinate(2, 7), Bishop(player2))
-         board.addPiece(Coordinate(5, 7), Bishop(player2))
-         board.addPiece(Coordinate(4, 0), King(player1))
-         board.addPiece(Coordinate(4, 7), King(player2))
-         board.addPiece(Coordinate(3, 0), Queen(player1))
-         board.addPiece(Coordinate(3, 7), Queen(player2))
+        board.addPiece(Coordinate(0, 0), Rook(player1))
+        board.addPiece(Coordinate(7, 0), Rook(player1))
+        board.addPiece(Coordinate(0, 7), Rook(player2))
+        board.addPiece(Coordinate(7, 7), Rook(player2))
+        board.addPiece(Coordinate(1, 0), Knight(player1))
+        board.addPiece(Coordinate(6, 0), Knight(player1))
+        board.addPiece(Coordinate(1, 7), Knight(player2))
+        board.addPiece(Coordinate(6, 7), Knight(player2))
+        board.addPiece(Coordinate(2, 0), Bishop(player1))
+        board.addPiece(Coordinate(5, 0), Bishop(player1))
+        board.addPiece(Coordinate(2, 7), Bishop(player2))
+        board.addPiece(Coordinate(5, 7), Bishop(player2))
+        board.addPiece(Coordinate(4, 0), King(player1))
+        board.addPiece(Coordinate(4, 7), King(player2))
+        board.addPiece(Coordinate(3, 0), Queen(player1))
+        board.addPiece(Coordinate(3, 7), Queen(player2))
     }
 
     override fun isOver(): Boolean {
@@ -81,7 +84,7 @@ open class StandardChess() : GameType{
 
     fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
         val res = mutableListOf<GameMove>()
-        for (i in 0..possibleMoves.size-1){
+        for (i in 0..possibleMoves.size - 1) {
             makeMove(possibleMoves[i])
             if (!inCheck(player)) {
                 res.add(possibleMoves[i])
@@ -97,7 +100,7 @@ open class StandardChess() : GameType{
     }
 
     fun squareUnderAttack(coordinate: Coordinate): Boolean {
-        val nextPlayer = players[(playerTurn+1)%2]
+        val nextPlayer = players[(playerTurn + 1) % 2]
         val moves = getPossibleMoves(nextPlayer)
         for (m in moves) {
             if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
@@ -128,7 +131,7 @@ open class StandardChess() : GameType{
     fun getValidMoveForPiece(pair: Pair<Piece, Coordinate>): List<GameMove> {
 
         val possibleMoves = mutableListOf<GameMove>()
-        //validate possible moves
+        // validate possible moves
 
         val piece = pair.first
         val coordinate = pair.second
@@ -157,7 +160,6 @@ open class StandardChess() : GameType{
         moveLog.add(gameMove)
     }
 
-
     override fun addPlayer(player: Player) {
         players.add(player)
     }
@@ -180,7 +182,6 @@ open class StandardChess() : GameType{
         playerTurn++
         playerTurn %= players.size
     }
-
 
     override fun checkValidGame(): Boolean {
         if (players.size != NUM_PLAYERS) {
