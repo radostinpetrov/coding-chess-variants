@@ -2,6 +2,7 @@ package gameTypes
 
 import GameMove
 import boards.Board2D
+import moves.visitors.MoveVisitor
 // import History
 import players.Player
 
@@ -10,6 +11,7 @@ interface GameType {
 //    val history: MutableList<History>
     val players: MutableList<Player>
     var playerTurn: Int
+    val moveVisitor: MoveVisitor<Board2D>
 
     fun initGame()
     fun isOver(): Boolean

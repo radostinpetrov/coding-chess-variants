@@ -3,7 +3,7 @@ package gameTypes
 import Coordinate
 import GameMove
 import boards.Board2D
-import moves.visitors.MoveVisitor
+import moves.visitors.Board2DMoveVisitor
 import pieces.Bishop
 import pieces.BlackPawn
 import pieces.King
@@ -14,14 +14,14 @@ import pieces.Rook
 import pieces.WhitePawn
 import players.Player
 
-open class StandardChess() : GameType {
+open class StandardChess : GameType {
 
     override val board = Board2D(8, 8)
 //    override val history: MutableList<History> = mutableListOf()
 
     override val players: MutableList<Player> = ArrayList()
     override var playerTurn: Int = 1
-    val moveVisitor by lazy { MoveVisitor(board) }
+    override val moveVisitor by lazy { Board2DMoveVisitor(board) }
     val moveLog: MutableList<GameMove> = mutableListOf()
     var stalemate = false
     var checkmate = false
@@ -84,10 +84,10 @@ open class StandardChess() : GameType {
 
     fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
         val res = mutableListOf<GameMove>()
-        for (i in 0..possibleMoves.size - 1) {
-            makeMove(possibleMoves[i])
+        for (move in possibleMoves) {
+            makeMove(move)
             if (!inCheck(player)) {
-                res.add(possibleMoves[i])
+                res.add(move)
             }
             undoMove()
         }
@@ -137,7 +137,7 @@ open class StandardChess() : GameType {
         val coordinate = pair.second
 
         for (move in piece.moveTypes) {
-            possibleMoves.addAll(moveVisitor.getValidMoveHelper(coordinate, piece, move))
+            possibleMoves.addAll(moveVisitor.visit(coordinate, piece, move))
         }
 
         return possibleMoves
