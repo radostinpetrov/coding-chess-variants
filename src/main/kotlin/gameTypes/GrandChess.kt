@@ -2,6 +2,7 @@ package gameTypes
 
 import Coordinate
 import boards.Board2D
+import moves.visitors.Board2DMoveVisitor
 import pieces.Bishop
 import pieces.BlackPawn
 import pieces.Cardinal
@@ -14,6 +15,7 @@ import pieces.WhitePawn
 
 class GrandChess : StandardChess() {
     override val board = Board2D(10, 10)
+    override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 
     override fun initGame() {
         val player1 = players[0]
