@@ -94,7 +94,6 @@ class MyGdxGame : ApplicationAdapter() {
 
     override fun dispose() {
         batch.dispose()
-        img.dispose()
     }
 }
 
