@@ -12,6 +12,8 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
 }
+
+val ktxVersion = "1.4.10"
 dependencies {
     // testImplementation(kotlin("test-junit5"))
     // implementation(kotlin("stdlib-jdk8"))
@@ -31,4 +33,46 @@ tasks.withType<ShadowJar>() {
 
 tasks.test() {
     useJUnitPlatform()
+}
+
+val gdxVersion = "1.9.11"
+val kotlinVersion = "1.4.10"
+
+allprojects {
+
+    version = "1.0"
+
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        google()
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/releases/") }
+    }
+}
+project(":desktop") {
+    apply(plugin = "kotlin")
+
+
+    dependencies {
+        // implementation(":core")
+        compile(project(":core"))
+        implementation ("com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion")
+        implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+        implementation ("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
+        implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    }
+}
+
+project(":core") {
+    apply (plugin = "kotlin")
+
+
+    dependencies {
+        implementation ("com.badlogicgames.gdx:gdx:$gdxVersion")
+        implementation ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+        implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    }
 }
