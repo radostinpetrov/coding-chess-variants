@@ -9,56 +9,69 @@ plugins {
 group = "me.lukyxu"
 version = "1.0-SNAPSHOT"
 
+val ktxVersion = "1.4.10"
+val gdxVersion = "1.9.11"
+val kotlinVersion = "1.4.10"
+
 repositories {
     mavenCentral()
 }
 
-val ktxVersion = "1.4.10"
-dependencies {
-    // testImplementation(kotlin("test-junit5"))
-    // implementation(kotlin("stdlib-jdk8"))
-    testImplementation(platform("org.junit:junit-bom:5.7.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.mockk:mockk:1.9.3")
-}
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
-}
-
-tasks.withType<ShadowJar>() {
-    manifest {
-        attributes["Main-Class"] = "ChessKt"
-    }
-}
-
-tasks.test() {
-    useJUnitPlatform()
-}
-
-val gdxVersion = "1.9.11"
-val kotlinVersion = "1.4.10"
-
 allprojects {
-
+    apply(plugin = "kotlin")
     version = "1.0"
-
 
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
         google()
         maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
         maven { url = uri("https://oss.sonatype.org/content/repositories/releases/") }
+        jcenter()
     }
 }
-project(":desktop") {
+
+project(":engine") {
     apply(plugin = "kotlin")
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+//        testImplementation(platform("org.junit:junit-bom:5.7.0"))
+//        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
 
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+        testImplementation("io.mockk:mockk:1.9.3")
+    }
 
+    tasks.withType<KotlinCompile>() {
+        kotlinOptions.jvmTarget = "11"
+    }
+
+    tasks.withType<ShadowJar>() {
+        manifest {
+            attributes["Main-Class"] = "ChessKt"
+        }
+    }
+    //    tasks.test() {
+    //        useJUnitPlatform()
+    //    }
+    tasks {
+        test {
+            useJUnitPlatform()
+        }
+    }
+//    tasks.withType<Test> {
+//        useJUnitPlatform()
+//    }
+}
+
+project(":desktop") {
     dependencies {
         // implementation(":core")
-        compile(project(":core"))
+        implementation(project(":core"))
         implementation ("com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
         implementation ("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
@@ -67,10 +80,8 @@ project(":desktop") {
 }
 
 project(":core") {
-    apply (plugin = "kotlin")
-
-
     dependencies {
+        implementation(project(":engine"))
         implementation ("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

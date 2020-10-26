@@ -1,9 +1,9 @@
-import gameTypes.GrandChess
+import gameTypes.chess.StandardChess
 import players.ComputerPlayer
 
 fun main(args: Array<String>) {
     println("Let's play chess!")
-    val chess = GrandChess()
+    val chess = StandardChess()
 
     chess.addPlayer(ComputerPlayer(10))
     chess.addPlayer(ComputerPlayer(10))
