@@ -1,7 +1,8 @@
-package gameTypes
+package gameTypes.chess
 
 import Coordinate
 import boards.Board2D
+import gameTypes.chess.AbstractChess
 import moves.visitors.Board2DMoveVisitor
 import pieces.Bishop
 import pieces.BlackPawn
@@ -13,7 +14,8 @@ import pieces.Queen
 import pieces.Rook
 import pieces.WhitePawn
 
-class GrandChess : StandardChess() {
+class
+GrandChess : AbstractChess() {
     override val board = Board2D(10, 10)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 
