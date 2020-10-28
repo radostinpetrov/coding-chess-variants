@@ -1,7 +1,20 @@
 import gameTypes.GameType
+import main.kotlin.Observer
 
 class Game(val gameType: GameType) {
     var turn = 0
+
+    val observers = mutableListOf<Observer>()
+
+    fun addObserver(observer: Observer) {
+        observers.add(observer)
+    }
+
+    fun notifyObservers() {
+        for (observer in observers) {
+            observer.update()
+        }
+    }
 
     fun start() {
         if (!gameType.checkValidGame()) {
@@ -12,15 +25,24 @@ class Game(val gameType: GameType) {
         this.display()
 //        Thread.sleep(1000)
 
-        while (true) {
-            if (gameType.isOver()) {
-                break
-            }
+//        while (true) {
+//            if (gameType.isOver()) {
+//                break
+//            }
+//
+//            gameType.turn()
+//            this.notifyObservers()
+////            Thread.sleep(100)
+//        }
+    }
 
-            gameType.turn()
-            this.display()
-//            Thread.sleep(100)
+    fun turn(): Boolean {
+        if (gameType.isOver()) {
+            return false
         }
+
+        gameType.turn()
+        return true
     }
 
     /* Display the board in terminal. */
