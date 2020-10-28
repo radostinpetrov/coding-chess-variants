@@ -3,15 +3,15 @@ package main.kotlin.gameTypes.chess
 import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import pieces.Bishop
-import pieces.BlackPawn
-import pieces.Cardinal
-import pieces.King
-import pieces.Knight
-import pieces.Marshal
-import pieces.Queen
-import pieces.Rook
-import pieces.WhitePawn
+import main.kotlin.pieces.Bishop
+import main.kotlin.pieces.BlackPawn
+import main.kotlin.pieces.Cardinal
+import main.kotlin.pieces.King
+import main.kotlin.pieces.Knight
+import main.kotlin.pieces.Marshal
+import main.kotlin.pieces.Queen
+import main.kotlin.pieces.Rook
+import main.kotlin.pieces.WhitePawn
 
 class
 GrandChess : AbstractChess() {

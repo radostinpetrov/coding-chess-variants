@@ -1,7 +1,5 @@
 package screens
 
-import Game
-import GameMove
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -11,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
-import gameTypes.GameType
-import gameTypes.chess.StandardChess
 import ktx.app.KtxScreen
-import players.ComputerPlayer
-import players.HumanPlayer
+import main.kotlin.Game
+import main.kotlin.GameMove
+import main.kotlin.players.ComputerPlayer
+import main.kotlin.players.HumanPlayer
 
 class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val stage = Stage()
@@ -87,14 +85,13 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         Gdx.input.setInputProcessor(stage)
     }
 
-
     override fun render(delta: Float) {
         stage.draw()
         stage.act()
     }
 
     private fun switchToGameScreen() {
-        game.removeScreen<GameScreen>() //idk why we need this line
+        game.removeScreen<GameScreen>() // idk why we need this line
         val gameScreen = GameScreen(game, gameEngine)
         gameEngine.addObserver(gameScreen)
         game.addScreen(gameScreen)

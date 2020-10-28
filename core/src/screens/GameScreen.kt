@@ -1,7 +1,5 @@
 package screens
 
-import Coordinate
-import Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
@@ -11,13 +9,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
+import main.kotlin.Coordinate
+import main.kotlin.Game
+import main.kotlin.GameMove
 import main.kotlin.Observer
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observer{
+class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observer {
 
     private val squareWidth: Float = 100f
     private val pieceWidth: Float = 70f
-    private val shapeRenderer  = ShapeRenderer()
+    private val shapeRenderer = ShapeRenderer()
 
     var srcX: Int? = null
     var srcY: Int? = null
@@ -29,12 +30,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
 
     var currPlayer = gameEngine.gameType.players[0]
 
-    private val textures= Textures(game.assets)
+    private val textures = Textures(game.assets)
 
     // todo: hard coded, enum for colour ?
     val playerMapping = mapOf(gameEngine.gameType.players[0] to Color.WHITE, gameEngine.gameType.players[1] to Color.BLACK)
     override fun show() {
-         gameEngine.start()
+        gameEngine.start()
     }
 
     override fun render(delta: Float) {
@@ -42,10 +43,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
         drawBoard()
         drawPieces()
         controls()
-//        if (!gameEngine.turn()) {
-//            // game over
-//            TODO()
-//        }
+        if (!gameEngine.turn()) {
+            // game over
+            TODO()
+        }
         currPlayer = gameEngine.gameType.getCurrPlayer()
     }
 
@@ -68,8 +69,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
         for (i in 0 until (rows / 2) - 1) {
             for (j in 0 until columns) {
                 val tmpPiece = b[i][j]
-                b[i][j] = b[rows - i - 1][columns - j -1]
-                b[rows -  i - 1][columns - j - 1] = tmpPiece
+                b[i][j] = b[rows - i - 1][columns - j - 1]
+                b[rows - i - 1][columns - j - 1] = tmpPiece
             }
         }
     }
@@ -79,14 +80,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
             if (srcX == null) {
                 srcX = Gdx.input.getX()
                 srcY = Gdx.graphics.getHeight() - Gdx.input.getY()
-            }
-
-            else if (srcX != null && dstX == null) {
+            } else if (srcX != null && dstX == null) {
                 dstX = Gdx.input.getX()
                 dstY = Gdx.graphics.getHeight() - Gdx.input.getY()
-            }
-
-            else {
+            } else {
                 srcX = Gdx.input.getX()
                 srcY = Gdx.graphics.getHeight() - Gdx.input.getY()
                 dstX = null
@@ -100,19 +97,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
             dstX = null
             dstY = null
         }
-    }
-
-    fun highlightValidMoves(coordinate: Coordinate) {
-        val moves = gameEngine.gameType.getValidMoves(currPlayer)
-        val toCoordinates = moves.filter { m -> m.from == coordinate }.map{ m -> m.to }
-
-
-        for (c in toCoordinates) {
-            print(c)
-            shapeRenderer.color = Color.PINK
-            shapeRenderer.rect(squareWidth * c.x,squareWidth * (7 - c.y), squareWidth, squareWidth)
-        }
-        println()
     }
 
     private fun drawBoard(flipped: Boolean = false) {
@@ -133,15 +117,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
             for (j in 0 until rows) {
                 if ((i + j) % 2 == 0) {
                     shapeRenderer.setColor(colour1)
-                }
-                else {
+                } else {
                     shapeRenderer.setColor(colour2)
                 }
 
                 if (srcX != null && srcY != null) {
                     if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
                         val moves = gameEngine.gameType.getValidMoves(currPlayer)
-                        toCoordinates = moves.filter { m -> m.from == Coordinate(i, 7 - j) }.map{ m -> m.to }
+                        // // TODO: FIX THIS TO ACCOUNT FOR COMPOSITE MOVES
+                        toCoordinates = moves.filter { m -> m is GameMove.BasicGameMove && m.from == Coordinate(i, 7 - j) }.map { m -> (m as GameMove.BasicGameMove).to }
                         shapeRenderer.setColor(Color.FOREST)
                     }
                 }
@@ -150,15 +134,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
                         shapeRenderer.setColor(Color.GREEN)
                     }
                 }
-                shapeRenderer.rect(squareWidth * i,squareWidth * j, squareWidth, squareWidth)
+                shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
             }
         }
 
-        shapeRenderer.color = Color(Color.rgba4444(30f, 76f,63f, 0.75f))
+        shapeRenderer.color = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
 
         for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + 50,squareWidth * (7 - c.y) + 50, 12f)
-
+            shapeRenderer.circle(squareWidth * c.x + 50, squareWidth * (7 - c.y) + 50, 12f)
         }
 
         shapeRenderer.end()

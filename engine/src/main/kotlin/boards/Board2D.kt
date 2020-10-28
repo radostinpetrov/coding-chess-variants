@@ -1,7 +1,7 @@
 package main.kotlin.boards
 
 import main.kotlin.Coordinate
-import pieces.Piece
+import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 import java.lang.Exception
 

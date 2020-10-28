@@ -4,11 +4,11 @@ import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.boards.Board2D
 import main.kotlin.moves.Direction
+import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
-import moves.Move
-import pieces.Piece
+import main.kotlin.moves.Move
 
-class Board2DMoveVisitor(override val board: Board2D): MoveVisitor<Board2D> {
+class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
     override fun visit(coordinate: Coordinate, piece: Piece, move: Move, player: Player): List<GameMove.BasicGameMove> {
         return when (move) {
             is Move.Slider -> {
@@ -73,7 +73,7 @@ class Board2DMoveVisitor(override val board: Board2D): MoveVisitor<Board2D> {
         while (board.isInBounds(nextCoordinate)) {
             val destPiece = board.getPiece(nextCoordinate)
             if (destPiece == null) {
-                result.add(GameMove.BasicGameMove(coordinate, nextCoordinate, piece, player,null, null))
+                result.add(GameMove.BasicGameMove(coordinate, nextCoordinate, piece, player, null, null))
                 nextCoordinate = Coordinate(nextCoordinate.x + dx, nextCoordinate.y + dy)
             } else if (piece.player != destPiece.player) {
                 result.add(GameMove.BasicGameMove(coordinate, nextCoordinate, piece, player, destPiece, null))

@@ -1,7 +1,6 @@
 package main.kotlin
 
 import main.kotlin.gameTypes.GameType
-import main.kotlin.Observer
 class Game(val gameType: GameType) {
     var turn = 0
 
@@ -33,7 +32,7 @@ class Game(val gameType: GameType) {
 //
 //            gameType.turn()
 //            this.notifyObservers()
-////            Thread.sleep(100)
+//            Thread.sleep(100)
 //        }
     }
 

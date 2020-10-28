@@ -1,11 +1,12 @@
 package main.kotlin.gameTypes.chess
 
 import main.kotlin.Coordinate
-import main.kotlin.gameTypes.GameType
 import main.kotlin.GameMove
+import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.chess.rules.SpecialRules
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import pieces.*
+import main.kotlin.pieces.King
+import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
 abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
@@ -54,7 +55,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
         val res = mutableListOf<GameMove>()
         for (move in possibleMoves) {
-            when(move) {
+            when (move) {
                 is GameMove.BasicGameMove -> {
                     makeMove(move)
                     if (!inCheck(player)) {
@@ -173,7 +174,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             }
         }
         moveLog.add(gameMove)
-
     }
 
     private fun makeBasicMove(gameMove: GameMove.BasicGameMove) {
@@ -186,7 +186,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         } else {
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
-
     }
 
     override fun addPlayer(player: Player) {
@@ -217,10 +216,10 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     fun getNextPlayer(): Player {
-        return players[(playerTurn+1)%players.size]
+        return players[(playerTurn + 1) % players.size]
     }
 
-    override fun getCurrPlayer() : Player {
+    override fun getCurrPlayer(): Player {
         return players[playerTurn]
     }
 

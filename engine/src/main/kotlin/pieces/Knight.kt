@@ -1,6 +1,6 @@
-package pieces
+package main.kotlin.pieces
 
-import moves.Move
+import main.kotlin.moves.Move
 import main.kotlin.players.Player
 
 class Knight(override val player: Player) : Piece {

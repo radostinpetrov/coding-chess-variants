@@ -1,7 +1,7 @@
-package pieces
+package main.kotlin.pieces
 
-import moves.Move
 import main.kotlin.players.Player
+import main.kotlin.moves.Move
 
 class Marshal(override val player: Player) : Piece {
     override val moveTypes: List<Move>

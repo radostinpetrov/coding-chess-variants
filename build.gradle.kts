@@ -72,27 +72,25 @@ project(":desktop") {
     dependencies {
         // implementation(":core")
         implementation(project(":core"))
-        implementation ("com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion")
+        implementation("com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
-        implementation ("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
-        implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        implementation("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     }
 }
 
 project(":core") {
     dependencies {
         implementation(project(":engine"))
-        implementation ("com.badlogicgames.gdx:gdx:$gdxVersion")
-        implementation ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
-        implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-        api ("com.badlogicgames.gdx:gdx:$gdxVersion")
-        api ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
-        api ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-        api ("io.github.libktx:ktx-app:$ktxVersion")
-        api ("io.github.libktx:ktx-collections:$ktxVersion")
-        api ("io.github.libktx:ktx-graphics:$ktxVersion")
-        api ("io.github.libktx:ktx-assets:$ktxVersion")
-
-
+        implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
+        implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        api("com.badlogicgames.gdx:gdx:$gdxVersion")
+        api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+        api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        api("io.github.libktx:ktx-app:$ktxVersion")
+        api("io.github.libktx:ktx-collections:$ktxVersion")
+        api("io.github.libktx:ktx-graphics:$ktxVersion")
+        api("io.github.libktx:ktx-assets:$ktxVersion")
     }
 }

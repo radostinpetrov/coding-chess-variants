@@ -1,7 +1,7 @@
-package pieces
+package main.kotlin.pieces
 
-import moves.Move
-import moves.Move.Slider
+import main.kotlin.moves.Move
+import main.kotlin.moves.Move.Slider
 import main.kotlin.players.Player
 
 class Bishop(override val player: Player) : Piece {
