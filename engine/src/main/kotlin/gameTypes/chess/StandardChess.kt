@@ -1,21 +1,20 @@
-package gameTypes.chess
+package main.kotlin.gameTypes.chess
 
-import Coordinate
-import GameMove
-import boards.Board2D
-import gameTypes.chess.AbstractChess
-import moves.visitors.Board2DMoveVisitor
+import main.kotlin.Coordinate
+import main.kotlin.boards.Board2D
+import main.kotlin.gameTypes.chess.rules.Enpassant
+import main.kotlin.gameTypes.chess.rules.SpecialRules
+import main.kotlin.gameTypes.chess.rules.StandardCastling
+import main.kotlin.moves.visitors.Board2DMoveVisitor
 import pieces.Bishop
 import pieces.BlackPawn
 import pieces.King
 import pieces.Knight
-import pieces.Piece
 import pieces.Queen
 import pieces.Rook
 import pieces.WhitePawn
-import players.Player
 
-open class StandardChess : AbstractChess() {
+open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant())) {
 
     override val board = Board2D(8, 8)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }

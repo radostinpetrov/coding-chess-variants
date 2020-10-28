@@ -1,3 +1,5 @@
+package main.kotlin
+
 interface NotationFormatter {
     /* Converts the string representation of a coordinate to a coordinate. */
     fun strToCoordinate(s: String): Coordinate?

@@ -2,8 +2,8 @@ package pieces
 
 import moves.Move
 import moves.Move.*
-import moves.Direction
-import players.Player
+import main.kotlin.moves.Direction
+import main.kotlin.players.Player
 
 class BlackPawn(override val player: Player) : Piece {
     override val moveTypes: List<Move>

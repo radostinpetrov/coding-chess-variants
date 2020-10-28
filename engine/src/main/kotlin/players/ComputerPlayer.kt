@@ -1,6 +1,6 @@
-package players
+package main.kotlin.players
 
-import GameMove
+import main.kotlin.GameMove
 
 class ComputerPlayer(val delay: Long) : Player {
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {

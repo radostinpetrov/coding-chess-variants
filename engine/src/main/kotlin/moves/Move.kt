@@ -1,5 +1,6 @@
 package moves
 
+import main.kotlin.moves.Direction
 import pieces.Piece
 
 sealed class Move {

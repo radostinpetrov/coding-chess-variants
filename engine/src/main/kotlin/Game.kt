@@ -1,6 +1,7 @@
-import gameTypes.GameType
-import main.kotlin.Observer
+package main.kotlin
 
+import main.kotlin.gameTypes.GameType
+import main.kotlin.Observer
 class Game(val gameType: GameType) {
     var turn = 0
 
