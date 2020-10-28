@@ -9,7 +9,7 @@ plugins {
 group = "me.lukyxu"
 version = "1.0-SNAPSHOT"
 
-val ktxVersion = "1.4.10"
+val ktxVersion = "1.9.10-b2"
 val gdxVersion = "1.9.11"
 val kotlinVersion = "1.4.10"
 
@@ -85,5 +85,14 @@ project(":core") {
         implementation ("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        api ("com.badlogicgames.gdx:gdx:$gdxVersion")
+        api ("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+        api ("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        api ("io.github.libktx:ktx-app:$ktxVersion")
+        api ("io.github.libktx:ktx-collections:$ktxVersion")
+        api ("io.github.libktx:ktx-graphics:$ktxVersion")
+        api ("io.github.libktx:ktx-assets:$ktxVersion")
+
+
     }
 }

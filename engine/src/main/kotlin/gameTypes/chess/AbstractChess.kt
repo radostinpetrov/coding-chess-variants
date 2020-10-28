@@ -150,6 +150,10 @@ abstract class AbstractChess : GameType {
         playerTurn %= players.size
     }
 
+    override fun getCurrPlayer() : Player {
+        return players[playerTurn]
+    }
+
     override fun checkValidGame(): Boolean {
         if (players.size != NUM_PLAYERS) {
             print("Incorrect number of players")
