@@ -1,8 +1,8 @@
-package boards
+package main.kotlin.boards
 
-import Coordinate
+import main.kotlin.Coordinate
 import pieces.Piece
-import players.Player
+import main.kotlin.players.Player
 
 interface Board <T : Piece> {
     fun getBoardState(): Array<Array<T?>>

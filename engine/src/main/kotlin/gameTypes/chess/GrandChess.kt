@@ -1,9 +1,8 @@
-package gameTypes.chess
+package main.kotlin.gameTypes.chess
 
-import Coordinate
-import boards.Board2D
-import gameTypes.chess.AbstractChess
-import moves.visitors.Board2DMoveVisitor
+import main.kotlin.Coordinate
+import main.kotlin.boards.Board2D
+import main.kotlin.moves.visitors.Board2DMoveVisitor
 import pieces.Bishop
 import pieces.BlackPawn
 import pieces.Cardinal

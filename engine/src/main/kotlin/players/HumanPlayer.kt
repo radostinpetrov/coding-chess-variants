@@ -1,7 +1,10 @@
 package players
 
-import GameMove
-import NotationFormatter
+
+import main.kotlin.Game
+import main.kotlin.GameMove
+import main.kotlin.NotationFormatter
+import main.kotlin.players.Player
 
 abstract class HumanPlayer : Player {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false

@@ -1,6 +1,6 @@
-package players
+package main.kotlin.players
 
-import GameMove
+import main.kotlin.GameMove
 
 interface Player {
     // Returns the chosen move of the player.

@@ -1,10 +1,10 @@
-package gameTypes
+package main.kotlin.gameTypes
 
-import GameMove
-import boards.Board2D
-import moves.visitors.MoveVisitor
+import main.kotlin.boards.Board2D
+import main.kotlin.GameMove
+import main.kotlin.moves.visitors.MoveVisitor
 // import History
-import players.Player
+import main.kotlin.players.Player
 
 interface GameType {
     val board: Board2D

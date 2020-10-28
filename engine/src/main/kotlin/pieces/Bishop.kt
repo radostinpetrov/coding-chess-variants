@@ -2,7 +2,7 @@ package pieces
 
 import moves.Move
 import moves.Move.Slider
-import players.Player
+import main.kotlin.players.Player
 
 class Bishop(override val player: Player) : Piece {
     override val moveTypes: List<Move>

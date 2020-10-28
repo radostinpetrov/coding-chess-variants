@@ -1,3 +1,5 @@
+package main.kotlin
+
 class ChessNotationInput(val height: Int): NotationFormatter {
 
     /* Converts the string representation of a coordinate to a coordinate. e.g A1 -> Coordinate(0, 6) */
@@ -24,6 +26,24 @@ class ChessNotationInput(val height: Int): NotationFormatter {
     override fun gameMoveToStr(gameMove: GameMove): String {
         val sb = StringBuilder()
 
+        when (gameMove) {
+            is GameMove.BasicGameMove -> {
+                sb.append(basicGameMoveToStr(gameMove))
+            }
+            is GameMove.CompositeGameMove -> {
+                for (move in gameMove.gameMoves) {
+                    sb.append(gameMoveToStr(move))
+                    sb.append(' ')
+                }
+                sb.trimEnd()
+            }
+        }
+
+        return sb.toString()
+    }
+
+    private fun basicGameMoveToStr(gameMove: GameMove.BasicGameMove) : String {
+        val sb = StringBuilder()
         sb.append("${gameMove.pieceMoved.getSymbol()} moves from ${coordinateToStr(gameMove.from)} to ${coordinateToStr(gameMove.to)}")
 
         if (gameMove.pieceCaptured != null) {
@@ -33,7 +53,6 @@ class ChessNotationInput(val height: Int): NotationFormatter {
         if (gameMove.piecePromotedTo != null) {
             sb.append(" and promoting to ${gameMove.piecePromotedTo.getSymbol()}")
         }
-
         return sb.toString()
     }
 }

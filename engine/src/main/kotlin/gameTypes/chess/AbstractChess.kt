@@ -1,15 +1,14 @@
-package gameTypes.chess
+package main.kotlin.gameTypes.chess
 
-import Coordinate
-import GameMove
-import boards.Board2D
-import gameTypes.GameType
-import moves.visitors.Board2DMoveVisitor
-import moves.visitors.MoveVisitor
+import main.kotlin.Coordinate
+import main.kotlin.gameTypes.GameType
+import main.kotlin.GameMove
+import main.kotlin.gameTypes.chess.rules.SpecialRules
+import main.kotlin.moves.visitors.Board2DMoveVisitor
 import pieces.*
-import players.Player
+import main.kotlin.players.Player
 
-abstract class AbstractChess : GameType {
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
 
     override val players: MutableList<Player> = ArrayList()
     override var playerTurn: Int = 1
@@ -25,7 +24,7 @@ abstract class AbstractChess : GameType {
     }
 
     override fun getValidMoves(player: Player): List<GameMove> {
-        val possibleMoves = getPossibleMoves(player)
+        val possibleMoves = getPossibleMoves(player).toMutableList()
         val moves = filterForCheck(player, possibleMoves)
         if (moves.isEmpty()) {
             if (inCheck(player)) {
@@ -46,34 +45,69 @@ abstract class AbstractChess : GameType {
         for (piece in pieces) {
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
+        for (rule in rules) {
+            possibleMoves.addAll(rule.getPossibleMoves(this, player))
+        }
         return possibleMoves
     }
 
     fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
         val res = mutableListOf<GameMove>()
         for (move in possibleMoves) {
-            makeMove(move)
-            if (!inCheck(player)) {
-                res.add(move)
+            when(move) {
+                is GameMove.BasicGameMove -> {
+                    makeMove(move)
+                    if (!inCheck(player)) {
+                        res.add(move)
+                    }
+                    undoMove()
+                }
+                is GameMove.CompositeGameMove -> {
+                    var valid = true
+                    for (m in move.gameMoves) {
+                        makeMove(m)
+                        if (m.checkForCheck && inCheck(player)) {
+                            valid = false
+                        }
+                    }
+                    for (m in move.gameMoves) {
+                        undoMove()
+                    }
+                    if (valid) {
+                        res.add(move)
+                    }
+                }
             }
-            undoMove()
         }
         return res
     }
 
     fun inCheck(player: Player): Boolean {
         val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
-        return squareUnderAttack(kingCoordinate)
+        return squareUnderAttack(kingCoordinate, player)
     }
 
-    fun squareUnderAttack(coordinate: Coordinate): Boolean {
-        val nextPlayer = players[(playerTurn + 1) % 2]
+    fun squareUnderAttack(coordinate: Coordinate, player: Player): Boolean {
+        val nextPlayer = players[(players.indexOf(player) + 1) % 2]
         val moves = getPossibleMoves(nextPlayer)
+
         for (m in moves) {
-            if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
-                return true
+            when (m) {
+                is GameMove.BasicGameMove -> {
+                    if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
+                        return true
+                    }
+                }
+                is GameMove.CompositeGameMove -> {
+                    for (move in m.gameMoves) {
+                        if (move.to.x == coordinate.x && move.to.y == coordinate.y) {
+                            return true
+                        }
+                    }
+                }
             }
         }
+
         return false
     }
 
@@ -82,6 +116,19 @@ abstract class AbstractChess : GameType {
             return
         }
         val gameMove = moveLog.removeAt(moveLog.size - 1)
+        when (gameMove) {
+            is GameMove.BasicGameMove -> {
+                undoBasicMove(gameMove)
+            }
+            is GameMove.CompositeGameMove -> {
+                for (move in gameMove.gameMoves.reversed()) {
+                    undoBasicMove(move)
+                }
+            }
+        }
+    }
+
+    private fun undoBasicMove(gameMove: GameMove.BasicGameMove) {
         if (gameMove.piecePromotedTo != null) {
             board.removePiece(gameMove.to, gameMove.piecePromotedTo)
         } else {
@@ -104,7 +151,7 @@ abstract class AbstractChess : GameType {
         val coordinate = pair.second
 
         for (move in piece.moveTypes) {
-            possibleMoves.addAll(moveVisitor.visit(coordinate, piece, move))
+            possibleMoves.addAll(moveVisitor.visit(coordinate, piece, move, getCurrentPlayer()))
         }
 
         return possibleMoves
@@ -115,6 +162,21 @@ abstract class AbstractChess : GameType {
     // }
 
     override fun makeMove(gameMove: GameMove) {
+        when (gameMove) {
+            is GameMove.BasicGameMove -> {
+                makeBasicMove(gameMove)
+            }
+            is GameMove.CompositeGameMove -> {
+                for (move in gameMove.gameMoves) {
+                    makeBasicMove(move)
+                }
+            }
+        }
+        moveLog.add(gameMove)
+
+    }
+
+    private fun makeBasicMove(gameMove: GameMove.BasicGameMove) {
         board.removePiece(gameMove.from, gameMove.pieceMoved)
         if (gameMove.pieceCaptured != null) {
             board.removePiece(board.getPieceCoordinate(gameMove.pieceCaptured)!!, gameMove.pieceCaptured)
@@ -124,7 +186,7 @@ abstract class AbstractChess : GameType {
         } else {
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
-        moveLog.add(gameMove)
+
     }
 
     override fun addPlayer(player: Player) {
@@ -148,6 +210,14 @@ abstract class AbstractChess : GameType {
     override fun nextPlayer() {
         playerTurn++
         playerTurn %= players.size
+    }
+
+    fun getCurrentPlayer(): Player {
+        return players[playerTurn]
+    }
+
+    fun getNextPlayer(): Player {
+        return players[(playerTurn+1)%players.size]
     }
 
     override fun getCurrPlayer() : Player {
