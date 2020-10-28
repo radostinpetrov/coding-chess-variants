@@ -29,7 +29,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     override fun show() {
         standardChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToGameScreen(StandardChess())
+                switchToSetupScreen(StandardChess())
             }
         })
         table.width = 800f
@@ -53,21 +53,20 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         // game.batch.end()
     }
 
-    private fun switchToGameScreen(gameType: GameType) {
+    private fun switchToSetupScreen(gameType: GameType) {
         val humanPlayer = object : HumanPlayer() {
             override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
                 return choiceOfMoves[0]
             }
         }
         // gameType.addPlayer(humanPlayer)
-        gameType.addPlayer(ComputerPlayer(200))
-        gameType.addPlayer(ComputerPlayer(200))
+        // gameType.addPlayer(ComputerPlayer(200))
+        // gameType.addPlayer(ComputerPlayer(200))
+
         val gameEngine = Game(gameType)
-        game.removeScreen<GameScreen>() //idk why we need this line
-        val gameScreen = GameScreen(game, gameEngine)
-        gameEngine.addObserver(gameScreen)
-        game.addScreen(gameScreen)
-        game.setScreen<GameScreen>()
+        game.removeScreen<SetupScreen>() //idk why we need this line
+        game.addScreen(SetupScreen(game, gameEngine))
+        game.setScreen<SetupScreen>()
         // gameType.initGame()
         dispose()
 
