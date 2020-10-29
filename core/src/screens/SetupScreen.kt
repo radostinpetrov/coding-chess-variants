@@ -33,12 +33,12 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
     override fun show() {
         val human1 = object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
+            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
                 return choiceOfMoves[0]
             }
         }
         val human2 = object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
+            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
                 return choiceOfMoves[0]
             }
         }

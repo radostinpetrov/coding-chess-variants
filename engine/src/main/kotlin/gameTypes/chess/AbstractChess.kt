@@ -202,9 +202,12 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
         val move = player.getTurn(moves)
 
-        this.makeMove(move)
-
-        nextPlayer()
+        if (move != null) {
+            println(move)
+            println(player)
+            this.makeMove(move)
+            nextPlayer()
+        }
     }
 
     override fun nextPlayer() {
@@ -212,16 +215,12 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         playerTurn %= players.size
     }
 
-    fun getCurrentPlayer(): Player {
+    override fun getCurrentPlayer(): Player {
         return players[playerTurn]
     }
 
-    fun getNextPlayer(): Player {
+    override fun getNextPlayer(): Player {
         return players[(playerTurn + 1) % players.size]
-    }
-
-    override fun getCurrPlayer(): Player {
-        return players[playerTurn]
     }
 
     override fun checkValidGame(): Boolean {

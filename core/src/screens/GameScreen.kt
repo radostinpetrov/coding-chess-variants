@@ -12,6 +12,9 @@ import ktx.app.KtxScreen
 import main.kotlin.Coordinate
 import main.kotlin.Game
 import main.kotlin.GameMove
+import main.kotlin.players.ComputerPlayer
+import main.kotlin.players.HumanPlayer
+import main.kotlin.players.Player
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
@@ -31,31 +34,45 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val rows = board.m
     val columns = board.n
 
-    // TODO ...
-    var playerMove: GameMove? = null
-
-    var currPlayer = gameType.players[0]
+    var currPlayer: Player? = null
 
     private val textures = Textures(game.assets)
 
-
+    var playerMove: GameMove? = null
 
     // todo: hard coded, enum for colour ?
-    val playerMapping = mapOf(gameType.players[0] to Color.WHITE, gameType.players[1] to Color.BLACK)
+    var playerMapping: Map<Player, Color>? = null
     override fun show() {
+        val humanPlayer = object : HumanPlayer() {
+            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
+                val temp = playerMove
+                playerMove = null
+                if (temp != null) {
+                    srcX = null
+                    srcY = null
+                    dstX = null
+                    dstY = null
+                }
+                return temp
+            }
+        }
+
+        val computerPlayer = ComputerPlayer(500)
+        gameType.addPlayer(humanPlayer)
+        gameType.addPlayer(computerPlayer)
+        currPlayer = gameType.getCurrentPlayer()
+        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
         gameEngine.start()
     }
 
     override fun render(delta: Float) {
-        drawBoard()
+        currPlayer = gameType.getCurrentPlayer()
+        val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        drawBoard(moves)
         drawPieces()
+        drawDots(moves)
         controls()
-        if (!gameEngine.turn()) {
-            // game over
-            TODO()
-        }
-        playerMove = null
-        currPlayer = gameType.getCurrPlayer()
+        gameType.turn()
     }
 
     private fun reverseRow(index: Int) {
@@ -109,7 +126,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
     }
 
-    private fun drawBoard(flipped: Boolean = false) {
+    private fun drawBoard(moves: List<GameMove>, flipped: Boolean = false) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         var colour1: Color = Color.TAN
@@ -131,11 +148,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                     shapeRenderer.color = colour2
                 }
 
-                val moves = gameEngine.gameType.getValidMoves(currPlayer)
-
                 if (srcX != null && srcY != null) {
                     if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
-                        toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(i, 7 - j) }.map { m -> m.displayTo }
                         shapeRenderer.color = Color.FOREST
                     }
                 }
@@ -143,7 +157,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                     if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
                         shapeRenderer.color = Color.GREEN
                         if (srcX != null && srcY != null) {
-                            playerMove = getMove(Coordinate(i, 7 - j), Coordinate(i, 7 - j), moves)
+                            playerMove = getMove(Coordinate(srcX!!.toInt()/squareWidth.toInt(), srcY!!.toInt()/squareWidth.toInt()),
+                                Coordinate(dstX!!.toInt()/squareWidth.toInt(), dstY!!.toInt()/squareWidth.toInt()), moves)
                         }
                     }
                 }
@@ -151,25 +166,36 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             }
         }
 
-        /* Draw toCoordinates dots for a selected piece. */
-        shapeRenderer.color = possibleMoveColour
-        val position = squareWidth / 2
-        for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (7 - c.y) + position, possibleMoveCircleRadius)
-        }
-
         shapeRenderer.end()
     }
 
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
-        moves.filter{m -> m.displayFrom == from && m.displayTo == to}
-
-        if (moves.isEmpty()) {
+        val playerMove = moves.filter{m -> m.displayFrom == from && m.displayTo == to}
+        if (playerMove.isEmpty()) {
             return null
         }
 
         // TODO promotion
-        return moves[0]
+        return playerMove[0]
+    }
+
+    private fun drawDots(moves: List<GameMove>) {
+        if (srcX == null || srcY == null) {
+            return
+        }
+
+        val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt()/squareWidth.toInt(), srcY!!.toInt()/squareWidth.toInt()) }
+            .map { m -> m.displayTo }
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        /* Draw toCoordinates dots for a selected piece. */
+        shapeRenderer.color = possibleMoveColour
+        val position = squareWidth / 2
+        for (c in toCoordinates) {
+            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (c.y) + position, possibleMoveCircleRadius)
+        }
+
+        shapeRenderer.end()
     }
 
     private fun drawPieces() {
@@ -178,7 +204,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         val pieces = board.getPieces()
 
         for ((p, c) in pieces) {
-            val texture = textures.getTextureFromPiece(p, playerMapping[p.player]!!)
+            val texture = textures.getTextureFromPiece(p, playerMapping!![p.player]!!)
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
