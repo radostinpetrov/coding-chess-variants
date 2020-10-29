@@ -37,11 +37,13 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                 return choiceOfMoves[0]
             }
         }
+
         val human2 = object : HumanPlayer() {
             override fun getTurn(choiceOfMoves: List<GameMove>): GameMove {
                 return choiceOfMoves[0]
             }
         }
+
         humanPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 gameEngine.gameType.players.add(0, human1)
@@ -82,7 +84,7 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         table.row()
         table.setFillParent(true)
         stage.addActor(table)
-        Gdx.input.setInputProcessor(stage)
+        Gdx.input.inputProcessor = stage
     }
 
     override fun render(delta: Float) {

@@ -128,7 +128,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                     if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
                         val moves = gameEngine.gameType.getValidMoves(currPlayer)
                         // // TODO: FIX THIS TO ACCOUNT FOR COMPOSITE MOVES
-                        toCoordinates = moves.filter { m -> m is GameMove.BasicGameMove && m.from == Coordinate(i, 7 - j) }.map { m -> (m as GameMove.BasicGameMove).to }
+
+                        toCoordinates = getToCoordinates(moves, i, j)
+
                         shapeRenderer.color = Color.FOREST
                     }
                 }
@@ -149,6 +151,23 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
 
         shapeRenderer.end()
+    }
+
+    private fun getToCoordinates(moves: List<GameMove>, i: Int, j: Int): List<Coordinate> {
+        val res = mutableListOf<Coordinate>()
+
+        for (m in moves) {
+            if (m is GameMove.BasicGameMove && m.from == Coordinate(i, 7 - j)) {
+                res.add(m.to)
+            }
+            else {
+                val moves = (m as GameMove.CompositeGameMove).gameMoves
+                if (moves[0].from == Coordinate(i, 7 - j)) {
+                    res.add(moves[moves.size - 1].to)
+                }
+            }
+        }
+        return res
     }
 
     private fun drawPieces() {
