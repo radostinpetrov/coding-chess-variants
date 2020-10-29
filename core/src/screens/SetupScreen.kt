@@ -93,7 +93,6 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private fun switchToGameScreen() {
         game.removeScreen<GameScreen>() // idk why we need this line
         val gameScreen = GameScreen(game, gameEngine)
-        gameEngine.addObserver(gameScreen)
         game.addScreen(gameScreen)
         game.setScreen<GameScreen>()
         dispose()
