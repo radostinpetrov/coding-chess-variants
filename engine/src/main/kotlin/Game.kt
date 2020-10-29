@@ -2,8 +2,6 @@ package main.kotlin
 
 import main.kotlin.gameTypes.GameType
 class Game(val gameType: GameType) {
-    var turn = 0
-
     fun start() {
         if (!gameType.checkValidGame()) {
             return

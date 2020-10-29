@@ -31,9 +31,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val rows = board.m
     val columns = board.n
 
+    // TODO ...
+    var playerMove: GameMove? = null
+
     var currPlayer = gameType.players[0]
 
     private val textures = Textures(game.assets)
+
+
 
     // todo: hard coded, enum for colour ?
     val playerMapping = mapOf(gameType.players[0] to Color.WHITE, gameType.players[1] to Color.BLACK)
@@ -42,7 +47,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     }
 
     override fun render(delta: Float) {
-        board = gameEngine.gameType.board
         drawBoard()
         drawPieces()
         controls()
@@ -50,6 +54,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             // game over
             TODO()
         }
+        playerMove = null
         currPlayer = gameType.getCurrPlayer()
     }
 
@@ -79,22 +84,24 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     }
 
     private fun controls() {
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+        val input = Gdx.input
+        val graphics = Gdx.graphics
+        if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null) {
-                srcX = Gdx.input.getX()
-                srcY = Gdx.graphics.getHeight() - Gdx.input.getY()
+                srcX = input.x
+                srcY = graphics.height - input.y
             } else if (srcX != null && dstX == null) {
-                dstX = Gdx.input.getX()
-                dstY = Gdx.graphics.getHeight() - Gdx.input.getY()
+                dstX = input.x
+                dstY = graphics.height - input.y
             } else {
-                srcX = Gdx.input.getX()
-                srcY = Gdx.graphics.getHeight() - Gdx.input.getY()
+                srcX = input.x
+                srcY = graphics.height - input.y
                 dstX = null
                 dstY = null
             }
         }
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+        if (input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             srcX = null
             srcY = null
             dstX = null
@@ -124,19 +131,20 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                     shapeRenderer.color = colour2
                 }
 
+                val moves = gameEngine.gameType.getValidMoves(currPlayer)
+
                 if (srcX != null && srcY != null) {
                     if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
-                        val moves = gameEngine.gameType.getValidMoves(currPlayer)
-                        // // TODO: FIX THIS TO ACCOUNT FOR COMPOSITE MOVES
-
-                        toCoordinates = getToCoordinates(moves, i, j)
-
+                        toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(i, 7 - j) }.map { m -> m.displayTo }
                         shapeRenderer.color = Color.FOREST
                     }
                 }
                 if (dstX != null && dstY != null) {
                     if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
                         shapeRenderer.color = Color.GREEN
+                        if (srcX != null && srcY != null) {
+                            playerMove = getMove(Coordinate(i, 7 - j), Coordinate(i, 7 - j), moves)
+                        }
                     }
                 }
                 shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
@@ -153,21 +161,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         shapeRenderer.end()
     }
 
-    private fun getToCoordinates(moves: List<GameMove>, i: Int, j: Int): List<Coordinate> {
-        val res = mutableListOf<Coordinate>()
+    private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
+        moves.filter{m -> m.displayFrom == from && m.displayTo == to}
 
-        for (m in moves) {
-            if (m is GameMove.BasicGameMove && m.from == Coordinate(i, 7 - j)) {
-                res.add(m.to)
-            }
-            else {
-                val moves = (m as GameMove.CompositeGameMove).gameMoves
-                if (moves[0].from == Coordinate(i, 7 - j)) {
-                    res.add(moves[moves.size - 1].to)
-                }
-            }
+        if (moves.isEmpty()) {
+            return null
         }
-        return res
+
+        // TODO promotion
+        return moves[0]
     }
 
     private fun drawPieces() {

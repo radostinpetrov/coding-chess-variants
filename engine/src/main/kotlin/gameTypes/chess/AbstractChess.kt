@@ -13,6 +13,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     override val players: MutableList<Player> = ArrayList()
     override var playerTurn: Int = 1
+
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
     val moveLog: MutableList<GameMove> = mutableListOf()
     var stalemate = false
