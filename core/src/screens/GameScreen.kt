@@ -12,28 +12,31 @@ import ktx.app.KtxScreen
 import main.kotlin.Coordinate
 import main.kotlin.Game
 import main.kotlin.GameMove
-import main.kotlin.Observer
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observer {
+class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
     private val squareWidth: Float = 100f
     private val pieceWidth: Float = 70f
+    private val possibleMoveCircleRadius = 12f
+    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private val shapeRenderer = ShapeRenderer()
 
     var srcX: Int? = null
     var srcY: Int? = null
     var dstX: Int? = null
     var dstY: Int? = null
-    var board = gameEngine.gameType.board
+
+    val gameType = gameEngine.gameType
+    var board = gameType.board
     val rows = board.m
     val columns = board.n
 
-    var currPlayer = gameEngine.gameType.players[0]
+    var currPlayer = gameType.players[0]
 
     private val textures = Textures(game.assets)
 
     // todo: hard coded, enum for colour ?
-    val playerMapping = mapOf(gameEngine.gameType.players[0] to Color.WHITE, gameEngine.gameType.players[1] to Color.BLACK)
+    val playerMapping = mapOf(gameType.players[0] to Color.WHITE, gameType.players[1] to Color.BLACK)
     override fun show() {
         gameEngine.start()
     }
@@ -47,7 +50,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
             // game over
             TODO()
         }
-        currPlayer = gameEngine.gameType.getCurrPlayer()
+        currPlayer = gameType.getCurrPlayer()
     }
 
     private fun reverseRow(index: Int) {
@@ -116,9 +119,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
         for (i in 0 until columns) {
             for (j in 0 until rows) {
                 if ((i + j) % 2 == 0) {
-                    shapeRenderer.setColor(colour1)
+                    shapeRenderer.color = colour1
                 } else {
-                    shapeRenderer.setColor(colour2)
+                    shapeRenderer.color = colour2
                 }
 
                 if (srcX != null && srcY != null) {
@@ -126,22 +129,23 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
                         val moves = gameEngine.gameType.getValidMoves(currPlayer)
                         // // TODO: FIX THIS TO ACCOUNT FOR COMPOSITE MOVES
                         toCoordinates = moves.filter { m -> m is GameMove.BasicGameMove && m.from == Coordinate(i, 7 - j) }.map { m -> (m as GameMove.BasicGameMove).to }
-                        shapeRenderer.setColor(Color.FOREST)
+                        shapeRenderer.color = Color.FOREST
                     }
                 }
                 if (dstX != null && dstY != null) {
                     if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
-                        shapeRenderer.setColor(Color.GREEN)
+                        shapeRenderer.color = Color.GREEN
                     }
                 }
                 shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
             }
         }
 
-        shapeRenderer.color = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
-
+        /* Draw toCoordinates dots for a selected piece. */
+        shapeRenderer.color = possibleMoveColour
+        val position = squareWidth / 2
         for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + 50, squareWidth * (7 - c.y) + 50, 12f)
+            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (7 - c.y) + position, possibleMoveCircleRadius)
         }
 
         shapeRenderer.end()
@@ -165,15 +169,5 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen, Observe
         }
 
         batch.end()
-    }
-
-    fun render2() {
-        drawBoard()
-        drawPieces()
-        controls()
-    }
-
-    override fun update() {
-        this.render2()
     }
 }

@@ -19,10 +19,6 @@ class MyGdxGame : KtxGame<KtxScreen>() {
     internal lateinit var shapeRenderer: ShapeRenderer
 
     val assets by lazy { AssetManager() }
-    var srcX: Int? = null
-    var srcY: Int? = null
-    var dstX: Int? = null
-    var dstY: Int? = null
 
     override fun create() {
         batch = SpriteBatch()
@@ -34,8 +30,6 @@ class MyGdxGame : KtxGame<KtxScreen>() {
 
         addScreen(MenuScreen(this))
         setScreen<MenuScreen>()
-        // addScreen(GameScreen(this, Game(chess)))
-        // setScreen<GameScreen>()
         super.create()
     }
 

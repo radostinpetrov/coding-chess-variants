@@ -24,12 +24,14 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val grandChessButton = TextButton("Grand Chess", skin)
     val capablancaChessButton = TextButton("Capablanca Chess", skin)
     val title = Label("Welcome to Chess, try not to cringe too hard!", skin)
+
     override fun show() {
         standardChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToSetupScreen(StandardChess())
             }
         })
+
         table.width = 800f
         table.add(title).colspan(3).center().padBottom(50f)
         table.row()
@@ -39,16 +41,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.row()
         table.setFillParent(true)
         stage.addActor(table)
-        Gdx.input.setInputProcessor(stage)
+        Gdx.input.inputProcessor = stage
     }
 
     override fun render(delta: Float) {
         stage.draw()
         stage.act()
-        // game.batch.begin()
-        // game.font.draw(game.batch, "Welcome to Chess, try not to cringe too hard!", 250f, 400f)
-        //
-        // game.batch.end()
     }
 
     private fun switchToSetupScreen(gameType: GameType) {
@@ -65,7 +63,6 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         game.removeScreen<SetupScreen>() // idk why we need this line
         game.addScreen(SetupScreen(game, gameEngine))
         game.setScreen<SetupScreen>()
-        // gameType.initGame()
         dispose()
     }
 }
