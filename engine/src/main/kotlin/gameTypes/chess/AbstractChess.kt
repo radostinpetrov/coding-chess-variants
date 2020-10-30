@@ -12,7 +12,7 @@ import main.kotlin.players.Player
 abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
 
     override val players: MutableList<Player> = ArrayList()
-    override var playerTurn: Int = 1
+    override var playerTurn: Int = 0
 
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
     val moveLog: MutableList<GameMove> = mutableListOf()
@@ -222,7 +222,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     override fun checkValidGame(): Boolean {
-        print(players.size)
 
         if (players.size != NUM_PLAYERS) {
             print("Incorrect number of players")
