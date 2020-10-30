@@ -38,9 +38,9 @@ class Chess960 : AbstractChess(listOf(Enpassant())) {
             }
         }
 
-        val ree = possiblePermutations.random()
+        val permutation = possiblePermutations.random()
 
-        for ((i, c) in ree.withIndex()) {
+        for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
                     board.addPiece(Coordinate(i, 0), Rook(player1))
