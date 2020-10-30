@@ -3,11 +3,10 @@ package main.kotlin.gameTypes.chess
 import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
-import main.kotlin.gameTypes.chess.rules.StandardCastling
 import main.kotlin.moves.visitors.Board2DMoveVisitor
 import main.kotlin.pieces.*
 
-class Chess960 : AbstractChess(listOf(StandardCastling(), Enpassant())) {
+class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 
