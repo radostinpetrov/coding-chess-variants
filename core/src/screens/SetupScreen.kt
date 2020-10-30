@@ -1,15 +1,18 @@
 package screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
+import main.kotlin.gameTypes.chess.CapablancaChess
 
 class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val stage = Stage()
@@ -30,13 +33,35 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val players = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
 
     override fun show() {
-        humanPlayer1Button.addListener{ players[0] = PlayerType.HUMAN; true}
-        humanPlayer2Button.addListener{ players[1] = PlayerType.HUMAN; true}
+        humanPlayer1Button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                players[0] = PlayerType.HUMAN
+            }
+        })
 
-        computerPlayer1Button.addListener{ players[0] = PlayerType.COMPUTER; true}
-        computerPlayer2Button.addListener{ players[1] = PlayerType.COMPUTER; true}
+        humanPlayer2Button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                players[1] = PlayerType.HUMAN
+            }
+        })
 
-        startButton.addListener{switchToGameScreen(); true}
+        computerPlayer1Button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                players[0] = PlayerType.COMPUTER
+            }
+        })
+
+        computerPlayer2Button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                players[1] = PlayerType.COMPUTER
+            }
+        })
+
+        startButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToGameScreen()
+            }
+        })
 
         table.width = 800f
         table.add(titlePlayer1).colspan(2).center().padBottom(20f)

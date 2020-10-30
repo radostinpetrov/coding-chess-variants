@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-public enum PlayerType {
+enum class PlayerType {
     HUMAN,
     COMPUTER
 }

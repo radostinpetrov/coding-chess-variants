@@ -64,19 +64,13 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     }
 
     private fun switchToSetupScreen(gameType: GameType) {
-        val humanPlayer = object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-                return choiceOfMoves[0]
-            }
-        }
-
         val gameEngine = Game(gameType)
-//        game.removeScreen<SetupScreen>() // idk why we need this line
-//        game.addScreen(SetupScreen(game, gameEngine))
-//        game.setScreen<SetupScreen>()
-        game.removeScreen<GameScreen>()
-        game.addScreen(GameScreen(game, gameEngine, mutableListOf()))
-        game.setScreen<GameScreen>()
+        game.removeScreen<SetupScreen>() // idk why we need this line
+        game.addScreen(SetupScreen(game, gameEngine))
+        game.setScreen<SetupScreen>()
+//        game.removeScreen<GameScreen>()
+//        game.addScreen(GameScreen(game, gameEngine, mutableListOf()))
+//        game.setScreen<GameScreen>()
         dispose()
     }
 }

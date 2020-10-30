@@ -17,8 +17,7 @@ import main.kotlin.players.ComputerPlayer
 import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game, players: MutableList<PlayerType>) : KtxScreen {
-
+class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: MutableList<PlayerType>) : KtxScreen {
     private val squareWidth: Float = 80f
     private val pieceWidth: Float = 60f
     private val possibleMoveCircleRadius = 8f
@@ -44,7 +43,33 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, players: MutableList
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
     override fun show() {
-        val humanPlayer = object : HumanPlayer() {
+        createPlayers()
+        print(gameType.players.size)
+
+        currPlayer = gameType.getCurrentPlayer()
+        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
+        gameEngine.start()
+    }
+
+    private fun createPlayers() {
+        val firstPlayer = createPlayer(players[0])
+        val secondPlayer = createPlayer(players[1])
+        gameType.addPlayer(secondPlayer)
+        gameType.addPlayer(firstPlayer)
+    }
+
+    private fun createPlayer(player: PlayerType): Player {
+        return if (player == PlayerType.HUMAN) {
+            createHumanPlayer()
+        } else {
+            createComputerPlayer()
+        }
+    }
+
+    private fun createComputerPlayer() = ComputerPlayer(200)
+
+    private fun createHumanPlayer(): HumanPlayer {
+        return object : HumanPlayer() {
             override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
                 val temp = playerMove
                 playerMove = null
@@ -57,13 +82,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, players: MutableList
                 return temp
             }
         }
-
-        val computerPlayer = ComputerPlayer(500)
-        gameType.addPlayer(humanPlayer)
-        gameType.addPlayer(computerPlayer)
-        currPlayer = gameType.getCurrentPlayer()
-        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
-        gameEngine.start()
     }
 
     override fun render(delta: Float) {

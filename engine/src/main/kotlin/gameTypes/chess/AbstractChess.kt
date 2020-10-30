@@ -222,6 +222,8 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     override fun checkValidGame(): Boolean {
+        print(players.size)
+
         if (players.size != NUM_PLAYERS) {
             print("Incorrect number of players")
             return false
