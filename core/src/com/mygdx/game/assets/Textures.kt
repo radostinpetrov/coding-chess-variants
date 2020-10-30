@@ -12,22 +12,28 @@ class Textures(assets: AssetManager) {
     val whiteBishop = assets[TextureAssets.WhiteBishop]
     val whiteQueen = assets[TextureAssets.WhiteQueen]
     val whiteKing = assets[TextureAssets.WhiteKing]
+    val whiteCardinal = assets[TextureAssets.WhiteKing]
+    val whiteMarshal = assets[TextureAssets.WhiteKing]
     val blackPawn = assets[TextureAssets.BlackPawn]
     val blackRook = assets[TextureAssets.BlackRook]
     val blackKnight = assets[TextureAssets.BlackKnight]
     val blackBishop = assets[TextureAssets.BlackBishop]
     val blackQueen = assets[TextureAssets.BlackQueen]
     val blackKing = assets[TextureAssets.BlackKing]
+    val blackCardinal = assets[TextureAssets.BlackKing]
+    val blackMarshal = assets[TextureAssets.BlackKing]
 
     // instead of symbol, use something else...
     val whites = mapOf(
         "P" to whitePawn, "R" to whiteRook, "N" to whiteKnight,
-        "B" to whiteBishop, "Q" to whiteQueen, "K" to whiteKing
+        "B" to whiteBishop, "Q" to whiteQueen, "K" to whiteKing,
+        "C" to whiteCardinal, "M" to whiteMarshal
     )
 
     val blacks = mapOf(
         "P" to blackPawn, "R" to blackRook, "N" to blackKnight,
-        "B" to blackBishop, "Q" to blackQueen, "K" to blackKing
+        "B" to blackBishop, "Q" to blackQueen, "K" to blackKing,
+        "C" to blackCardinal, "M" to blackMarshal
     )
 
     fun getTextureFromPiece(piece: Piece, playerColour: Color): Texture? {

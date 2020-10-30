@@ -18,9 +18,9 @@ import main.kotlin.players.Player
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
-    private val squareWidth: Float = 100f
-    private val pieceWidth: Float = 70f
-    private val possibleMoveCircleRadius = 12f
+    private val squareWidth: Float = 80f
+    private val pieceWidth: Float = 60f
+    private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private val shapeRenderer = ShapeRenderer()
 
@@ -72,7 +72,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         drawPieces()
         drawDots(moves)
         controls()
-        gameType.turn()
+        if (!gameEngine.turn()) {
+            TODO()
+        }
     }
 
     private fun reverseRow(index: Int) {
@@ -138,10 +140,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        var toCoordinates = listOf<Coordinate>()
 
-        for (i in 0 until columns) {
-            for (j in 0 until rows) {
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
                 if ((i + j) % 2 == 0) {
                     shapeRenderer.color = colour1
                 } else {
@@ -187,8 +188,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt()/squareWidth.toInt(), srcY!!.toInt()/squareWidth.toInt()) }
             .map { m -> m.displayTo }
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         /* Draw toCoordinates dots for a selected piece. */
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
         for (c in toCoordinates) {

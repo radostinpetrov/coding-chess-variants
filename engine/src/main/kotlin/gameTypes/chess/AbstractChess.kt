@@ -203,8 +203,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         val move = player.getTurn(moves)
 
         if (move != null) {
-            println(move)
-            println(player)
             this.makeMove(move)
             nextPlayer()
         }

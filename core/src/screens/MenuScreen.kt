@@ -13,6 +13,8 @@ import ktx.app.KtxScreen
 import main.kotlin.Game
 import main.kotlin.GameMove
 import main.kotlin.gameTypes.GameType
+import main.kotlin.gameTypes.chess.CapablancaChess
+import main.kotlin.gameTypes.chess.GrandChess
 import main.kotlin.gameTypes.chess.StandardChess
 import main.kotlin.players.HumanPlayer
 
@@ -29,6 +31,18 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         standardChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToSetupScreen(StandardChess())
+            }
+        })
+
+        grandChessButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToSetupScreen(GrandChess())
+            }
+        })
+
+        capablancaChessButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToSetupScreen(CapablancaChess())
             }
         })
 
