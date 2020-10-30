@@ -3,31 +3,30 @@ package screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
-import main.kotlin.GameMove
 import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.chess.CapablancaChess
+import main.kotlin.gameTypes.chess.Chess960
 import main.kotlin.gameTypes.chess.GrandChess
 import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.players.HumanPlayer
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
     val table = Table()
+    val tableContainer = Container<Table>()
 
     val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
     val standardChessButton = TextButton("Standard Chess", skin)
     val grandChessButton = TextButton("Grand Chess", skin)
     val capablancaChessButton = TextButton("Capablanca Chess", skin)
-    val title = Label("Welcome to Chess, try not to cringe too hard!", skin)
+    val chess960Button = TextButton("Chess960", skin)
+    val title = Label("Welcome to Chess", skin)
 
     val humanPlayer1Button = TextButton("Human Player", skin)
     val computerPlayer1Button = TextButton("Computer Player", skin)
@@ -85,13 +84,24 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        chess960Button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToSetupScreen(Chess960())
+            }
+        })
+
 //        startButton.addListener(object : ChangeListener() {
 //            override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                switchToGameScreen()
 //            }
 //        })
 
+        println(table.padTop)
         table.width = 800f
+        table.height = 800f
+        tableContainer.setSize(table.width,table.height)
+        tableContainer.setPosition(0f,150f)
+        tableContainer.fillX()
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
         table.add(titlePlayer1).colspan(6).padBottom(20f)
@@ -104,12 +114,15 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(humanPlayer2Button).colspan(3).padBottom(50f)
         table.add(computerPlayer2Button).colspan(3).padBottom(50f)
         table.row()
-        table.add(standardChessButton).colspan(2).padBottom(2000f)
-        table.add(grandChessButton).colspan(2).padBottom(2000f)
-        table.add(capablancaChessButton).colspan(2).padBottom(2000f)
+        table.add(standardChessButton).colspan(2).padBottom(20f)
+        table.add(grandChessButton).colspan(2).padBottom(20f)
+        table.add(capablancaChessButton).colspan(2).padBottom(20f)
         table.row()
-        table.setFillParent(true)
-        stage.addActor(table)
+        table.add(chess960Button).colspan(2).padBottom(20f)
+        table.row()
+        tableContainer.actor = table
+        stage.addActor(tableContainer)
+//        table.setFillParent(true)
         Gdx.input.inputProcessor = stage
     }
 
