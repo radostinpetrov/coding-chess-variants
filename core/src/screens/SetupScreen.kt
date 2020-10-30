@@ -12,7 +12,6 @@ import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
-import main.kotlin.gameTypes.chess.CapablancaChess
 
 class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val stage = Stage()

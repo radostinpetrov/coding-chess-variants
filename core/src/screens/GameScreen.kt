@@ -169,7 +169,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
         for (i in 0 until columns) {
             for (j in 0 until rows) {
-                println("$srcX, $srcY}")
                 if ((i + j) % 2 == 0) {
                     shapeRenderer.color = colour1
                 } else {
@@ -238,8 +237,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
-            println(squareWidth * c.x + posWithinSquare)
-            // 20, 120, 220, 320, 420...
             sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
 
             sprite.setSize(pieceWidth, pieceWidth)
