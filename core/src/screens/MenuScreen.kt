@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
@@ -17,9 +16,11 @@ import main.kotlin.gameTypes.chess.GrandChess
 import main.kotlin.gameTypes.chess.StandardChess
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
+//    class CustomButton(text: String, skin: Skin) : TextButton(text, skin) {
+//        
+//    }
     val stage = Stage()
     val table = Table()
-    val tableContainer = Container<Table>()
 
     val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
     val standardChessButton = TextButton("Standard Chess", skin)
@@ -45,24 +46,32 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         humanPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 players[0] = PlayerType.HUMAN
+                humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
+                computerPlayer1Button.setColor(255f, 255f, 255f, 100f)
             }
         })
 
         humanPlayer2Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 players[1] = PlayerType.HUMAN
+                humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
+                computerPlayer2Button.setColor(255f, 255f, 255f, 100f)
             }
         })
 
         computerPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 players[0] = PlayerType.COMPUTER
+                computerPlayer1Button.setColor(200f, 0f, 0f, 100f)
+                humanPlayer1Button.setColor(255f, 255f, 255f, 100f)
             }
         })
 
         computerPlayer2Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 players[1] = PlayerType.COMPUTER
+                computerPlayer2Button.setColor(200f, 0f, 0f, 100f)
+                humanPlayer2Button.setColor(255f, 255f, 255f, 100f)
             }
         })
 
@@ -96,12 +105,11 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //            }
 //        })
 
-        println(table.padTop)
+        humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
+        humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
         table.width = 800f
         table.height = 800f
-        tableContainer.setSize(table.width,table.height)
-        tableContainer.setPosition(0f,150f)
-        tableContainer.fillX()
+        table.setPosition(0f, 150f)
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
         table.add(titlePlayer1).colspan(6).padBottom(20f)
@@ -118,11 +126,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(grandChessButton).colspan(2).padBottom(20f)
         table.add(capablancaChessButton).colspan(2).padBottom(20f)
         table.row()
-        table.add(chess960Button).colspan(2).padBottom(20f)
+        table.add(chess960Button).colspan(2).padBottom(30f)
         table.row()
-        tableContainer.actor = table
-        stage.addActor(tableContainer)
-//        table.setFillParent(true)
+//        table.add(startButton).colspan(6).padBottom(20f).center()
+//        table.row()
+        stage.addActor(table)
+        table.setFillParent(true)
         Gdx.input.inputProcessor = stage
     }
 
