@@ -18,8 +18,8 @@ import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: MutableList<PlayerType>) : KtxScreen {
-    private val squareWidth: Float = 80f
-    private val pieceWidth: Float = 60f
+    private val windowHeight: Int = 800
+    
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private val shapeRenderer = ShapeRenderer()
@@ -31,8 +31,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
     val gameType = gameEngine.gameType
     var board = gameType.board
-    val rows = board.m
-    val columns = board.n
+    val rows = board.n
+    val columns = board.m
+
+    private var squareWidth: Float = (windowHeight / rows).toFloat()
+    private val pieceWidth: Float = squareWidth * 0.85f
 
     var currPlayer: Player? = null
 
@@ -43,8 +46,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
     override fun show() {
+        if (rows != columns) {
+            val windowWidth = (windowHeight * columns) / rows
+            Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
+            game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
+        }
         createPlayers()
-        print(gameType.players.size)
 
         currPlayer = gameType.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
@@ -160,8 +167,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
-        for (i in 0 until rows) {
-            for (j in 0 until columns) {
+        for (i in 0 until columns) {
+            for (j in 0 until rows) {
+                println("$srcX, $srcY}")
                 if ((i + j) % 2 == 0) {
                     shapeRenderer.color = colour1
                 } else {
@@ -177,8 +185,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
                     if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
                         shapeRenderer.color = Color.GREEN
                         if (srcX != null && srcY != null) {
-                            playerMove = getMove(Coordinate(srcX!!.toInt()/squareWidth.toInt(), srcY!!.toInt()/squareWidth.toInt()),
-                                Coordinate(dstX!!.toInt()/squareWidth.toInt(), dstY!!.toInt()/squareWidth.toInt()), moves)
+                            playerMove = getMove(
+                                Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()),
+                                Coordinate(dstX!!.toInt() / squareWidth.toInt(), dstY!!.toInt() / squareWidth.toInt()), moves
+                            )
                         }
                     }
                 }
@@ -190,7 +200,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     }
 
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
-        val playerMove = moves.filter{m -> m.displayFrom == from && m.displayTo == to}
+        val playerMove = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMove.isEmpty()) {
             return null
         }
@@ -204,7 +214,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             return
         }
 
-        val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt()/squareWidth.toInt(), srcY!!.toInt()/squareWidth.toInt()) }
+        val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()) }
             .map { m -> m.displayTo }
 
         /* Draw toCoordinates dots for a selected piece. */
@@ -228,6 +238,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
+            println(squareWidth * c.x + posWithinSquare)
+            // 20, 120, 220, 320, 420...
             sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
 
             sprite.setSize(pieceWidth, pieceWidth)
