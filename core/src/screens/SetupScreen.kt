@@ -1,19 +1,15 @@
 package screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
+import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
-import main.kotlin.GameMove
-import main.kotlin.players.ComputerPlayer
-import main.kotlin.players.HumanPlayer
 
 class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val stage = Stage()
@@ -31,42 +27,17 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val titlePlayer1 = Label("Add player1", skin)
     val titlePlayer2 = Label("Add player2", skin)
 
+    val players = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
+
     override fun show() {
-        val human1 = object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-                return choiceOfMoves[0]
-            }
-        }
-        val human2 = object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-                return choiceOfMoves[0]
-            }
-        }
-        humanPlayer1Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                gameEngine.gameType.players.add(0, human1)
-            }
-        })
-        computerPlayer1Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                gameEngine.gameType.addPlayer(ComputerPlayer(500))
-            }
-        })
-        humanPlayer2Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                gameEngine.gameType.addPlayer(human2)
-            }
-        })
-        computerPlayer2Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                gameEngine.gameType.addPlayer(ComputerPlayer(500))
-            }
-        })
-        startButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToGameScreen()
-            }
-        })
+        humanPlayer1Button.addListener{ players[0] = PlayerType.HUMAN; true}
+        humanPlayer2Button.addListener{ players[1] = PlayerType.HUMAN; true}
+
+        computerPlayer1Button.addListener{ players[0] = PlayerType.COMPUTER; true}
+        computerPlayer2Button.addListener{ players[1] = PlayerType.COMPUTER; true}
+
+        startButton.addListener{switchToGameScreen(); true}
+
         table.width = 800f
         table.add(titlePlayer1).colspan(2).center().padBottom(20f)
         table.row()
@@ -92,7 +63,7 @@ class SetupScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
     private fun switchToGameScreen() {
         game.removeScreen<GameScreen>() // idk why we need this line
-        val gameScreen = GameScreen(game, gameEngine)
+        val gameScreen = GameScreen(game, gameEngine, players)
         game.addScreen(gameScreen)
         game.setScreen<GameScreen>()
         dispose()

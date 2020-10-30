@@ -69,16 +69,13 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
                 return choiceOfMoves[0]
             }
         }
-//         gameType.addPlayer(humanPlayer)
-//         gameType.addPlayer(ComputerPlayer(200))
-//         gameType.addPlayer(ComputerPlayer(200))
 
         val gameEngine = Game(gameType)
 //        game.removeScreen<SetupScreen>() // idk why we need this line
 //        game.addScreen(SetupScreen(game, gameEngine))
 //        game.setScreen<SetupScreen>()
         game.removeScreen<GameScreen>()
-        game.addScreen(GameScreen(game, gameEngine))
+        game.addScreen(GameScreen(game, gameEngine, mutableListOf()))
         game.setScreen<GameScreen>()
         dispose()
     }

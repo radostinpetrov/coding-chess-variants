@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.MyGdxGame
+import com.mygdx.game.PlayerType
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import main.kotlin.Coordinate
@@ -16,7 +17,7 @@ import main.kotlin.players.ComputerPlayer
 import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: Game, players: MutableList<PlayerType>) : KtxScreen {
 
     private val squareWidth: Float = 80f
     private val pieceWidth: Float = 60f

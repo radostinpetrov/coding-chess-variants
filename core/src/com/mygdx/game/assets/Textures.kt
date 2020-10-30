@@ -12,16 +12,16 @@ class Textures(assets: AssetManager) {
     val whiteBishop = assets[TextureAssets.WhiteBishop]
     val whiteQueen = assets[TextureAssets.WhiteQueen]
     val whiteKing = assets[TextureAssets.WhiteKing]
-    val whiteCardinal = assets[TextureAssets.WhiteKing]
-    val whiteMarshal = assets[TextureAssets.WhiteKing]
+    val whiteCardinal = assets[TextureAssets.WhiteCardinal]
+    val whiteMarshal = assets[TextureAssets.WhiteMarshal]
     val blackPawn = assets[TextureAssets.BlackPawn]
     val blackRook = assets[TextureAssets.BlackRook]
     val blackKnight = assets[TextureAssets.BlackKnight]
     val blackBishop = assets[TextureAssets.BlackBishop]
     val blackQueen = assets[TextureAssets.BlackQueen]
     val blackKing = assets[TextureAssets.BlackKing]
-    val blackCardinal = assets[TextureAssets.BlackKing]
-    val blackMarshal = assets[TextureAssets.BlackKing]
+    val blackCardinal = assets[TextureAssets.BlackCardinal]
+    val blackMarshal = assets[TextureAssets.BlackMarshal]
 
     // instead of symbol, use something else...
     val whites = mapOf(
