@@ -2,21 +2,21 @@ package main.kotlin.gameTypes.chess
 
 import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
+import main.kotlin.gameTypes.chess.rules.Enpassant
+import main.kotlin.gameTypes.chess.rules.StandardCastling
 import main.kotlin.moves.visitors.Board2DMoveVisitor
 import main.kotlin.pieces.*
 
-class Chess960 : AbstractChess(){
+class Chess960 : AbstractChess(listOf(StandardCastling(), Enpassant())) {
     override val board = Board2D(8, 8)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
-
-
 
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..7) {
-            board.addPiece(Coordinate(i, 1), WhitePawn(player1))
-            board.addPiece(Coordinate(i, 6), BlackPawn(player2))
+            board.addPiece(Coordinate(i, 1), StandardWhitePawn(player1))
+            board.addPiece(Coordinate(i, 6), StandardBlackPawn(player2))
         }
 
         /**
@@ -63,11 +63,8 @@ class Chess960 : AbstractChess(){
                     board.addPiece(Coordinate(i, 0), King(player1))
                     board.addPiece(Coordinate(i, 7), King(player2))
                 }
-
             }
         }
-
-
     }
 
     private fun <T> permute(input: List<T>): List<List<T>> {

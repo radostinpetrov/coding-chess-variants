@@ -4,10 +4,10 @@ import main.kotlin.moves.Direction
 import main.kotlin.moves.Move
 import main.kotlin.players.Player
 
-class BlackPawn(override val player: Player) : Piece {
+open class BlackPawn(override val player: Player, val startingRow: Int) : Piece {
     override val moveTypes: List<Move>
         get() = listOf(
-            Move.Restricted(Move.Stepper(Direction.SOUTH, 2), listOf(), listOf(6)),
+            Move.Restricted(Move.Stepper(Direction.SOUTH, 2), listOf(), listOf(startingRow)),
             Move.AddForcedPromotion(
                 Move.Stepper(Direction.SOUTH, 1),
                 listOf(),

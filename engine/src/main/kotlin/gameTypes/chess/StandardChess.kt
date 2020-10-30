@@ -5,13 +5,7 @@ import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.gameTypes.chess.rules.StandardCastling
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.Bishop
-import main.kotlin.pieces.BlackPawn
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Knight
-import main.kotlin.pieces.Queen
-import main.kotlin.pieces.Rook
-import main.kotlin.pieces.WhitePawn
+import main.kotlin.pieces.*
 
 open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant())) {
 
@@ -22,8 +16,8 @@ open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant())
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..7) {
-            board.addPiece(Coordinate(i, 1), WhitePawn(player1))
-            board.addPiece(Coordinate(i, 6), BlackPawn(player2))
+            board.addPiece(Coordinate(i, 1), StandardWhitePawn(player1))
+            board.addPiece(Coordinate(i, 6), StandardBlackPawn(player2))
         }
         board.addPiece(Coordinate(0, 0), Rook(player1))
         board.addPiece(Coordinate(7, 0), Rook(player1))

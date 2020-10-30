@@ -2,19 +2,12 @@ package main.kotlin.gameTypes.chess
 
 import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
+import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.Bishop
-import main.kotlin.pieces.BlackPawn
-import main.kotlin.pieces.Cardinal
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Knight
-import main.kotlin.pieces.Marshal
-import main.kotlin.pieces.Queen
-import main.kotlin.pieces.Rook
-import main.kotlin.pieces.WhitePawn
+import main.kotlin.pieces.*
 
 class
-GrandChess : AbstractChess() {
+GrandChess : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(10, 10)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 
@@ -22,8 +15,8 @@ GrandChess : AbstractChess() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..9) {
-            board.addPiece(Coordinate(i, 2), WhitePawn(player1))
-            board.addPiece(Coordinate(i, 7), BlackPawn(player2))
+            board.addPiece(Coordinate(i, 2), GrandWhitePawn(player1))
+            board.addPiece(Coordinate(i, 7), GrandBlackPawn(player2))
         }
         board.addPiece(Coordinate(0, 0), Rook(player1))
         board.addPiece(Coordinate(9, 0), Rook(player1))
