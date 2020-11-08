@@ -57,6 +57,13 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
                     validX && validY
                 }
             }
+            is Move.RestrictedDestination -> {
+                visit(coordinate, piece, move.move, player).filter {
+                    val validX = move.x.isEmpty() || move.x.contains(it.to.x)
+                    val validY = move.y.isEmpty() || move.y.contains(it.to.y)
+                    validX && validY
+                }
+            }
             is Move.AddForcedPromotion -> {
                 val result: MutableList<GameMove.BasicGameMove> = mutableListOf()
                 visit(coordinate, piece, move.move, player).forEach {

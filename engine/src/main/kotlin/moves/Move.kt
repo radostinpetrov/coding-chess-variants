@@ -9,5 +9,6 @@ sealed class Move {
     object Hopper : Move()
     data class CaptureOnly(val move: Move) : Move()
     data class Restricted(val move: Move, val x: List<Int>, val y: List<Int>) : Move()
+    data class RestrictedDestination(val move: Move, val x: List<Int>, val y: List<Int>) : Move()
     data class AddForcedPromotion(val move: Move, val x: List<Int>, val y: List<Int>, val promoPieces: List<Piece>) : Move()
 }
