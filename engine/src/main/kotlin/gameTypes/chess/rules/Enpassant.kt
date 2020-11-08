@@ -3,8 +3,8 @@ package main.kotlin.gameTypes.chess.rules
 import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.pieces.BlackPawn
-import main.kotlin.pieces.WhitePawn
+import main.kotlin.pieces.chess.BlackPawn
+import main.kotlin.pieces.chess.WhitePawn
 import main.kotlin.players.Player
 import kotlin.math.abs
 
