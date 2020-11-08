@@ -37,6 +37,14 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
             is Move.Leaper -> {
                 visitLeaper(coordinate, piece, move.dx, move.dy, player)
             }
+            is Move.Hopper -> {
+                val result = mutableListOf<GameMove.BasicGameMove>()
+                result.addAll(visitHopper(coordinate, piece, 1, 0, player))
+                result.addAll(visitHopper(coordinate, piece, -1, 0, player))
+                result.addAll(visitHopper(coordinate, piece, 0, 1, player))
+                result.addAll(visitHopper(coordinate, piece, 0, -1, player))
+                result
+            }
             is Move.CaptureOnly -> {
                 visit(coordinate, piece, move.move, player).filter {
                     it.pieceCaptured != null
@@ -133,6 +141,29 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
                     result.add(GameMove.BasicGameMove(coordinate, destCoordinate, piece, player, destPiece, null))
                 }
             }
+        }
+        return result
+    }
+
+    private fun visitHopper(coordinate: Coordinate, piece: Piece, dx: Int, dy: Int, player: Player): List<GameMove.BasicGameMove> {
+        val result = mutableListOf<GameMove.BasicGameMove>()
+        var nextCoordinate = Coordinate(coordinate.x + dx, coordinate.y + dy)
+        var count = 0
+
+        while (board.isInBounds(nextCoordinate) && count < 2) {
+            val destPiece = board.getPiece(nextCoordinate)
+            if (destPiece != null) {
+                if (destPiece::class == piece::class) {
+                    break
+                }
+                if (count == 1 && destPiece.player != piece.player) {
+                    result.add(GameMove.BasicGameMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                }
+                count++
+            } else if (count == 1) {
+                result.add(GameMove.BasicGameMove(coordinate, nextCoordinate, piece, player, null, null))
+            }
+            nextCoordinate = Coordinate(nextCoordinate.x + dx, nextCoordinate.y + dy)
         }
         return result
     }
