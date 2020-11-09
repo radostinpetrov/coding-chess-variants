@@ -16,8 +16,8 @@ open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassan
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..9) {
-            board.addPiece(Coordinate(i, 1), WhitePawn(player1))
-            board.addPiece(Coordinate(i, 6), BlackPawn(player2))
+            board.addPiece(Coordinate(i, 1), StandardWhitePawn(player1))
+            board.addPiece(Coordinate(i, 6), StandardBlackPawn(player2))
         }
         board.addPiece(Coordinate(0, 0), Rook(player1))
         board.addPiece(Coordinate(9, 0), Rook(player1))
