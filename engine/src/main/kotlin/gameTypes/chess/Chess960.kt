@@ -3,7 +3,7 @@ package main.kotlin.gameTypes.chess
 import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.*
+import main.kotlin.pieces.chess.*
 
 class Chess960 : AbstractChess(){
     override val board = Board2D(8, 8)

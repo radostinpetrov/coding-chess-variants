@@ -1,4 +1,7 @@
-package main.kotlin
+package main.kotlin.notationFormatter
+
+import main.kotlin.Coordinate
+import main.kotlin.GameMove
 
 interface NotationFormatter {
     /* Converts the string representation of a coordinate to a coordinate. */
