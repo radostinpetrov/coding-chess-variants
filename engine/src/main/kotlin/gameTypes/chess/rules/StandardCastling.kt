@@ -3,8 +3,8 @@ package main.kotlin.gameTypes.chess.rules
 import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Rook
+import main.kotlin.pieces.chess.King
+import main.kotlin.pieces.chess.Rook
 import main.kotlin.players.Player
 
 class StandardCastling : SpecialRules<StandardChess> {

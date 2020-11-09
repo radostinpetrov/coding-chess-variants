@@ -4,7 +4,15 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.*
+import main.kotlin.pieces.chess.Bishop
+import main.kotlin.pieces.chess.BlackPawn
+import main.kotlin.pieces.chess.Cardinal
+import main.kotlin.pieces.chess.King
+import main.kotlin.pieces.chess.Knight
+import main.kotlin.pieces.chess.Marshal
+import main.kotlin.pieces.chess.Queen
+import main.kotlin.pieces.chess.Rook
+import main.kotlin.pieces.chess.WhitePawn
 
 class
 GrandChess : AbstractChess(listOf(Enpassant())) {

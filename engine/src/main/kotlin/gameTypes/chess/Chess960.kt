@@ -4,7 +4,7 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.*
+import main.kotlin.pieces.chess.*
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)
