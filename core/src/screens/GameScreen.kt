@@ -46,6 +46,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
+
     override fun show() {
         Gdx.input.inputProcessor = Stage()
         if (rows != columns) {
@@ -93,11 +94,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
         }
     }
 
+    fun switchToGameOverScreen(player: Player) {
+        game.removeScreen<GameOverScreen>()
+
+        //change this.
+        val playerName = playerMapping?.get(player)!!.toString()
+
+        game.addScreen(GameOverScreen(game, gameEngine, playerName!!))
+        game.setScreen<GameOverScreen>()
+    }
+
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
         val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
         if (!gameEngine.turn()) {
-            TODO()
+            switchToGameOverScreen(currPlayer!!)
         }
 
         drawBoard(moves)
