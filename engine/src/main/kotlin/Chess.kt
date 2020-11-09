@@ -1,11 +1,13 @@
 package main.kotlin
 
+import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.StandardChess
 import main.kotlin.players.ComputerPlayer
 
 fun main(args: Array<String>) {
     println("Let's play chess!")
-    val chess = StandardChess()
+    val chess: AbstractChess = StandardChess()
+    chess.playerTurn = 1
 
 //    chess.addPlayer(HumanPlayer())
     chess.addPlayer(ComputerPlayer(10))
@@ -15,6 +17,7 @@ fun main(args: Array<String>) {
 
     val game = Game(chess)
     game.start()
+
     while (true) {
         if (game.gameType.isOver()) {
             break

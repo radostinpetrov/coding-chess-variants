@@ -23,6 +23,7 @@ interface GameType {
     fun addPlayer(player: Player)
     fun turn()
     fun nextPlayer()
-    fun getCurrPlayer(): Player
+    fun getCurrentPlayer(): Player
+    fun getNextPlayer(): Player
     fun checkValidGame(): Boolean
 }
