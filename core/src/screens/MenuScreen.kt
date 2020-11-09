@@ -145,10 +145,17 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //        game.removeScreen<SetupScreen>() // idk why we need this line
 //        game.addScreen(SetupScreen(game, gameEngine))
 //        game.setScreen<SetupScreen>()
+
         game.removeScreen<GameScreen>()
         game.addScreen(GameScreen(game, gameEngine, players))
         dispose()
         game.setScreen<GameScreen>()
+
+//        game.removeScreen<GameOverScreen>()
+//        val playerName = "pepe"
+//        game.addScreen(GameOverScreen(game, gameEngine, playerName))
+//        dispose()
+//        game.setScreen<GameOverScreen>()
     }
 
 //    private fun switchToGameScreen() {
