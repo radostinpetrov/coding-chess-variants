@@ -96,13 +96,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
         val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        if (!gameEngine.turn()) {
+            TODO()
+        }
+
         drawBoard(moves)
         drawPieces()
         drawDots(moves)
         controls()
-        if (!gameEngine.turn()) {
-            TODO()
-        }
     }
 
     private fun reverseRow(index: Int) {
