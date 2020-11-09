@@ -5,7 +5,7 @@ import main.kotlin.GameMove
 import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.chess.rules.SpecialRules
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.chess.King
+import main.kotlin.pieces.King
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 

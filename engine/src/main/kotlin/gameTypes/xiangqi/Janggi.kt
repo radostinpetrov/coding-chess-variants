@@ -3,7 +3,6 @@ import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.moves.visitors.Board2DMoveVisitor
 import main.kotlin.pieces.xiangqi.*
-import main.kotlin.pieces.chess.King
 
 class Janggi : AbstractChess(listOf()) {
     override val board = Board2D(10, 9)
@@ -36,7 +35,7 @@ class Janggi : AbstractChess(listOf()) {
         board.addPiece(Coordinate(5, 0), Advisor(player1))
         board.addPiece(Coordinate(3, 9), Advisor(player2))
         board.addPiece(Coordinate(5, 9), Advisor(player2))
-        board.addPiece(Coordinate(4, 1), King(player1))
-        board.addPiece(Coordinate(4, 8), King(player2))
+        board.addPiece(Coordinate(4, 1), General(player1))
+        board.addPiece(Coordinate(4, 8), General(player2))
     }
 }
