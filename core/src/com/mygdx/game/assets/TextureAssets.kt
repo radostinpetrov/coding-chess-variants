@@ -21,7 +21,21 @@ enum class TextureAssets(val path: String) {
     BlackQueen("core/assets/BlackQueen.png"),
     BlackKing("core/assets/BlackKing.png"),
     BlackMarshal("core/assets/BlackMarshal.png"),
-    BlackCardinal("core/assets/BlackCardinal.png")
+    BlackCardinal("core/assets/BlackCardinal.png"),
+    WhiteAdvisor("core/assets/WhiteAdvisor.png"),
+    WhiteCannon("core/assets/WhiteCannon.png"),
+    WhiteChariot("core/assets/WhiteChariot.png"),
+    WhiteElephant("core/assets/WhiteElephant.png"),
+    WhiteGeneral("core/assets/WhiteGeneral.png"),
+    WhiteHorse("core/assets/WhiteHorse.png"),
+    WhiteSoldier("core/assets/WhiteSoldier.png"),
+    BlackAdvisor("core/assets/BlackAdvisor.png"),
+    BlackCannon("core/assets/BlackCannon.png"),
+    BlackChariot("core/assets/BlackChariot.png"),
+    BlackElephant("core/assets/BlackElephant.png"),
+    BlackGeneral("core/assets/BlackGeneral.png"),
+    BlackHorse("core/assets/BlackHorse.png"),
+    BlackSoldier("core/assets/BlackSoldier.png"),
 }
 
 inline fun AssetManager.load(asset: TextureAssets) = load<Texture>(asset.path)

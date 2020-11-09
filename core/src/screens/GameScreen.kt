@@ -96,13 +96,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
         val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        if (!gameEngine.turn()) {
+            TODO()
+        }
+
         drawBoard(moves)
         drawPieces()
         drawDots(moves)
         controls()
-        if (!gameEngine.turn()) {
-            TODO()
-        }
     }
 
     private fun reverseRow(index: Int) {
@@ -187,8 +188,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
                         shapeRenderer.color = Color.GREEN
                         if (srcX != null && srcY != null) {
                             playerMove = getMove(
-                                Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()),
-                                Coordinate(dstX!!.toInt() / squareWidth.toInt(), dstY!!.toInt() / squareWidth.toInt()), moves
+                                getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                                getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                                moves
                             )
                         }
                     }
@@ -215,7 +217,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             return
         }
 
-        val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()) }
+        val toCoordinates = moves.filter { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) }
             .map { m -> m.displayTo }
 
         /* Draw toCoordinates dots for a selected piece. */
@@ -228,6 +230,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
         shapeRenderer.end()
     }
+
+    private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
+        Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
     private fun drawPieces() {
         val batch = game.batch

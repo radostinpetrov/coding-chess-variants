@@ -39,10 +39,18 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
             }
             is Move.Hopper -> {
                 val result = mutableListOf<GameMove.BasicGameMove>()
-                result.addAll(visitHopper(coordinate, piece, 1, 0, player))
-                result.addAll(visitHopper(coordinate, piece, -1, 0, player))
-                result.addAll(visitHopper(coordinate, piece, 0, 1, player))
-                result.addAll(visitHopper(coordinate, piece, 0, -1, player))
+                if (move.HV) {
+                    result.addAll(visitHopper(coordinate, piece, 1, 0, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, 0, player))
+                    result.addAll(visitHopper(coordinate, piece, 0, 1, player))
+                    result.addAll(visitHopper(coordinate, piece, 0, -1, player))
+                }
+                if (move.D) {
+                    result.addAll(visitHopper(coordinate, piece, 1, 1, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, 1, player))
+                    result.addAll(visitHopper(coordinate, piece, 1, -1, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, -1, player))
+                }
                 result
             }
             is Move.CaptureOnly -> {

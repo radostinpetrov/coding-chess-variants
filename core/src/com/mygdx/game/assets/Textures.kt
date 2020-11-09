@@ -22,18 +22,36 @@ class Textures(assets: AssetManager) {
     val blackKing = assets[TextureAssets.BlackKing]
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
+    val whiteAdvisor = assets[TextureAssets.WhiteAdvisor]
+    val whiteCannon = assets[TextureAssets.WhiteCannon]
+    val whiteChariot = assets[TextureAssets.WhiteChariot]
+    val whiteElephant = assets[TextureAssets.WhiteElephant]
+    val whiteGeneral = assets[TextureAssets.WhiteGeneral]
+    val whiteHorse = assets[TextureAssets.WhiteHorse]
+    val whiteSoldier = assets[TextureAssets.WhiteSoldier]
+    val blackAdvisor = assets[TextureAssets.BlackAdvisor]
+    val blackCannon = assets[TextureAssets.BlackCannon]
+    val blackChariot = assets[TextureAssets.BlackChariot]
+    val blackElephant = assets[TextureAssets.BlackElephant]
+    val blackGeneral = assets[TextureAssets.BlackGeneral]
+    val blackHorse = assets[TextureAssets.BlackHorse]
+    val blackSoldier = assets[TextureAssets.BlackSoldier]
 
     // instead of symbol, use something else...
     val whites = mapOf(
-        "P" to whitePawn, "R" to whiteRook, "N" to whiteKnight,
-        "B" to whiteBishop, "Q" to whiteQueen, "K" to whiteKing,
-        "C" to whiteCardinal, "M" to whiteMarshal
+        "StandardWhitePawn" to whitePawn, "GrandWhitePawn" to whitePawn,"Rook" to whiteRook,
+        "Knight" to whiteKnight, "Bishop" to whiteBishop, "Queen" to whiteQueen, "King" to whiteKing,
+        "Cardinal" to whiteCardinal, "Marshal" to whiteMarshal, "Advisor" to whiteAdvisor, 
+        "Cannon" to whiteCannon, "Chariot" to whiteChariot, "Elephant" to whiteElephant,
+        "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier
     )
 
     val blacks = mapOf(
-        "P" to blackPawn, "R" to blackRook, "N" to blackKnight,
-        "B" to blackBishop, "Q" to blackQueen, "K" to blackKing,
-        "C" to blackCardinal, "M" to blackMarshal
+        "StandardBlackPawn" to blackPawn, "GrandBlackPawn" to blackPawn, "Rook" to blackRook,
+        "Knight" to blackKnight, "Bishop" to blackBishop, "Queen" to blackQueen, "King" to blackKing,
+        "Cardinal" to blackCardinal, "Marshal" to blackMarshal, "Advisor" to blackAdvisor,
+        "Cannon" to blackCannon, "Chariot" to blackChariot, "Elephant" to blackElephant,
+        "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier
     )
 
     fun getTextureFromPiece(piece: Piece, playerColour: Color): Texture? {
@@ -43,6 +61,6 @@ class Textures(assets: AssetManager) {
             else -> TODO()
         }
 
-        return col[piece.getSymbol()]
+        return col["${piece::class.simpleName}"]
     }
 }
