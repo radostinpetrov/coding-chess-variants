@@ -2,7 +2,7 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.xiangqi.*
+import main.kotlin.pieces.janggi.*
 
 class Janggi : AbstractChess(listOf()) {
     override val board = Board2D(10, 9)
