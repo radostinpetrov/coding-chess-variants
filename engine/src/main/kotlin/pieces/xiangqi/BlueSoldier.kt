@@ -10,7 +10,7 @@ class BlueSoldier(override val player: Player) : Piece {
         get() = listOf(
                 Move.Stepper(Direction.EAST, 1, true),
                 Move.Stepper(Direction.WEST, 1, true),
-                Move.Stepper(Direction.NORTH, 1, true)
+                Move.Stepper(Direction.SOUTH, 1, true)
         )
 
     override fun getSymbol(): String {

@@ -2,10 +2,11 @@ package main.kotlin.pieces.xiangqi
 
 import main.kotlin.moves.Direction
 import main.kotlin.moves.Move
+import main.kotlin.pieces.King
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
-class King(override val player: Player) : Piece {
+class General(override val player: Player) : Piece, King {
     private val palaceX = listOf(3, 4, 5)
     private val palaceY = listOf(0, 1, 2, 7, 8, 9)
 
