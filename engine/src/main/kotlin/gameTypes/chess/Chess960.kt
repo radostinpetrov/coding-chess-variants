@@ -4,6 +4,8 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
+import main.kotlin.pieces.chess.StandardBlackPawn
+import main.kotlin.pieces.chess.StandardWhitePawn
 import main.kotlin.pieces.chess.*
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {

@@ -5,6 +5,8 @@ import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.CapablancaCastling
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
+import main.kotlin.pieces.chess.StandardBlackPawn
+import main.kotlin.pieces.chess.StandardWhitePawn
 import main.kotlin.pieces.chess.*
 
 open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
