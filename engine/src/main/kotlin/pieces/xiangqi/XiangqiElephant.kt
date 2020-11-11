@@ -8,10 +8,10 @@ import main.kotlin.players.Player
 class XiangqiElephant(override val player: Player) : Piece {
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.Composite(listOf(Move.Stepper(Direction.NORTH_EAST, 1, false), Move.Stepper(Direction.NORTH_EAST, 1, true))),
-                Move.Composite(listOf(Move.Stepper(Direction.NORTH_WEST, 1, false), Move.Stepper(Direction.NORTH_WEST, 1, true))),
-                Move.Composite(listOf(Move.Stepper(Direction.NORTH_EAST, 1, false), Move.Stepper(Direction.NORTH_EAST, 1, true))),
-                Move.Composite(listOf(Move.Stepper(Direction.SOUTH_EAST, 1, false), Move.Stepper(Direction.SOUTH_EAST, 1, true))),
+                Move.Stepper(Direction.NORTH_EAST, 2, true),
+                Move.Stepper(Direction.NORTH_WEST, 2, true),
+                Move.Stepper(Direction.SOUTH_EAST, 2, true),
+                Move.Stepper(Direction.SOUTH_WEST, 2, true),
         )
 
     override fun getSymbol(): String {
