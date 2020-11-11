@@ -5,7 +5,7 @@ import main.kotlin.notationFormatter.NotationFormatter
 
 class TestHumanPlayer(val notationFormatter: NotationFormatter) : Player {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-
+    override var playerMove: GameMove? = null
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
         var possibleMoves: List<GameMove> = mutableListOf()
         var input: String?
