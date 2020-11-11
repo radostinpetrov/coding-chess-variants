@@ -42,8 +42,7 @@ function matchmaking(ws) {
 }
 
 function makemove(obj) {
-  const move = obj.move
-  const msg = {type: "receiveMove", move: 0, opponentId: obj.opponentId}
+  const msg = {type: "receiveMove", move: obj.move, opponentId: obj.opponentId}
   const wsToSend = players[obj.opponentId]
   wsToSend.send(JSON.stringify(msg));
 }
