@@ -45,7 +45,7 @@ class Textures(assets: AssetManager) {
         "Cannon" to whiteCannon, "Chariot" to whiteChariot, "Elephant" to whiteElephant,
         "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier,
         "XiangqiAdvisor" to whiteAdvisor, "XiangqiCannon" to whiteCannon, "XiangqiChariot" to whiteChariot,
-        "XiangqiElephant" to whiteElephant, "XiangqiGeneral" to whiteGeneral, "XiangqiHorse" to whiteHorse,
+        "XiangqiRedElephant" to whiteElephant, "XiangqiGeneral" to whiteGeneral, "XiangqiHorse" to whiteHorse,
         "XiangqiRedSoldier" to whiteSoldier
     )
 
@@ -56,7 +56,7 @@ class Textures(assets: AssetManager) {
         "Cannon" to blackCannon, "Chariot" to blackChariot, "Elephant" to blackElephant,
         "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier,
         "XiangqiAdvisor" to blackAdvisor, "XiangqiCannon" to blackCannon, "XiangqiChariot" to blackChariot,
-        "XiangqiElephant" to blackElephant, "XiangqiGeneral" to blackGeneral, "XiangqiHorse" to blackHorse,
+        "XiangqiBlueElephant" to blackElephant, "XiangqiGeneral" to blackGeneral, "XiangqiHorse" to blackHorse,
         "XiangqiBlueSoldier" to blackSoldier
     )
 
@@ -66,7 +66,6 @@ class Textures(assets: AssetManager) {
             Color.BLACK -> blacks
             else -> TODO()
         }
-
         return col["${piece::class.simpleName}"]
     }
 }
