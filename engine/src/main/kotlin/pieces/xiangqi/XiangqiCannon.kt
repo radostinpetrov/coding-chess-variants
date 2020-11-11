@@ -1,16 +1,15 @@
-package main.kotlin.pieces.janggi
+package main.kotlin.pieces.xiangqi
 
 import main.kotlin.moves.Move
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
 class XiangqiCannon(override val player: Player) : Piece {
-    private val palaceX = listOf(3, 5)
-    private val palaceY = listOf(0, 2, 7, 9)
 
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.Hopper(HV = true, canJumpOverSamePiece = true),
+                Move.CaptureOnly(Move.Hopper(HV = true, canJumpOverSamePiece = true)),
+                Move.NoCapture(Move.Slider(H = true, V = true, A = false, D = false))
         )
 
     override fun getSymbol(): String {

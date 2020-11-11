@@ -1,6 +1,7 @@
 package screens
 
 import Janggi
+import Xiangqi
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -29,6 +30,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val capablancaChessButton = TextButton("Capablanca Chess", skin)
     val chess960Button = TextButton("Chess960", skin)
     val janggiButton = TextButton("Janggi", skin)
+    val xiangqiButton = TextButton("Xiangqi", skin)
     val title = Label("Welcome to Chess", skin)
 
     val humanPlayer1Button = TextButton("Human Player", skin)
@@ -107,6 +109,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        xiangqiButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToSetupScreen(Xiangqi())
+            }
+        })
+
 //        startButton.addListener(object : ChangeListener() {
 //            override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                switchToGameScreen()
@@ -136,6 +144,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.row()
         table.add(chess960Button).colspan(2).padBottom(30f)
         table.add(janggiButton).colspan(2).padBottom(30f)
+        table.add(xiangqiButton).colspan(2).padBottom(30f)
         table.row()
 //        table.add(startButton).colspan(6).padBottom(20f).center()
 //        table.row()

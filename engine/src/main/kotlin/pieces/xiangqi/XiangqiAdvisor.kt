@@ -1,4 +1,4 @@
-package main.kotlin.pieces.janggi
+package main.kotlin.pieces.xiangqi
 
 import main.kotlin.moves.Direction
 import main.kotlin.moves.Move
