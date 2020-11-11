@@ -46,6 +46,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
+
     override fun show() {
         Gdx.input.inputProcessor = Stage()
         if (rows != columns) {
@@ -93,16 +94,27 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
         }
     }
 
+    fun switchToGameOverScreen(player: Player) {
+        game.removeScreen<GameOverScreen>()
+
+        //change this.
+        val playerName = playerMapping?.get(player)!!.toString()
+
+        game.addScreen(GameOverScreen(game, gameEngine, playerName!!))
+        game.setScreen<GameOverScreen>()
+    }
+
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
         val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        if (!gameEngine.turn()) {
+            switchToGameOverScreen(currPlayer!!)
+        }
+
         drawBoard(moves)
         drawPieces()
         drawDots(moves)
         controls()
-        if (!gameEngine.turn()) {
-            TODO()
-        }
     }
 
     private fun reverseRow(index: Int) {
@@ -187,8 +199,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
                         shapeRenderer.color = Color.GREEN
                         if (srcX != null && srcY != null) {
                             playerMove = getMove(
-                                Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()),
-                                Coordinate(dstX!!.toInt() / squareWidth.toInt(), dstY!!.toInt() / squareWidth.toInt()), moves
+                                getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                                getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                                moves
                             )
                         }
                     }
@@ -215,7 +228,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             return
         }
 
-        val toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX!!.toInt() / squareWidth.toInt(), srcY!!.toInt() / squareWidth.toInt()) }
+        val toCoordinates = moves.filter { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) }
             .map { m -> m.displayTo }
 
         /* Draw toCoordinates dots for a selected piece. */
@@ -228,6 +241,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
         shapeRenderer.end()
     }
+
+    private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
+        Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
     private fun drawPieces() {
         val batch = game.batch

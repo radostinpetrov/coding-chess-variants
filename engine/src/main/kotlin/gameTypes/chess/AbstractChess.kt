@@ -5,7 +5,7 @@ import main.kotlin.GameMove
 import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.chess.rules.SpecialRules
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.chess.King
+import main.kotlin.pieces.King
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
@@ -41,7 +41,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return moves
     }
 
-    fun getPossibleMoves(player: Player): List<GameMove> {
+    private fun getPossibleMoves(player: Player): List<GameMove> {
         val pieces = board.getPieces(player)
         val possibleMoves = mutableListOf<GameMove>()
         for (piece in pieces) {
@@ -53,7 +53,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return possibleMoves
     }
 
-    fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
+    private fun filterForCheck(player: Player, possibleMoves: List<GameMove>): List<GameMove> {
         val res = mutableListOf<GameMove>()
         for (move in possibleMoves) {
             when (move) {
@@ -84,12 +84,12 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return res
     }
 
-    fun inCheck(player: Player): Boolean {
+    private fun inCheck(player: Player): Boolean {
         val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
         return squareUnderAttack(kingCoordinate, player)
     }
 
-    fun squareUnderAttack(coordinate: Coordinate, player: Player): Boolean {
+    private fun squareUnderAttack(coordinate: Coordinate, player: Player): Boolean {
         val nextPlayer = players[(players.indexOf(player) + 1) % 2]
         val moves = getPossibleMoves(nextPlayer)
 
@@ -117,8 +117,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         if (moveLog.size == 0) {
             return
         }
-        val gameMove = moveLog.removeAt(moveLog.size - 1)
-        when (gameMove) {
+        when (val gameMove = moveLog.removeAt(moveLog.size - 1)) {
             is GameMove.BasicGameMove -> {
                 undoBasicMove(gameMove)
             }
@@ -144,7 +143,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         board.addPiece(gameMove.from, gameMove.pieceMoved)
     }
 
-    fun getValidMoveForPiece(pair: Pair<Piece, Coordinate>): List<GameMove> {
+    private fun getValidMoveForPiece(pair: Pair<Piece, Coordinate>): List<GameMove> {
 
         val possibleMoves = mutableListOf<GameMove>()
         // validate possible moves

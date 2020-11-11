@@ -1,5 +1,6 @@
 package screens
 
+import Janggi
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -27,6 +28,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val grandChessButton = TextButton("Grand Chess", skin)
     val capablancaChessButton = TextButton("Capablanca Chess", skin)
     val chess960Button = TextButton("Chess960", skin)
+    val janggiButton = TextButton("Janggi", skin)
     val title = Label("Welcome to Chess", skin)
     var isOnline = false
 
@@ -78,6 +80,19 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
                 switchToPreGameScreen(Chess960(), isOnline)
             }
         })
+
+        janggiButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToPreGameScreen(Janggi(), isOnline)
+            }
+        })
+
+//        startButton.addListener(object : ChangeListener() {
+//            override fun changed(event: ChangeEvent?, actor: Actor?) {
+//                switchToGameScreen()
+//            }
+//        })
+
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 150f)
@@ -93,6 +108,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(capablancaChessButton).colspan(2).padBottom(20f)
         table.row()
         table.add(chess960Button).colspan(2).padBottom(30f)
+        table.add(janggiButton).colspan(2).padBottom(30f)
         table.row()
 //        table.add(startButton).colspan(6).padBottom(20f).center()
 //        table.row()
