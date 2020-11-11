@@ -91,7 +91,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
         xiangqiButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToSetupScreen(Xiangqi())
+                switchToPreGameScreen(Xiangqi(), isOnline)
             }
         })
 
