@@ -28,74 +28,75 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val capablancaChessButton = TextButton("Capablanca Chess", skin)
     val chess960Button = TextButton("Chess960", skin)
     val title = Label("Welcome to Chess", skin)
+    var isOnline = false
 
-    val humanPlayer1Button = TextButton("Human Player", skin)
-    val computerPlayer1Button = TextButton("Computer Player", skin)
-
-    val humanPlayer2Button = TextButton("Human Player", skin)
-    val computerPlayer2Button = TextButton("Computer Player", skin)
+    val onlineModeButton = TextButton("Play Online", skin)
+    val localModeButton = TextButton("Play Local/Against Computer", skin)
+//
+//    val humanPlayer2Button = TextButton("Human Player", skin)
+//    val computerPlayer2Button = TextButton("Computer Player", skin)
 
     val startButton = TextButton("Start", skin)
 
-    val titlePlayer1 = Label("Add player1", skin)
-    val titlePlayer2 = Label("Add player2", skin)
+    val gameModeTitle = Label("Select Game Mode", skin)
+//    val titlePlayer2 = Label("Add player2", skin)
 
-    val players = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
+//    val players = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
 
     override fun show() {
-        humanPlayer1Button.addListener(object : ChangeListener() {
+        onlineModeButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[0] = PlayerType.HUMAN
-                humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
-                computerPlayer1Button.setColor(255f, 255f, 255f, 100f)
+                isOnline = true
+                onlineModeButton.setColor(200f, 0f, 0f, 100f)
+                localModeButton.setColor(255f, 255f, 255f, 100f)
             }
         })
 
-        humanPlayer2Button.addListener(object : ChangeListener() {
+        localModeButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[1] = PlayerType.HUMAN
-                humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
-                computerPlayer2Button.setColor(255f, 255f, 255f, 100f)
+                isOnline = false
+                localModeButton.setColor(200f, 0f, 0f, 100f)
+                onlineModeButton.setColor(255f, 255f, 255f, 100f)
             }
         })
-
-        computerPlayer1Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[0] = PlayerType.COMPUTER
-                computerPlayer1Button.setColor(200f, 0f, 0f, 100f)
-                humanPlayer1Button.setColor(255f, 255f, 255f, 100f)
-            }
-        })
-
-        computerPlayer2Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[1] = PlayerType.COMPUTER
-                computerPlayer2Button.setColor(200f, 0f, 0f, 100f)
-                humanPlayer2Button.setColor(255f, 255f, 255f, 100f)
-            }
-        })
+//
+//        computerPlayer1Button.addListener(object : ChangeListener() {
+//            override fun changed(event: ChangeEvent?, actor: Actor?) {
+//                players[0] = PlayerType.COMPUTER
+//                computerPlayer1Button.setColor(200f, 0f, 0f, 100f)
+//                humanPlayer1Button.setColor(255f, 255f, 255f, 100f)
+//            }
+//        })
+//
+//        computerPlayer2Button.addListener(object : ChangeListener() {
+//            override fun changed(event: ChangeEvent?, actor: Actor?) {
+//                players[1] = PlayerType.COMPUTER
+//                computerPlayer2Button.setColor(200f, 0f, 0f, 100f)
+//                humanPlayer2Button.setColor(255f, 255f, 255f, 100f)
+//            }
+//        })
 
         standardChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToSetupScreen(StandardChess())
+                switchToPlayerScreen(StandardChess(), isOnline)
             }
         })
 
         grandChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToSetupScreen(GrandChess())
+                switchToPlayerScreen(GrandChess(), isOnline)
             }
         })
 
         capablancaChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToSetupScreen(CapablancaChess())
+                switchToPlayerScreen(CapablancaChess(), isOnline)
             }
         })
 
         chess960Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToSetupScreen(Chess960())
+                switchToPlayerScreen(Chess960(), isOnline)
             }
         })
 
@@ -105,22 +106,22 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //            }
 //        })
 
-        humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
-        humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
+//        humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
+//        humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 150f)
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
-        table.add(titlePlayer1).colspan(6).padBottom(20f)
+        table.add(gameModeTitle).colspan(6).padBottom(20f)
         table.row()
-        table.add(humanPlayer1Button).colspan(3).padBottom(50f)
-        table.add(computerPlayer1Button).colspan(3).padBottom(50f)
-        table.row()
-        table.add(titlePlayer2).colspan(6).padBottom(20f)
-        table.row()
-        table.add(humanPlayer2Button).colspan(3).padBottom(50f)
-        table.add(computerPlayer2Button).colspan(3).padBottom(50f)
+        table.add(onlineModeButton).colspan(3).padBottom(50f)
+        table.add(localModeButton).colspan(3).padBottom(50f)
+//        table.row()
+//        table.add(titlePlayer2).colspan(6).padBottom(20f)
+//        table.row()
+//        table.add(humanPlayer2Button).colspan(3).padBottom(50f)
+//        table.add(computerPlayer2Button).colspan(3).padBottom(50f)
         table.row()
         table.add(standardChessButton).colspan(2).padBottom(20f)
         table.add(grandChessButton).colspan(2).padBottom(20f)
@@ -140,15 +141,16 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         stage.act()
     }
 
-    private fun switchToSetupScreen(gameType: GameType) {
-        val gameEngine = Game(gameType)
+    private fun switchToPlayerScreen(gameType: GameType, isOnline: Boolean) {
+//        val gameEngine = Game(gameType)
 //        game.removeScreen<SetupScreen>() // idk why we need this line
 //        game.addScreen(SetupScreen(game, gameEngine))
 //        game.setScreen<SetupScreen>()
-        game.removeScreen<GameScreen>()
-        game.addScreen(GameScreen(game, gameEngine, players))
+
+        game.removeScreen<PlayerScreen>()
+        game.addScreen(PlayerScreen(game, gameType))
+        game.setScreen<PlayerScreen>()
         dispose()
-        game.setScreen<GameScreen>()
     }
 
 //    private fun switchToGameScreen() {
