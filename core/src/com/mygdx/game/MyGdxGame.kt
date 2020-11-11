@@ -30,7 +30,7 @@ class MyGdxGame : KtxGame<KtxScreen>() {
 
         addScreen(MenuScreen(this))
         setScreen<MenuScreen>()
-        super.create()
+//        super.create()
     }
 
     override fun dispose() {

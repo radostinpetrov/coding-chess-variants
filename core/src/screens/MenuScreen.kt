@@ -3,9 +3,11 @@ package screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
@@ -60,8 +62,8 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
-        standardChessButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
+        standardChessButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 switchToPreGameScreen(StandardChess(), isOnline)
             }
         })
