@@ -5,7 +5,7 @@ const uuid = require('uuid')
 const server = http.createServer();
 const wss = new WebSocket.Server({ server });
 
-const matchMaking = []
+const matchMakingQueues = {}
 const matches = {}
 const players = {}
 
@@ -16,7 +16,7 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     obj = JSON.parse(message)
     if (obj.type === "matchmaking"){
-      matchmaking(ws)
+      matchmaking(ws, obj)
     } else if (obj.type === 'makeMove') {
       makemove(obj)
     }
@@ -25,19 +25,24 @@ wss.on('connection', function connection(ws) {
 });
 
 function matchmaking(ws) {
-  matchMaking.push(ws)
-  if (matchMaking.length == 2) {
-    matchMaking[0].send(JSON.stringify({type:"startGame", player:1, opponentId: matchMaking[1].id}))
-    matchMaking[1].send(JSON.stringify({type:"startGame", player:2, opponentId: matchMaking[0].id}))
-    console.log(matchMaking[1].id)
-    console.log(matchMaking[0].id)
-    matchMaking.length = 0
+  if (matchMakingQueues[obj.gameMode] === undefined) {
+    matchMakingQueues[obj.gameMode] = []
+  }
+  const queue = matchMakingQueues[obj.gameMode]
+  queue.push(ws)
+  if (queue.length == 2) {
+    const p1ws = queue[0]
+    const p2ws = queue[1]
+    p1ws.send(JSON.stringify({type:"startGame", player:1, opponentId: p2ws.id}))
+    p2ws.send(JSON.stringify({type:"startGame", player:2, opponentId: p1ws.id}))
+    matches[p1ws] = p2ws.id
+    matches[p2ws] = p1ws.id
+    queue.length = 0
   }
 }
 
 function makemove(obj) {
   const move = obj.move
-  console.log("here2")
   const msg = {type: "receiveMove", move: 0, opponentId: obj.opponentId}
   const wsToSend = players[obj.opponentId]
   wsToSend.send(JSON.stringify(msg));

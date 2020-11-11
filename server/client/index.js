@@ -1,9 +1,10 @@
 const WebSocket = require('ws');
 
 const ws = new WebSocket('ws://localhost:8080');
+let opponentId = null
 
 ws.on('open', function open() {
-  msg = {type: "matchmaking"}
+  msg = {type: "matchmaking", gameMode: "Standard"}
   ws.send(JSON.stringify(msg));
 });
 
@@ -18,18 +19,17 @@ ws.on('message', function incoming(data) {
 
 function startGame(obj) {
   console.log("Starting game")
-    console.log(obj.opponentId)
-    console.log(obj.player)
-    if (obj.player == 1) {
-      console.log("here")
-      msg = {type: "makeMove", move: 0, opponentId: obj.opponentId}
-      ws.send(JSON.stringify(msg));
-    }
+  opponentId = obj.opponentId
+  if (obj.player == 1) {
+    console.log("here")
+    msg = {type: "makeMove", move: 0, opponentId: opponentId}
+    ws.send(JSON.stringify(msg));
+  }
 }
 
 function receiveMove(obj) {
-  // console.log("Received Move")
+  console.log("Received Move")
   // console.log(obj.move)
-  msg = {type: "makeMove", move: 0, opponentId: obj.opponentId}
+  msg = {type: "makeMove", move: 0, opponentId: opponentId}
   ws.send(JSON.stringify(msg));
 }
