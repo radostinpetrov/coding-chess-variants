@@ -92,6 +92,22 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
                 }
                 return result
             }
+            is Move.Composite -> {
+                var isEmpty = false
+                val iter = move.moves.iterator()
+                var gameMoves: List<GameMove.BasicGameMove> = visit(coordinate, piece, iter.next(), player)
+                while (iter.hasNext()) {
+                    val move = iter.next()
+                    val newGameMoves: MutableList<GameMove.BasicGameMove> = mutableListOf()
+                    gameMoves.forEach { prevMove ->
+                        visit(prevMove.to, prevMove.pieceMoved, move, player).forEach { currMove ->
+                            newGameMoves.add(GameMove.BasicGameMove(prevMove.from, currMove.to, currMove.pieceMoved, player, currMove.pieceCaptured, currMove.piecePromotedTo))
+                        }
+                    }
+                    gameMoves = newGameMoves
+                }
+                return gameMoves
+            }
         }
     }
 

@@ -12,4 +12,5 @@ sealed class Move {
     data class Restricted(val move: Move, val x: List<Int>, val y: List<Int>) : Move()
     data class RestrictedDestination(val move: Move, val x: List<Int>, val y: List<Int>) : Move()
     data class AddForcedPromotion(val move: Move, val x: List<Int>, val y: List<Int>, val promoPieces: List<Piece>) : Move()
+    data class Composite(val moves: List<Move>) : Move()
 }
