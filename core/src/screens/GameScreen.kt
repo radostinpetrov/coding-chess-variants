@@ -24,7 +24,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     private val windowHeight: Int = 800
     
     private val possibleMoveCircleRadius = 8f
-    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
+    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.2f))
     private lateinit var shapeRenderer: ShapeRenderer
 
     var srcX: Int? = null
@@ -177,24 +177,28 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
         }
     }
 
+    private fun drawLineWithCenterOffset(x1: Int , y1: Int, x2: Int, y2: Int, width: Float) {
+        val offset = squareWidth/2
+        shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset,  squareWidth * y2 + offset, width)
+    }
+
     private fun drawXiangqiBoard(moves: List<GameMove>, flipped: Boolean = false) {
+        val lineWidth = 4f
         Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         shapeRenderer.color = Color.BROWN
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        val offset = squareWidth/2
         for (j in 0 until rows) {
-            shapeRenderer.rectLine(offset, squareWidth * j + offset, columns * squareWidth - offset,  squareWidth * j + offset, 8f)
+            drawLineWithCenterOffset(0, j, columns - 1, j, lineWidth)
         }
         for (j in 0 until columns) {
-            shapeRenderer.rectLine(squareWidth * j + offset, squareWidth * 0 + offset, squareWidth * j + offset,  squareWidth * 4 + offset, 8f)
-            shapeRenderer.rectLine(squareWidth * j + offset, squareWidth * 5 + offset, squareWidth * j + offset,  squareWidth * 9 + offset, 8f)
+            drawLineWithCenterOffset(j, 0, j, 4, lineWidth)
+            drawLineWithCenterOffset(j, 5, j, 9, lineWidth)
         }
-
-        shapeRenderer.rectLine(squareWidth * 3 + offset, squareWidth * 0 + offset, squareWidth * 5 + offset,  squareWidth * 2 + offset, 8f)
-        shapeRenderer.rectLine(squareWidth * 5 + offset, squareWidth * 0 + offset, squareWidth * 3 + offset,  squareWidth * 2 + offset, 8f)
-        shapeRenderer.rectLine(squareWidth * 3 + offset, squareWidth * 7 + offset, squareWidth * 5 + offset,  squareWidth * 9 + offset, 8f)
-        shapeRenderer.rectLine(squareWidth * 5 + offset, squareWidth * 7 + offset, squareWidth * 3 + offset,  squareWidth * 9 + offset, 8f)
+        drawLineWithCenterOffset(3, 0, 5, 2, lineWidth)
+        drawLineWithCenterOffset(5, 0, 3, 2, lineWidth)
+        drawLineWithCenterOffset(3, 7, 5, 9, lineWidth)
+        drawLineWithCenterOffset(5, 7, 3, 9, lineWidth)
 
         shapeRenderer.end()
         if (dstX != null && dstY != null) {
@@ -272,6 +276,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             .map { m -> m.displayTo }
 
         /* Draw toCoordinates dots for a selected piece. */
+        Gdx.gl.glEnable(GL20.GL_BLEND)
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA)
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
@@ -280,6 +286,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
         }
 
         shapeRenderer.end()
+
     }
 
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
