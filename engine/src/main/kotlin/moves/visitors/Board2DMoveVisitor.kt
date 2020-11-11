@@ -58,6 +58,11 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
                     it.pieceCaptured != null
                 }
             }
+            is Move.NoCapture -> {
+                visit(coordinate, piece, move.move, player).filter {
+                    it.pieceCaptured == null
+                }
+            }
             is Move.Restricted -> {
                 visit(coordinate, piece, move.move, player).filter {
                     val validX = move.x.isEmpty() || move.x.contains(it.from.x)
