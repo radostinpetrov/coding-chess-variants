@@ -2,7 +2,11 @@ const http = require('http');
 const WebSocket = require('ws');
 const uuid = require('uuid')
 
-const server = http.createServer();
+const server = https.createServer({
+  cert: fs.readFileSync('/path/to/cert.pem'),
+  key: fs.readFileSync('/path/to/key.pem')
+});
+
 const wss = new WebSocket.Server({ server });
 
 const matchMakingQueues = {}

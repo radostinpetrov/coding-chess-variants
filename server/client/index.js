@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('ws://207.246.87.201:8080');
 let opponentId = null
 
 ws.on('open', function open() {

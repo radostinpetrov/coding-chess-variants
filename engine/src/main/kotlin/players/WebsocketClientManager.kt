@@ -24,8 +24,8 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
     init {
         createWebSocketClient(serverUri)
 
-        val socketFactory: SSLSocketFactory = SSLSocketFactory.getDefault() as SSLSocketFactory
-        webSocketClient.setSocketFactory(socketFactory)
+//        val socketFactory: SSLSocketFactory = SSLSocketFactory.getDefault() as SSLSocketFactory
+//        webSocketClient.setSocketFactory(socketFactory)
         webSocketClient.connect()
     }
 
@@ -65,6 +65,7 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
             }
 
             override fun onError(ex: Exception?) {
+                println(ex?.message)
                 println("onError")
 //            Log.e(TAG, "onError: ${ex?.message}")
             }

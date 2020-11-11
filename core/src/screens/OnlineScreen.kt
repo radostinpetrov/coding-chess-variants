@@ -13,6 +13,9 @@ import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
 import main.kotlin.gameTypes.GameType
+import main.kotlin.players.NetworkEnemyPlayer
+import main.kotlin.players.NetworkHumanPlayer
+import main.kotlin.players.Player
 import main.kotlin.players.WebsocketClientManager
 
 class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
@@ -48,16 +51,15 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
     private fun switchToGameScreen(humanPlayer: Int) {
         val gameEngine = Game(gameType)
-        val players = mutableListOf<PlayerType>()
         when (humanPlayer) {
-//            1 -> {
-//                players.add(PlayerType.NETWORK_PLAYER)
-//                players.add(PlayerType.NETWORK_ENEMY)
-//            }
-//            2 -> {
-//                players.add(PlayerType.NETWORK_ENEMY)
-//                players.add(PlayerType.NETWORK_PLAYER)
-//            }
+            1 -> {
+                gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
+                gameEngine.gameType.addPlayer(NetworkEnemyPlayer())
+            }
+            2 -> {
+                gameEngine.gameType.addPlayer(NetworkEnemyPlayer())
+                gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
+            }
         }
         game.removeScreen<GameScreen>()
         game.addScreen(GameScreen(game, gameEngine))
