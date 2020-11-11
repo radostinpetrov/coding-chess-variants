@@ -24,7 +24,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     private val windowHeight: Int = 800
     
     private val possibleMoveCircleRadius = 8f
-    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.2f))
+    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private lateinit var shapeRenderer: ShapeRenderer
 
     var srcX: Int? = null
@@ -276,8 +276,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             .map { m -> m.displayTo }
 
         /* Draw toCoordinates dots for a selected piece. */
-        Gdx.gl.glEnable(GL20.GL_BLEND)
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA)
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
