@@ -29,7 +29,9 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
     val startButton = TextButton("Start", skin)
 
-    val websocketClientManager = WebsocketClientManager { m: Int -> switchToGameScreen(m) }
+    val websocketClientManager = WebsocketClientManager { m: Int -> humanPlayer = m }
+
+    var humanPlayer: Int? = null
 
     override fun show() {
         table.width = 800f
@@ -47,17 +49,25 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     override fun render(delta: Float) {
         stage.draw()
         stage.act()
+
+        if (humanPlayer != null) {
+            switchToGameScreen()
+        }
     }
 
-    private fun switchToGameScreen(humanPlayer: Int) {
+    private fun switchToGameScreen() {
         val gameEngine = Game(gameType)
         when (humanPlayer) {
             1 -> {
                 gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
-                gameEngine.gameType.addPlayer(NetworkEnemyPlayer())
+                val enemyPlayer = NetworkEnemyPlayer()
+                gameEngine.gameType.addPlayer(enemyPlayer)
+                websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                gameEngine.gameType.addPlayer(NetworkEnemyPlayer())
+                val enemyPlayer = NetworkEnemyPlayer()
+                gameEngine.gameType.addPlayer(enemyPlayer)
+                websocketClientManager.networkEnemyPlayer = enemyPlayer
                 gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
             }
         }

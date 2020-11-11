@@ -47,7 +47,7 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
                         // we need to do something with the screen here we pass in the change to game screen function
                         // but we need to pass in this class as well and set networkPlayer 1 and 2
 //                        networkHumanPlayer = NetworkHumanPlayer()
-                        networkEnemyPlayer = NetworkEnemyPlayer()
+//                        networkEnemyPlayer = game.
                         enemyId = jsonMessage.getString("opponentId")
                         startGameFunction(jsonMessage.getInt("player"))
                     }
