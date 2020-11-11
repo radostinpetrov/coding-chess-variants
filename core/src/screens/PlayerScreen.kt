@@ -109,11 +109,10 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     private fun switchToGameScreen(gameType: GameType) {
         val gameEngine = Game(gameType)
         game.removeScreen<GameScreen>()
-        var players = playerTypes.map{x -> createPlayer(x)}
-        players = players.reversed()
-        gameEngine.gameType.addPlayer(players[1])
-        gameEngine.gameType.addPlayer(players[0])
-        game.addScreen(GameScreen(game, gameEngine, players))
+
+        gameEngine.gameType.addPlayer(createPlayer(playerTypes[0]))
+        gameEngine.gameType.addPlayer(createPlayer(playerTypes[1]))
+        game.addScreen(GameScreen(game, gameEngine))
         dispose()
         game.setScreen<GameScreen>()
     }

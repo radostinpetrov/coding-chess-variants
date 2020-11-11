@@ -60,7 +60,7 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 //            }
         }
         game.removeScreen<GameScreen>()
-//        game.addScreen(GameScreen(game, gameEngine, players))
+        game.addScreen(GameScreen(game, gameEngine))
         dispose()
         game.setScreen<GameScreen>()
     }

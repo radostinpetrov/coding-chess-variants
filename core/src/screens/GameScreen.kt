@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.mygdx.game.MyGdxGame
+import com.mygdx.game.PlayerType
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import main.kotlin.Coordinate
@@ -17,10 +18,11 @@ import main.kotlin.GameMove
 import main.kotlin.players.Player
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
+import main.kotlin.players.ComputerPlayer
+import main.kotlin.players.HumanPlayer
 
 
-
-class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Player>) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -122,36 +124,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
                 if (playerMove != null) {
                     isPromotionScreen = false
                 }
-            }
-        }
-    }
-
-    private fun createPlayers() {
-        val firstPlayer = createPlayer(players[0])
-        val secondPlayer = createPlayer(players[1])
-        gameType.addPlayer(secondPlayer)
-        gameType.addPlayer(firstPlayer)
-    }
-
-    private fun createPlayer(player: PlayerType): Player {
-        return if (player == PlayerType.HUMAN) {
-            createHumanPlayer()
-        } else {
-            createComputerPlayer()
-        }
-    }
-
-    private fun createComputerPlayer() = ComputerPlayer(200)
-
-    private fun createHumanPlayer(): HumanPlayer {
-        return object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-                val temp = playerMove
-                playerMove = null
-                if (temp != null) {
-                    resetClicks()
-                }
-                return temp
             }
         }
     }
