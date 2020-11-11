@@ -17,6 +17,8 @@ import main.kotlin.GameMove
 import main.kotlin.players.ComputerPlayer
 import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
+import main.kotlin.gameTypes.xiangqi.Janggi
+import main.kotlin.gameTypes.xiangqi.Xiangqi
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: MutableList<PlayerType>) : KtxScreen {
     private val windowHeight: Int = 800
@@ -169,6 +171,44 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     }
 
     private fun drawBoard(moves: List<GameMove>, flipped: Boolean = false) {
+        when (gameType) {
+            is Xiangqi, is Janggi -> drawXiangqiBoard(moves)
+            else -> drawChessBoard(moves)
+        }
+    }
+
+    private fun drawXiangqiBoard(moves: List<GameMove>, flipped: Boolean = false) {
+        Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        shapeRenderer.color = Color.BROWN
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        val offset = squareWidth/2
+        for (j in 0 until rows) {
+            shapeRenderer.rectLine(offset, squareWidth * j + offset, columns * squareWidth - offset,  squareWidth * j + offset, 8f)
+        }
+        for (j in 0 until columns) {
+            shapeRenderer.rectLine(squareWidth * j + offset, squareWidth * 0 + offset, squareWidth * j + offset,  squareWidth * 4 + offset, 8f)
+            shapeRenderer.rectLine(squareWidth * j + offset, squareWidth * 5 + offset, squareWidth * j + offset,  squareWidth * 9 + offset, 8f)
+        }
+
+        shapeRenderer.rectLine(squareWidth * 3 + offset, squareWidth * 0 + offset, squareWidth * 5 + offset,  squareWidth * 2 + offset, 8f)
+        shapeRenderer.rectLine(squareWidth * 5 + offset, squareWidth * 0 + offset, squareWidth * 3 + offset,  squareWidth * 2 + offset, 8f)
+        shapeRenderer.rectLine(squareWidth * 3 + offset, squareWidth * 7 + offset, squareWidth * 5 + offset,  squareWidth * 9 + offset, 8f)
+        shapeRenderer.rectLine(squareWidth * 5 + offset, squareWidth * 7 + offset, squareWidth * 3 + offset,  squareWidth * 9 + offset, 8f)
+
+        shapeRenderer.end()
+        if (dstX != null && dstY != null) {
+            if (srcX != null && srcY != null) {
+                playerMove = getMove(
+                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                    moves
+                )
+            }
+        }
+    }
+
+    private fun drawChessBoard(moves: List<GameMove>, flipped: Boolean = false) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         var colour1: Color = Color.TAN
