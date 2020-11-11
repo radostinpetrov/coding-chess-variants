@@ -1,7 +1,6 @@
 package screens
 
-import Janggi
-import Xiangqi
+
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -16,6 +15,8 @@ import main.kotlin.gameTypes.chess.CapablancaChess
 import main.kotlin.gameTypes.chess.Chess960
 import main.kotlin.gameTypes.chess.GrandChess
 import main.kotlin.gameTypes.chess.StandardChess
+import main.kotlin.gameTypes.xiangqi.Janggi
+import main.kotlin.gameTypes.xiangqi.Xiangqi
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //    class CustomButton(text: String, skin: Skin) : TextButton(text, skin) {

@@ -1,3 +1,5 @@
+package main.kotlin.gameTypes.xiangqi
+
 import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.boards.Board2D
