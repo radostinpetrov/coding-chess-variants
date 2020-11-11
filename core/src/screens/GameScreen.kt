@@ -20,7 +20,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
     
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
-    private val shapeRenderer = ShapeRenderer()
+    private lateinit var shapeRenderer: ShapeRenderer
 
     var srcX: Int? = null
     var srcY: Int? = null
@@ -51,6 +51,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
             Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
             game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         }
+
+        shapeRenderer = ShapeRenderer()
 
         currPlayer = gameType.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
