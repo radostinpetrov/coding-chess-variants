@@ -43,7 +43,10 @@ class Textures(assets: AssetManager) {
         "Knight" to whiteKnight, "Bishop" to whiteBishop, "Queen" to whiteQueen, "King" to whiteKing,
         "Cardinal" to whiteCardinal, "Marshal" to whiteMarshal, "Advisor" to whiteAdvisor, 
         "Cannon" to whiteCannon, "Chariot" to whiteChariot, "Elephant" to whiteElephant,
-        "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier
+        "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier,
+        "XiangqiAdvisor" to whiteAdvisor, "XiangqiCannon" to whiteCannon, "XiangqiChariot" to whiteChariot,
+        "XiangqiElephant" to whiteElephant, "XiangqiGeneral" to whiteGeneral, "XiangqiHorse" to whiteHorse,
+        "XiangqiRedSoldier" to whiteSoldier
     )
 
     val blacks = mapOf(
@@ -51,7 +54,10 @@ class Textures(assets: AssetManager) {
         "Knight" to blackKnight, "Bishop" to blackBishop, "Queen" to blackQueen, "King" to blackKing,
         "Cardinal" to blackCardinal, "Marshal" to blackMarshal, "Advisor" to blackAdvisor,
         "Cannon" to blackCannon, "Chariot" to blackChariot, "Elephant" to blackElephant,
-        "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier
+        "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier,
+        "XiangqiAdvisor" to blackAdvisor, "XiangqiCannon" to blackCannon, "XiangqiChariot" to blackChariot,
+        "XiangqiElephant" to blackElephant, "XiangqiGeneral" to blackGeneral, "XiangqiHorse" to blackHorse,
+        "XiangqiBlueSoldier" to blackSoldier
     )
 
     fun getTextureFromPiece(piece: Piece, playerColour: Color): Texture? {

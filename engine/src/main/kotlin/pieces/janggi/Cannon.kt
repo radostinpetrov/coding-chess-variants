@@ -10,8 +10,8 @@ class Cannon(override val player: Player) : Piece {
 
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.Hopper(HV = true),
-                Move.Restricted(Move.Hopper(D = true), palaceX, palaceY)
+                Move.Hopper(HV = true, canJumpOverSamePiece = false),
+                Move.Restricted(Move.Hopper(D = true, canJumpOverSamePiece = false), palaceX, palaceY)
         )
 
     override fun getSymbol(): String {
