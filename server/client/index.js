@@ -18,14 +18,18 @@ ws.on('message', function incoming(data) {
 
 function startGame(obj) {
   console.log("Starting game")
+    console.log(obj.opponentId)
     console.log(obj.player)
     if (obj.player == 1) {
-      msg = {type: "makeMove", move: 0}
+      console.log("here")
+      msg = {type: "makeMove", move: 0, opponentId: obj.opponentId}
+      ws.send(JSON.stringify(msg));
     }
 }
 
 function receiveMove(obj) {
-  console.log("Received Move")
-  console.log(obj.move)
-  msg = {type: "makeMove", move: 0}
+  // console.log("Received Move")
+  // console.log(obj.move)
+  msg = {type: "makeMove", move: 0, opponentId: obj.opponentId}
+  ws.send(JSON.stringify(msg));
 }
