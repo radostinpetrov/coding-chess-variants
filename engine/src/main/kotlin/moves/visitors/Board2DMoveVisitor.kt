@@ -40,16 +40,16 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
             is Move.Hopper -> {
                 val result = mutableListOf<GameMove.BasicGameMove>()
                 if (move.HV) {
-                    result.addAll(visitHopper(coordinate, piece, 1, 0, player))
-                    result.addAll(visitHopper(coordinate, piece, -1, 0, player))
-                    result.addAll(visitHopper(coordinate, piece, 0, 1, player))
-                    result.addAll(visitHopper(coordinate, piece, 0, -1, player))
+                    result.addAll(visitHopper(coordinate, piece, 1, 0, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, 0, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, 0, 1, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, 0, -1, move.canJumpOverSamePiece, player))
                 }
                 if (move.D) {
-                    result.addAll(visitHopper(coordinate, piece, 1, 1, player))
-                    result.addAll(visitHopper(coordinate, piece, -1, 1, player))
-                    result.addAll(visitHopper(coordinate, piece, 1, -1, player))
-                    result.addAll(visitHopper(coordinate, piece, -1, -1, player))
+                    result.addAll(visitHopper(coordinate, piece, 1, 1, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, 1, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, 1, -1, move.canJumpOverSamePiece, player))
+                    result.addAll(visitHopper(coordinate, piece, -1, -1, move.canJumpOverSamePiece, player))
                 }
                 result
             }
@@ -160,7 +160,7 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
         return result
     }
 
-    private fun visitHopper(coordinate: Coordinate, piece: Piece, dx: Int, dy: Int, player: Player): List<GameMove.BasicGameMove> {
+    private fun visitHopper(coordinate: Coordinate, piece: Piece, dx: Int, dy: Int, canJumpOverSamePiece: Boolean, player: Player): List<GameMove.BasicGameMove> {
         val result = mutableListOf<GameMove.BasicGameMove>()
         var nextCoordinate = Coordinate(coordinate.x + dx, coordinate.y + dy)
         var count = 0
@@ -168,7 +168,7 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
         while (board.isInBounds(nextCoordinate) && count < 2) {
             val destPiece = board.getPiece(nextCoordinate)
             if (destPiece != null) {
-                if (destPiece::class == piece::class) {
+                if (!canJumpOverSamePiece && destPiece::class == piece::class) {
                     break
                 }
                 if (count == 1 && destPiece.player != piece.player) {

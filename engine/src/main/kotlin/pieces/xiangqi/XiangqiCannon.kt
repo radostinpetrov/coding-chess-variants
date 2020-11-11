@@ -10,7 +10,7 @@ class XiangqiCannon(override val player: Player) : Piece {
 
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.Hopper(HV = true),
+                Move.Hopper(HV = true, canJumpOverSamePiece = true),
         )
 
     override fun getSymbol(): String {
