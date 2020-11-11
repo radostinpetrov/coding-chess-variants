@@ -249,7 +249,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         shapeRenderer.end()
         if (dstX != null && dstY != null) {
             if (srcX != null && srcY != null) {
-                playerMove = getMove(
+                currPlayer?.playerMove = getMove(
                     getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
                     getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
                     moves
