@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
@@ -17,9 +18,13 @@ import main.kotlin.players.Player
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
 
+
+
 class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Player>) : KtxScreen {
+    private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
-    
+    private var windowWidth: Int = 800
+
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private lateinit var shapeRenderer: ShapeRenderer
@@ -38,18 +43,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
     private val pieceWidth: Float = squareWidth * 0.85f
 
     var currPlayer: Player? = null
-
-    private val textures = Textures(game.assets)
-
     var playerMove: GameMove? = null
 
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
 
+    var isPromotionScreen = false
+    lateinit var promotableMoves: List<GameMove>
+
     override fun show() {
-        Gdx.input.inputProcessor = Stage()
         if (rows != columns) {
-            val windowWidth = (windowHeight * columns) / rows
+            windowWidth = (windowHeight * columns) / rows
             Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
             game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         }
@@ -58,7 +62,98 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
 
         currPlayer = gameType.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
+        Gdx.input.inputProcessor = Stage()
         gameEngine.start()
+    }
+
+    private fun showPromotionTable(moves: List<GameMove>) {
+        Gdx.gl.glEnable(GL20.GL_BLEND)
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA)
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+
+        shapeRenderer.color = Color(1f, 1f, 1f, 0.5f)
+        shapeRenderer.rect(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
+        shapeRenderer.end()
+
+        Gdx.gl.glDisable(GL20.GL_BLEND)
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+
+        val batch = game.batch
+        batch.begin()
+
+        val coordinateMap = mutableMapOf<Int, GameMove>()
+
+        val xCoordinate = (rows - moves.size) / 2
+        val yCoordinate = (columns - 1) / 2
+
+        val x = xCoordinate * squareWidth
+        val y = yCoordinate * squareWidth
+
+//        shapeRenderer.color = Color.PINK
+//        for (i in moves.indices) {
+//            shapeRenderer.rect( x + (i * squareWidth), y, squareWidth, squareWidth)
+//        }
+        shapeRenderer.end()
+
+        for ((i, m) in moves.withIndex()) {
+            val p = m.displayPiecePromotedTo
+
+            val texture = textures.getTextureFromPiece(p!!, playerMapping!![p.player]!!)
+            val sprite = Sprite(texture)
+
+            val posWithinSquare = (squareWidth - pieceWidth) / 2
+
+//            shapeRenderer.rect( x + (i * squareWidth), y, squareWidth, squareWidth)
+
+            sprite.setPosition(x + (i * squareWidth) + posWithinSquare, y + posWithinSquare)
+            coordinateMap[i + xCoordinate] = m
+
+            sprite.setSize(pieceWidth, pieceWidth)
+            sprite.draw(batch)
+        }
+        batch.end()
+
+        if (srcX != null && srcY != null) {
+            val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
+            if (coordinate.y == yCoordinate) {
+                playerMove = coordinateMap[coordinate.x]
+                if (playerMove != null) {
+                    isPromotionScreen = false
+                }
+            }
+        }
+    }
+
+    private fun createPlayers() {
+        val firstPlayer = createPlayer(players[0])
+        val secondPlayer = createPlayer(players[1])
+        gameType.addPlayer(secondPlayer)
+        gameType.addPlayer(firstPlayer)
+    }
+
+    private fun createPlayer(player: PlayerType): Player {
+        return if (player == PlayerType.HUMAN) {
+            createHumanPlayer()
+        } else {
+            createComputerPlayer()
+        }
+    }
+
+    private fun createComputerPlayer() = ComputerPlayer(200)
+
+    private fun createHumanPlayer(): HumanPlayer {
+        return object : HumanPlayer() {
+            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
+                val temp = playerMove
+                playerMove = null
+                if (temp != null) {
+                    resetClicks()
+                }
+                return temp
+            }
+        }
     }
 
     fun switchToGameOverScreen(player: Player) {
@@ -88,6 +183,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
         drawPieces()
         drawDots(moves)
         controls()
+
+
+        if (isPromotionScreen) {
+            showPromotionTable(promotableMoves)
+        }
 
     }
 
@@ -120,25 +220,27 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
         val input = Gdx.input
         val graphics = Gdx.graphics
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            if (srcX == null) {
+            if (isPromotionScreen) {
                 srcX = input.x
                 srcY = graphics.height - input.y
-            } else if (srcX != null && dstX == null) {
-                dstX = input.x
-                dstY = graphics.height - input.y
             } else {
-                srcX = input.x
-                srcY = graphics.height - input.y
-                dstX = null
-                dstY = null
+                if (srcX == null) {
+                    srcX = input.x
+                    srcY = graphics.height - input.y
+                } else if (srcX != null && dstX == null) {
+                    dstX = input.x
+                    dstY = graphics.height - input.y
+                } else {
+                    srcX = input.x
+                    srcY = graphics.height - input.y
+                    dstX = null
+                    dstY = null
+                }
             }
         }
 
         if (input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            srcX = null
-            srcY = null
-            dstX = null
-            dstY = null
+            resetClicks()
         }
     }
 
@@ -204,23 +306,28 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
                 } else {
                     shapeRenderer.color = colour2
                 }
+                if (!isPromotionScreen) {
 
-                if (srcX != null && srcY != null) {
-                    if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
-                        shapeRenderer.color = Color.FOREST
-                    }
-                }
-                if (dstX != null && dstY != null) {
-                    if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
-                        shapeRenderer.color = Color.GREEN
-                        if (srcX != null && srcY != null) {
-                            currPlayer?.playerMove = getMove(
-                                getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                                getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                                moves
-                            )
+                    if (srcX != null && srcY != null) {
+                        if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
+                            shapeRenderer.color = Color.FOREST
                         }
                     }
+
+                    if (dstX != null && dstY != null) {
+                        if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
+                            shapeRenderer.color = Color.GREEN
+                            if (srcX != null && srcY != null) {
+                                currPlayer?.playerMove = getMove(
+                                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                                    moves
+                                )
+                            }
+
+                        }
+                    }
+
                 }
                 shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
             }
@@ -235,12 +342,27 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
             return null
         }
 
-        // TODO promotion
+
+        if (playerMoves.all{m -> m.displayPiecePromotedTo != null}) {
+            isPromotionScreen = true
+            promotableMoves = playerMoves
+            resetClicks()
+            return null
+        }
+
         return playerMoves[0]
     }
 
+    private fun resetClicks() {
+        srcX = null
+        srcY = null
+        dstX = null
+        dstY = null
+
+    }
+
     private fun drawDots(moves: List<GameMove>) {
-        if (srcX == null || srcY == null) {
+        if (srcX == null || srcY == null || isPromotionScreen) {
             return
         }
 
@@ -276,7 +398,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Pl
 
             sprite.setSize(pieceWidth, pieceWidth)
             sprite.draw(batch)
-            sprite.draw(game.batch)
         }
 
         batch.end()
