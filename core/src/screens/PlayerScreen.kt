@@ -13,6 +13,9 @@ import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
 import main.kotlin.gameTypes.GameType
+import main.kotlin.players.ComputerPlayer
+import main.kotlin.players.HumanPlayer
+import main.kotlin.players.Player
 
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     val stage = Stage()
@@ -33,12 +36,12 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     val titlePlayer1 = Label("Add player1", skin)
     val titlePlayer2 = Label("Add player2", skin)
 
-    val players = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
+    val playerTypes = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
 
     override fun show() {
         humanPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[0] = PlayerType.HUMAN
+                playerTypes[0] = PlayerType.HUMAN
                 humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
                 computerPlayer1Button.setColor(255f, 255f, 255f, 100f)
             }
@@ -46,7 +49,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
         humanPlayer2Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[1] = PlayerType.HUMAN
+                playerTypes[1] = PlayerType.HUMAN
                 humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
                 computerPlayer2Button.setColor(255f, 255f, 255f, 100f)
             }
@@ -54,7 +57,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
         computerPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[0] = PlayerType.COMPUTER
+                playerTypes[0] = PlayerType.COMPUTER
                 computerPlayer1Button.setColor(200f, 0f, 0f, 100f)
                 humanPlayer1Button.setColor(255f, 255f, 255f, 100f)
             }
@@ -62,7 +65,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
         computerPlayer2Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                players[1] = PlayerType.COMPUTER
+                playerTypes[1] = PlayerType.COMPUTER
                 computerPlayer2Button.setColor(200f, 0f, 0f, 100f)
                 humanPlayer2Button.setColor(255f, 255f, 255f, 100f)
             }
@@ -70,7 +73,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToGameScreen(gameType, players)
+                switchToGameScreen(gameType)
             }
         })
 
@@ -103,11 +106,22 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
         stage.act()
     }
 
-    private fun switchToGameScreen(gameType: GameType, players: MutableList<PlayerType>) {
+    private fun switchToGameScreen(gameType: GameType) {
         val gameEngine = Game(gameType)
         game.removeScreen<GameScreen>()
+        var players = playerTypes.map{x -> createPlayer(x)}
+        players = players.reversed()
+        gameEngine.gameType.addPlayer(players[1])
+        gameEngine.gameType.addPlayer(players[0])
         game.addScreen(GameScreen(game, gameEngine, players))
         dispose()
         game.setScreen<GameScreen>()
+    }
+
+    private fun createPlayer(player: PlayerType): Player {
+        return when (player) {
+            PlayerType.HUMAN -> HumanPlayer()
+            PlayerType.COMPUTER -> ComputerPlayer(200)
+        }
     }
 }

@@ -8,17 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.game.MyGdxGame
-import com.mygdx.game.PlayerType
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import main.kotlin.Coordinate
 import main.kotlin.Game
 import main.kotlin.GameMove
-import main.kotlin.players.ComputerPlayer
-import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: MutableList<PlayerType>) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: List<Player>) : KtxScreen {
     private val windowHeight: Int = 800
     
     private val possibleMoveCircleRadius = 8f
@@ -54,44 +51,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
             Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
             game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         }
-        createPlayers()
 
         currPlayer = gameType.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
         gameEngine.start()
-    }
-
-    private fun createPlayers() {
-        val firstPlayer = createPlayer(players[0])
-        val secondPlayer = createPlayer(players[1])
-        gameType.addPlayer(secondPlayer)
-        gameType.addPlayer(firstPlayer)
-    }
-
-    private fun createPlayer(player: PlayerType): Player {
-        return if (player == PlayerType.HUMAN) {
-            createHumanPlayer()
-        } else {
-            createComputerPlayer()
-        }
-    }
-
-    private fun createComputerPlayer() = ComputerPlayer(200)
-
-    private fun createHumanPlayer(): HumanPlayer {
-        return object : HumanPlayer() {
-            override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-                val temp = playerMove
-                playerMove = null
-                if (temp != null) {
-                    srcX = null
-                    srcY = null
-                    dstX = null
-                    dstY = null
-                }
-                return temp
-            }
-        }
     }
 
     fun switchToGameOverScreen(player: Player) {
@@ -106,15 +69,22 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
 
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
+
         val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
         if (!gameEngine.turn()) {
             switchToGameOverScreen(currPlayer!!)
         }
-
+        if (gameEngine.gameType.getCurrentPlayer() != currPlayer) {
+            srcX = null
+            srcY = null
+            dstX = null
+            dstY = null
+        }
         drawBoard(moves)
         drawPieces()
         drawDots(moves)
         controls()
+
     }
 
     private fun reverseRow(index: Int) {
@@ -198,7 +168,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
                     if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
                         shapeRenderer.color = Color.GREEN
                         if (srcX != null && srcY != null) {
-                            playerMove = getMove(
+                            currPlayer?.playerMove = getMove(
                                 getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
                                 getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
                                 moves
@@ -214,13 +184,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game, val players: Mutable
     }
 
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
-        val playerMove = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
-        if (playerMove.isEmpty()) {
+        val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
+        if (playerMoves.isEmpty()) {
             return null
         }
 
         // TODO promotion
-        return playerMove[0]
+        return playerMoves[0]
     }
 
     private fun drawDots(moves: List<GameMove>) {
