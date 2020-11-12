@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.mygdx.game.MyGdxGame
-import com.mygdx.game.PlayerType
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import main.kotlin.Coordinate
@@ -18,8 +16,6 @@ import main.kotlin.GameMove
 import main.kotlin.players.Player
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
-import main.kotlin.players.ComputerPlayer
-import main.kotlin.players.HumanPlayer
 
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
@@ -45,7 +41,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private val pieceWidth: Float = squareWidth * 0.85f
 
     var currPlayer: Player? = null
-    var playerMove: GameMove? = null
 
     // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
@@ -68,7 +63,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         gameEngine.start()
     }
 
-    private fun showPromotionTable(moves: List<GameMove>) {
+    private fun showPromotionScreen(moves: List<GameMove>) {
         Gdx.gl.glEnable(GL20.GL_BLEND)
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA)
 
@@ -120,8 +115,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         if (srcX != null && srcY != null) {
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
             if (coordinate.y == yCoordinate) {
-                playerMove = coordinateMap[coordinate.x]
-                if (playerMove != null) {
+                currPlayer?.playerMove = coordinateMap[coordinate.x]
+                if (currPlayer?.playerMove != null) {
                     isPromotionScreen = false
                 }
             }
@@ -145,22 +140,19 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         if (!gameEngine.turn()) {
             switchToGameOverScreen(currPlayer!!)
         }
+
         if (gameEngine.gameType.getCurrentPlayer() != currPlayer) {
-            srcX = null
-            srcY = null
-            dstX = null
-            dstY = null
+            resetClicks()
         }
+
         drawBoard(moves)
         drawPieces()
         drawDots(moves)
         controls()
 
-
         if (isPromotionScreen) {
-            showPromotionTable(promotableMoves)
+            showPromotionScreen(promotableMoves)
         }
-
     }
 
     private fun reverseRow(index: Int) {
@@ -299,8 +291,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
                         }
                     }
-
                 }
+
                 shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
             }
         }
@@ -330,7 +322,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         srcY = null
         dstX = null
         dstY = null
-
     }
 
     private fun drawDots(moves: List<GameMove>) {
