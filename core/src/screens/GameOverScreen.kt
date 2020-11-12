@@ -42,7 +42,7 @@ class GameOverScreen(val game: MyGdxGame, val gameEngine: Game, val winner: Stri
 
     private fun switchToMenuScreen() {
         game.removeScreen<MenuScreen>()
-        game.addScreen(MenuScreen(MyGdxGame()))
+        game.addScreen(MenuScreen(game))
         dispose()
         game.setScreen<MenuScreen>()
     }
