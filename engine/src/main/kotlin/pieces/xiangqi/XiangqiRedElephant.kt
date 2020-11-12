@@ -10,10 +10,10 @@ class XiangqiRedElephant(override val player: Player) : Piece {
 
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.RestrictedDestination(Move.Stepper(Direction.NORTH_EAST, 2, true), listOf(), river),
-                Move.RestrictedDestination(Move.Stepper(Direction.NORTH_WEST, 2, true), listOf(), river),
-                Move.RestrictedDestination(Move.Stepper(Direction.SOUTH_EAST, 2, true), listOf(), river),
-                Move.RestrictedDestination(Move.Stepper(Direction.SOUTH_WEST, 2, true), listOf(), river),
+            Move.RestrictedDestination(Move.Stepper(Direction.NORTH_EAST, 2, true), listOf(), river),
+            Move.RestrictedDestination(Move.Stepper(Direction.NORTH_WEST, 2, true), listOf(), river),
+            Move.RestrictedDestination(Move.Stepper(Direction.SOUTH_EAST, 2, true), listOf(), river),
+            Move.RestrictedDestination(Move.Stepper(Direction.SOUTH_WEST, 2, true), listOf(), river),
         )
 
     override fun getSymbol(): String {

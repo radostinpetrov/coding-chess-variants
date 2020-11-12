@@ -1,6 +1,5 @@
 package screens
 
-
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -9,9 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
-import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
-import main.kotlin.Game
 import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.chess.CapablancaChess
 import main.kotlin.gameTypes.chess.Chess960
@@ -39,7 +36,6 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
     val onlineModeButton = TextButton("Play Online", skin)
     val localModeButton = TextButton("Play Local/Against Computer", skin)
-
 
     val startButton = TextButton("Start", skin)
 

@@ -3,7 +3,7 @@ package main.kotlin.notationFormatter
 import main.kotlin.Coordinate
 import main.kotlin.GameMove
 
-class ChessNotationInput(val height: Int): NotationFormatter {
+class ChessNotationInput(val height: Int) : NotationFormatter {
 
     /* Converts the string representation of a coordinate to a coordinate. e.g A1 -> Coordinate(0, 6) */
     override fun strToCoordinate(s: String): Coordinate? {
@@ -45,7 +45,7 @@ class ChessNotationInput(val height: Int): NotationFormatter {
         return sb.toString()
     }
 
-    private fun basicGameMoveToStr(gameMove: GameMove.BasicGameMove) : String {
+    private fun basicGameMoveToStr(gameMove: GameMove.BasicGameMove): String {
         val sb = StringBuilder()
         sb.append("${gameMove.pieceMoved.getSymbol()} moves from ${coordinateToStr(gameMove.from)} to ${coordinateToStr(gameMove.to)}")
 

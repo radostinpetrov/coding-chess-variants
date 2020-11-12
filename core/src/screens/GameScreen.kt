@@ -13,10 +13,9 @@ import ktx.app.KtxScreen
 import main.kotlin.Coordinate
 import main.kotlin.Game
 import main.kotlin.GameMove
-import main.kotlin.players.Player
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
-
+import main.kotlin.players.Player
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private val textures = Textures(game.assets)
@@ -26,6 +25,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private lateinit var shapeRenderer: ShapeRenderer
+    private lateinit var moves: List<GameMove>
 
     var srcX: Int? = null
     var srcY: Int? = null
@@ -61,11 +61,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
         Gdx.input.inputProcessor = Stage()
         gameEngine.start()
+        moves = gameEngine.gameType.getValidMoves(currPlayer!!)
     }
 
     private fun showPromotionScreen(moves: List<GameMove>) {
         Gdx.gl.glEnable(GL20.GL_BLEND)
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA)
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
@@ -114,11 +115,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
         if (srcX != null && srcY != null) {
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
-            if (coordinate.y == yCoordinate) {
+            if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
                 currPlayer?.playerMove = coordinateMap[coordinate.x]
-                if (currPlayer?.playerMove != null) {
-                    isPromotionScreen = false
-                }
+                isPromotionScreen = false
             }
         }
     }
@@ -126,7 +125,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     fun switchToGameOverScreen(player: Player) {
         game.removeScreen<GameOverScreen>()
 
-        //change this.
+        // change this.
         val playerName = playerMapping?.get(player)!!.toString()
 
         game.addScreen(GameOverScreen(game, gameEngine, playerName!!))
@@ -136,12 +135,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     override fun render(delta: Float) {
         currPlayer = gameType.getCurrentPlayer()
 
-        val moves = gameEngine.gameType.getValidMoves(currPlayer!!)
         if (!gameEngine.turn()) {
             switchToGameOverScreen(currPlayer!!)
         }
 
         if (gameEngine.gameType.getCurrentPlayer() != currPlayer) {
+            currPlayer = gameType.getCurrentPlayer()
+            moves = gameEngine.gameType.getValidMoves(currPlayer!!)
             resetClicks()
         }
 
@@ -215,9 +215,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
     }
 
-    private fun drawLineWithCenterOffset(x1: Int , y1: Int, x2: Int, y2: Int, width: Float) {
-        val offset = squareWidth/2
-        shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset,  squareWidth * y2 + offset, width)
+    private fun drawLineWithCenterOffset(x1: Int, y1: Int, x2: Int, y2: Int, width: Float) {
+        val offset = squareWidth / 2
+        shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset, squareWidth * y2 + offset, width)
     }
 
     private fun drawXiangqiBoard(moves: List<GameMove>, flipped: Boolean = false) {
@@ -288,7 +288,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
                                     moves
                                 )
                             }
-
                         }
                     }
                 }
@@ -306,8 +305,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             return null
         }
 
-
-        if (playerMoves.all{m -> m.displayPiecePromotedTo != null}) {
+        if (playerMoves.all { m -> m.displayPiecePromotedTo != null }) {
             isPromotionScreen = true
             promotableMoves = playerMoves
             resetClicks()
@@ -341,7 +339,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
 
         shapeRenderer.end()
-
     }
 
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =

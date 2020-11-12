@@ -11,9 +11,9 @@ class XiangqiRedSoldier(override val player: Player) : Piece {
 
     override val moveTypes: List<Move>
         get() = listOf(
-                Move.Stepper(Direction.NORTH, 1, true),
-                Move.Restricted(Move.Stepper(Direction.EAST, 1, true), listOf(), acrossRiverY),
-                Move.Restricted(Move.Stepper(Direction.WEST, 1, true), listOf(), acrossRiverY),
+            Move.Stepper(Direction.NORTH, 1, true),
+            Move.Restricted(Move.Stepper(Direction.EAST, 1, true), listOf(), acrossRiverY),
+            Move.Restricted(Move.Stepper(Direction.WEST, 1, true), listOf(), acrossRiverY),
         )
 
     override fun getSymbol(): String {

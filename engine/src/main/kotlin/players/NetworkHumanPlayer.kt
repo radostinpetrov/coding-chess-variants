@@ -2,8 +2,6 @@ package main.kotlin.players
 
 import main.kotlin.GameMove
 class NetworkHumanPlayer(val websocketClientManager: WebsocketClientManager) : HumanPlayer() {
-    override var playerMove: GameMove? = null
-
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
         if (playerMove == null) {
             return null
@@ -11,6 +9,7 @@ class NetworkHumanPlayer(val websocketClientManager: WebsocketClientManager) : H
 
         val temp = playerMove
         playerMove = null
+        println(choiceOfMoves.indexOf(temp))
         websocketClientManager.sendPlayerMove(choiceOfMoves.indexOf(temp))
         return temp
     }

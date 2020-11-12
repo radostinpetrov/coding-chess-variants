@@ -1,21 +1,17 @@
 package screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
-import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
 import main.kotlin.Game
 import main.kotlin.gameTypes.GameType
 import main.kotlin.players.NetworkEnemyPlayer
 import main.kotlin.players.NetworkHumanPlayer
-import main.kotlin.players.Player
 import main.kotlin.players.WebsocketClientManager
 
 class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
@@ -44,7 +40,6 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
     }
-
 
     override fun render(delta: Float) {
         stage.draw()

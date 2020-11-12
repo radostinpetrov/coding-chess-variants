@@ -16,8 +16,8 @@ class Janggi : AbstractChess() {
 
     override fun getValidMoves(player: Player): List<GameMove> {
         return super.getValidMoves(player)
-                .distinct()
-                .filter { !generalsFaceEachOther(it) }
+            .distinct()
+            .filter { !generalsFaceEachOther(it) }
     }
 
     private fun generalsFaceEachOther(move: GameMove): Boolean {

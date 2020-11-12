@@ -4,9 +4,8 @@ import main.kotlin.GameMove
 import main.kotlin.gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
-import java.net.URI
 import org.json.JSONObject
-import javax.net.ssl.SSLSocketFactory
+import java.net.URI
 
 class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
     lateinit var game: AbstractChess
@@ -20,7 +19,6 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
 
     lateinit var enemyId: String
 
-
     init {
         createWebSocketClient(serverUri)
 
@@ -28,7 +26,6 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
 //        webSocketClient.setSocketFactory(socketFactory)
         webSocketClient.connect()
     }
-
 
     private fun createWebSocketClient(coinbaseUri: URI?) {
         webSocketClient = object : WebSocketClient(coinbaseUri) {
@@ -69,26 +66,25 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
                 println("onError")
 //            Log.e(TAG, "onError: ${ex?.message}")
             }
-
         }
     }
 
     fun sendPlayerMove(moveIndex: Int) {
         webSocketClient.send(
-                "{\n" +
-                        "    \"type\": \"makeMove\",\n" +
-                        "    \"move\": $moveIndex,\n" +
-                        "    \"opponentId\": \"$enemyId\"\n" +
-                        "}"
+            "{\n" +
+                "    \"type\": \"makeMove\",\n" +
+                "    \"move\": $moveIndex,\n" +
+                "    \"opponentId\": \"$enemyId\"\n" +
+                "}"
         )
     }
 
     private fun sendMatchmakingRequest() {
         webSocketClient.send(
-                "{\n" +
-                        "    \"type\": \"matchmaking\",\n" +
-                        "    \"gameMode\": \"standard\""+
-                        "}"
+            "{\n" +
+                "    \"type\": \"matchmaking\",\n" +
+                "    \"gameMode\": \"standard\"" +
+                "}"
         )
     }
 

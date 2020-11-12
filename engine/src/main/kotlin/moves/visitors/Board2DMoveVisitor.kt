@@ -4,9 +4,9 @@ import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.boards.Board2D
 import main.kotlin.moves.Direction
+import main.kotlin.moves.Move
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
-import main.kotlin.moves.Move
 
 class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
     override fun visit(coordinate: Coordinate, piece: Piece, move: Move, player: Player): List<GameMove.BasicGameMove> {
