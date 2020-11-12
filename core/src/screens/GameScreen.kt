@@ -15,6 +15,7 @@ import main.kotlin.Game
 import main.kotlin.GameMove
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
+import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
 class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
@@ -181,6 +182,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     }
 
     private fun controls() {
+        if (!(this.currPlayer is HumanPlayer)) {
+            return
+        }
         val input = Gdx.input
         val graphics = Gdx.graphics
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
