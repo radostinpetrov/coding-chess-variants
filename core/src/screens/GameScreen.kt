@@ -334,6 +334,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         val toCoordinates = moves.filter { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) }
             .map { m -> m.displayTo }
 
+        if (toCoordinates.isEmpty()) {
+            resetClicks()
+        }
+
         /* Draw toCoordinates dots for a selected piece. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = possibleMoveColour
