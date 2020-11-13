@@ -2,10 +2,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const uuid = require('uuid')
 
-const server = https.createServer({
-  cert: fs.readFileSync('/path/to/cert.pem'),
-  key: fs.readFileSync('/path/to/key.pem')
-});
+const server = http.createServer();
 
 const wss = new WebSocket.Server({ server });
 
@@ -37,8 +34,9 @@ function matchmaking(ws) {
   if (queue.length == 2) {
     const p1ws = queue[0]
     const p2ws = queue[1]
-    p1ws.send(JSON.stringify({type:"startGame", player:1, opponentId: p2ws.id}))
-    p2ws.send(JSON.stringify({type:"startGame", player:2, opponentId: p1ws.id}))
+    const seed = Math.random()
+    p1ws.send(JSON.stringify({type:"startGame", player:1, opponentId: p2ws.id, seed}))
+    p2ws.send(JSON.stringify({type:"startGame", player:2, opponentId: p1ws.id, seed}))
     matches[p1ws] = p2ws.id
     matches[p2ws] = p1ws.id
     queue.length = 0

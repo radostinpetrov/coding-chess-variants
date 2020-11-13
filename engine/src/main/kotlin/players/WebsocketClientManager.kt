@@ -7,7 +7,7 @@ import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
 import java.net.URI
 
-class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
+class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
     lateinit var game: AbstractChess
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
@@ -46,7 +46,7 @@ class WebsocketClientManager(val startGameFunction: (Int) -> Unit) {
 //                        networkHumanPlayer = NetworkHumanPlayer()
 //                        networkEnemyPlayer = game.
                         enemyId = jsonMessage.getString("opponentId")
-                        startGameFunction(jsonMessage.getInt("player"))
+                        startGameFunction(jsonMessage.getInt("player"), jsonMessage.getDouble("seed"))
                     }
                     "receiveMove" -> {
                         val move = jsonMessage.getInt("move")

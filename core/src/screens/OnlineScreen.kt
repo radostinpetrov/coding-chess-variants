@@ -25,7 +25,10 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
 
     val startButton = TextButton("Start", skin)
 
-    val websocketClientManager = WebsocketClientManager { m: Int -> humanPlayer = m }
+    val websocketClientManager = WebsocketClientManager { m: Int, seed: Double ->
+        humanPlayer = m
+        gameType.seed = seed
+    }
 
     var humanPlayer: Int? = null
 

@@ -4,14 +4,13 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
+import main.kotlin.pieces.chess.*
 import main.kotlin.pieces.chess.StandardBlackPawn
 import main.kotlin.pieces.chess.StandardWhitePawn
-import main.kotlin.pieces.chess.*
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
-
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
@@ -40,8 +39,7 @@ class Chess960 : AbstractChess(listOf(Enpassant())) {
             }
         }
 
-        val permutation = possiblePermutations.random()
-
+        val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
