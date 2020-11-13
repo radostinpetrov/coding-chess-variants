@@ -129,8 +129,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
         // change this.
         val playerName = playerMapping?.get(player)!!.toString()
-
-        game.addScreen(GameOverScreen(game, gameEngine, playerName!!))
+        if (playerName == "fffffff") {
+            game.addScreen(GameOverScreen(game, gameEngine, "Black"))
+        } else {
+            game.addScreen(GameOverScreen(game, gameEngine, "White"))
+        }
         game.setScreen<GameOverScreen>()
     }
 
