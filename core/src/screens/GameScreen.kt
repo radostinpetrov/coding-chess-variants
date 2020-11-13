@@ -24,7 +24,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private var windowWidth: Int = 800
 
     private val possibleMoveCircleRadius = 8f
-    private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
+    // private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
+    private val possibleMoveColour = Color.FOREST
     private lateinit var shapeRenderer: ShapeRenderer
     private lateinit var moves: List<GameMove>
 
