@@ -90,7 +90,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
-//        shapeRenderer.color = Color.PINK
+//        shapeRenderer.color = Color.z
 //        for (i in moves.indices) {
 //            shapeRenderer.rect( x + (i * squareWidth), y, squareWidth, squareWidth)
 //        }
@@ -182,28 +182,31 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     }
 
     private fun controls() {
-        if (!(this.currPlayer is HumanPlayer)) {
+        if (this.currPlayer !is HumanPlayer) {
             return
         }
         val input = Gdx.input
         val graphics = Gdx.graphics
+
+        val x = input.x
+        val y = graphics.height - input.y
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            if (isPromotionScreen) {
-                srcX = input.x
-                srcY = graphics.height - input.y
+            if (srcX == null || isPromotionScreen) {
+                srcX = x
+                srcY = y
+                dstX = null
+                dstY = null
+            } else if (srcX != null && dstX == null &&
+                moves.any { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
+                            && m.displayTo == getPieceCoordinateFromMousePosition(x, y) }
+            ) {
+                dstX = x
+                dstY = y
             } else {
-                if (srcX == null) {
-                    srcX = input.x
-                    srcY = graphics.height - input.y
-                } else if (srcX != null && dstX == null) {
-                    dstX = input.x
-                    dstY = graphics.height - input.y
-                } else {
-                    srcX = input.x
-                    srcY = graphics.height - input.y
-                    dstX = null
-                    dstY = null
-                }
+                srcX = x
+                srcY = y
+                dstX = null
+                dstY = null
             }
         }
 
@@ -331,12 +334,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             return
         }
 
+        if (moves.isEmpty()) {
+            resetClicks()
+            return
+        }
+
         val toCoordinates = moves.filter { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) }
             .map { m -> m.displayTo }
-
-        if (toCoordinates.isEmpty()) {
-            resetClicks()
-        }
 
         /* Draw toCoordinates dots for a selected piece. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
