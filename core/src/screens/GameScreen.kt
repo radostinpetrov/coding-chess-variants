@@ -149,9 +149,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             moves = gameEngine.gameType.getValidMoves(currPlayer!!)
             resetClicks()
         }
-
-        drawBoard(moves)
-        drawPieces()
+        val flip = playerMapping?.get(currPlayer!!) == Color.BLACK
+        // print(playerMapping?.get(currPlayer!!) == Color.BLACK)
+        drawBoard(moves, flipped = flip)
+        drawPieces(flipped = flip)
         drawDots(moves)
         controls()
 
@@ -220,7 +221,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private fun drawBoard(moves: List<GameMove>, flipped: Boolean = false) {
         when (gameType) {
             is Xiangqi, is Janggi -> drawXiangqiBoard(moves)
-            else -> drawChessBoard(moves)
+            else -> drawChessBoard(moves, flipped)
         }
     }
 
@@ -262,13 +263,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private fun drawChessBoard(moves: List<GameMove>, flipped: Boolean = false) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        var colour1: Color = Color.TAN
-        var colour2: Color = Color.BROWN
-
-        if (flipped) {
-            colour1 = Color.BROWN
-            colour2 = Color.TAN
-        }
+        var colour2: Color = Color.TAN
+        var colour1: Color = Color.BROWN
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
 
@@ -358,7 +354,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
-    private fun drawPieces() {
+    private fun drawPieces(flipped: Boolean = false) {
         val batch = game.batch
         batch.begin()
         val pieces = board.getPieces()
@@ -368,7 +364,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
-            sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
+
+
+            if (flipped) {
+                sprite.setPosition(squareWidth * (rows - c.x - 1) + posWithinSquare, squareWidth * (columns - c.y - 1) + posWithinSquare)
+            } else {
+                sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
+            }
+
 
             sprite.setSize(pieceWidth, pieceWidth)
             sprite.draw(batch)
