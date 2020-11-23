@@ -16,14 +16,14 @@ class MyGdxGame : KtxGame<KtxScreen>() {
     internal lateinit var batch: SpriteBatch
 //    internal lateinit var img: Texture
     internal lateinit var font: BitmapFont
-//    internal lateinit var shapeRenderer: ShapeRenderer
+    internal lateinit var shapeRenderer: ShapeRenderer
 
     val assets by lazy { AssetManager() }
 
     override fun create() {
         batch = SpriteBatch()
         font = BitmapFont()
-//        shapeRenderer = ShapeRenderer()
+        shapeRenderer = ShapeRenderer()
 
         TextureAssets.values().forEach { assets.load(it) }
         assets.finishLoading()
