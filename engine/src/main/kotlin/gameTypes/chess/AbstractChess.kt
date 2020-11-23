@@ -50,7 +50,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
         for (rule in rules) {
-            possibleMoves.addAll(rule.getPossibleMoves(this, player))
+            rule.getPossibleMoves(this, player, possibleMoves)
         }
         return possibleMoves
     }
@@ -223,7 +223,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     override fun checkValidGame(): Boolean {
-
         if (players.size != NUM_PLAYERS) {
             print("Incorrect number of players")
             return false

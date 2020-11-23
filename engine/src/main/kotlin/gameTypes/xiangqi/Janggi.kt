@@ -4,13 +4,15 @@ import main.kotlin.Coordinate
 import main.kotlin.GameMove
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.AbstractChess
+import main.kotlin.gameTypes.xiangqi.rules.GeneralsRule
 import main.kotlin.moves.visitors.Board2DMoveVisitor
 import main.kotlin.pieces.janggi.*
 import main.kotlin.players.Player
 import kotlin.math.max
 import kotlin.math.min
 
-class Janggi : AbstractChess() {
+
+class Janggi : AbstractChess(listOf(GeneralsRule())) {
     override val board = Board2D(10, 9)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 

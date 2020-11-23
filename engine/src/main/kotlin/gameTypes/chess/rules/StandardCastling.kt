@@ -8,7 +8,7 @@ import main.kotlin.pieces.chess.Rook
 import main.kotlin.players.Player
 
 class StandardCastling : SpecialRules<StandardChess> {
-    override fun getPossibleMoves(game: StandardChess, player: Player): List<GameMove> {
+    override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<GameMove>) {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayer = player
@@ -20,7 +20,7 @@ class StandardCastling : SpecialRules<StandardChess> {
             when (move) {
                 is GameMove.BasicGameMove -> {
                     if (move.pieceMoved is King) {
-                        return res
+                        return
                     }
                     if (rooks.contains(move.pieceMoved)) {
                         rooks.remove(move.pieceMoved)
@@ -29,7 +29,7 @@ class StandardCastling : SpecialRules<StandardChess> {
                 is GameMove.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove.pieceMoved is King) {
-                            return res
+                            return
                         }
                         if (rooks.contains(basicMove.pieceMoved)) {
                             rooks.remove(basicMove.pieceMoved)
@@ -40,10 +40,7 @@ class StandardCastling : SpecialRules<StandardChess> {
         }
 
         val kingCoordinate = board.getPieces(currentPlayer).find { p -> p.first.player == currentPlayer && p.first is King }!!.second
-        val king = game.board.getPiece(kingCoordinate)
-        if (king == null) {
-            return res
-        }
+        val king = game.board.getPiece(kingCoordinate) ?: return
         // Check Left for check
         var leftRook: Coordinate? = null
         var rightRook: Coordinate? = null
@@ -91,6 +88,6 @@ class StandardCastling : SpecialRules<StandardChess> {
                 )
             )
         }
-        return res
+        moves.addAll(res)
     }
 }

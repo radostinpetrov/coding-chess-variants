@@ -5,5 +5,5 @@ import main.kotlin.gameTypes.GameType
 import main.kotlin.players.Player
 
 interface SpecialRules<out T : GameType> {
-    fun getPossibleMoves(game: @UnsafeVariance T, player: Player): List<GameMove>
+    fun getPossibleMoves(game: @UnsafeVariance T, player: Player, moves: MutableList<GameMove>)
 }
