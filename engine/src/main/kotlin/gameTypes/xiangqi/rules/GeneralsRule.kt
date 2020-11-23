@@ -5,7 +5,6 @@ import main.kotlin.GameMove
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.rules.SpecialRules
 import main.kotlin.pieces.King
-import main.kotlin.pieces.janggi.General
 import main.kotlin.players.Player
 import kotlin.math.max
 import kotlin.math.min
@@ -17,8 +16,8 @@ class GeneralsRule : SpecialRules<AbstractChess> {
 
     private fun generalsFaceEachOther(game: AbstractChess, move: GameMove): Boolean {
         game.makeMove(move)
-        val generalCoordinates = game.board.getPieces().filter { it.first is General }
-        if (generalCoordinates.size < 2){
+        val generalCoordinates = game.board.getPieces().filter { it.first is King }
+        if (generalCoordinates.size < 2) {
             game.undoMove()
             return false
         }

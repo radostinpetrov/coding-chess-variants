@@ -11,9 +11,8 @@ class StandardCastling : SpecialRules<StandardChess> {
     override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<GameMove>) {
         val board = game.board
         val moveLog = game.moveLog
-        val currentPlayer = player
-        val currentPlayerMoves = moveLog.filter { x -> x.player == currentPlayer }
-        val rooks = (board.getPieces(currentPlayer).filter { p -> p.first.player == currentPlayer && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+        val currentPlayerMoves = moveLog.filter { x -> x.player == player }
+        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
 
         val res = mutableListOf<GameMove>()
         for (move in currentPlayerMoves) {
@@ -39,7 +38,7 @@ class StandardCastling : SpecialRules<StandardChess> {
             }
         }
 
-        val kingCoordinate = board.getPieces(currentPlayer).find { p -> p.first.player == currentPlayer && p.first is King }!!.second
+        val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
         val king = game.board.getPiece(kingCoordinate) ?: return
         // Check Left for check
         var leftRook: Coordinate? = null

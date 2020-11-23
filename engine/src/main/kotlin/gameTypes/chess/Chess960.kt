@@ -4,9 +4,7 @@ import main.kotlin.Coordinate
 import main.kotlin.boards.Board2D
 import main.kotlin.gameTypes.chess.rules.Enpassant
 import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.chess.*
-import main.kotlin.pieces.chess.StandardBlackPawn
-import main.kotlin.pieces.chess.StandardWhitePawn
+import main.kotlin.pieces.chess.* // ktlint-disable no-wildcard-imports
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)
