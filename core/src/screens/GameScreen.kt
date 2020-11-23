@@ -161,7 +161,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             moves = gameEngine.gameType.getValidMoves(currPlayer!!)
             resetClicks()
         }
-        val flip = playerMapping?.get(currPlayer!!) == Color.BLACK
+        val flip = playerMapping?.get(currPlayer!!) == Color.BLACK && playerMapping?.get(currPlayer!!) is HumanPlayer
         // print(playerMapping?.get(currPlayer!!) == Color.BLACK)
         // drawBoard(moves, flipped = flip)
         guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
