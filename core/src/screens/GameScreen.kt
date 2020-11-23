@@ -1,5 +1,8 @@
 package screens
 
+import boards.ChessBoard
+import boards.GUIBoard
+import boards.XiangqiBoard
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
@@ -40,6 +43,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val rows = board.n
     val columns = board.m
 
+    lateinit var guiBoard: GUIBoard
+
     private var squareWidth: Float = (windowHeight / rows).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
 
@@ -66,6 +71,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         Gdx.input.inputProcessor = Stage()
         gameEngine.start()
         moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+
+        guiBoard =  when (gameType) {
+            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
+            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
+        }
     }
 
     private fun showPromotionScreen(moves: List<GameMove>) {
@@ -153,8 +163,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
         val flip = playerMapping?.get(currPlayer!!) == Color.BLACK
         // print(playerMapping?.get(currPlayer!!) == Color.BLACK)
-        drawBoard(moves, flipped = flip)
-        drawPieces(flipped = flip)
+        // drawBoard(moves, flipped = flip)
+        guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
+        // drawPieces(flipped = flip)
         drawDots(moves)
         controls()
         drawPanel()
@@ -208,6 +219,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             ) {
                 dstX = x
                 dstY = y
+                currPlayer?.playerMove = getMove(
+                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                    moves
+                )
             } else {
                 srcX = x
                 srcY = y
@@ -219,93 +235,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         if (input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             resetClicks()
         }
+
     }
 
-    private fun drawBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        when (gameType) {
-            is Xiangqi, is Janggi -> drawXiangqiBoard(moves)
-            else -> drawChessBoard(moves, flipped)
-        }
-    }
-
-    private fun drawLineWithCenterOffset(x1: Int, y1: Int, x2: Int, y2: Int, width: Float) {
-        val offset = squareWidth / 2
-        shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset, squareWidth * y2 + offset, width)
-    }
-
-    private fun drawXiangqiBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        val lineWidth = 4f
-        Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        shapeRenderer.color = Color.BROWN
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        for (j in 0 until rows) {
-            drawLineWithCenterOffset(0, j, columns - 1, j, lineWidth)
-        }
-        for (j in 0 until columns) {
-            drawLineWithCenterOffset(j, 0, j, 4, lineWidth)
-            drawLineWithCenterOffset(j, 5, j, 9, lineWidth)
-        }
-        drawLineWithCenterOffset(3, 0, 5, 2, lineWidth)
-        drawLineWithCenterOffset(5, 0, 3, 2, lineWidth)
-        drawLineWithCenterOffset(3, 7, 5, 9, lineWidth)
-        drawLineWithCenterOffset(5, 7, 3, 9, lineWidth)
-
-        shapeRenderer.end()
-        if (dstX != null && dstY != null) {
-            if (srcX != null && srcY != null) {
-                currPlayer?.playerMove = getMove(
-                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                    moves
-                )
-            }
-        }
-    }
-
-    private fun drawChessBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        var colour2: Color = Color.TAN
-        var colour1: Color = Color.BROWN
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-
-        for (i in 0 until columns) {
-            for (j in 0 until rows) {
-                if ((i + j) % 2 == 0) {
-                    shapeRenderer.color = colour1
-                } else {
-                    shapeRenderer.color = colour2
-                }
-                if (!isPromotionScreen) {
-
-                    if (srcX != null && srcY != null) {
-                        if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
-                            shapeRenderer.color = Color.FOREST
-                        }
-                    }
-
-                    if (dstX != null && dstY != null) {
-                        if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
-
-                            if (srcX != null && srcY != null) {
-                                currPlayer?.playerMove = getMove(
-                                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                                    moves
-                                )
-                            }
-                        }
-                    }
-                }
-
-                shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
-            }
-        }
-
-        shapeRenderer.end()
-    }
 
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
