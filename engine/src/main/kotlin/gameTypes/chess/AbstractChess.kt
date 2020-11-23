@@ -21,7 +21,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     var stalemate = false
     var checkmate = false
 
-    val NUM_PLAYERS = 2
+    override val NUM_PLAYERS = 2
 
     override fun isOver(): Boolean {
         return checkmate || stalemate
@@ -190,10 +190,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         }
     }
 
-    override fun addPlayer(player: Player) {
-        players.add(player)
-    }
-
     override fun turn() {
         val player = players[playerTurn]
         val moves = getValidMoves(player)
@@ -207,26 +203,5 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             this.makeMove(move)
             nextPlayer()
         }
-    }
-
-    override fun nextPlayer() {
-        playerTurn++
-        playerTurn %= players.size
-    }
-
-    override fun getCurrentPlayer(): Player {
-        return players[playerTurn]
-    }
-
-    override fun getNextPlayer(): Player {
-        return players[(playerTurn + 1) % players.size]
-    }
-
-    override fun checkValidGame(): Boolean {
-        if (players.size != NUM_PLAYERS) {
-            print("Incorrect number of players")
-            return false
-        }
-        return true
     }
 }

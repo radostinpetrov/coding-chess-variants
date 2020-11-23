@@ -13,6 +13,7 @@ interface GameType {
     var playerTurn: Int
     val moveVisitor: MoveVisitor<Board2D>
     var seed: Double?
+    val NUM_PLAYERS: Int
 
     fun initGame()
     fun isOver(): Boolean
@@ -21,10 +22,25 @@ interface GameType {
 
     // fun getHistory(): List<Pair<Board, GameMove>>
     fun makeMove(gameMove: GameMove)
-    fun addPlayer(player: Player)
+    fun addPlayer(player: Player) {
+        players.add(player)
+    }
     fun turn()
-    fun nextPlayer()
-    fun getCurrentPlayer(): Player
-    fun getNextPlayer(): Player
-    fun checkValidGame(): Boolean
+    fun nextPlayer() {
+        playerTurn++
+        playerTurn %= players.size
+    }
+    fun getCurrentPlayer(): Player {
+        return players[playerTurn]
+    }
+    fun getNextPlayer(): Player {
+        return players[(playerTurn + 1) % players.size]
+    }
+    fun checkValidGame(): Boolean {
+        if (players.size != NUM_PLAYERS) {
+            print("Incorrect number of players")
+            return false
+        }
+        return true
+    }
 }
