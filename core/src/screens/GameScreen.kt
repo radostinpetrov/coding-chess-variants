@@ -166,8 +166,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         // drawBoard(moves, flipped = flip)
         guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
         // drawPieces(flipped = flip)
-        drawDots(moves)
-        controls()
+        drawDots(moves, flip)
+        controls(flip)
         drawPanel()
 
         if (isPromotionScreen) {
@@ -200,15 +200,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
     }
 
-    private fun controls() {
+    private fun controls(flipped: Boolean) {
         if (this.currPlayer !is HumanPlayer) {
             return
         }
         val input = Gdx.input
         val graphics = Gdx.graphics
 
-        val x = input.x
-        val y = graphics.height - input.y
+        var x = input.x
+        var y = graphics.height - input.y
+
+        if (flipped) {
+            x = ((columns * squareWidth) - x).toInt()
+            y = graphics.height - y
+        }
+
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null || isPromotionScreen) {
                 srcX = x
@@ -262,7 +268,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         dstY = null
     }
 
-    private fun drawDots(moves: List<GameMove>) {
+    private fun drawDots(moves: List<GameMove>, flipped: Boolean) {
         if (srcX == null || srcY == null || isPromotionScreen) {
             return
         }
@@ -280,7 +286,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
         for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (c.y) + position, possibleMoveCircleRadius)
+            if (flipped) {
+                shapeRenderer.circle(squareWidth * (columns - c.x - 1) + position, squareWidth * (rows - c.y - 1) + position, possibleMoveCircleRadius)
+            } else {
+                shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (c.y) + position, possibleMoveCircleRadius)
+            }
         }
 
         shapeRenderer.end()
@@ -289,31 +299,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
-    private fun drawPieces(flipped: Boolean = false) {
-        val batch = game.batch
-        batch.begin()
-        val pieces = board.getPieces()
 
-        for ((p, c) in pieces) {
-            val texture = textures.getTextureFromPiece(p, playerMapping!![p.player]!!)
-            val sprite = Sprite(texture)
-
-            val posWithinSquare = (squareWidth - pieceWidth) / 2
-
-
-            if (flipped) {
-                sprite.setPosition(squareWidth * (rows - c.x - 1) + posWithinSquare, squareWidth * (columns - c.y - 1) + posWithinSquare)
-            } else {
-                sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
-            }
-
-
-            sprite.setSize(pieceWidth, pieceWidth)
-            sprite.draw(batch)
-        }
-
-        batch.end()
-    }
 
     private fun drawPanel() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)

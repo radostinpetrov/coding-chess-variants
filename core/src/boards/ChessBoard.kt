@@ -44,8 +44,13 @@ class ChessBoard(
 
 
                 }
+                if (flipped){
+                    shapeRenderer.rect(squareWidth * (columns - i - 1), squareWidth * (rows - j - 1), squareWidth, squareWidth)
 
-                shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
+                } else {
+                    shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
+
+                }
             }
         }
 

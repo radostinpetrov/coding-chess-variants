@@ -35,7 +35,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
 
 
             if (flipped) {
-                sprite.setPosition(squareWidth * (rows - c.x - 1) + posWithinSquare, squareWidth * (columns - c.y - 1) + posWithinSquare)
+                sprite.setPosition(squareWidth * (columns - c.x - 1) + posWithinSquare, squareWidth * (rows - c.y - 1) + posWithinSquare)
             } else {
                 sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
             }
