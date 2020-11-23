@@ -24,10 +24,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private var windowWidth: Int = 800
 
     private val possibleMoveCircleRadius = 8f
-    // private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
     private val possibleMoveColour = Color.FOREST
     private lateinit var shapeRenderer: ShapeRenderer
     private lateinit var moves: List<GameMove>
+
+    private var panelWidth: Int = 300
 
     var srcX: Int? = null
     var srcY: Int? = null
@@ -53,9 +54,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     override fun show() {
         if (rows != columns) {
             windowWidth = (windowHeight * columns) / rows
-            Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
-            game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         }
+        Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
+        game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
 
         shapeRenderer = ShapeRenderer()
 
@@ -154,6 +155,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         drawPieces()
         drawDots(moves)
         controls()
+        drawPanel()
 
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
@@ -375,5 +377,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         }
 
         batch.end()
+    }
+
+    private fun drawPanel() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.color = Color.BLUE
+        shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
+        shapeRenderer.end()
     }
 }
