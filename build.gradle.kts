@@ -47,7 +47,6 @@ project(":engine") {
         implementation("org.java-websocket:Java-WebSocket:1.5.1")
         implementation("org.slf4j:slf4j-nop:1.7.30")
         implementation("org.json:json:20200518")
-
     }
 
     tasks.withType<KotlinCompile>() {

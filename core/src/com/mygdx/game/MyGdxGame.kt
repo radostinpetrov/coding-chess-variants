@@ -14,7 +14,7 @@ import screens.MenuScreen
 class MyGdxGame : KtxGame<KtxScreen>() {
 
     internal lateinit var batch: SpriteBatch
-    internal lateinit var img: Texture
+//    internal lateinit var img: Texture
     internal lateinit var font: BitmapFont
     internal lateinit var shapeRenderer: ShapeRenderer
 
