@@ -58,7 +58,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
         game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
 
-        shapeRenderer = game.shapeRenderer
+//        shapeRenderer = game.shapeRenderer
+        shapeRenderer = ShapeRenderer()
 
         currPlayer = gameType.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
