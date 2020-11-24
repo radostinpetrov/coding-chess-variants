@@ -1,9 +1,9 @@
-package main.kotlin.pieces.janggi
+package pieces.janggi
 
-import main.kotlin.moves.Direction
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Direction
+import moves.Move
+import pieces.Piece
+import players.Player
 
 class Horse(override val player: Player) : Piece {
     override val moveTypes: List<Move>

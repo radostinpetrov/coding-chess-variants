@@ -1,18 +1,17 @@
 package testGameTypes
 
 import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.pieces.chess.*
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.chess.AbstractChess
+import gameTypes.chess.StandardChess
+import players.Player
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.chess.*
 
 
 class StandardChessTest {
@@ -81,16 +80,20 @@ class StandardChessTest {
 
     @Test
     fun fromCoordinateIsEmptyAfterMove() {
-        board.addPiece(Coordinate(0,0), StandardWhitePawn(mockHumanPlayer1))
-        val gameMove = GameMove.BasicGameMove(Coordinate(0,0), Coordinate(1,0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
+        board.addPiece(Coordinate(0, 0), StandardWhitePawn(mockHumanPlayer1))
+        val gameMove = GameMove.BasicGameMove(
+            Coordinate(0, 0),
+            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.from) == null)
     }
 
     @Test
     fun toCoordinateIsNewPiece() {
-        board.addPiece(Coordinate(0,0), StandardWhitePawn(mockHumanPlayer1))
-        val gameMove = GameMove.BasicGameMove(Coordinate(0,0), Coordinate(1,0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
+        board.addPiece(Coordinate(0, 0), StandardWhitePawn(mockHumanPlayer1))
+        val gameMove = GameMove.BasicGameMove(
+            Coordinate(0, 0),
+            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.to) == gameMove.pieceMoved)
         if (gameMove.pieceCaptured != null) {

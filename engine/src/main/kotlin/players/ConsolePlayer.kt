@@ -1,6 +1,7 @@
-package main.kotlin.players
+package players
 
-import main.kotlin.GameMove
+import GameMove
+import players.Player
 
 abstract class ConsolePlayer: Player {
     abstract var playerMove: GameMove?

@@ -1,9 +1,9 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.moves.Move
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Move
+import pieces.King
+import pieces.Piece
+import players.Player
 
 data class King(override val player: Player) : Piece, King {
     override val moveTypes: List<Move>

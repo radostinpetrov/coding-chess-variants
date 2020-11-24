@@ -1,7 +1,5 @@
-package main.kotlin
-
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import pieces.Piece
+import players.Player
 
 sealed class GameMove(open val player: Player) {
     abstract val displayFrom: Coordinate

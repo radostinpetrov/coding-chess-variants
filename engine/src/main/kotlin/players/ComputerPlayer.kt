@@ -1,6 +1,6 @@
-package main.kotlin.players
+package players
 
-import main.kotlin.GameMove
+import GameMove
 
 class ComputerPlayer(val delay: Long) : ConsolePlayer() {
     override var playerMove: GameMove? = null

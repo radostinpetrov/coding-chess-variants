@@ -1,9 +1,9 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.moves.Direction
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Direction
+import moves.Move
+import pieces.Piece
+import players.Player
 
 open class BlackPawn(override val player: Player, val startingRow: Int) : Piece {
     override val moveTypes: List<Move>

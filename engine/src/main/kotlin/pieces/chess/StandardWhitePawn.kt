@@ -1,5 +1,5 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.players.Player
+import players.Player
 
 data class StandardWhitePawn(override val player: Player) : WhitePawn(player, 1)

@@ -1,7 +1,7 @@
-package main.kotlin.players
+package players
 
-import main.kotlin.GameMove
-import main.kotlin.notationFormatter.NotationFormatter
+import GameMove
+import notationFormatter.NotationFormatter
 
 class TestHumanPlayer(val notationFormatter: NotationFormatter) : ConsolePlayer() {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false

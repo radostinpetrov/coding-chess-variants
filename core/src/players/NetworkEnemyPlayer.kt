@@ -1,6 +1,5 @@
 package main.kotlin.players
 
-import main.kotlin.GameMove
 import screens.GameScreen
 
 class NetworkEnemyPlayer(game: GameScreen) : SignalPlayer(game) {

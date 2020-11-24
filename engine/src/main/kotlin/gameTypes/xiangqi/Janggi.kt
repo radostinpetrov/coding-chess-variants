@@ -1,11 +1,11 @@
-package main.kotlin.gameTypes.xiangqi
+package gameTypes.xiangqi
 
-import main.kotlin.Coordinate
-import main.kotlin.boards.Board2D
-import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.gameTypes.xiangqi.rules.GeneralsRule
-import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.janggi.* // ktlint-disable no-wildcard-imports
+import Coordinate
+import boards.Board2D
+import gameTypes.chess.AbstractChess
+import gameTypes.xiangqi.rules.GeneralsRule
+import moves.visitors.Board2DMoveVisitor
+import pieces.janggi.* // ktlint-disable no-wildcard-imports
 
 class Janggi : AbstractChess(listOf(GeneralsRule())) {
     override val board = Board2D(10, 9)

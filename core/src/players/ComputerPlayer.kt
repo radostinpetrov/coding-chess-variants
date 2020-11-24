@@ -9,6 +9,5 @@ class ComputerPlayer(gameScreen: GameScreen, val delay: Long) : SignalPlayer(gam
         // TODO FIX COMPUTER PLAYER LAG SITUATION
 //        Thread.sleep(delay)
         gameScreen.processTurn(validMoves[(validMoves.indices).random()])
-
     }
 }

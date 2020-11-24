@@ -1,11 +1,11 @@
-package main.kotlin.gameTypes.xiangqi.rules
+package gameTypes.xiangqi.rules
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.gameTypes.chess.rules.SpecialRules
-import main.kotlin.pieces.King
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.chess.AbstractChess
+import gameTypes.chess.rules.SpecialRules
+import pieces.King
+import players.Player
 import kotlin.math.max
 import kotlin.math.min
 

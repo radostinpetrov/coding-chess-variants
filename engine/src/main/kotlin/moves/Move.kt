@@ -1,6 +1,6 @@
-package main.kotlin.moves
+package moves
 
-import main.kotlin.pieces.Piece
+import pieces.Piece
 
 sealed class Move {
     data class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : Move()

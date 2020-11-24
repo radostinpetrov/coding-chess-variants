@@ -1,11 +1,11 @@
-package main.kotlin.gameTypes.chess.rules
+package gameTypes.chess.rules
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.pieces.chess.BlackPawn
-import main.kotlin.pieces.chess.WhitePawn
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.chess.AbstractChess
+import pieces.chess.BlackPawn
+import pieces.chess.WhitePawn
+import players.Player
 import kotlin.math.abs
 
 class Enpassant : SpecialRules<AbstractChess> {
@@ -26,8 +26,12 @@ class Enpassant : SpecialRules<AbstractChess> {
             res.add(
                 GameMove.CompositeGameMove(
                     listOf(
-                        GameMove.BasicGameMove(Coordinate(pawn.second.x, pawn.second.y), Coordinate(prevMove.to.x, prevMove.to.y), pawn.first, player, prevMove.pieceMoved, checkForCheck = false),
-                        GameMove.BasicGameMove(Coordinate(prevMove.to.x, prevMove.to.y), Coordinate(prevMove.to.x, prevMove.to.y + dy), pawn.first, player)
+                        GameMove.BasicGameMove(
+                            Coordinate(pawn.second.x, pawn.second.y),
+                            Coordinate(prevMove.to.x, prevMove.to.y), pawn.first, player, prevMove.pieceMoved, checkForCheck = false),
+                        GameMove.BasicGameMove(
+                            Coordinate(prevMove.to.x, prevMove.to.y),
+                            Coordinate(prevMove.to.x, prevMove.to.y + dy), pawn.first, player)
                     ),
                     player
                 )

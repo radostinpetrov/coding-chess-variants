@@ -1,7 +1,7 @@
 package main.kotlin.players
 
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.AbstractChess
+import GameMove
+import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject

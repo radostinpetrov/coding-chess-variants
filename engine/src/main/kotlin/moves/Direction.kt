@@ -1,6 +1,6 @@
-package main.kotlin.moves
+package moves
 
-import main.kotlin.Coordinate
+import Coordinate
 
 enum class Direction(val coordinate: Coordinate) {
     NORTH_WEST(Coordinate(-1, 1)) {

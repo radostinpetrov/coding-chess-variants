@@ -1,14 +1,12 @@
-package main.kotlin.gameTypes
+package gameTypes
 
-import main.kotlin.boards.Board2D
-import main.kotlin.GameMove
-import main.kotlin.moves.visitors.MoveVisitor
-// import History
-import main.kotlin.players.Player
+import GameMove
+import boards.Board2D
+import moves.visitors.MoveVisitor
+import players.Player
 
 interface GameType {
     val board: Board2D
-//    val history: MutableList<History>
     val players: MutableList<Player>
     var playerTurn: Int
     val moveVisitor: MoveVisitor<Board2D>
@@ -19,8 +17,6 @@ interface GameType {
     fun isOver(): Boolean
     // fun getWinner()
     fun getValidMoves(player: Player): List<GameMove>
-
-    // fun getHistory(): List<Pair<Board, GameMove>>
     fun makeMove(gameMove: GameMove)
     fun addPlayer(player: Player) {
         players.add(player)

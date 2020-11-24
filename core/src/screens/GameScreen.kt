@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.GameType
-import main.kotlin.gameTypes.xiangqi.Janggi
-import main.kotlin.gameTypes.xiangqi.Xiangqi
+import Coordinate
+import GameMove
+import gameTypes.GameType
+import gameTypes.xiangqi.Janggi
+import gameTypes.xiangqi.Xiangqi
 import main.kotlin.players.HumanPlayer
-import main.kotlin.players.Player
+import players.Player
 import main.kotlin.players.SignalPlayer
 
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {

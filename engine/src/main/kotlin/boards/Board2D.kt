@@ -1,8 +1,8 @@
-package main.kotlin.boards
+package boards
 
-import main.kotlin.Coordinate
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import Coordinate
+import pieces.Piece
+import players.Player
 import java.lang.Exception
 
 class Board2D(val n: Int, val m: Int) : Board<Piece> {

@@ -1,8 +1,6 @@
-package main.kotlin
-
 // TODO we will soon deprecate this file, any remaining logic should move to new console frontend
 
-import main.kotlin.gameTypes.GameType
+import gameTypes.GameType
 class ConsoleGameHelper(val gameType: GameType) {
     var turn = 0
 

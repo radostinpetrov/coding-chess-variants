@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
-import main.kotlin.gameTypes.GameType
+import gameTypes.GameType
 import main.kotlin.players.NetworkEnemyPlayer
 import main.kotlin.players.NetworkHumanPlayer
 import main.kotlin.players.WebsocketClientManager

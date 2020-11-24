@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.boards.Board2D
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import players.Player
 
 abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val playerMapping: Map<Player, Color>) {
 
@@ -53,11 +52,15 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
             return
         }
 
-        var toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt()) }
+        var toCoordinates = moves.filter { m -> m.displayFrom == Coordinate(
+            srcX / squareWidth.toInt(),
+            srcY / squareWidth.toInt()
+        )
+        }
             .map { m -> m.displayTo }
 
         if (flipped) {
-            toCoordinates = toCoordinates.map{c -> Coordinate(columns - c.x - 1,rows - c.y - 1) }
+            toCoordinates = toCoordinates.map{c -> Coordinate(columns - c.x - 1, rows - c.y - 1) }
         }
 
         /* Draw toCoordinates dots for a selected piece. */

@@ -1,13 +1,13 @@
-package main.kotlin.gameTypes.chess
+package gameTypes.chess
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.GameType
-import main.kotlin.gameTypes.chess.rules.SpecialRules
-import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.GameType
+import gameTypes.chess.rules.SpecialRules
+import moves.visitors.Board2DMoveVisitor
+import pieces.King
+import pieces.Piece
+import players.Player
 
 abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
 
@@ -159,10 +159,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
         return possibleMoves
     }
-
-    // override fun getHistory(): List<Pair<Board, GameMove>> {
-    //     TODO("Not yet implemented")
-    // }
 
     override fun makeMove(gameMove: GameMove) {
         when (gameMove) {

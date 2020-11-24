@@ -1,9 +1,9 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.moves.Move
-import main.kotlin.moves.Move.Slider
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Move
+import moves.Move.Slider
+import pieces.Piece
+import players.Player
 
 data class Bishop(override val player: Player) : Piece {
     override val moveTypes: List<Move>

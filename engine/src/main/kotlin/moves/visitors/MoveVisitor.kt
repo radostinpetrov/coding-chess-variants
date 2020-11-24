@@ -1,11 +1,11 @@
-package main.kotlin.moves.visitors
+package moves.visitors
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.boards.Board
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import boards.Board
+import moves.Move
+import pieces.Piece
+import players.Player
 
 interface MoveVisitor<B> where B : Board<Piece> {
     val board: B

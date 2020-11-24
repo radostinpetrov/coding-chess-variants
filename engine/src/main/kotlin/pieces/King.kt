@@ -1,3 +1,3 @@
-package main.kotlin.pieces
+package pieces
 
 interface King

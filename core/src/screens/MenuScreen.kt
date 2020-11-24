@@ -9,13 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
-import main.kotlin.gameTypes.GameType
-import main.kotlin.gameTypes.chess.CapablancaChess
-import main.kotlin.gameTypes.chess.Chess960
-import main.kotlin.gameTypes.chess.GrandChess
-import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.gameTypes.xiangqi.Janggi
-import main.kotlin.gameTypes.xiangqi.Xiangqi
+import gameTypes.GameType
+import gameTypes.chess.CapablancaChess
+import gameTypes.chess.Chess960
+import gameTypes.chess.GrandChess
+import gameTypes.chess.StandardChess
+import gameTypes.xiangqi.Janggi
+import gameTypes.xiangqi.Xiangqi
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //    class CustomButton(text: String, skin: Skin) : TextButton(text, skin) {

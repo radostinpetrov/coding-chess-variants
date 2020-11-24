@@ -1,11 +1,11 @@
-package main.kotlin.gameTypes.chess.rules
+package gameTypes.chess.rules
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.pieces.chess.King
-import main.kotlin.pieces.chess.Rook
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.chess.StandardChess
+import pieces.chess.King
+import pieces.chess.Rook
+import players.Player
 
 class StandardCastling : SpecialRules<StandardChess> {
     override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<GameMove>) {
@@ -66,9 +66,15 @@ class StandardCastling : SpecialRules<StandardChess> {
             res.add(
                 GameMove.CompositeGameMove(
                     listOf(
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x, kingCoordinate.y), Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x - 1, kingCoordinate.y), Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(leftRook.x, leftRook.y), Coordinate(kingCoordinate.x - 1, kingCoordinate.y), rook!!, player)
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(leftRook.x, leftRook.y),
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), rook!!, player)
                     ),
                     player
                 )
@@ -79,9 +85,15 @@ class StandardCastling : SpecialRules<StandardChess> {
             res.add(
                 GameMove.CompositeGameMove(
                     listOf(
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x, kingCoordinate.y), Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x + 1, kingCoordinate.y), Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(rightRook.x, rightRook.y), Coordinate(kingCoordinate.x + 1, kingCoordinate.y), rook!!, player)
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(rightRook.x, rightRook.y),
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), rook!!, player)
                     ),
                     player
                 )
