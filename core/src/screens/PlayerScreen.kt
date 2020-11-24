@@ -12,8 +12,8 @@ import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import gameTypes.GameType
 import ktx.app.KtxScreen
-import main.kotlin.players.ComputerPlayer
-import main.kotlin.players.HumanPlayer
+import players.ComputerPlayer
+import players.HumanPlayer
 import players.Player
 
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {

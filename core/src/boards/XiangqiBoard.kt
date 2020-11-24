@@ -1,16 +1,23 @@
 package boards
 
+import GameMove
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
-import GameMove
 import players.Player
 
-class XiangqiBoard(shapeRenderer: ShapeRenderer, board: Board2D, batch: Batch, squareWidth: Float, textures: Textures, playerMapping: Map<Player, Color>
-) : GUIBoard(shapeRenderer, board, batch,
+class XiangqiBoard(
+    shapeRenderer: ShapeRenderer,
+    board: Board2D,
+    batch: Batch,
+    squareWidth: Float,
+    textures: Textures,
+    playerMapping: Map<Player, Color>
+) : GUIBoard(
+    shapeRenderer, board, batch,
     squareWidth,
     textures, playerMapping
 ) {

@@ -1,4 +1,4 @@
-package main.kotlin.players
+package players
 
 import GameMove
 import gameTypes.chess.AbstractChess

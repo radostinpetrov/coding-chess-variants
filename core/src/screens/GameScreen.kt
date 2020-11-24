@@ -18,9 +18,9 @@ import GameMove
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
-import main.kotlin.players.HumanPlayer
+import players.HumanPlayer
 import players.Player
-import main.kotlin.players.SignalPlayer
+import players.SignalPlayer
 
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     private val textures = Textures(game.assets)

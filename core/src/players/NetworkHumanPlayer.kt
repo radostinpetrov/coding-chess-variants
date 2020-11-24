@@ -1,6 +1,8 @@
-package main.kotlin.players
+package players
 
 import GameMove
+import players.HumanPlayer
+import players.WebsocketClientManager
 import screens.GameScreen
 
 class NetworkHumanPlayer(gameScreen: GameScreen, val websocketClientManager: WebsocketClientManager) : HumanPlayer(gameScreen) {

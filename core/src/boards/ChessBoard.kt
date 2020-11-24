@@ -1,20 +1,26 @@
 package boards
 
+import GameMove
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
-import GameMove
 import players.Player
 
 class ChessBoard(
-    shapeRenderer: ShapeRenderer, board: Board2D, batch: Batch, squareWidth: Float, textures: Textures, playerMapping: Map<Player, Color>
-    ) : GUIBoard(shapeRenderer, board, batch,
-        squareWidth,
-        textures, playerMapping
-    ) {
+    shapeRenderer: ShapeRenderer,
+    board: Board2D,
+    batch: Batch,
+    squareWidth: Float,
+    textures: Textures,
+    playerMapping: Map<Player, Color>
+) : GUIBoard(
+    shapeRenderer, board, batch,
+    squareWidth,
+    textures, playerMapping
+) {
 
     override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove>, flipped: Boolean, isPromotionScreen: Boolean) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
