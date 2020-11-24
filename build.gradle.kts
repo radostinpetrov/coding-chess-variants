@@ -44,9 +44,6 @@ project(":engine") {
 
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
         testImplementation("io.mockk:mockk:1.9.3")
-        implementation("org.java-websocket:Java-WebSocket:1.5.1")
-        implementation("org.slf4j:slf4j-nop:1.7.30")
-        implementation("org.json:json:20200518")
     }
 
     tasks.withType<KotlinCompile>() {
@@ -87,6 +84,11 @@ project(":core") {
         implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+
+        implementation("org.java-websocket:Java-WebSocket:1.5.1")
+        implementation("org.slf4j:slf4j-nop:1.7.30")
+        implementation("org.json:json:20200518")
+
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
         testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
 

@@ -1,8 +1,8 @@
 package main.kotlin
 
+import main.kotlin.players.ComputerPlayer
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.players.ComputerPlayer
 
 fun main() {
     println("Let's play chess!")

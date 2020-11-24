@@ -183,6 +183,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
         guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
         controls(flip)
+        // TODO why does draw panel come after controls?
         drawPanel()
 
         if (isPromotionScreen) {
