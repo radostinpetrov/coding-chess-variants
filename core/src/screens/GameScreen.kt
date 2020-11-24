@@ -22,7 +22,7 @@ import players.HumanPlayer
 import players.Player
 import players.SignalPlayer
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -49,7 +49,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
     // TODO maybe don't need this?
     var currPlayer: Player? = null
+
+    // TODO can we put color in player?
     var playerMapping: Map<Player, Color>? = null
+    // TODO and this?
+    var playerMappingClock: Map<Player, Int>? = null
+    val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
     lateinit var promotableMoves: List<GameMove>
@@ -73,6 +78,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
         currPlayer = gameEngine.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
+
+        playerMappingClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+
         Gdx.input.inputProcessor = Stage()
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
@@ -231,6 +239,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         }
     }
 
+    private fun resetClicks() {
+        srcX = null
+        srcY = null
+        dstX = null
+        dstY = null
+    }
+
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
@@ -247,13 +262,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         return playerMoves[0]
     }
 
-    private fun resetClicks() {
-        srcX = null
-        srcY = null
-        dstX = null
-        dstY = null
-    }
-
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
@@ -262,5 +270,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         shapeRenderer.color = Color.BLUE
         shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
         shapeRenderer.end()
+    }
+
+    private fun drawClocks() {
+
     }
 }
