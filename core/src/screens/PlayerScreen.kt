@@ -106,7 +106,9 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen(gameType: GameType) {
-        val gameScreen = GameScreen(game, gameType, mutableListOf(100, 100))
+        val clockList = mutableListOf(300, 300)
+        val gameScreen = GameScreen(game, gameType, clockList)
+
         game.removeScreen<GameScreen>()
 
         gameType.addPlayer(createPlayer(playerTypes[0], gameScreen))

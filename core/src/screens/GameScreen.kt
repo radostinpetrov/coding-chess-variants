@@ -184,7 +184,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         controls(flip)
         // TODO why does draw panel come after controls?
         drawPanel()
-        drawClocks()
+        drawHistoryBox()
+
+        if (!drawClocks(flip)) {
+            switchToGameOverScreen(gameEngine.getNextPlayer())
+        }
 
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
@@ -269,40 +273,62 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     private fun drawPanel() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.color = Color.BLUE
+        shapeRenderer.color = Color.LIGHT_GRAY
         shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
         shapeRenderer.end()
     }
 
     private fun drawClocks(flipped: Boolean): Boolean {
-        val currTime = System.currentTimeMillis()
+        val currTime = System.currentTimeMillis() / 1000L
         val otherPlayerTime = playerMappingInitialClock!![gameEngine.getNextPlayer()]!!
 
-        val playerTime = currTime - initialTime - otherPlayerTime
+        val playerTime = (currTime - initialTime - otherPlayerTime).toInt()
 
         val displayTimeCurr = playerMappingEndClock!![currPlayer!!]!! - playerTime
         val displayTimeOther = playerMappingEndClock!![gameEngine.getNextPlayer()]!! - otherPlayerTime
 
-        playerMappingInitialClock!![currPlayer!!] = playerTime.toInt()
+        playerMappingInitialClock!![currPlayer!!] = playerTime
 
-        if (displayTimeCurr.toInt() <= 0) {
+        if (displayTimeCurr <= 0) {
             return false
         }
 
-        val str = displayTimeCurr.toString()
-        val batch = game.batch
-        val font = game.font
-        batch.begin()
+        val currStr = "${displayTimeCurr / 60}:${displayTimeCurr % 60}"
+        val otherStr = "${displayTimeOther / 60}:${displayTimeOther % 60}"
 
-        font.draw(batch, str, windowWidth + 10f, 300f)
-        batch.end()
+        val str1: String
+        val str2: String
 
-        if (flipped) {
-            // currtime bottom, other time top.
+        if (flipped.xor(playerMapping!![currPlayer!!] == Color.WHITE)) {
+            str1 = currStr
+            str2 = otherStr
         } else {
-
+            str1 = otherStr
+            str2 = currStr
         }
 
+        val batch = game.batch
+        val font = game.font
+
+        batch.begin()
+
+        font.draw(batch, str2, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 7/8)
+        font.draw(batch, str1, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 1/16)
+
+        font.color = Color.BLUE
+        batch.end()
+
         return true
+    }
+
+    private fun drawHistoryBox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.color = Color.WHITE
+        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1/12, 0f + windowHeight.toFloat() * 1/8, panelWidth.toFloat() * 10/12, windowHeight.toFloat() * 6/8)
+
+        for (move in gameEngine.moveLog) {
+
+        }
+        shapeRenderer.end()
     }
 }

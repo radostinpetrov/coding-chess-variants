@@ -52,7 +52,7 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen() {
-        val clockList = mutableListOf(5, 5)
+        val clockList = mutableListOf(300, 300)
         val gameScreen = GameScreen(game, gameType, clockList)
         when (humanPlayer) {
             1 -> {
