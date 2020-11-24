@@ -8,7 +8,7 @@ import main.kotlin.GameMove
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.StandardChess
 import main.kotlin.pieces.chess.*
-import main.kotlin.players.HumanPlayer
+import main.kotlin.players.Player
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -21,8 +21,8 @@ class StandardChessTest {
     private val board = mockStandardChess.board
 
     // val mockStandardChess = mockk<StandardChess>()
-    val mockHumanPlayer1 = mockk<HumanPlayer>()
-    val mockHumanPlayer2 = mockk<HumanPlayer>()
+    val mockHumanPlayer1 = mockk<Player>()
+    val mockHumanPlayer2 = mockk<Player>()
     // val mockGameMove = mockk<GameMove>()
 
     @BeforeEach
