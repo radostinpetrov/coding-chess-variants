@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import ktx.app.KtxScreen
-import main.kotlin.Game
 import main.kotlin.gameTypes.GameType
 import main.kotlin.players.ComputerPlayer
 import main.kotlin.players.HumanPlayer
@@ -107,11 +106,12 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen(gameType: GameType) {
-        val gameEngine = Game(gameType)
+        // TODO we dont need gameEngine and gameType separate
+        val gameEngine = gameType
         game.removeScreen<GameScreen>()
 
-        gameEngine.gameType.addPlayer(createPlayer(playerTypes[0]))
-        gameEngine.gameType.addPlayer(createPlayer(playerTypes[1]))
+        gameType.addPlayer(createPlayer(playerTypes[0]))
+        gameType.addPlayer(createPlayer(playerTypes[1]))
         game.addScreen(GameScreen(game, gameEngine))
         dispose()
         game.setScreen<GameScreen>()

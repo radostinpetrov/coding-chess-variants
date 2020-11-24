@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 
-    val game = Game(chess)
+    val game = ConsoleGameHelper(chess)
     game.start()
 
     while (true) {

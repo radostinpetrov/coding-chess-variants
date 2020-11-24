@@ -14,14 +14,14 @@ import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import main.kotlin.Coordinate
-import main.kotlin.Game
 import main.kotlin.GameMove
+import main.kotlin.gameTypes.GameType
 import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
 import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
 
-class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -36,8 +36,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     var dstX: Int? = null
     var dstY: Int? = null
 
-    val gameType = gameEngine.gameType
-    var board = gameType.board
+//    val gameType = gameEngine.gameType
+    var board = gameEngine.board
     val rows = board.n
     val columns = board.m
 
@@ -52,6 +52,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     var isPromotionScreen = false
     lateinit var promotableMoves: List<GameMove>
 
+    fun startGame() {
+        if (!gameEngine.checkValidGame()) {
+            // TODO
+        }
+
+        gameEngine.initGame()
+    }
+
     override fun show() {
         if (rows != columns) {
             windowWidth = (windowHeight * columns) / rows
@@ -61,13 +69,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
         shapeRenderer = ShapeRenderer()
 
-        currPlayer = gameType.getCurrentPlayer()
-        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameType.getNextPlayer() to Color.BLACK)
+        currPlayer = gameEngine.getCurrentPlayer()
+        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
         Gdx.input.inputProcessor = Stage()
-        gameEngine.start()
-        moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        startGame()
+        moves = gameEngine.getValidMoves(currPlayer!!)
 
-        guiBoard =  when (gameType) {
+        guiBoard =  when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
             else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
         }
@@ -140,20 +148,22 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     }
 
     override fun render(delta: Float) {
-        currPlayer = gameType.getCurrentPlayer()
+        currPlayer = gameEngine.getCurrentPlayer()
 
-        if (!gameEngine.turn()) {
+        if (gameEngine.isOver()) {
             switchToGameOverScreen(currPlayer!!)
         }
 
-        if (gameEngine.gameType.getCurrentPlayer() != currPlayer) {
-            currPlayer = gameType.getCurrentPlayer()
-            moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+        gameEngine.turn()
+
+        if (gameEngine.getCurrentPlayer() != currPlayer) {
+            currPlayer = gameEngine.getCurrentPlayer()
+            moves = gameEngine.getValidMoves(currPlayer!!)
             resetClicks()
         }
 
         val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer)
-                || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameType.getNextPlayer() is HumanPlayer)
+                || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
 
         guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
         controls(flip)

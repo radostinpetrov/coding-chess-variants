@@ -190,6 +190,8 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         }
     }
 
+
+
     override fun turn() {
         val player = players[playerTurn]
         val moves = getValidMoves(player)
