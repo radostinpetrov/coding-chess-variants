@@ -31,7 +31,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         val pieces = board.getPieces()
 
         for ((p, c) in pieces) {
-            val texture = textures.getTextureFromPiece(p, playerMapping!![p.player]!!)
+            val texture = textures.getTextureFromPiece(p, playerMapping[p.player]!!)
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
@@ -68,6 +68,6 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
             shapeRenderer.circle(squareWidth * c.x + position, squareWidth * c.y + position, possibleMoveCircleRadius)
         }
 
-//        shapeRenderer.end()
+        shapeRenderer.end()
     }
 }
