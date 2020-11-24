@@ -2,7 +2,7 @@ package main.kotlin.players
 
 import main.kotlin.GameMove
 
-class ComputerPlayer(val delay: Long) : Player {
+class ComputerPlayer(val delay: Long) : ConsolePlayer() {
     override var playerMove: GameMove? = null
 
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {

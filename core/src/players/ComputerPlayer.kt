@@ -1,13 +1,14 @@
 package main.kotlin.players
 
-import main.kotlin.GameMove
+import screens.GameScreen
 
-class ComputerPlayer(val delay: Long) : Player {
-    override var playerMove: GameMove? = null
-
-    override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
+class ComputerPlayer(gameScreen: GameScreen, val delay: Long) : SignalPlayer(gameScreen) {
+    override fun signalTurn() {
+        val validMoves = gameType.getValidMoves(this)
         println("Computer is thinking...")
-        Thread.sleep(delay)
-        return choiceOfMoves[(choiceOfMoves.indices).random()]
+        // TODO FIX COMPUTER PLAYER LAG SITUATION
+//        Thread.sleep(delay)
+        gameScreen.processTurn(validMoves[(validMoves.indices).random()])
+
     }
 }

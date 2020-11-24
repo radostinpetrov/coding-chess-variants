@@ -53,24 +53,23 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen() {
-        // TODO we dont need gameEngine and gameType separate
-        val gameEngine = gameType
+        val gameScreen = GameScreen(game, gameType)
         when (humanPlayer) {
             1 -> {
-                gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
-                val enemyPlayer = NetworkEnemyPlayer()
+                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
                 gameType.addPlayer(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer()
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
                 gameType.addPlayer(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
+                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
             }
         }
         game.removeScreen<GameScreen>()
-        game.addScreen(GameScreen(game, gameEngine))
+        game.addScreen(gameScreen)
         dispose()
         game.setScreen<GameScreen>()
     }

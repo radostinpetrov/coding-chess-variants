@@ -1,16 +1,12 @@
 package main.kotlin.players
 
 import main.kotlin.GameMove
-class NetworkHumanPlayer(val websocketClientManager: WebsocketClientManager) : HumanPlayer() {
-    override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-        if (playerMove == null) {
-            return null
-        }
+import screens.GameScreen
 
-        val temp = playerMove
-        playerMove = null
-        println(choiceOfMoves.indexOf(temp))
-        websocketClientManager.sendPlayerMove(choiceOfMoves.indexOf(temp))
-        return temp
+class NetworkHumanPlayer(gameScreen: GameScreen, val websocketClientManager: WebsocketClientManager) : HumanPlayer(gameScreen) {
+    override fun makeMove(move: GameMove) {
+        val choiceOfMoves = gameType.getValidMoves(this)
+        websocketClientManager.sendPlayerMove(choiceOfMoves.indexOf(move))
+        gameScreen.processTurn(move)
     }
 }

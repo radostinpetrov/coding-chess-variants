@@ -1,24 +1,11 @@
 package main.kotlin.players
 
 import main.kotlin.GameMove
+import screens.GameScreen
 
-class NetworkEnemyPlayer : Player {
-    private var turnMoveIndex: Int? = null
-
-    fun setGameMove(moveIndex: Int) {
-        turnMoveIndex = moveIndex
-    }
-
-    override var playerMove: GameMove? = null
-
-    override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-        if (turnMoveIndex == null) {
-            return null
-        }
-
-        val temp = choiceOfMoves[turnMoveIndex!!]
-        turnMoveIndex = null
-
-        return temp
+class NetworkEnemyPlayer(game: GameScreen) : SignalPlayer(game) {
+    fun makeMove(moveIndex: Int) {
+        val validMoves = gameType.getValidMoves(this)
+        gameScreen.processTurn(validMoves[moveIndex])
     }
 }

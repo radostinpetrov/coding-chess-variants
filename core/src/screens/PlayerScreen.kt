@@ -106,21 +106,20 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen(gameType: GameType) {
-        // TODO we dont need gameEngine and gameType separate
-        val gameEngine = gameType
+        val gameScreen = GameScreen(game, gameType)
         game.removeScreen<GameScreen>()
 
-        gameType.addPlayer(createPlayer(playerTypes[0]))
-        gameType.addPlayer(createPlayer(playerTypes[1]))
-        game.addScreen(GameScreen(game, gameEngine))
+        gameType.addPlayer(createPlayer(playerTypes[0], gameScreen))
+        gameType.addPlayer(createPlayer(playerTypes[1], gameScreen))
+        game.addScreen(gameScreen)
         dispose()
         game.setScreen<GameScreen>()
     }
 
-    private fun createPlayer(player: PlayerType): Player {
+    private fun createPlayer(player: PlayerType, gameScreen: GameScreen): Player {
         return when (player) {
-            PlayerType.HUMAN -> HumanPlayer()
-            PlayerType.COMPUTER -> ComputerPlayer(200)
+            PlayerType.HUMAN -> HumanPlayer(gameScreen)
+            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200)
         }
     }
 }

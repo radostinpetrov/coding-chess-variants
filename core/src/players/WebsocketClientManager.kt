@@ -27,8 +27,8 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
         webSocketClient.connect()
     }
 
-    private fun createWebSocketClient(coinbaseUri: URI?) {
-        webSocketClient = object : WebSocketClient(coinbaseUri) {
+    private fun createWebSocketClient(uri: URI?) {
+        webSocketClient = object : WebSocketClient(uri) {
 
             override fun onOpen(handshakedata: ServerHandshake?) {
                 println("open")
@@ -50,7 +50,7 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
                     }
                     "receiveMove" -> {
                         val move = jsonMessage.getInt("move")
-                        networkEnemyPlayer.setGameMove(move)
+                        networkEnemyPlayer.makeMove(move)
                     }
                 }
             }

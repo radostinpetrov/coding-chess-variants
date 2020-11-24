@@ -3,6 +3,7 @@ package main.kotlin
 import main.kotlin.players.ComputerPlayer
 import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.StandardChess
+import main.kotlin.players.ConsolePlayer
 
 fun main() {
     println("Let's play chess!")
@@ -36,7 +37,8 @@ fun gameTurn(game: ConsoleGameHelper) {
         return
     }
 
-    val move = player.getTurn(moves)
+    // TODO fix
+    val move = (player as ConsolePlayer).getTurn(moves)
 
     if (move != null) {
         gt.playerMakeMove(move)

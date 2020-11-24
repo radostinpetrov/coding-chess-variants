@@ -20,6 +20,7 @@ import main.kotlin.gameTypes.xiangqi.Janggi
 import main.kotlin.gameTypes.xiangqi.Xiangqi
 import main.kotlin.players.HumanPlayer
 import main.kotlin.players.Player
+import main.kotlin.players.SignalPlayer
 
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     private val textures = Textures(game.assets)
@@ -46,6 +47,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     private var squareWidth: Float = (windowHeight / rows).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
 
+    // TODO maybe don't need this?
     var currPlayer: Player? = null
     var playerMapping: Map<Player, Color>? = null
 
@@ -75,6 +77,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
 
+        // TODO remove this soon as possible
+        (currPlayer!! as SignalPlayer).signalTurn()
         guiBoard =  when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
             else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
@@ -127,7 +131,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         if (srcX != null && srcY != null) {
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
             if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
-                currPlayer?.playerMove = coordinateMap[coordinate.x]
+                if (coordinateMap[coordinate.x] != null) {
+                    (currPlayer!! as HumanPlayer).makeMove(coordinateMap[coordinate.x]!!)
+                }
                 isPromotionScreen = false
             }
         }
@@ -147,37 +153,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         game.setScreen<GameOverScreen>()
     }
 
-    fun pollTurn() {
-        // TODO change to signal based
-        val moves = gameEngine.getValidMoves(currPlayer!!)
-        if (moves.isEmpty()) {
-            // TODO this should not happen, raise exception?
-            return
-        }
-
-        val move = currPlayer!!.getTurn(moves)
-
-        if (move != null) {
-            gameEngine.playerMakeMove(move)
-        }
-    }
-
-    override fun render(delta: Float) {
+    // Function to be called when current player plays a turn
+    fun processTurn(nextMove: GameMove) {
+        gameEngine.playerMakeMove(nextMove)
         currPlayer = gameEngine.getCurrentPlayer()
+        moves = gameEngine.getValidMoves(currPlayer!!)
+        resetClicks()
 
         if (gameEngine.isOver()) {
             switchToGameOverScreen(currPlayer!!)
         }
 
-        pollTurn()
+        (currPlayer as SignalPlayer).signalTurn()
+    }
 
-        // TODO signal: this if statement should move
-        if (gameEngine.getCurrentPlayer() != currPlayer) {
-            currPlayer = gameEngine.getCurrentPlayer()
-            moves = gameEngine.getValidMoves(currPlayer!!)
-            resetClicks()
-        }
-
+    override fun render(delta: Float) {
         val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer)
                 || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
 
@@ -192,7 +182,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     }
 
     private fun controls(flipped: Boolean) {
-        if (this.currPlayer !is HumanPlayer) {
+        if (currPlayer!! !is HumanPlayer) {
             return
         }
         val input = Gdx.input
@@ -216,11 +206,18 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
             ) {
                 dstX = x
                 dstY = y
-                currPlayer?.playerMove = getMove(
-                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                    moves
-                )
+                // TODO fix this -> either via changing fe player to be composition or otherwise
+                val signalPlayer = currPlayer!!
+                if (signalPlayer is HumanPlayer) {
+                    val nextMove = getMove(
+                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                        moves
+                    )
+                    if (nextMove != null) {
+                        signalPlayer.makeMove(nextMove)
+                    }
+                }
             } else {
                 srcX = x
                 srcY = y
