@@ -37,7 +37,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     var dstX: Int? = null
     var dstY: Int? = null
 
-//    val gameType = gameEngine.gameType
     var board = gameEngine.board
     val rows = board.n
     val columns = board.m
@@ -53,7 +52,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     // TODO can we put color in player?
     var playerMapping: Map<Player, Color>? = null
     // TODO and this?
-    var playerMappingClock: Map<Player, Int>? = null
+    var playerMappingInitialClock: MutableMap<Player, Int>? = null
+    var playerMappingEndClock: Map<Player, Int>? = null
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
@@ -79,7 +79,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         currPlayer = gameEngine.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
 
-        playerMappingClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+        playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
+        playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
 
         Gdx.input.inputProcessor = Stage()
         startGame()
@@ -272,7 +273,28 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         shapeRenderer.end()
     }
 
-    private fun drawClocks() {
+    private fun drawClocks(flipped: Boolean): Boolean {
+        val currTime = System.currentTimeMillis()
+        val otherPlayerTime = playerMappingInitialClock!![gameEngine.getNextPlayer()]!!
 
+        val playerTime = currTime - initialTime - otherPlayerTime
+
+        val displayTimeCurr = playerMappingEndClock!![currPlayer!!]!! - playerTime
+        val displayTimeOther = playerMappingEndClock!![gameEngine.getNextPlayer()]!! - otherPlayerTime
+
+        playerMappingInitialClock!![currPlayer!!] = playerTime.toInt()
+
+        if (displayTimeCurr.toInt() <= 0) {
+            return false
+        }
+
+        if (flipped) {
+            // currtime bottom, other time top.
+        } else {
+
+        }
+
+
+        return true
     }
 }
