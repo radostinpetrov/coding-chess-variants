@@ -345,7 +345,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 offset += (len - 40 + 1) / 2
             }
         } else {
-            history = gameEngine.moveLog
+            history = gameEngine.moveLog.toMutableList()
         }
 
         for (move in history) {
