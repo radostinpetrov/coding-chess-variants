@@ -302,10 +302,25 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.WHITE
         shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1/12, 0f + windowHeight.toFloat() * 1/8, panelWidth.toFloat() * 10/12, windowHeight.toFloat() * 6/8)
-
-        for (move in gameEngine.moveLog) {
-
-        }
         shapeRenderer.end()
+
+        val batch = game.batch
+        val font = game.font
+        batch.begin()
+        font.setColor(Color.BLACK)
+        var i = 0
+        for (move in gameEngine.moveLog) {
+            var coor = move.displayTo
+            if (i % 2 == 0) {
+                val str  = "TURN ${i/2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2/12, windowHeight.toFloat() * 7/8 - 10 - (15 * i))
+            } else {
+                val str  = "(${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7/12, windowHeight.toFloat() * 7/8 - 10 - (15 * (i - 1)))
+            }
+            i++
+        }
+        batch.end()
+
     }
 }
