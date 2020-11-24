@@ -177,7 +177,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     }
 
     override fun render(delta: Float) {
-        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer)
+        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer)
                 || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
 
         guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
