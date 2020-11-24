@@ -53,7 +53,7 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen() {
-        val gameScreen = GameScreen(game, gameType)
+        val gameScreen = GameScreen(game, gameType, )
         when (humanPlayer) {
             1 -> {
                 gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))

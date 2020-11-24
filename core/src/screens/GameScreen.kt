@@ -183,7 +183,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         controls(flip)
         // TODO why does draw panel come after controls?
         drawPanel()
-
+        drawHistoryBox()
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
         }
@@ -267,12 +267,23 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     private fun drawPanel() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.color = Color.BLUE
+        shapeRenderer.color = Color.LIGHT_GRAY
         shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
         shapeRenderer.end()
     }
 
     private fun drawClocks() {
 
+    }
+
+    private fun drawHistoryBox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.color = Color.WHITE
+        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1/12, 0f + windowHeight.toFloat() * 1/8, panelWidth.toFloat() * 10/12, windowHeight.toFloat() * 6/8)
+        print(gameEngine.moveLog)
+        for (move in gameEngine.moveLog) {
+
+        }
+        shapeRenderer.end()
     }
 }
