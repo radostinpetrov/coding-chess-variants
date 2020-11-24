@@ -7,7 +7,7 @@ class ComputerPlayer(val delay: Long) : ConsolePlayer() {
 
     override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
         println("Computer is thinking...")
-        Thread.sleep(delay)
+        Thread.sleep(0)
         return choiceOfMoves[(choiceOfMoves.indices).random()]
     }
 }

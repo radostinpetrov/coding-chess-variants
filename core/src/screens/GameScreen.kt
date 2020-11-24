@@ -155,24 +155,27 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
     // Function to be called when current player plays a turn
     fun processTurn(nextMove: GameMove) {
-        gameEngine.playerMakeMove(nextMove)
-        currPlayer = gameEngine.getCurrentPlayer()
-        moves = gameEngine.getValidMoves(currPlayer!!)
-        resetClicks()
+        synchronized(this) {
+            gameEngine.playerMakeMove(nextMove)
+            currPlayer = gameEngine.getCurrentPlayer()
+            moves = gameEngine.getValidMoves(currPlayer!!)
+            resetClicks()
 
-        if (gameEngine.isOver()) {
-            switchToGameOverScreen(currPlayer!!)
+            if (gameEngine.isOver()) {
+                switchToGameOverScreen(currPlayer!!)
+            }
+
+            (currPlayer as SignalPlayer).signalTurn()
         }
-
-        (currPlayer as SignalPlayer).signalTurn()
     }
 
     override fun render(delta: Float) {
         val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer) ||
             (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
-
-        guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-        controls(flip)
+        synchronized(this) {
+            guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
+            controls(flip)
+        }
         // TODO why does draw panel come after controls?
         drawPanel()
 
