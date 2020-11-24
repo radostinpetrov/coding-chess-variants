@@ -312,10 +312,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
         batch.begin()
 
-        font.draw(batch, str2, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 7/8)
+        font.color = Color.BLUE
+        font.draw(batch, str2, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 15/16)
         font.draw(batch, str1, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 1/16)
 
-        font.color = Color.BLUE
         batch.end()
 
         return true
