@@ -54,7 +54,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
     fun startGame() {
         if (!gameEngine.checkValidGame()) {
-            // TODO
+            TODO("INVALID GAME")
         }
 
         gameEngine.initGame()
@@ -147,6 +147,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         game.setScreen<GameOverScreen>()
     }
 
+    fun pollTurn() {
+        // TODO change to signal based
+        val moves = gameEngine.getValidMoves(currPlayer!!)
+        if (moves.isEmpty()) {
+            // TODO this should not happen, raise exception?
+            return
+        }
+
+        val move = currPlayer!!.getTurn(moves)
+
+        if (move != null) {
+            gameEngine.playerMakeMove(move)
+        }
+    }
+
     override fun render(delta: Float) {
         currPlayer = gameEngine.getCurrentPlayer()
 
@@ -154,8 +169,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
             switchToGameOverScreen(currPlayer!!)
         }
 
-        gameEngine.turn()
+        pollTurn()
 
+        // TODO signal: this if statement should move
         if (gameEngine.getCurrentPlayer() != currPlayer) {
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)

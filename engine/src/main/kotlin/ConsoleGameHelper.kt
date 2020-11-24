@@ -25,14 +25,14 @@ class ConsoleGameHelper(val gameType: GameType) {
 //        }
     }
 
-    fun turn(): Boolean {
-        if (gameType.isOver()) {
-            return false
-        }
-
-        gameType.turn()
-        return true
-    }
+//    fun turn(): Boolean {
+//        if (gameType.isOver()) {
+//            return false
+//        }
+//
+//        gameType.turn()
+//        return true
+//    }
 
     /* Display the board in terminal. */
     fun display() {

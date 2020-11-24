@@ -189,21 +189,4 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
     }
-
-
-
-    override fun turn() {
-        val player = players[playerTurn]
-        val moves = getValidMoves(player)
-        if (moves.isEmpty()) {
-            return
-        }
-
-        val move = player.getTurn(moves)
-
-        if (move != null) {
-            this.makeMove(move)
-            nextPlayer()
-        }
-    }
 }

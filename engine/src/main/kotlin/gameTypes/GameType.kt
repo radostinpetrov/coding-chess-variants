@@ -25,7 +25,20 @@ interface GameType {
     fun addPlayer(player: Player) {
         players.add(player)
     }
-    fun turn()
+//    fun turn() {
+//        val player = players[playerTurn]
+//        val moves = getValidMoves(player)
+//        if (moves.isEmpty()) {
+//            return
+//        }
+//
+//        val move = player.getTurn(moves)
+//
+//        if (move != null) {
+//            this.makeMove(move)
+//            nextPlayer()
+//        }
+//    }
     fun nextPlayer() {
         playerTurn++
         playerTurn %= players.size

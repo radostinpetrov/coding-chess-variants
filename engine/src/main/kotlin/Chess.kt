@@ -4,7 +4,7 @@ import main.kotlin.gameTypes.chess.AbstractChess
 import main.kotlin.gameTypes.chess.StandardChess
 import main.kotlin.players.ComputerPlayer
 
-fun main(args: Array<String>) {
+fun main() {
     println("Let's play chess!")
     val chess: AbstractChess = StandardChess()
     chess.playerTurn = 1
@@ -23,7 +23,22 @@ fun main(args: Array<String>) {
             break
         }
 
-        game.gameType.turn()
+        gameTurn(game)
         game.display()
+    }
+}
+
+fun gameTurn(game: ConsoleGameHelper) {
+    val gt = game.gameType
+    val player = gt.getCurrentPlayer()
+    val moves = gt.getValidMoves(player)
+    if (moves.isEmpty()) {
+        return
+    }
+
+    val move = player.getTurn(moves)
+
+    if (move != null) {
+        gt.playerMakeMove(move)
     }
 }
