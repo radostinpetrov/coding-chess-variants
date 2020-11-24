@@ -15,6 +15,7 @@ import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
 import Coordinate
 import GameMove
+import com.badlogic.gdx.utils.Align
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
@@ -312,9 +313,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
         batch.begin()
 
-        font.color = Color.BLUE
-        font.draw(batch, str2, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 15/16)
-        font.draw(batch, str1, windowWidth + (panelWidth / 2).toFloat(), windowHeight.toFloat() * 1/16)
+        font.color = Color.BLACK
+        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15/16, panelWidth.toFloat(), Align.center, false)
+        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1/16, panelWidth.toFloat(), Align.center, false)
 
         batch.end()
 
