@@ -308,11 +308,28 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         val font = game.font
         batch.begin()
         var i = 0
-        for (move in gameEngine.moveLog) {
+        var history: MutableList<GameMove>
+        val len = gameEngine.moveLog.size
+
+        var offset = 0
+
+        if (len >= 40) {
+            if (len % 2 == 0) {
+                history = gameEngine.moveLog.subList(len - 40, len)
+                offset += (len - 40) / 2
+            } else {
+                history = gameEngine.moveLog.subList(len - 40 + 1, len)
+                offset += (len - 40 + 1) / 2
+            }
+        } else {
+            history = gameEngine.moveLog
+        }
+
+        for (move in history) {
             var coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
-                val str  = "TURN ${i/2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
+                val str  = "TURN ${offset + i/2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2/12, windowHeight.toFloat() * 7/8 - 10 - (15 * i))
             } else {
                 font.setColor(Color.BLACK)
