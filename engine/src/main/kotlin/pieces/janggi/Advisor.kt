@@ -5,7 +5,7 @@ import main.kotlin.moves.Move
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
-class Advisor(override val player: Player) : Piece {
+data class Advisor(override val player: Player) : Piece {
     private val palaceX = listOf(3, 4, 5)
     private val palaceY = listOf(0, 1, 2, 7, 8, 9)
 

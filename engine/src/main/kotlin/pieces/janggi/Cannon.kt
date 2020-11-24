@@ -4,7 +4,7 @@ import main.kotlin.moves.Move
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
-class Cannon(override val player: Player) : Piece {
+data class Cannon(override val player: Player) : Piece {
     private val palaceX = listOf(3, 5)
     private val palaceY = listOf(0, 2, 7, 9)
 

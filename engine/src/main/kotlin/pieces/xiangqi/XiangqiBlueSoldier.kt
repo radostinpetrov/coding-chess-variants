@@ -5,7 +5,7 @@ import main.kotlin.moves.Move
 import main.kotlin.pieces.Piece
 import main.kotlin.players.Player
 
-class XiangqiBlueSoldier(override val player: Player) : Piece {
+data class XiangqiBlueSoldier(override val player: Player) : Piece {
 
     private val acrossRiverY = listOf(0, 1, 2, 3, 4)
 
