@@ -1,5 +1,8 @@
 package screens
 
+import boards.ChessBoard
+import boards.GUIBoard
+import boards.XiangqiBoard
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
@@ -23,11 +26,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
 
-    private val possibleMoveCircleRadius = 8f
-    // private val possibleMoveColour = Color(Color.rgba4444(30f, 76f, 63f, 0.75f))
-    private val possibleMoveColour = Color.FOREST
     private lateinit var shapeRenderer: ShapeRenderer
     private lateinit var moves: List<GameMove>
+
+    private var panelWidth: Int = 300
 
     var srcX: Int? = null
     var srcY: Int? = null
@@ -39,12 +41,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     val rows = board.n
     val columns = board.m
 
+    lateinit var guiBoard: GUIBoard
+
     private var squareWidth: Float = (windowHeight / rows).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
 
     var currPlayer: Player? = null
-
-    // todo: hard coded, enum for colour ?
     var playerMapping: Map<Player, Color>? = null
 
     var isPromotionScreen = false
@@ -53,9 +55,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
     override fun show() {
         if (rows != columns) {
             windowWidth = (windowHeight * columns) / rows
-            Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
-            game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         }
+        Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
+        game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
 
         shapeRenderer = ShapeRenderer()
 
@@ -64,6 +66,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         Gdx.input.inputProcessor = Stage()
         gameEngine.start()
         moves = gameEngine.gameType.getValidMoves(currPlayer!!)
+
+        guiBoard =  when (gameType) {
+            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
+            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
+        }
     }
 
     private fun showPromotionScreen(moves: List<GameMove>) {
@@ -91,10 +98,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
-//        shapeRenderer.color = Color.z
-//        for (i in moves.indices) {
-//            shapeRenderer.rect( x + (i * squareWidth), y, squareWidth, squareWidth)
-//        }
         shapeRenderer.end()
 
         for ((i, m) in moves.withIndex()) {
@@ -104,8 +107,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
-
-//            shapeRenderer.rect( x + (i * squareWidth), y, squareWidth, squareWidth)
 
             sprite.setPosition(x + (i * squareWidth) + posWithinSquare, y + posWithinSquare)
             coordinateMap[i + xCoordinate] = m
@@ -129,8 +130,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
 
         // change this.
         val playerName = playerMapping?.get(player)!!.toString()
+        if (playerName == "fffffff") {
+            game.addScreen(GameOverScreen(game, gameEngine, "Black"))
+        } else {
+            game.addScreen(GameOverScreen(game, gameEngine, "White"))
+        }
 
-        game.addScreen(GameOverScreen(game, gameEngine, playerName!!))
         game.setScreen<GameOverScreen>()
     }
 
@@ -147,50 +152,33 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             resetClicks()
         }
 
-        drawBoard(moves)
-        drawPieces()
-        drawDots(moves)
-        controls()
+        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer)
+                || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameType.getNextPlayer() is HumanPlayer)
+
+        guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
+        controls(flip)
+        drawPanel()
 
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
         }
     }
 
-    private fun reverseRow(index: Int) {
-        val b = board.board
-
-        for (i in 0 until columns / 2) {
-            val tmpPiece = b[index][i]
-            b[index][i] = b[index][columns - i - 1]
-            b[index][columns - i - 1] = tmpPiece
-        }
-    }
-
-    private fun flipBoard() {
-        val b = board.board
-        if (rows % 2 != 0) {
-            reverseRow(rows / 2)
-        }
-
-        for (i in 0 until (rows / 2) - 1) {
-            for (j in 0 until columns) {
-                val tmpPiece = b[i][j]
-                b[i][j] = b[rows - i - 1][columns - j - 1]
-                b[rows - i - 1][columns - j - 1] = tmpPiece
-            }
-        }
-    }
-
-    private fun controls() {
+    private fun controls(flipped: Boolean) {
         if (this.currPlayer !is HumanPlayer) {
             return
         }
         val input = Gdx.input
         val graphics = Gdx.graphics
 
-        val x = input.x
-        val y = graphics.height - input.y
+        var x = input.x
+        var y = graphics.height - input.y
+
+        if (flipped) {
+            x = ((columns * squareWidth) - x).toInt()
+            y = graphics.height - y
+        }
+
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null || isPromotionScreen) {
                 srcX = x
@@ -201,6 +189,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
             ) {
                 dstX = x
                 dstY = y
+                currPlayer?.playerMove = getMove(
+                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                    moves
+                )
             } else {
                 srcX = x
                 srcY = y
@@ -212,97 +205,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         if (input.isButtonJustPressed(Input.Buttons.RIGHT)) {
             resetClicks()
         }
-    }
-
-    private fun drawBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        when (gameType) {
-            is Xiangqi, is Janggi -> drawXiangqiBoard(moves)
-            else -> drawChessBoard(moves)
-        }
-    }
-
-    private fun drawLineWithCenterOffset(x1: Int, y1: Int, x2: Int, y2: Int, width: Float) {
-        val offset = squareWidth / 2
-        shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset, squareWidth * y2 + offset, width)
-    }
-
-    private fun drawXiangqiBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        val lineWidth = 4f
-        Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        shapeRenderer.color = Color.BROWN
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        for (j in 0 until rows) {
-            drawLineWithCenterOffset(0, j, columns - 1, j, lineWidth)
-        }
-        for (j in 0 until columns) {
-            drawLineWithCenterOffset(j, 0, j, 4, lineWidth)
-            drawLineWithCenterOffset(j, 5, j, 9, lineWidth)
-        }
-        drawLineWithCenterOffset(3, 0, 5, 2, lineWidth)
-        drawLineWithCenterOffset(5, 0, 3, 2, lineWidth)
-        drawLineWithCenterOffset(3, 7, 5, 9, lineWidth)
-        drawLineWithCenterOffset(5, 7, 3, 9, lineWidth)
-
-        shapeRenderer.end()
-        if (dstX != null && dstY != null) {
-            if (srcX != null && srcY != null) {
-                currPlayer?.playerMove = getMove(
-                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                    moves
-                )
-            }
-        }
-    }
-
-    private fun drawChessBoard(moves: List<GameMove>, flipped: Boolean = false) {
-        Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        var colour1: Color = Color.TAN
-        var colour2: Color = Color.BROWN
-
-        if (flipped) {
-            colour1 = Color.BROWN
-            colour2 = Color.TAN
-        }
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-
-        for (i in 0 until columns) {
-            for (j in 0 until rows) {
-                if ((i + j) % 2 == 0) {
-                    shapeRenderer.color = colour1
-                } else {
-                    shapeRenderer.color = colour2
-                }
-                if (!isPromotionScreen) {
-
-                    if (srcX != null && srcY != null) {
-                        if (squareWidth * i <= srcX!! && srcX!! < squareWidth * (i + 1) && squareWidth * j <= srcY!! && srcY!! < squareWidth * (j + 1)) {
-                            shapeRenderer.color = Color.FOREST
-                        }
-                    }
-
-                    if (dstX != null && dstY != null) {
-                        if (squareWidth * i <= dstX!! && dstX!! < squareWidth * (i + 1) && squareWidth * j <= dstY!! && dstY!! < squareWidth * (j + 1)) {
-
-                            if (srcX != null && srcY != null) {
-                                currPlayer?.playerMove = getMove(
-                                    getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                                    getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                                    moves
-                                )
-                            }
-                        }
-                    }
-                }
-
-                shapeRenderer.rect(squareWidth * i, squareWidth * j, squareWidth, squareWidth)
-            }
-        }
-
-        shapeRenderer.end()
     }
 
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
@@ -328,49 +230,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: Game) : KtxScreen {
         dstY = null
     }
 
-    private fun drawDots(moves: List<GameMove>) {
-        if (srcX == null || srcY == null || isPromotionScreen) {
-            return
-        }
-
-        val toCoordinates = moves.filter { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) }
-            .map { m -> m.displayTo }
-
-//        if (toCoordinates.isEmpty()) {
-//            resetClicks()
-//            return
-//        }
-
-        /* Draw toCoordinates dots for a selected piece. */
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.color = possibleMoveColour
-        val position = squareWidth / 2
-        for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * (c.y) + position, possibleMoveCircleRadius)
-        }
-
-        shapeRenderer.end()
-    }
-
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
-    private fun drawPieces() {
-        val batch = game.batch
-        batch.begin()
-        val pieces = board.getPieces()
-
-        for ((p, c) in pieces) {
-            val texture = textures.getTextureFromPiece(p, playerMapping!![p.player]!!)
-            val sprite = Sprite(texture)
-
-            val posWithinSquare = (squareWidth - pieceWidth) / 2
-            sprite.setPosition(squareWidth * c.x + posWithinSquare, squareWidth * c.y + posWithinSquare)
-
-            sprite.setSize(pieceWidth, pieceWidth)
-            sprite.draw(batch)
-        }
-
-        batch.end()
+    private fun drawPanel() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.color = Color.BLUE
+        shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
+        shapeRenderer.end()
     }
 }
