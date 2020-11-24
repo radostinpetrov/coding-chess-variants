@@ -184,6 +184,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         controls(flip)
         // TODO why does draw panel come after controls?
         drawPanel()
+        drawClocks()
 
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
@@ -288,12 +289,19 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             return false
         }
 
+        val str = displayTimeCurr.toString()
+        val batch = game.batch
+        val font = game.font
+        batch.begin()
+
+        font.draw(batch, str, windowWidth + 10f, 300f)
+        batch.end()
+
         if (flipped) {
             // currtime bottom, other time top.
         } else {
 
         }
-
 
         return true
     }
