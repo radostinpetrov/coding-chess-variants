@@ -24,21 +24,33 @@ class CheckmateTest {
         mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
-        val move1 = GameMove.BasicGameMove(Coordinate(4, 1), Coordinate(4, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
-        val move2 = GameMove.BasicGameMove(Coordinate(4, 6), Coordinate(4, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2)
-        val move3 = GameMove.BasicGameMove(Coordinate(5, 0), Coordinate(2, 3), Bishop(mockHumanPlayer1), mockHumanPlayer1)
-        val move4 = GameMove.BasicGameMove(Coordinate(1, 7), Coordinate(2, 5), Knight(mockHumanPlayer2), mockHumanPlayer2)
-        val move5 = GameMove.BasicGameMove(Coordinate(3, 0), Coordinate(7, 4), Queen(mockHumanPlayer1), mockHumanPlayer1)
-        val move6 = GameMove.BasicGameMove(Coordinate(6, 7), Coordinate(5, 5), Knight(mockHumanPlayer2), mockHumanPlayer2)
-        val move7 = GameMove.BasicGameMove(Coordinate(7, 4), Coordinate(5, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(5, 6)), null, true)
+        val turn4Checkmate: List<GameMove.BasicGameMove> = listOf(
+            GameMove.BasicGameMove(Coordinate(4, 1), Coordinate(4, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove.BasicGameMove(Coordinate(4, 6), Coordinate(4, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove.BasicGameMove(Coordinate(5, 0), Coordinate(2, 3), Bishop(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove.BasicGameMove(Coordinate(1, 7), Coordinate(2, 5), Knight(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove.BasicGameMove(Coordinate(3, 0), Coordinate(7, 4), Queen(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove.BasicGameMove(Coordinate(6, 7), Coordinate(5, 5), Knight(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove.BasicGameMove(Coordinate(7, 4), Coordinate(5, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(5, 6)), null, true)
+        )
 
-        mockStandardChess.makeMove(move1)
-        mockStandardChess.makeMove(move2)
-        mockStandardChess.makeMove(move3)
-        mockStandardChess.makeMove(move4)
-        mockStandardChess.makeMove(move5)
-        mockStandardChess.makeMove(move6)
-        mockStandardChess.makeMove(move7)
+        for (move in turn4Checkmate) {
+            mockStandardChess.makeMove(move)
+        }
+
+        mockStandardChess.getValidMoves(mockHumanPlayer2)
+
+        assertTrue(mockStandardChess.checkmate)
+    }
+
+    @Test
+    fun bishopsOnlyCheckmate() {
+        mockStandardChess.addPlayer(mockHumanPlayer1)
+        mockStandardChess.addPlayer(mockHumanPlayer2)
+        board.addPiece(Coordinate(6,5), King(mockHumanPlayer1))
+        board.addPiece(Coordinate(4, 5), Bishop(mockHumanPlayer1))
+        board.addPiece(Coordinate(4, 4), Bishop(mockHumanPlayer1))
+        board.addPiece(Coordinate(7,7), King(mockHumanPlayer2))
 
         mockStandardChess.getValidMoves(mockHumanPlayer2)
 
