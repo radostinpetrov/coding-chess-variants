@@ -15,13 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import ktx.app.KtxScreen
-import Coordinate
-import GameMove
 import com.badlogic.gdx.utils.Align
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
-import ktx.app.KtxScreen
 import players.HumanPlayer
 import players.Player
 import players.SignalPlayer
