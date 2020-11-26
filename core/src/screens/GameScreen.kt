@@ -21,7 +21,6 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
@@ -176,8 +175,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)
             resetClicks()
-            print(gameEngine.isOver())
-            print(moves.size)
             if (gameEngine.isOver()) {
                 Gdx.app.postRunnable {
                     switchToGameOverScreen(currPlayer!!)
@@ -241,9 +238,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 val signalPlayer = currPlayer!!
                 if (signalPlayer is HumanPlayer) {
                     val nextMove = getMove(
-                            getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                            getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                            moves
+                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                        moves
                     )
                     if (nextMove != null) {
                         signalPlayer.makeMove(nextMove)

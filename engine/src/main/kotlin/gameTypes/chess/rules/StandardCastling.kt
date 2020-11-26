@@ -22,22 +22,20 @@ class StandardCastling : SpecialRules<StandardChess> {
                     if (move.pieceMoved is King) {
                         return
                     }
-//                    rooks.removeAll {  }
-                    if (rooks.contains(move.pieceMoved)) {
-                        rooks.remove(move.pieceMoved)
-                    }
-                    if (rooks.contains(move.pieceMoved)) {
-                        rooks.remove(move.pieceMoved)
-                    }
+                    rooks.removeAll { it.first === move.pieceMoved }
+//                    if (rooks.contains(move.pieceMoved)) {
+//                        rooks.remove(move.pieceMoved)
+//                    }
                 }
                 is GameMove.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove.pieceMoved is King) {
                             return
                         }
-                        if (rooks.contains(basicMove.pieceMoved)) {
-                            rooks.remove(basicMove.pieceMoved)
-                        }
+                        rooks.removeAll { it.first === basicMove.pieceMoved }
+//                        if (rooks.contains(basicMove.pieceMoved)) {
+//                            rooks.remove(basicMove.pieceMoved)
+//                        }
                     }
                 }
             }
@@ -49,12 +47,12 @@ class StandardCastling : SpecialRules<StandardChess> {
         var leftRook: Coordinate? = null
         var rightRook: Coordinate? = null
         for (rook in rooks) {
-//            if (rook.value.x == 0) {
-//                leftRook = rook.value
-//            }
-//            if (rook.value.x == board.m - 1) {
-//                rightRook = rook.value
-//            }
+            if (rook.second.x == 0) {
+                leftRook = rook.second
+            }
+            if (rook.second.x == board.m - 1) {
+                rightRook = rook.second
+            }
         }
         for (i in 1..3) {
             val toCheckCoordLeft = Coordinate(kingCoordinate.x - i, kingCoordinate.y)
@@ -109,9 +107,6 @@ class StandardCastling : SpecialRules<StandardChess> {
                     player
                 )
             )
-        }
-        if (res.size > 0) {
-            print("YEET")
         }
         moves.addAll(res)
     }
