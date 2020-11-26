@@ -6,10 +6,9 @@ import org.json.JSONObject
 import java.net.URI
 
 class LeaderboardWebsocketClient(val leaderboardScreen: LeaderboardScreen) {
-    val serverUri: URI = URI("ws://localhost:8080")
+    val serverUri: URI = URI("ws://207.246.87.201:8080")
 
     private lateinit var webSocketClient: WebSocketClient
-
 
     init {
         createWebSocketClient(serverUri)
@@ -52,8 +51,8 @@ class LeaderboardWebsocketClient(val leaderboardScreen: LeaderboardScreen) {
     fun getLeaderboard() {
         webSocketClient.send(
             "{\n" +
-                    "    \"type\": \"getLeaderboard\"\n" +
-                    "}"
+                "    \"type\": \"getLeaderboard\"\n" +
+                "}"
         )
     }
 }

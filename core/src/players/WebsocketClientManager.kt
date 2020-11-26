@@ -12,9 +12,9 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
-    val serverUri: URI? = URI("ws://localhost:8080")
+    val serverUri: URI? = URI("ws://207.246.87.201:8080")
     private var turnMove: GameMove? = null
-    val username = "Giuliano"
+    val username = "Kerry"
 
     private lateinit var webSocketClient: WebSocketClient
 
