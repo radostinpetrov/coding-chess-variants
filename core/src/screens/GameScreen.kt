@@ -22,7 +22,7 @@ import ktx.app.KtxScreen
 import players.*
 
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -49,7 +49,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     // TODO maybe don't need this?
     var currPlayer: Player? = null
 
-    // TODO can we put color in player?
+    // TODO put color in player?
     var playerMapping: Map<Player, Color>? = null
     // TODO and this?
     var playerMappingInitialClock: MutableMap<Player, Int>? = null
@@ -79,8 +79,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         currPlayer = gameEngine.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
 
-        playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
-        playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+        if (clockList != null) {
+            playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
+            playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+        }
 
         Gdx.input.inputProcessor = Stage()
         startGame()
@@ -201,7 +203,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         drawPanel()
         drawHistoryBox()
 
-        if (!drawClocks(flip)) {
+        if (clockList != null && !drawClocks(flip)) {
             switchToGameOverScreen(gameEngine.getNextPlayer())
         }
 

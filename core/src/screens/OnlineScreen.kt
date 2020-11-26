@@ -13,7 +13,7 @@ import players.NetworkEnemyPlayer
 import players.NetworkHumanPlayer
 import players.WebsocketClientManager
 
-class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
+class OnlineScreen(val game: MyGdxGame, val gameType: GameType, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
@@ -52,7 +52,6 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen() {
-        val clockList = mutableListOf(300, 300)
         val gameScreen = GameScreen(game, gameType, clockList)
         when (humanPlayer) {
             1 -> {
