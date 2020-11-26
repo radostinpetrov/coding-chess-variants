@@ -16,6 +16,7 @@ import gameTypes.chess.GrandChess
 import gameTypes.chess.StandardChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
+import screens.leaderboard.LeaderboardScreen
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
 //    class CustomButton(text: String, skin: Skin) : TextButton(text, skin) {
@@ -38,6 +39,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val localModeButton = TextButton("Play Local/Against Computer", skin)
 
     val startButton = TextButton("Start", skin)
+    val leaderboardButton = TextButton("Leaderboard", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
 
@@ -94,6 +96,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        leaderboardButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToLeaderboardScreen()
+            }
+        })
+
 //        startButton.addListener(object : ChangeListener() {
 //            override fun changed(event: ChangeEvent?, actor: Actor?) {
 //                switchToGameScreen()
@@ -102,7 +110,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
         table.width = 800f
         table.height = 800f
-        table.setPosition(0f, 150f)
+        table.setPosition(0f, 0f)
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
         table.add(onlineModeButton).colspan(3).padBottom(50f)
@@ -114,9 +122,11 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(grandChessButton).colspan(2).padBottom(20f)
         table.add(capablancaChessButton).colspan(2).padBottom(20f)
         table.row()
-        table.add(chess960Button).colspan(2).padBottom(30f)
-        table.add(janggiButton).colspan(2).padBottom(30f)
-        table.add(xiangqiButton).colspan(2).padBottom(30f)
+        table.add(chess960Button).colspan(2).padBottom(50f)
+        table.add(janggiButton).colspan(2).padBottom(50f)
+        table.add(xiangqiButton).colspan(2).padBottom(50f)
+        table.row()
+        table.add(leaderboardButton).colspan(6).padTop(100f).padBottom(20f).center()
         table.row()
 //        table.add(startButton).colspan(6).padBottom(20f).center()
 //        table.row()
@@ -142,5 +152,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             game.setScreen<OnlineScreen>()
             dispose()
         }
+    }
+
+    private fun switchToLeaderboardScreen() {
+        game.removeScreen<LeaderboardScreen>()
+        game.addScreen(LeaderboardScreen(game))
+        game.setScreen<LeaderboardScreen>()
+        dispose()
     }
 }
