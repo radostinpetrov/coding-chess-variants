@@ -12,7 +12,8 @@ class StandardCastling : SpecialRules<StandardChess> {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
-        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+//        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
 
         val res = mutableListOf<GameMove>()
         for (move in currentPlayerMoves) {
@@ -21,18 +22,20 @@ class StandardCastling : SpecialRules<StandardChess> {
                     if (move.pieceMoved is King) {
                         return
                     }
-                    if (rooks.contains(move.pieceMoved)) {
-                        rooks.remove(move.pieceMoved)
-                    }
+                    rooks.removeAll { it.first === move.pieceMoved }
+//                    if (rooks.contains(move.pieceMoved)) {
+//                        rooks.remove(move.pieceMoved)
+//                    }
                 }
                 is GameMove.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove.pieceMoved is King) {
                             return
                         }
-                        if (rooks.contains(basicMove.pieceMoved)) {
-                            rooks.remove(basicMove.pieceMoved)
-                        }
+                        rooks.removeAll { it.first === basicMove.pieceMoved }
+//                        if (rooks.contains(basicMove.pieceMoved)) {
+//                            rooks.remove(basicMove.pieceMoved)
+//                        }
                     }
                 }
             }
@@ -44,11 +47,11 @@ class StandardCastling : SpecialRules<StandardChess> {
         var leftRook: Coordinate? = null
         var rightRook: Coordinate? = null
         for (rook in rooks) {
-            if (rook.value.x == 0) {
-                leftRook = rook.value
+            if (rook.second.x == 0) {
+                leftRook = rook.second
             }
-            if (rook.value.x == board.m - 1) {
-                rightRook = rook.value
+            if (rook.second.x == board.m - 1) {
+                rightRook = rook.second
             }
         }
         for (i in 1..3) {
@@ -68,13 +71,16 @@ class StandardCastling : SpecialRules<StandardChess> {
                     listOf(
                         GameMove.BasicGameMove(
                             Coordinate(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player),
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player
+                        ),
                         GameMove.BasicGameMove(
                             Coordinate(kingCoordinate.x - 1, kingCoordinate.y),
-                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player),
+                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player
+                        ),
                         GameMove.BasicGameMove(
                             Coordinate(leftRook.x, leftRook.y),
-                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), rook!!, player)
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )
@@ -87,13 +93,16 @@ class StandardCastling : SpecialRules<StandardChess> {
                     listOf(
                         GameMove.BasicGameMove(
                             Coordinate(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player),
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player
+                        ),
                         GameMove.BasicGameMove(
                             Coordinate(kingCoordinate.x + 1, kingCoordinate.y),
-                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player),
+                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player
+                        ),
                         GameMove.BasicGameMove(
                             Coordinate(rightRook.x, rightRook.y),
-                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), rook!!, player)
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )

@@ -177,8 +177,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)
             resetClicks()
-            print(gameEngine.isOver())
-            print(moves.size)
             if (gameEngine.isOver()) {
                 Gdx.app.postRunnable {
                     switchToGameOverScreen(currPlayer!!)
@@ -242,9 +240,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 val signalPlayer = currPlayer!!
                 if (signalPlayer is HumanPlayer) {
                     val nextMove = getMove(
-                            getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                            getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                            moves
+                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                        moves
                     )
                     if (nextMove != null) {
                         signalPlayer.makeMove(nextMove)
