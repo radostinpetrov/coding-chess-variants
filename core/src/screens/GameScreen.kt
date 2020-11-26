@@ -14,6 +14,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
+import ktx.app.KtxScreen
+import Coordinate
+import GameMove
+import com.badlogic.gdx.utils.Align
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
@@ -22,7 +26,7 @@ import players.HumanPlayer
 import players.Player
 import players.SignalPlayer
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -37,7 +41,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     var dstX: Int? = null
     var dstY: Int? = null
 
-//    val gameType = gameEngine.gameType
     var board = gameEngine.board
     val rows = board.n
     val columns = board.m
@@ -49,7 +52,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
     // TODO maybe don't need this?
     var currPlayer: Player? = null
+
+    // TODO can we put color in player?
     var playerMapping: Map<Player, Color>? = null
+    // TODO and this?
+    var playerMappingInitialClock: MutableMap<Player, Int>? = null
+    var playerMappingEndClock: Map<Player, Int>? = null
+    val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
     lateinit var promotableMoves: List<GameMove>
@@ -73,6 +82,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
 
         currPlayer = gameEngine.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
+
+        playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
+        playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+
         Gdx.input.inputProcessor = Stage()
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
@@ -170,14 +183,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
     }
 
     override fun render(delta: Float) {
-        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer) ||
-            (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
+        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer)
+                || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
+
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
             controls(flip)
         }
+
         // TODO why does draw panel come after controls?
         drawPanel()
+        drawHistoryBox()
+
+        if (!drawClocks(flip)) {
+            switchToGameOverScreen(gameEngine.getNextPlayer())
+        }
 
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
@@ -236,6 +256,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         }
     }
 
+    private fun resetClicks() {
+        srcX = null
+        srcY = null
+        dstX = null
+        dstY = null
+    }
+
     private fun getMove(from: Coordinate, to: Coordinate, moves: List<GameMove>): GameMove? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
@@ -252,20 +279,100 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType) : KtxScreen {
         return playerMoves[0]
     }
 
-    private fun resetClicks() {
-        srcX = null
-        srcY = null
-        dstX = null
-        dstY = null
-    }
-
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
     private fun drawPanel() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        shapeRenderer.color = Color.BLUE
+        shapeRenderer.color = Color.LIGHT_GRAY
         shapeRenderer.rect(windowWidth.toFloat(), 0f, panelWidth.toFloat(), windowHeight.toFloat())
         shapeRenderer.end()
+    }
+
+    private fun drawClocks(flipped: Boolean): Boolean {
+        val currTime = System.currentTimeMillis() / 1000L
+        val otherPlayerTime = playerMappingInitialClock!![gameEngine.getNextPlayer()]!!
+
+        val playerTime = (currTime - initialTime - otherPlayerTime).toInt()
+
+        val displayTimeCurr = playerMappingEndClock!![currPlayer!!]!! - playerTime
+        val displayTimeOther = playerMappingEndClock!![gameEngine.getNextPlayer()]!! - otherPlayerTime
+
+        playerMappingInitialClock!![currPlayer!!] = playerTime
+
+        if (displayTimeCurr <= 0) {
+            return false
+        }
+
+        val currStr = "${displayTimeCurr / 60}:${displayTimeCurr % 60}"
+        val otherStr = "${displayTimeOther / 60}:${displayTimeOther % 60}"
+
+        val str1: String
+        val str2: String
+
+        if (flipped.xor(playerMapping!![currPlayer!!] == Color.WHITE)) {
+            str1 = currStr
+            str2 = otherStr
+        } else {
+            str1 = otherStr
+            str2 = currStr
+        }
+
+        val batch = game.batch
+        val font = game.font
+
+        batch.begin()
+
+        font.color = Color.BLACK
+        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15/16, panelWidth.toFloat(), Align.center, false)
+        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1/16, panelWidth.toFloat(), Align.center, false)
+
+        batch.end()
+
+        return true
+    }
+
+    private fun drawHistoryBox() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        shapeRenderer.color = Color.WHITE
+        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1/12, 0f + windowHeight.toFloat() * 1/8, panelWidth.toFloat() * 10/12, windowHeight.toFloat() * 6/8)
+        shapeRenderer.end()
+
+        val batch = game.batch
+        val font = game.font
+        batch.begin()
+        var i = 0
+        var history: MutableList<GameMove>
+        val len = gameEngine.moveLog.size
+
+        var offset = 0
+
+        if (len >= 40) {
+            if (len % 2 == 0) {
+                history = gameEngine.moveLog.subList(len - 40, len)
+                offset += (len - 40) / 2
+            } else {
+                history = gameEngine.moveLog.subList(len - 40 + 1, len)
+                offset += (len - 40 + 1) / 2
+            }
+        } else {
+            history = gameEngine.moveLog.toMutableList()
+        }
+
+        for (move in history) {
+            var coor = move.displayTo
+            if (i % 2 == 0) {
+                font.setColor(Color.GRAY)
+                val str  = "TURN ${offset + i/2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2/12, windowHeight.toFloat() * 7/8 - 10 - (15 * i))
+            } else {
+                font.setColor(Color.BLACK)
+                val str  = "(${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7/12, windowHeight.toFloat() * 7/8 - 10 - (15 * (i - 1)))
+            }
+            i++
+        }
+        batch.end()
+
     }
 }

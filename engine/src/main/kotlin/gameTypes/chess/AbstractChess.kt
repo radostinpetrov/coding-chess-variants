@@ -17,7 +17,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
     override var seed: Double? = null
 
-    val moveLog: MutableList<GameMove> = mutableListOf()
+    override val moveLog: MutableList<GameMove> = mutableListOf()
     var stalemate = false
     var checkmate = false
 

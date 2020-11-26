@@ -12,6 +12,7 @@ interface GameType {
     val moveVisitor: MoveVisitor<Board2D>
     var seed: Double?
     val NUM_PLAYERS: Int
+    val moveLog: MutableList<GameMove>
 
     fun initGame()
     fun isOver(): Boolean
