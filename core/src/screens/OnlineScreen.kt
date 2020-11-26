@@ -23,10 +23,10 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType, val clockList: L
 
     val startButton = TextButton("Start", skin)
 
-    val websocketClientManager = WebsocketClientManager { m: Int, seed: Double ->
+    val websocketClientManager = WebsocketClientManager({ m: Int, seed: Double ->
         humanPlayer = m
         gameType.seed = seed
-    }
+    }, gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else "")
 
     var humanPlayer: Int? = null
 

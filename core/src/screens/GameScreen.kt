@@ -21,7 +21,6 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
