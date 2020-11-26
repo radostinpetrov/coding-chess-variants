@@ -40,13 +40,16 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     var isOnline = false
 
     val clockTitle = Label("Select Clock Options", skin)
-    val noClockButton = TextButton("No clock", skin)
-    val fiveClockButton = TextButton("5:5 clock", skin)
-    val tenClockButton = TextButton("10:10 clock", skin)
-    val fifteenClockButton = TextButton("15:10 clock", skin)
+    val noClockButton = TextButton("None", skin)
+    val fiveClockButton = TextButton("5 + 0", skin)
+    val tenClockButton = TextButton("10 + 0", skin)
+    val fifteenClockButton = TextButton("15 + 0", skin)
     var clockList: List<Int>? = null
 
     val leaderboardButton = TextButton("Leaderboard", skin)
+
+    val usernameLabel = Label("Online Username: ", skin)
+    val usernameTextField = TextField("Guest", skin)
 
     override fun show() {
         onlineModeButton.addListener(object : ChangeListener() {
@@ -164,6 +167,9 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(onlineModeButton).colspan(6).padBottom(50f)
         table.add(localModeButton).colspan(6).padBottom(50f)
         table.row()
+        table.add(usernameLabel).colspan(6).padBottom(50f)
+        table.add(usernameTextField).colspan(6).padBottom(50f)
+        table.row()
         table.add(clockTitle).colspan(12).padBottom(20f)
         table.row()
         table.add(noClockButton).colspan(3).padBottom(20f)
@@ -203,7 +209,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             dispose()
         } else {
             game.removeScreen<OnlineScreen>()
-            game.addScreen(OnlineScreen(game, gameType, clockList))
+            game.addScreen(OnlineScreen(game, usernameTextField.text, gameType, clockList))
             game.setScreen<OnlineScreen>()
             dispose()
         }
