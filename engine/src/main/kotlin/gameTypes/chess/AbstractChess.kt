@@ -1,13 +1,13 @@
-package main.kotlin.gameTypes.chess
+package gameTypes.chess
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.GameType
-import main.kotlin.gameTypes.chess.rules.SpecialRules
-import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.King
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.GameType
+import gameTypes.chess.rules.SpecialRules
+import moves.visitors.Board2DMoveVisitor
+import pieces.King
+import pieces.Piece
+import players.Player
 
 abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
 
@@ -17,11 +17,11 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
     override var seed: Double? = null
 
-    val moveLog: MutableList<GameMove> = mutableListOf()
+    override val moveLog: MutableList<GameMove> = mutableListOf()
     var stalemate = false
     var checkmate = false
 
-    val NUM_PLAYERS = 2
+    override val NUM_PLAYERS = 2
 
     override fun isOver(): Boolean {
         return checkmate || stalemate
@@ -50,7 +50,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
         for (rule in rules) {
-            possibleMoves.addAll(rule.getPossibleMoves(this, player))
+            rule.getPossibleMoves(this, player, possibleMoves)
         }
         return possibleMoves
     }
@@ -160,10 +160,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return possibleMoves
     }
 
-    // override fun getHistory(): List<Pair<Board, GameMove>> {
-    //     TODO("Not yet implemented")
-    // }
-
     override fun makeMove(gameMove: GameMove) {
         when (gameMove) {
             is GameMove.BasicGameMove -> {
@@ -188,46 +184,5 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         } else {
             board.addPiece(gameMove.to, gameMove.pieceMoved)
         }
-    }
-
-    override fun addPlayer(player: Player) {
-        players.add(player)
-    }
-
-    override fun turn() {
-        val player = players[playerTurn]
-        val moves = getValidMoves(player)
-        if (moves.isEmpty()) {
-            return
-        }
-
-        val move = player.getTurn(moves)
-
-        if (move != null) {
-            this.makeMove(move)
-            nextPlayer()
-        }
-    }
-
-    override fun nextPlayer() {
-        playerTurn++
-        playerTurn %= players.size
-    }
-
-    override fun getCurrentPlayer(): Player {
-        return players[playerTurn]
-    }
-
-    override fun getNextPlayer(): Player {
-        return players[(playerTurn + 1) % players.size]
-    }
-
-    override fun checkValidGame(): Boolean {
-
-        if (players.size != NUM_PLAYERS) {
-            print("Incorrect number of players")
-            return false
-        }
-        return true
     }
 }

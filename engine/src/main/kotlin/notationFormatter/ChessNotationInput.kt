@@ -1,7 +1,7 @@
-package main.kotlin.notationFormatter
+package notationFormatter
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
+import Coordinate
+import GameMove
 
 class ChessNotationInput(val height: Int) : NotationFormatter {
 

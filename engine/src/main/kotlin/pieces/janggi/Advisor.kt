@@ -1,9 +1,9 @@
-package main.kotlin.pieces.janggi
+package pieces.janggi
 
-import main.kotlin.moves.Direction
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Direction
+import moves.Move
+import pieces.Piece
+import players.Player
 
 class Advisor(override val player: Player) : Piece {
     private val palaceX = listOf(3, 4, 5)

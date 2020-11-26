@@ -1,5 +1,5 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.players.Player
+import players.Player
 
 data class GrandBlackPawn(override val player: Player) : BlackPawn(player, 7)

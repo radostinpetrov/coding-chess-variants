@@ -1,18 +1,10 @@
-package main.kotlin.gameTypes.chess
+package gameTypes.chess
 
-import main.kotlin.Coordinate
-import main.kotlin.boards.Board2D
-import main.kotlin.gameTypes.chess.rules.Enpassant
-import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.chess.GrandBlackPawn
-import main.kotlin.pieces.chess.GrandWhitePawn
-import main.kotlin.pieces.chess.Bishop
-import main.kotlin.pieces.chess.Cardinal
-import main.kotlin.pieces.chess.King
-import main.kotlin.pieces.chess.Knight
-import main.kotlin.pieces.chess.Marshal
-import main.kotlin.pieces.chess.Queen
-import main.kotlin.pieces.chess.Rook
+import Coordinate
+import boards.Board2D
+import gameTypes.chess.rules.Enpassant
+import moves.visitors.Board2DMoveVisitor
+import pieces.chess.*
 
 class
 GrandChess : AbstractChess(listOf(Enpassant())) {

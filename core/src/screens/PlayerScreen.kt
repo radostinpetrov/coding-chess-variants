@@ -10,12 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
+import gameTypes.GameType
 import ktx.app.KtxScreen
-import main.kotlin.Game
-import main.kotlin.gameTypes.GameType
-import main.kotlin.players.ComputerPlayer
-import main.kotlin.players.HumanPlayer
-import main.kotlin.players.Player
+import players.ComputerPlayer
+import players.HumanPlayer
+import players.Player
 
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     val stage = Stage()
@@ -107,20 +106,22 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen(gameType: GameType) {
-        val gameEngine = Game(gameType)
+        val clockList = mutableListOf(300, 300)
+        val gameScreen = GameScreen(game, gameType, clockList)
+
         game.removeScreen<GameScreen>()
 
-        gameEngine.gameType.addPlayer(createPlayer(playerTypes[0]))
-        gameEngine.gameType.addPlayer(createPlayer(playerTypes[1]))
-        game.addScreen(GameScreen(game, gameEngine))
+        gameType.addPlayer(createPlayer(playerTypes[0], gameScreen))
+        gameType.addPlayer(createPlayer(playerTypes[1], gameScreen))
+        game.addScreen(gameScreen)
         dispose()
         game.setScreen<GameScreen>()
     }
 
-    private fun createPlayer(player: PlayerType): Player {
+    private fun createPlayer(player: PlayerType, gameScreen: GameScreen): Player {
         return when (player) {
-            PlayerType.HUMAN -> HumanPlayer()
-            PlayerType.COMPUTER -> ComputerPlayer(200)
+            PlayerType.HUMAN -> HumanPlayer(gameScreen)
+            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200)
         }
     }
 }

@@ -1,13 +1,11 @@
-package main.kotlin.gameTypes.chess
+package gameTypes.chess
 
-import main.kotlin.Coordinate
-import main.kotlin.boards.Board2D
-import main.kotlin.gameTypes.chess.rules.CapablancaCastling
-import main.kotlin.gameTypes.chess.rules.Enpassant
-import main.kotlin.moves.visitors.Board2DMoveVisitor
-import main.kotlin.pieces.chess.StandardBlackPawn
-import main.kotlin.pieces.chess.StandardWhitePawn
-import main.kotlin.pieces.chess.*
+import Coordinate
+import boards.Board2D
+import gameTypes.chess.rules.CapablancaCastling
+import gameTypes.chess.rules.Enpassant
+import moves.visitors.Board2DMoveVisitor
+import pieces.chess.*
 
 open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
 

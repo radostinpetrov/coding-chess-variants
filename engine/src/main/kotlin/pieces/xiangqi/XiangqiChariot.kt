@@ -1,8 +1,8 @@
-package main.kotlin.pieces.xiangqi
+package pieces.xiangqi
 
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Move
+import pieces.Piece
+import players.Player
 
 class XiangqiChariot(override val player: Player) : Piece {
 

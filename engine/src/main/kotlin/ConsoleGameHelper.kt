@@ -1,7 +1,7 @@
-package main.kotlin
+// TODO we will soon deprecate this file, any remaining logic should move to new console frontend
 
-import main.kotlin.gameTypes.GameType
-class Game(val gameType: GameType) {
+import gameTypes.GameType
+class ConsoleGameHelper(val gameType: GameType) {
     var turn = 0
 
     fun start() {
@@ -23,14 +23,14 @@ class Game(val gameType: GameType) {
 //        }
     }
 
-    fun turn(): Boolean {
-        if (gameType.isOver()) {
-            return false
-        }
-
-        gameType.turn()
-        return true
-    }
+//    fun turn(): Boolean {
+//        if (gameType.isOver()) {
+//            return false
+//        }
+//
+//        gameType.turn()
+//        return true
+//    }
 
     /* Display the board in terminal. */
     fun display() {

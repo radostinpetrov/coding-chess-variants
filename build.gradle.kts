@@ -36,18 +36,14 @@ project(":engine") {
     repositories {
         mavenCentral()
     }
+
     dependencies {
-//        testImplementation(platform("org.junit:junit-bom:5.7.0"))
-//        testImplementation("org.junit.jupiter:junit-jupiter")
+
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
         testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
 
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
         testImplementation("io.mockk:mockk:1.9.3")
-        implementation("org.java-websocket:Java-WebSocket:1.5.1")
-        implementation("org.slf4j:slf4j-nop:1.7.30")
-        implementation("org.json:json:20200518")
-
     }
 
     tasks.withType<KotlinCompile>() {
@@ -59,14 +55,13 @@ project(":engine") {
             attributes["Main-Class"] = "ChessKt"
         }
     }
-    //    tasks.test() {
-    //        useJUnitPlatform()
-    //    }
+
     tasks {
         test {
             useJUnitPlatform()
         }
     }
+
 //    tasks.withType<Test> {
 //        useJUnitPlatform()
 //    }
@@ -89,6 +84,16 @@ project(":core") {
         implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+
+        implementation("org.java-websocket:Java-WebSocket:1.5.1")
+        implementation("org.slf4j:slf4j-nop:1.7.30")
+        implementation("org.json:json:20200518")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
+
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+        testImplementation("io.mockk:mockk:1.9.3")
         api("com.badlogicgames.gdx:gdx:$gdxVersion")
         api("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

@@ -1,9 +1,9 @@
-package main.kotlin.pieces.xiangqi
+package pieces.xiangqi
 
-import main.kotlin.moves.Direction
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Direction
+import moves.Move
+import pieces.Piece
+import players.Player
 
 class XiangqiBlueSoldier(override val player: Player) : Piece {
 

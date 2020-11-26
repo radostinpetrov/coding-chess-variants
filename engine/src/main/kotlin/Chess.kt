@@ -1,10 +1,9 @@
-package main.kotlin
+import gameTypes.chess.AbstractChess
+import gameTypes.chess.StandardChess
+import players.ComputerPlayer
+import players.ConsolePlayer
 
-import main.kotlin.gameTypes.chess.AbstractChess
-import main.kotlin.gameTypes.chess.StandardChess
-import main.kotlin.players.ComputerPlayer
-
-fun main(args: Array<String>) {
+fun main() {
     println("Let's play chess!")
     val chess: AbstractChess = StandardChess()
     chess.playerTurn = 1
@@ -15,7 +14,7 @@ fun main(args: Array<String>) {
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 
-    val game = Game(chess)
+    val game = ConsoleGameHelper(chess)
     game.start()
 
     while (true) {
@@ -23,7 +22,23 @@ fun main(args: Array<String>) {
             break
         }
 
-        game.gameType.turn()
+        gameTurn(game)
         game.display()
+    }
+}
+
+fun gameTurn(game: ConsoleGameHelper) {
+    val gt = game.gameType
+    val player = gt.getCurrentPlayer()
+    val moves = gt.getValidMoves(player)
+    if (moves.isEmpty()) {
+        return
+    }
+
+    // TODO fix
+    val move = (player as ConsolePlayer).getTurn(moves)
+
+    if (move != null) {
+        gt.playerMakeMove(move)
     }
 }

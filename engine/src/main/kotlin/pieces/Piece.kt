@@ -1,7 +1,7 @@
-package main.kotlin.pieces
+package pieces
 
-import main.kotlin.moves.Move
-import main.kotlin.players.Player
+import moves.Move
+import players.Player
 
 interface Piece {
     val moveTypes: List<Move>

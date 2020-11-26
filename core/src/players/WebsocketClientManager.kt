@@ -1,7 +1,7 @@
-package main.kotlin.players
+package players
 
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.AbstractChess
+import GameMove
+import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
@@ -27,8 +27,8 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
         webSocketClient.connect()
     }
 
-    private fun createWebSocketClient(coinbaseUri: URI?) {
-        webSocketClient = object : WebSocketClient(coinbaseUri) {
+    private fun createWebSocketClient(uri: URI?) {
+        webSocketClient = object : WebSocketClient(uri) {
 
             override fun onOpen(handshakedata: ServerHandshake?) {
                 println("open")
@@ -50,7 +50,7 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
                     }
                     "receiveMove" -> {
                         val move = jsonMessage.getInt("move")
-                        networkEnemyPlayer.setGameMove(move)
+                        networkEnemyPlayer.makeMove(move)
                     }
                 }
             }

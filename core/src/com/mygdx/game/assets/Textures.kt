@@ -3,7 +3,7 @@ package com.mygdx.game.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import main.kotlin.pieces.Piece
+import pieces.Piece
 
 class Textures(assets: AssetManager) {
     val whitePawn = assets[TextureAssets.WhitePawn]

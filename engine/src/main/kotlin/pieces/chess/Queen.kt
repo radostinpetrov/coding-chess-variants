@@ -1,8 +1,8 @@
-package main.kotlin.pieces.chess
+package pieces.chess
 
-import main.kotlin.moves.Move
-import main.kotlin.pieces.Piece
-import main.kotlin.players.Player
+import moves.Move
+import pieces.Piece
+import players.Player
 
 data class Queen(override val player: Player) : Piece {
     override val moveTypes: List<Move>

@@ -8,14 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
-import main.kotlin.Game
-import main.kotlin.gameTypes.GameType
-import main.kotlin.players.NetworkEnemyPlayer
-import main.kotlin.players.NetworkHumanPlayer
-import main.kotlin.players.WebsocketClientManager
+import gameTypes.GameType
+import players.NetworkEnemyPlayer
+import players.NetworkHumanPlayer
+import players.WebsocketClientManager
 
 class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
-
     val stage = Stage()
     val table = Table()
 
@@ -54,23 +52,24 @@ class OnlineScreen(val game: MyGdxGame, val gameType: GameType) : KtxScreen {
     }
 
     private fun switchToGameScreen() {
-        val gameEngine = Game(gameType)
+        val clockList = mutableListOf(300, 300)
+        val gameScreen = GameScreen(game, gameType, clockList)
         when (humanPlayer) {
             1 -> {
-                gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
-                val enemyPlayer = NetworkEnemyPlayer()
-                gameEngine.gameType.addPlayer(enemyPlayer)
+                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
+                gameType.addPlayer(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer()
-                gameEngine.gameType.addPlayer(enemyPlayer)
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
+                gameType.addPlayer(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                gameEngine.gameType.addPlayer(NetworkHumanPlayer(websocketClientManager))
+                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
             }
         }
         game.removeScreen<GameScreen>()
-        game.addScreen(GameScreen(game, gameEngine))
+        game.addScreen(gameScreen)
         dispose()
         game.setScreen<GameScreen>()
     }

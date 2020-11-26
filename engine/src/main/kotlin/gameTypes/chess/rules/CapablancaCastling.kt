@@ -1,26 +1,25 @@
-package main.kotlin.gameTypes.chess.rules
+package gameTypes.chess.rules
 
-import main.kotlin.Coordinate
-import main.kotlin.GameMove
-import main.kotlin.gameTypes.chess.CapablancaChess
-import main.kotlin.pieces.chess.King
-import main.kotlin.pieces.chess.Rook
-import main.kotlin.players.Player
+import Coordinate
+import GameMove
+import gameTypes.chess.CapablancaChess
+import pieces.chess.King
+import pieces.chess.Rook
+import players.Player
 
 class CapablancaCastling : SpecialRules<CapablancaChess> {
-    override fun getPossibleMoves(game: CapablancaChess, player: Player): List<GameMove> {
+    override fun getPossibleMoves(game: CapablancaChess, player: Player, moves: MutableList<GameMove>) {
         val board = game.board
         val moveLog = game.moveLog
-        val currentPlayer = player
-        val currentPlayerMoves = moveLog.filter { x -> x.player == currentPlayer }
-        val rooks = (board.getPieces(currentPlayer).filter { p -> p.first.player == currentPlayer && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+        val currentPlayerMoves = moveLog.filter { x -> x.player == player }
+        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
 
         val res = mutableListOf<GameMove>()
         for (move in currentPlayerMoves) {
             when (move) {
                 is GameMove.BasicGameMove -> {
                     if (move.pieceMoved is King) {
-                        return res
+                        return
                     }
                     if (rooks.contains(move.pieceMoved)) {
                         rooks.remove(move.pieceMoved)
@@ -29,7 +28,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                 is GameMove.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove.pieceMoved is King) {
-                            return res
+                            return
                         }
                         if (rooks.contains(basicMove.pieceMoved)) {
                             rooks.remove(basicMove.pieceMoved)
@@ -39,11 +38,8 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             }
         }
 
-        val kingCoordinate = board.getPieces(currentPlayer).find { p -> p.first.player == currentPlayer && p.first is King }!!.second
-        val king = game.board.getPiece(kingCoordinate)
-        if (king == null) {
-            return res
-        }
+        val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
+        val king = game.board.getPiece(kingCoordinate) ?: return
         // Check Left for check
         var leftRook: Coordinate? = null
         var rightRook: Coordinate? = null
@@ -70,10 +66,18 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove.CompositeGameMove(
                     listOf(
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x, kingCoordinate.y), Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x - 1, kingCoordinate.y), Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x - 2, kingCoordinate.y), Coordinate(kingCoordinate.x - 3, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(leftRook.x, leftRook.y), Coordinate(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x - 1, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x - 3, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(leftRook.x, leftRook.y),
+                            Coordinate(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
                     ),
                     player
                 )
@@ -84,15 +88,23 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove.CompositeGameMove(
                     listOf(
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x, kingCoordinate.y), Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x + 1, kingCoordinate.y), Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(kingCoordinate.x + 2, kingCoordinate.y), Coordinate(kingCoordinate.x + 3, kingCoordinate.y), king, player),
-                        GameMove.BasicGameMove(Coordinate(rightRook.x, rightRook.y), Coordinate(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x + 1, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y),
+                            Coordinate(kingCoordinate.x + 3, kingCoordinate.y), king, player),
+                        GameMove.BasicGameMove(
+                            Coordinate(rightRook.x, rightRook.y),
+                            Coordinate(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
                     ),
                     player
                 )
             )
         }
-        return res
+        moves.addAll(res)
     }
 }
