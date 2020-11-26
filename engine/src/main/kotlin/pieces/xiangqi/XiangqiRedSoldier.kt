@@ -5,7 +5,7 @@ import moves.Move
 import pieces.Piece
 import players.Player
 
-class XiangqiRedSoldier(override val player: Player) : Piece {
+data class XiangqiRedSoldier(override val player: Player) : Piece {
 
     private val acrossRiverY = listOf(5, 6, 7, 8, 9)
 

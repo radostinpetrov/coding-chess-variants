@@ -5,7 +5,7 @@ import moves.Move
 import pieces.Piece
 import players.Player
 
-class BlueSoldier(override val player: Player) : Piece {
+data class BlueSoldier(override val player: Player) : Piece {
     override val moveTypes: List<Move>
         get() = listOf(
             Move.Stepper(Direction.EAST, 1, true),

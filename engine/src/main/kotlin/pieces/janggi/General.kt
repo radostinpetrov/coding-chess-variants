@@ -6,7 +6,7 @@ import pieces.King
 import pieces.Piece
 import players.Player
 
-class General(override val player: Player) : Piece, King {
+data class General(override val player: Player) : Piece, King {
     private val palaceX = listOf(3, 4, 5)
     private val palaceY = listOf(0, 1, 2, 7, 8, 9)
 

@@ -5,7 +5,7 @@ import moves.Move
 import pieces.Piece
 import players.Player
 
-class Horse(override val player: Player) : Piece {
+data class Horse(override val player: Player) : Piece {
     override val moveTypes: List<Move>
         get() = listOf(
             Move.Composite(listOf(Move.Stepper(Direction.NORTH, 1, false), Move.Stepper(Direction.NORTH_EAST, 1, true))),

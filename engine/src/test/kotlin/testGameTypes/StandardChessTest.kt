@@ -1,21 +1,22 @@
 package testGameTypes
 
+import Coordinate
+import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
-import Coordinate
-import GameMove
-import gameTypes.chess.AbstractChess
-import gameTypes.chess.StandardChess
-import players.Player
+import io.mockk.spyk
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
-
+import players.Player
 
 class StandardChessTest {
-    private var mockStandardChess: AbstractChess = StandardChess()
+//    @MockK
+//    private lateinit var mockStandardChess: StandardChess
+    val mockStandardChess = spyk<StandardChess>()
 
     private val board = mockStandardChess.board
 
@@ -76,6 +77,7 @@ class StandardChessTest {
         mockStandardChess.initGame()
         val initPieces = board.getPieces()
         assertTrue(initPieces.containsAll(initPiecesTest))
+        Assertions.assertEquals(initPieces.size, initPiecesTest.size)
     }
 
     @Test
@@ -83,7 +85,8 @@ class StandardChessTest {
         board.addPiece(Coordinate(0, 0), StandardWhitePawn(mockHumanPlayer1))
         val gameMove = GameMove.BasicGameMove(
             Coordinate(0, 0),
-            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
+            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1
+        )
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.from) == null)
     }
@@ -93,7 +96,8 @@ class StandardChessTest {
         board.addPiece(Coordinate(0, 0), StandardWhitePawn(mockHumanPlayer1))
         val gameMove = GameMove.BasicGameMove(
             Coordinate(0, 0),
-            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
+            Coordinate(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1
+        )
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.to) == gameMove.pieceMoved)
         if (gameMove.pieceCaptured != null) {

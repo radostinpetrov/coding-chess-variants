@@ -5,7 +5,7 @@ import moves.Move
 import pieces.Piece
 import players.Player
 
-class XiangqiAdvisor(override val player: Player) : Piece {
+data class XiangqiAdvisor(override val player: Player) : Piece {
     override val moveTypes: List<Move>
         get() = listOf(
             Move.Restricted(Move.Leaper(1, 1), listOf(4), listOf(1, 8)),

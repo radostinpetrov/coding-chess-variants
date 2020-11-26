@@ -4,7 +4,7 @@ import moves.Move
 import pieces.Piece
 import players.Player
 
-class XiangqiCannon(override val player: Player) : Piece {
+data class XiangqiCannon(override val player: Player) : Piece {
 
     override val moveTypes: List<Move>
         get() = listOf(
