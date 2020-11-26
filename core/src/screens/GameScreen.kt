@@ -12,16 +12,15 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
-import ktx.app.KtxScreen
-import com.badlogic.gdx.utils.Align
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
-import players.HumanPlayer
-import players.Player
-import players.SignalPlayer
+import ktx.app.KtxScreen
+import players.*
+
 
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
     private val textures = Textures(game.assets)
@@ -151,12 +150,19 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     fun switchToGameOverScreen(player: Player) {
         game.removeScreen<GameOverScreen>()
-
         // change this.
         val playerName = playerMapping?.get(player)!!.toString()
+        // White player reports result
+
         if (playerName == "fffffff") {
+            if (gameEngine.players[0] is NetworkHumanPlayer) {
+                (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(0f)
+            }
             game.addScreen(GameOverScreen(game, gameEngine, "Black"))
         } else {
+            if (gameEngine.players[0] is NetworkHumanPlayer) {
+                (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(1f)
+            }
             game.addScreen(GameOverScreen(game, gameEngine, "White"))
         }
 
@@ -170,9 +176,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)
             resetClicks()
-
+            print(gameEngine.isOver())
+            print(moves.size)
             if (gameEngine.isOver()) {
-                switchToGameOverScreen(currPlayer!!)
+                Gdx.app.postRunnable {
+                    switchToGameOverScreen(currPlayer!!)
+                }
             }
 
             (currPlayer as SignalPlayer).signalTurn()
@@ -180,8 +189,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     }
 
     override fun render(delta: Float) {
-        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer)
-                || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
+        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer) ||
+            (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
 
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
@@ -232,9 +241,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 val signalPlayer = currPlayer!!
                 if (signalPlayer is HumanPlayer) {
                     val nextMove = getMove(
-                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
-                        moves
+                            getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
+                            getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                            moves
                     )
                     if (nextMove != null) {
                         signalPlayer.makeMove(nextMove)
@@ -321,8 +330,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         batch.begin()
 
         font.color = Color.BLACK
-        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15/16, panelWidth.toFloat(), Align.center, false)
-        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1/16, panelWidth.toFloat(), Align.center, false)
+        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15 / 16, panelWidth.toFloat(), Align.center, false)
+        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1 / 16, panelWidth.toFloat(), Align.center, false)
 
         batch.end()
 
@@ -332,7 +341,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     private fun drawHistoryBox() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.WHITE
-        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1/12, 0f + windowHeight.toFloat() * 1/8, panelWidth.toFloat() * 10/12, windowHeight.toFloat() * 6/8)
+        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
         shapeRenderer.end()
 
         val batch = game.batch
@@ -360,16 +369,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             var coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
-                val str  = "TURN ${offset + i/2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2/12, windowHeight.toFloat() * 7/8 - 10 - (15 * i))
+                val str = "TURN ${offset + i / 2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * i))
             } else {
                 font.setColor(Color.BLACK)
-                val str  = "(${(coor.x + 65).toChar()},${coor.y + 1})"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7/12, windowHeight.toFloat() * 7/8 - 10 - (15 * (i - 1)))
+                val str = "(${(coor.x + 65).toChar()},${coor.y + 1})"
+                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
             }
             i++
         }
         batch.end()
-
     }
 }

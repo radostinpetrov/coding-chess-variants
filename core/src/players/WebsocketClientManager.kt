@@ -12,8 +12,9 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
-    val serverUri: URI? = URI("ws://207.246.87.201:8080")
+    val serverUri: URI? = URI("ws://localhost:8080")
     private var turnMove: GameMove? = null
+    val username = "Giuliano"
 
     private lateinit var webSocketClient: WebSocketClient
 
@@ -83,7 +84,17 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
         webSocketClient.send(
             "{\n" +
                 "    \"type\": \"matchmaking\",\n" +
-                "    \"gameMode\": \"standard\"" +
+                "    \"gameMode\": \"standard\",\n" +
+                "    \"username\": \"$username\"" +
+                "}"
+        )
+    }
+
+    fun sendResult(gameResult: Float) {
+        webSocketClient.send(
+            "{\n" +
+                "    \"type\": \"finishGame\",\n" +
+                "    \"gameResult\": $gameResult" +
                 "}"
         )
     }
