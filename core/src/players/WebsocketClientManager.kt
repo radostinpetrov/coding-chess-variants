@@ -7,20 +7,23 @@ import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
 import java.net.URI
 
-class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit) {
+class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
     lateinit var game: AbstractChess
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
-    val serverUri: URI? = URI("ws://207.246.87.201:8080")
+    val serverUri: URI = URI("ws://207.246.87.201:8080")
     private var turnMove: GameMove? = null
-    val username = "Kerry"
 
     private lateinit var webSocketClient: WebSocketClient
 
     lateinit var enemyId: String
 
     init {
+        if (username == "") {
+            username = "Guest"
+        }
+        println(username)
         createWebSocketClient(serverUri)
 
 //        val socketFactory: SSLSocketFactory = SSLSocketFactory.getDefault() as SSLSocketFactory

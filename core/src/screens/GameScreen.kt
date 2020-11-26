@@ -21,7 +21,7 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -48,7 +48,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     // TODO maybe don't need this?
     var currPlayer: Player? = null
 
-    // TODO can we put color in player?
+    // TODO put color in player?
     var playerMapping: Map<Player, Color>? = null
     // TODO and this?
     var playerMappingInitialClock: MutableMap<Player, Int>? = null
@@ -78,8 +78,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         currPlayer = gameEngine.getCurrentPlayer()
         playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
 
-        playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
-        playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+        if (clockList != null) {
+            playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
+            playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
+        }
 
         Gdx.input.inputProcessor = Stage()
         startGame()
@@ -157,12 +159,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             if (gameEngine.players[0] is NetworkHumanPlayer) {
                 (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(0f)
             }
-            game.addScreen(GameOverScreen(game, gameEngine, "Black"))
+            game.addScreen(GameOverScreen(game, gameEngine, "White"))
         } else {
             if (gameEngine.players[0] is NetworkHumanPlayer) {
                 (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(1f)
             }
-            game.addScreen(GameOverScreen(game, gameEngine, "White"))
+            game.addScreen(GameOverScreen(game, gameEngine, "Black"))
         }
 
         game.setScreen<GameOverScreen>()
@@ -198,7 +200,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         drawPanel()
         drawHistoryBox()
 
-        if (!drawClocks(flip)) {
+        if (clockList != null && !drawClocks(flip)) {
             switchToGameOverScreen(gameEngine.getNextPlayer())
         }
 
@@ -307,8 +309,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             return false
         }
 
-        val currStr = "${displayTimeCurr / 60}:${displayTimeCurr % 60}"
-        val otherStr = "${displayTimeOther / 60}:${displayTimeOther % 60}"
+        val currStr = "${displayTimeCurr / 60}:${"%02d".format(displayTimeCurr % 60)}"
+        val otherStr = "${displayTimeOther / 60}:${"%02d".format(displayTimeOther % 60)}"
 
         val str1: String
         val str2: String
@@ -327,9 +329,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         batch.begin()
 
         font.color = Color.BLACK
+        font.data.setScale(2.0f)
         font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15 / 16, panelWidth.toFloat(), Align.center, false)
         font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1 / 16, panelWidth.toFloat(), Align.center, false)
-
+        font.data.setScale(1.0f)
         batch.end()
 
         return true
@@ -345,7 +348,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         val font = game.font
         batch.begin()
         var i = 0
-        var history: MutableList<GameMove>
+        val history: MutableList<GameMove>
         val len = gameEngine.moveLog.size
 
         var offset = 0
@@ -363,7 +366,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         }
 
         for (move in history) {
-            var coor = move.displayTo
+            val coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
                 val str = "TURN ${offset + i / 2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
