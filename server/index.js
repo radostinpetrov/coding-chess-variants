@@ -4,8 +4,19 @@ const uuid = require('uuid')
 
 const server = http.createServer();
 
-const wss = new WebSocket.Server({ server });
+const port = process.env.PORT || ""
 
+const wss = new WebSocket.Server({ server });
+require('dotenv').config()
+
+var mongoose = require('mongoose');
+
+const uri = process.env.DB_CONNECTION;
+mongoose.connect(uri, 
+  {  useNewUrlParser: true,  useUnifiedTopology: true})
+  .then(() => {  console.log('MongoDB Connected')})
+  .catch(err => console.log(err))
+  
 const matchMakingQueues = {}
 const matches = {}
 const players = {}
@@ -18,8 +29,10 @@ wss.on('connection', function connection(ws) {
     obj = JSON.parse(message)
     if (obj.type === "matchmaking"){
       matchmaking(ws, obj)
-    } else if (obj.type === 'makeMove') {
+    } else if (obj.type === "makeMove") {
       makemove(obj)
+    } else if (obj.type === "getLeaderboard"){
+      
     }
   });
   // ws.send('receiveMove');

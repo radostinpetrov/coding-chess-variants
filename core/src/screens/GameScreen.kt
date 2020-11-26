@@ -1,5 +1,7 @@
 package screens
 
+import Coordinate
+import GameMove
 import boards.ChessBoard
 import boards.GUIBoard
 import boards.XiangqiBoard
@@ -19,6 +21,7 @@ import com.badlogic.gdx.utils.Align
 import gameTypes.GameType
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
+import ktx.app.KtxScreen
 import players.HumanPlayer
 import players.Player
 import players.SignalPlayer
@@ -87,12 +90,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
 
-        // TODO remove this soon as possible
-        (currPlayer!! as SignalPlayer).signalTurn()
-        guiBoard =  when (gameEngine) {
+        guiBoard = when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
             else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
         }
+
+        (currPlayer!! as SignalPlayer).signalTurn()
     }
 
     private fun showPromotionScreen(moves: List<GameMove>) {
@@ -165,24 +168,29 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     // Function to be called when current player plays a turn
     fun processTurn(nextMove: GameMove) {
-        gameEngine.playerMakeMove(nextMove)
-        currPlayer = gameEngine.getCurrentPlayer()
-        moves = gameEngine.getValidMoves(currPlayer!!)
-        resetClicks()
+        synchronized(this) {
+            gameEngine.playerMakeMove(nextMove)
+            currPlayer = gameEngine.getCurrentPlayer()
+            moves = gameEngine.getValidMoves(currPlayer!!)
+            resetClicks()
 
-        if (gameEngine.isOver()) {
-            switchToGameOverScreen(currPlayer!!)
+            if (gameEngine.isOver()) {
+                switchToGameOverScreen(currPlayer!!)
+            }
+
+            (currPlayer as SignalPlayer).signalTurn()
         }
-
-        (currPlayer as SignalPlayer).signalTurn()
     }
 
     override fun render(delta: Float) {
         val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer)
                 || (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
 
-        guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-        controls(flip)
+        synchronized(this) {
+            guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
+            controls(flip)
+        }
+
         // TODO why does draw panel come after controls?
         drawPanel()
         drawHistoryBox()
@@ -216,8 +224,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 srcX = x
                 srcY = y
             } else if (srcX != null && dstX == null &&
-                moves.any { m -> m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
-                            && m.displayTo == getPieceCoordinateFromMousePosition(x, y) }
+                moves.any { m ->
+                    m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) &&
+                        m.displayTo == getPieceCoordinateFromMousePosition(x, y)
+                }
             ) {
                 dstX = x
                 dstY = y

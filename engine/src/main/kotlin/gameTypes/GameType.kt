@@ -56,11 +56,11 @@ interface GameType {
     fun playerMakeMove(move: GameMove) {
 
         // TODO discuss if we should keep this first check
-        val validMoves = getValidMoves(getCurrentPlayer())
-
-        if (!validMoves.contains(move)) {
-            return
-        }
+//        val validMoves = getValidMoves(getCurrentPlayer())
+//
+//        if (!validMoves.contains(move)) {
+//            return
+//        }
 
         makeMove(move)
         nextPlayer()
