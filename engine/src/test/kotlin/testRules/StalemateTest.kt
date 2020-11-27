@@ -2,9 +2,11 @@ package testRules
 
 import Coordinate
 import gameTypes.chess.StandardChess
+import io.mockk.MockKAnnotations
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
 import players.Player
@@ -15,6 +17,9 @@ class StalemateTest {
 
     val mockHumanPlayer1 = mockk<Player>()
     val mockHumanPlayer2 = mockk<Player>()
+
+    @BeforeEach
+    fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun quickStalemateTest() {

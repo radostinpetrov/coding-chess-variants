@@ -12,7 +12,6 @@ import pieces.chess.*
 import players.Player
 
 class GrandChessTest {
-
     private var mockGrandChess = spyk<GrandChess>()
 
     private val board = mockGrandChess.board

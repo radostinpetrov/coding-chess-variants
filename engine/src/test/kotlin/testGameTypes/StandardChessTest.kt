@@ -14,16 +14,12 @@ import pieces.chess.*
 import players.Player
 
 class StandardChessTest {
-//    @MockK
-//    private lateinit var mockStandardChess: StandardChess
     val mockStandardChess = spyk<StandardChess>()
 
     private val board = mockStandardChess.board
 
-    // val mockStandardChess = mockk<StandardChess>()
     val mockHumanPlayer1 = mockk<Player>()
     val mockHumanPlayer2 = mockk<Player>()
-    // val mockGameMove = mockk<GameMove>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)

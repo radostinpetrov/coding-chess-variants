@@ -22,6 +22,7 @@ class XiangqiTest {
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
+
     @Test
     fun boardIsInitialized() {
 
