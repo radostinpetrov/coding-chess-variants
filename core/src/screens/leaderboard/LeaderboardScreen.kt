@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
 import org.json.JSONArray
-import org.json.JSONObject
 import screens.MenuScreen
 
 class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
@@ -36,14 +35,19 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
         table.setPosition(0f, 150f)
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
-        leaderboardTable.width = 500f
+        leaderboardTable.width = 800f
         leaderboardTable.height = 500f
+        val labelRank = Label("Rank", skin)
+        val labelUsername = Label("Username", skin)
+        val labelElo = Label("Elo", skin)
+        leaderboardTable.add(labelRank).colspan(4).padBottom(20f)
+        leaderboardTable.add(labelUsername).colspan(4).padBottom(20f)
+        leaderboardTable.add(labelElo).colspan(4).padBottom(20f)
+        leaderboardTable.row()
         table.add(leaderboardTable).colspan(6).padBottom(20f)
         table.row()
         table.add(menuButton).colspan(6).padBottom(20f)
         table.row()
-//        table.add(startButton).colspan(6).padBottom(20f).center()
-//        table.row()
         stage.addActor(table)
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
@@ -64,11 +68,12 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
     fun loadLeaderboard(leaderboardArr: JSONArray) {
         for (i in 0 until leaderboardArr.length()) {
             val entry = leaderboardArr.getJSONObject(i)
-            val label = Label(
-                "Rank: ${i + 1} | Username: ${entry.getString("username")} | Elo: ${entry.getInt("elo")}",
-                skin
-            )
-            leaderboardTable.add(label)
+            val labelRank = Label("${i + 1}", skin)
+            val labelUsername = Label(entry.getString("username"), skin)
+            val labelElo = Label("${entry.getInt("elo")}", skin)
+            leaderboardTable.add(labelRank).colspan(4)
+            leaderboardTable.add(labelUsername).colspan(4)
+            leaderboardTable.add(labelElo).colspan(4)
             leaderboardTable.row()
         }
 
