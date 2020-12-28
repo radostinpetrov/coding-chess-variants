@@ -5,7 +5,6 @@ import boards.Board2D
 import gameTypes.chess.rules.Enpassant
 import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
-import players.Player
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)

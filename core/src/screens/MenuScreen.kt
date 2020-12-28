@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
 import gameTypes.GameType
-import gameTypes.chess.CapablancaChess
-import gameTypes.chess.Chess960
-import gameTypes.chess.GrandChess
-import gameTypes.chess.StandardChess
+import gameTypes.chess.*
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
@@ -32,6 +29,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val chess960Button = TextButton("Chess960", skin)
     val janggiButton = TextButton("Janggi", skin)
     val xiangqiButton = TextButton("Xiangqi", skin)
+    val antiChessButton = TextButton("AntiChess", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -152,6 +150,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        antiChessButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToPreGameScreen(AntiChess(), isOnline)
+            }
+        })
+
         leaderboardButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToLeaderboardScreen()
@@ -183,9 +187,11 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(grandChessButton).colspan(4).padBottom(20f)
         table.add(capablancaChessButton).colspan(4).padBottom(20f)
         table.row()
-        table.add(chess960Button).colspan(4).padBottom(50f)
-        table.add(janggiButton).colspan(4).padBottom(50f)
-        table.add(xiangqiButton).colspan(4).padBottom(50f)
+        table.add(chess960Button).colspan(4).padBottom(20f)
+        table.add(janggiButton).colspan(4).padBottom(20f)
+        table.add(xiangqiButton).colspan(4).padBottom(20f)
+        table.row()
+        table.add(antiChessButton).colspan(4).padBottom(50f)
         table.row()
         table.add(leaderboardButton).colspan(12).padTop(100f).padBottom(20f).center()
         table.row()

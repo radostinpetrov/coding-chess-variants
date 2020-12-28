@@ -86,7 +86,8 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     private fun inCheck(player: Player): Boolean {
-        val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
+        val king = board.getPieces(player).find { p -> p.first.player == player && p.first is King } ?: return false
+        val kingCoordinate = king.second
         return squareUnderAttack(kingCoordinate, player)
     }
 

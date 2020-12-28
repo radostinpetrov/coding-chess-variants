@@ -46,7 +46,7 @@ class Textures(assets: AssetManager) {
         "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier,
         "XiangqiAdvisor" to whiteAdvisor, "XiangqiCannon" to whiteCannon, "XiangqiChariot" to whiteChariot,
         "XiangqiRedElephant" to whiteElephant, "XiangqiGeneral" to whiteGeneral, "XiangqiHorse" to whiteHorse,
-        "XiangqiRedSoldier" to whiteSoldier
+        "XiangqiRedSoldier" to whiteSoldier, "AntiChessWhitePawn" to whitePawn, "AntiChessKing" to whiteKing
     )
 
     val blacks = mapOf(
@@ -57,7 +57,7 @@ class Textures(assets: AssetManager) {
         "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier,
         "XiangqiAdvisor" to blackAdvisor, "XiangqiCannon" to blackCannon, "XiangqiChariot" to blackChariot,
         "XiangqiBlueElephant" to blackElephant, "XiangqiGeneral" to blackGeneral, "XiangqiHorse" to blackHorse,
-        "XiangqiBlueSoldier" to blackSoldier
+        "XiangqiBlueSoldier" to blackSoldier, "AntiChessBlackPawn" to blackPawn, "AntiChessKing" to blackKing
     )
 
     fun getTextureFromPiece(piece: Piece, playerColour: Color): Texture? {
