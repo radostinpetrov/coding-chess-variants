@@ -6,8 +6,9 @@ import gameTypes.chess.rules.CapablancaCastling
 import gameTypes.chess.rules.Enpassant
 import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
+import players.Player
 
-open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
+open class CapablancaChess(player1: Player, player2: Player) : AbstractChess(listOf(player1, player2), listOf(CapablancaCastling(), Enpassant())) {
 
     override val board = Board2D(8, 10)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
@@ -15,10 +16,12 @@ open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassan
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
+
         for (i in 0..9) {
             board.addPiece(Coordinate(i, 1), StandardWhitePawn(player1))
             board.addPiece(Coordinate(i, 6), StandardBlackPawn(player2))
         }
+
         board.addPiece(Coordinate(0, 0), Rook(player1))
         board.addPiece(Coordinate(9, 0), Rook(player1))
         board.addPiece(Coordinate(0, 7), Rook(player2))

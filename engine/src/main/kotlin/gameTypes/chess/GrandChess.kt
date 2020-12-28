@@ -5,9 +5,10 @@ import boards.Board2D
 import gameTypes.chess.rules.Enpassant
 import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
+import players.Player
 
 class
-GrandChess : AbstractChess(listOf(Enpassant())) {
+GrandChess(player1: Player, player2: Player) : AbstractChess(listOf(player1, player2), listOf(Enpassant())) {
     override val board = Board2D(10, 10)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 

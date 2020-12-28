@@ -65,29 +65,25 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
             }
             is Move.Restricted -> {
                 visit(coordinate, piece, move.move, player).filter {
-                    val validX = move.x.isEmpty() || move.x.contains(it.from.x)
-                    val validY = move.y.isEmpty() || move.y.contains(it.from.y)
-                    validX && validY
+                    move.region.isInRegion(it.from)
                 }
             }
             is Move.RestrictedDestination -> {
                 visit(coordinate, piece, move.move, player).filter {
-                    val validX = move.x.isEmpty() || move.x.contains(it.to.x)
-                    val validY = move.y.isEmpty() || move.y.contains(it.to.y)
-                    validX && validY
+                    move.region.isInRegion(it.from)
                 }
             }
-            is Move.AddForcedPromotion -> {
+            is Move.AddPromotion -> {
                 val result: MutableList<GameMove.BasicGameMove> = mutableListOf()
                 visit(coordinate, piece, move.move, player).forEach {
-                    val validX = move.x.isEmpty() || move.x.contains(it.to.x)
-                    val validY = move.y.isEmpty() || move.y.contains(it.to.y)
-                    if (validX && validY) {
+                    val valid = move.region.isInRegion(it.from)
+                    if (valid) {
                         for (promoPiece in move.promoPieces) {
                             result.add(GameMove.BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured, promoPiece))
                         }
-                    } else {
-                        result.add(it)
+                        if (move.forced) {
+                            result.add(GameMove.BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
+                        }
                     }
                 }
                 return result

@@ -5,12 +5,12 @@ import players.ConsolePlayer
 
 fun main() {
     println("Let's play chess!")
-    val chess: AbstractChess = StandardChess()
+    val chess: AbstractChess = StandardChess(ComputerPlayer(10), ComputerPlayer(10))
     chess.playerTurn = 1
 
 //    chess.addPlayer(HumanPlayer())
-    chess.addPlayer(ComputerPlayer(10))
-    chess.addPlayer(ComputerPlayer(10))
+//    chess.addPlayer(D)
+//    chess.addPlayer(ComputerPlayer(10))
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 //    chess.addPlayer(TestHumanPlayer(ChessNotationInput(chess.board.n)))
 

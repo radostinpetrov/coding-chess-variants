@@ -6,7 +6,7 @@ import players.Player
 import java.lang.Exception
 
 class Board2D(val n: Int, val m: Int) : Board<Piece> {
-    var board: Array<Array<Piece?>> = Array(n) { Array(m) { null } }
+    private var board: Array<Array<Piece?>> = Array(n) { Array(m) { null } }
     override fun getBoardState(): Array<Array<Piece?>> {
         return board
     }
@@ -26,7 +26,7 @@ class Board2D(val n: Int, val m: Int) : Board<Piece> {
     }
 
     override fun getPieces(player: Player): List<Pair<Piece, Coordinate>> {
-        return getPieces().filter { p -> p.first.player == player }
+        return getPieces().filter { p -> p.first.player === player }
     }
 
     override fun getPiece(coordinate: Coordinate): Piece? {

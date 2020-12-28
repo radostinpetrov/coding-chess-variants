@@ -6,8 +6,9 @@ import gameTypes.chess.AbstractChess
 import gameTypes.xiangqi.rules.GeneralsRule
 import moves.visitors.Board2DMoveVisitor
 import pieces.xiangqi.* // ktlint-disable no-wildcard-imports
+import players.Player
 
-class Xiangqi : AbstractChess(listOf(GeneralsRule())) {
+class Xiangqi(val player1: Player, val player2: Player) : AbstractChess(listOf(player1, player2), listOf(GeneralsRule())) {
     override val board = Board2D(10, 9)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
 

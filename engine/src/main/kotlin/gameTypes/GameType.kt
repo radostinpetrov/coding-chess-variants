@@ -7,7 +7,7 @@ import players.Player
 
 interface GameType {
     val board: Board2D
-    val players: MutableList<Player>
+    val players: List<Player>
     var playerTurn: Int
     val moveVisitor: MoveVisitor<Board2D>
     var seed: Double?
@@ -19,9 +19,6 @@ interface GameType {
     // fun getWinner()
     fun getValidMoves(player: Player): List<GameMove>
     fun makeMove(gameMove: GameMove)
-    fun addPlayer(player: Player) {
-        players.add(player)
-    }
 //    fun turn() {
 //        val player = players[playerTurn]
 //        val moves = getValidMoves(player)

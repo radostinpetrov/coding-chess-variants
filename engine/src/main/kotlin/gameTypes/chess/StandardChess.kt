@@ -6,8 +6,9 @@ import gameTypes.chess.rules.Enpassant
 import gameTypes.chess.rules.StandardCastling
 import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
+import players.Player
 
-open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant())) {
+open class StandardChess(player1: Player, player2: Player) : AbstractChess(listOf(player1, player2), listOf(StandardCastling(), Enpassant())) {
 
     override val board = Board2D(8, 8)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
