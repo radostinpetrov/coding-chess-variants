@@ -1,5 +1,5 @@
 package players
 
-interface Player {
+class Player {
     // TODO consider further about Player class in engine side
 }

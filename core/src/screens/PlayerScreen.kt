@@ -13,6 +13,7 @@ import com.mygdx.game.PlayerType
 import gameTypes.GameType
 import ktx.app.KtxScreen
 import players.ComputerPlayer
+import players.FrontendPlayer
 import players.HumanPlayer
 import players.Player
 
@@ -109,15 +110,18 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType, val clockList: L
         val gameScreen = GameScreen(game, gameType, clockList)
 
         game.removeScreen<GameScreen>()
+        val players = mutableListOf<FrontendPlayer>()
+        players.add(createPlayer(playerTypes[0], gameScreen))
+        players.add(createPlayer(playerTypes[1], gameScreen))
 
-        gameType.addPlayer(createPlayer(playerTypes[0], gameScreen))
-        gameType.addPlayer(createPlayer(playerTypes[1], gameScreen))
+        gameScreen.initPlayers(players)
+
         game.addScreen(gameScreen)
         dispose()
         game.setScreen<GameScreen>()
     }
 
-    private fun createPlayer(player: PlayerType, gameScreen: GameScreen): Player {
+    private fun createPlayer(player: PlayerType, gameScreen: GameScreen): FrontendPlayer {
         return when (player) {
             PlayerType.HUMAN -> HumanPlayer(gameScreen)
             PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200)

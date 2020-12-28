@@ -2,7 +2,7 @@ package players
 
 import screens.GameScreen
 
-abstract class SignalPlayer(val gameScreen: GameScreen) : Player {
+abstract class FrontendPlayer(val gameScreen: GameScreen) {
     val gameType = gameScreen.gameEngine
     open fun signalTurn() {}
 }

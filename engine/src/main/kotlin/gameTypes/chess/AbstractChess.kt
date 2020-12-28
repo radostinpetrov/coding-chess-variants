@@ -9,8 +9,8 @@ import pieces.King
 import pieces.Piece
 import players.Player
 
-abstract class AbstractChess(override val players: List<Player>, val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
-
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
+    override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = 0
 
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }
