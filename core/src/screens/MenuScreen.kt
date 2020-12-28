@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
-import ktx.app.KtxScreen
 import gameTypes.GameType
 import gameTypes.chess.CapablancaChess
 import gameTypes.chess.Chess960
@@ -16,6 +15,7 @@ import gameTypes.chess.GrandChess
 import gameTypes.chess.StandardChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
+import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {

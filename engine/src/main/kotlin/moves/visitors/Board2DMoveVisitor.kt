@@ -76,14 +76,16 @@ class Board2DMoveVisitor(override val board: Board2D) : MoveVisitor<Board2D> {
             is Move.AddPromotion -> {
                 val result: MutableList<GameMove.BasicGameMove> = mutableListOf()
                 visit(coordinate, piece, move.move, player).forEach {
-                    val valid = move.region.isInRegion(it.from)
+                    val valid = move.region.isInRegion(it.to)
                     if (valid) {
                         for (promoPiece in move.promoPieces) {
                             result.add(GameMove.BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured, promoPiece))
                         }
-                        if (move.forced) {
+                        if (!move.forced) {
                             result.add(GameMove.BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                         }
+                    } else {
+                        result.add(GameMove.BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                     }
                 }
                 return result
