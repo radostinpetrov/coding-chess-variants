@@ -8,7 +8,7 @@ import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
 import players.Player
 
-open class CapablancaChess(player1: Player, player2: Player) : AbstractChess(listOf(player1, player2), listOf(CapablancaCastling(), Enpassant())) {
+open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
 
     override val board = Board2D(8, 10)
     override val moveVisitor by lazy { Board2DMoveVisitor(board) }

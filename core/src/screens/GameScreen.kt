@@ -22,6 +22,7 @@ import ktx.app.KtxScreen
 import players.*
 
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
+    private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
     private var windowWidth: Int = 800
@@ -49,7 +50,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     var currPlayer: Player? = null
 
     // TODO put color in player?
-    var playerMapping: Map<Player, Color>? = null
+    var playerColorMapping: Map<Player, Color>? = null
+    lateinit var frontendToLibPlayer: Map<FrontendPlayer, Player>
+    lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
+    lateinit var humanPlayerSet: Set<Player>
+
     // TODO and this?
     var playerMappingInitialClock: MutableMap<Player, Int>? = null
     var playerMappingEndClock: Map<Player, Int>? = null
@@ -57,6 +62,25 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     var isPromotionScreen = false
     lateinit var promotableMoves: List<GameMove>
+
+    fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
+        val tempFrontendToLibPlayer: MutableMap<FrontendPlayer, Player> = mutableMapOf()
+        val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
+        val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
+
+        for (i in 0 until gameEngine.NUM_PLAYERS) {
+            if (inputFrontendPlayers[i] is HumanPlayer) {
+                tempHumanPlayerSet.add(gameEngine.players[i])
+            }
+            tempFrontendToLibPlayer[inputFrontendPlayers[i]] = gameEngine.players[i]
+            tempLibToFrontendPlayer[gameEngine.players[i]] = inputFrontendPlayers[i]
+        }
+
+        frontendPlayers = inputFrontendPlayers.toList()
+        frontendToLibPlayer = tempFrontendToLibPlayer.toMap()
+        libToFrontendPlayer = tempLibToFrontendPlayer.toMap()
+        humanPlayerSet = tempHumanPlayerSet.toSet()
+    }
 
     fun startGame() {
         if (!gameEngine.checkValidGame()) {
@@ -76,7 +100,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         shapeRenderer = ShapeRenderer()
 
         currPlayer = gameEngine.getCurrentPlayer()
-        playerMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
+        playerColorMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
 
         if (clockList != null) {
             playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
@@ -88,11 +112,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         moves = gameEngine.getValidMoves(currPlayer!!)
 
         guiBoard = when (gameEngine) {
-            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
-            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerMapping!!)
+            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerColorMapping!!)
+            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerColorMapping!!)
         }
 
-        (currPlayer!! as SignalPlayer).signalTurn()
+        libToFrontendPlayer[currPlayer!!]!!.signalTurn()
     }
 
     private fun showPromotionScreen(moves: List<GameMove>) {
@@ -125,7 +149,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         for ((i, m) in moves.withIndex()) {
             val p = m.displayPiecePromotedTo
 
-            val texture = textures.getTextureFromPiece(p!!, playerMapping!![p.player]!!)
+            val texture = textures.getTextureFromPiece(p!!, playerColorMapping!![p.player]!!)
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
@@ -142,7 +166,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
             if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
                 if (coordinateMap[coordinate.x] != null) {
-                    (currPlayer!! as HumanPlayer).makeMove(coordinateMap[coordinate.x]!!)
+                    (libToFrontendPlayer[currPlayer!!] as HumanPlayer).makeMove(coordinateMap[coordinate.x]!!)
                 }
                 isPromotionScreen = false
             }
@@ -152,17 +176,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     fun switchToGameOverScreen(player: Player) {
         game.removeScreen<GameOverScreen>()
         // change this.
-        val playerName = playerMapping?.get(player)!!.toString()
+        val playerName = playerColorMapping?.get(player)!!.toString()
         // White player reports result
 
         if (playerName == "fffffff") {
-            if (gameEngine.players[0] is NetworkHumanPlayer) {
-                (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(0f)
+            if (frontendPlayers[0] is NetworkHumanPlayer) {
+                (frontendPlayers[0] as NetworkHumanPlayer).websocketClientManager.sendResult(0f)
             }
             game.addScreen(GameOverScreen(game, gameEngine, "White"))
         } else {
-            if (gameEngine.players[0] is NetworkHumanPlayer) {
-                (gameEngine.players[0] as NetworkHumanPlayer).websocketClientManager.sendResult(1f)
+            if (frontendPlayers[0] is NetworkHumanPlayer) {
+                (frontendPlayers[0] as NetworkHumanPlayer).websocketClientManager.sendResult(1f)
             }
             game.addScreen(GameOverScreen(game, gameEngine, "Black"))
         }
@@ -183,13 +207,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 }
             }
 
-            (currPlayer as SignalPlayer).signalTurn()
+            libToFrontendPlayer[currPlayer]!!.signalTurn()
         }
     }
 
     override fun render(delta: Float) {
-        val flip = (playerMapping?.get(currPlayer!!) == Color.BLACK && currPlayer!! is HumanPlayer && gameEngine.getNextPlayer() !is HumanPlayer) ||
-            (playerMapping?.get(currPlayer!!) == Color.WHITE && currPlayer!! !is HumanPlayer && gameEngine.getNextPlayer() is HumanPlayer)
+        val flip = (playerColorMapping?.get(currPlayer!!) == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(gameEngine.getNextPlayer())) ||
+            (playerColorMapping?.get(currPlayer!!) == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(gameEngine.getNextPlayer()))
 
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
@@ -210,7 +234,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     }
 
     private fun controls(flipped: Boolean) {
-        if (currPlayer!! !is HumanPlayer) {
+        if (!humanPlayerSet.contains(currPlayer!!)) {
             return
         }
         val input = Gdx.input
@@ -237,7 +261,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
                 dstX = x
                 dstY = y
                 // TODO fix this -> either via changing fe player to be composition or otherwise
-                val signalPlayer = currPlayer!!
+                val signalPlayer = libToFrontendPlayer[currPlayer!!]
                 if (signalPlayer is HumanPlayer) {
                     val nextMove = getMove(
                         getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
@@ -315,7 +339,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         val str1: String
         val str2: String
 
-        if (flipped.xor(playerMapping!![currPlayer!!] == Color.WHITE)) {
+        if (flipped.xor(playerColorMapping!![currPlayer!!] == Color.WHITE)) {
             str1 = currStr
             str2 = otherStr
         } else {

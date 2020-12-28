@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
 import gameTypes.GameType
+import players.FrontendPlayer
 import players.NetworkEnemyPlayer
 import players.NetworkHumanPlayer
 import players.WebsocketClientManager
@@ -57,20 +58,22 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     private fun switchToGameScreen() {
         val gameScreen = GameScreen(game, gameType, clockList)
+        val players = mutableListOf<FrontendPlayer>()
         when (humanPlayer) {
             1 -> {
-                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager))
                 val enemyPlayer = NetworkEnemyPlayer(gameScreen)
-                gameType.addPlayer(enemyPlayer)
+                players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
                 val enemyPlayer = NetworkEnemyPlayer(gameScreen)
-                gameType.addPlayer(enemyPlayer)
+                players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                gameType.addPlayer(NetworkHumanPlayer(gameScreen, websocketClientManager))
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager))
             }
         }
+        gameScreen.initPlayers(players)
         game.removeScreen<GameScreen>()
         game.addScreen(gameScreen)
         dispose()
