@@ -16,13 +16,13 @@ open class BlackPawn(override val player: Player, val startingRow: Int, val prom
                 pawnPromotions,
                 true
             ),
-            Move.AddForcedPromotion(
+            Move.AddPromotion(
                 Move.CaptureOnly(Move.Stepper(Direction.SOUTH_EAST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,
                 true
             ),
-            Move.AddForcedPromotion(
+            Move.AddPromotion(
                 Move.CaptureOnly(Move.Stepper(Direction.SOUTH_WEST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,

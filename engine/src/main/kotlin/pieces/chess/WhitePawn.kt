@@ -16,13 +16,13 @@ open class WhitePawn(override val player: Player, val startingRow: Int, val prom
                 pawnPromotions,
                 true
             ),
-            Move.AddForcedPromotion(
+            Move.AddPromotion(
                 Move.CaptureOnly(Move.Stepper(Direction.NORTH_EAST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,
                 true
             ),
-            Move.AddForcedPromotion(
+            Move.AddPromotion(
                 Move.CaptureOnly(Move.Stepper(Direction.NORTH_WEST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,

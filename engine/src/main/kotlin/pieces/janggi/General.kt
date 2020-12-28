@@ -1,30 +1,36 @@
 package pieces.janggi
 
+import Coordinate
 import moves.Direction
 import moves.Move
+import moves.region.BoxRegion
+import moves.region.CoordinateRegion
+import moves.region.CompositeRegion
 import pieces.King
 import pieces.Piece
 import players.Player
 
 data class General(override val player: Player) : Piece, King {
-    private val palaceX = listOf(3, 4, 5)
-    private val palaceY = listOf(0, 1, 2, 7, 8, 9)
+    private val palace1 = BoxRegion(Coordinate(3, 0), Coordinate(5, 2))
+    private val palace2 = BoxRegion(Coordinate(3, 7), Coordinate(5, 9))
+    private val palace = CompositeRegion(listOf(palace1, palace2))
 
     override val moveTypes: List<Move>
         get() = listOf(
-            Move.RestrictedDestination(Move.Stepper(Direction.NORTH, 1, true), palaceX, palaceY),
-            Move.RestrictedDestination(Move.Stepper(Direction.EAST, 1, true), palaceX, palaceY),
-            Move.RestrictedDestination(Move.Stepper(Direction.SOUTH, 1, true), palaceX, palaceY),
-            Move.RestrictedDestination(Move.Stepper(Direction.WEST, 1, true), palaceX, palaceY),
-            Move.Restricted(Move.Leaper(1, 1), listOf(4), listOf(1, 8)),
-            Move.Restricted(Move.Stepper(Direction.NORTH_EAST, 1, true), listOf(3), listOf(7)),
-            Move.Restricted(Move.Stepper(Direction.NORTH_WEST, 1, true), listOf(5), listOf(7)),
-            Move.Restricted(Move.Stepper(Direction.SOUTH_EAST, 1, true), listOf(3), listOf(9)),
-            Move.Restricted(Move.Stepper(Direction.SOUTH_WEST, 1, true), listOf(5), listOf(9)),
-            Move.Restricted(Move.Stepper(Direction.SOUTH_EAST, 1, true), listOf(3), listOf(2)),
-            Move.Restricted(Move.Stepper(Direction.SOUTH_WEST, 1, true), listOf(5), listOf(2)),
-            Move.Restricted(Move.Stepper(Direction.NORTH_EAST, 1, true), listOf(3), listOf(0)),
-            Move.Restricted(Move.Stepper(Direction.NORTH_WEST, 1, true), listOf(5), listOf(0)),
+            Move.RestrictedDestination(Move.Stepper(Direction.NORTH, 1, true), palace),
+            Move.RestrictedDestination(Move.Stepper(Direction.EAST, 1, true), palace),
+            Move.RestrictedDestination(Move.Stepper(Direction.SOUTH, 1, true), palace),
+            Move.RestrictedDestination(Move.Stepper(Direction.WEST, 1, true), palace),
+            Move.Restricted(Move.Leaper(1, 1), CoordinateRegion(4, 1)),
+            Move.Restricted(Move.Leaper(1, 1), CoordinateRegion(4, 8)),
+            Move.Restricted(Move.Stepper(Direction.NORTH_EAST, 1, true), CoordinateRegion(3, 7)),
+            Move.Restricted(Move.Stepper(Direction.NORTH_WEST, 1, true), CoordinateRegion(5, 7)),
+            Move.Restricted(Move.Stepper(Direction.SOUTH_EAST, 1, true), CoordinateRegion(3, 9)),
+            Move.Restricted(Move.Stepper(Direction.SOUTH_WEST, 1, true), CoordinateRegion(5, 9)),
+            Move.Restricted(Move.Stepper(Direction.SOUTH_EAST, 1, true), CoordinateRegion(3, 2)),
+            Move.Restricted(Move.Stepper(Direction.SOUTH_WEST, 1, true), CoordinateRegion(5, 2)),
+            Move.Restricted(Move.Stepper(Direction.NORTH_EAST, 1, true), CoordinateRegion(3, 0)),
+            Move.Restricted(Move.Stepper(Direction.NORTH_WEST, 1, true), CoordinateRegion(5, 0)),
         )
 
     override fun getSymbol(): String {
