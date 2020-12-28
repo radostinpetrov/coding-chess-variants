@@ -370,23 +370,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
         val batch = game.batch
         val font = game.font
-        batch.begin()
+
         var i = 0
-        val history: MutableList<GameMove>
+        var history: List<GameMove> = gameEngine.moveLog.toList()
         val len = gameEngine.moveLog.size
 
         var offset = 0
-
+        batch.begin()
         if (len >= 40) {
             if (len % 2 == 0) {
-                history = gameEngine.moveLog.subList(len - 40, len)
+                history = history.subList(len - 40, len)
                 offset += (len - 40) / 2
             } else {
-                history = gameEngine.moveLog.subList(len - 40 + 1, len)
+                history = history.subList(len - 40 + 1, len)
                 offset += (len - 40 + 1) / 2
             }
-        } else {
-            history = gameEngine.moveLog.toMutableList()
         }
 
         for (move in history) {
