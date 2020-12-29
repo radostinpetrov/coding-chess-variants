@@ -1,21 +1,23 @@
 package boards
 
-import Coordinate
-import pieces.Piece
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
+import moves.Move2D
+import pieces.Piece2D
 import players.Player
 import java.lang.Exception
 
-class Board2D(val n: Int, val m: Int) : Board<Piece> {
-    private var board: Array<Array<Piece?>> = Array(n) { Array(m) { null } }
-    override fun getBoardState(): Array<Array<Piece?>> {
+class Board2D(val n: Int, val m: Int) : Board<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D> {
+    private var board: Array<Array<Piece2D?>> = Array(n) { Array(m) { null } }
+    override fun getBoardState(): Array<Array<Piece2D?>> {
         return board
     }
 
-    override fun getPieces(): List<Pair<Piece, Coordinate>> {
-        val res = mutableListOf<Pair<Piece, Coordinate>>()
+    override fun getPieces(): List<Pair<Piece2D, Coordinate2D>> {
+        val res = mutableListOf<Pair<Piece2D, Coordinate2D>>()
         for (i in 0 until n) {
             for (j in 0 until m) {
-                val c = Coordinate(j, i)
+                val c = Coordinate2D(j, i)
                 val p = getPiece(c)
                 if (p != null) {
                     res.add(Pair(p, c))
@@ -25,36 +27,36 @@ class Board2D(val n: Int, val m: Int) : Board<Piece> {
         return res
     }
 
-    override fun getPieces(player: Player): List<Pair<Piece, Coordinate>> {
+    override fun getPieces(player: Player): List<Pair<Piece2D, Coordinate2D>> {
         return getPieces().filter { p -> p.first.player === player }
     }
 
-    override fun getPiece(coordinate: Coordinate): Piece? {
+    override fun getPiece(coordinate: Coordinate2D): Piece2D? {
         if (!isInBounds(coordinate)) {
             return null
         }
         return board[coordinate.y][coordinate.x]
     }
 
-    override fun getPieceCoordinate(piece: Piece): Coordinate? {
+    override fun getPieceCoordinate(piece: Piece2D): Coordinate2D? {
         for (y in 0 until n) {
             for (x in 0 until m) {
                 if (piece === board[y][x]) {
-                    return Coordinate(x, y)
+                    return Coordinate2D(x, y)
                 }
             }
         }
         return null
     }
 
-    override fun addPiece(coordinate: Coordinate, piece: Piece) {
+    override fun addPiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {
             throw ArrayIndexOutOfBoundsException()
         }
         board[coordinate.y][coordinate.x] = piece
     }
 
-    override fun removePiece(coordinate: Coordinate, piece: Piece) {
+    override fun removePiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {
             throw ArrayIndexOutOfBoundsException()
         }
@@ -64,7 +66,7 @@ class Board2D(val n: Int, val m: Int) : Board<Piece> {
         board[coordinate.y][coordinate.x] = null
     }
 
-    fun isInBounds(coordinate: Coordinate): Boolean {
+    fun isInBounds(coordinate: Coordinate2D): Boolean {
         return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
     }
 }

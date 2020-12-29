@@ -1,28 +1,28 @@
 package pieces.chess
 
 import moves.Direction
-import moves.Move
+import moves.Move2D
 import moves.region.RowRegion
-import pieces.Piece
+import pieces.Piece2D
 import players.Player
 
-open class WhitePawn(override val player: Player, val startingRow: Int, val promotionRow: Int, val pawnPromotions: List<Piece>) : Piece {
-    override val moveTypes: List<Move> = listOf(
-        Move.Restricted(Move.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
-        Move.AddPromotion(
-            Move.Stepper(Direction.NORTH, 1),
+open class WhitePawn(override val player: Player, val startingRow: Int, val promotionRow: Int, val pawnPromotions: List<Piece2D>) : Piece2D {
+    override val moveTypes: List<Move2D> = listOf(
+        Move2D.Restricted(Move2D.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
+        Move2D.AddPromotion(
+            Move2D.Stepper(Direction.NORTH, 1),
             RowRegion(promotionRow),
             pawnPromotions,
             true
         ),
-        Move.AddPromotion(
-            Move.CaptureOnly(Move.Stepper(Direction.NORTH_EAST, 1, true)),
+        Move2D.AddPromotion(
+            Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_EAST, 1, true)),
             RowRegion(promotionRow),
             pawnPromotions,
             true
         ),
-        Move.AddPromotion(
-            Move.CaptureOnly(Move.Stepper(Direction.NORTH_WEST, 1, true)),
+        Move2D.AddPromotion(
+            Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_WEST, 1, true)),
             RowRegion(promotionRow),
             pawnPromotions,
             true

@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import pieces.Piece
+import pieces.Piece2D
 
 class Textures(assets: AssetManager) {
     val whitePawn = assets[TextureAssets.WhitePawn]
@@ -60,7 +61,7 @@ class Textures(assets: AssetManager) {
         "XiangqiBlueSoldier" to blackSoldier, "AntiChessBlackPawn" to blackPawn, "AntiChessKing" to blackKing
     )
 
-    fun getTextureFromPiece(piece: Piece, playerColour: Color): Texture? {
+    fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites
             Color.BLACK -> blacks

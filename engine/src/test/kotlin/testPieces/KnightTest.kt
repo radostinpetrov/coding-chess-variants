@@ -1,5 +1,6 @@
 package testPieces
 
+import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -24,8 +25,8 @@ class KnightTest {
         // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
-        val firstKnight = (moves.first { it is GameMove.BasicGameMove && it.pieceMoved is Knight } as GameMove.BasicGameMove).pieceMoved
-        val firstKnightMoves = moves.filter { it is GameMove.BasicGameMove && it.pieceMoved === firstKnight }
+        val firstKnight = (moves.first { it is GameMove2D.BasicGameMove && it.pieceMoved is Knight } as GameMove2D.BasicGameMove).pieceMoved
+        val firstKnightMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved === firstKnight }
         Assertions.assertTrue(firstKnightMoves.size == 2)
     }
 }

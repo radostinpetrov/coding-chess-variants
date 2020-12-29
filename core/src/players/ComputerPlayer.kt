@@ -1,12 +1,12 @@
 package players
 
-import GameMove
+import gameMoves.GameMove2D
 import screens.GameScreen
 
 class ComputerPlayer(gameScreen: GameScreen, val delay: Long) : FrontendPlayer(gameScreen) {
 
     override fun signalTurn() {
-        val validMoves: List<GameMove> = gameType.getValidMoves(gameScreen.frontendToLibPlayer[this]!!)
+        val validMoves: List<GameMove2D> = gameType.getValidMoves(gameScreen.frontendToLibPlayer[this]!!)
 //        println("Computer is thinking...")
 //        // TODO FIX COMPUTER PLAYER LAG SITUATION
 //        Thread.sleep(100)

@@ -1,7 +1,7 @@
 package moves.region
 
-import Coordinate
+import coordinates.Coordinate2D
 
 interface Region {
-    fun isInRegion(coordinate: Coordinate): Boolean
+    fun isInRegion(coordinate: Coordinate2D): Boolean
 }

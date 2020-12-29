@@ -1,5 +1,6 @@
 package testPieces
 
+import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -24,7 +25,7 @@ class QueenTest {
         // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
-        val queenMoves = moves.filter { it is GameMove.BasicGameMove && it.pieceMoved is Queen }
+        val queenMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Queen }
         Assertions.assertTrue(queenMoves.size == 0)
     }
 }

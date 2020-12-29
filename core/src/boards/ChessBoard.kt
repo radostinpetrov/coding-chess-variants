@@ -1,6 +1,6 @@
 package boards
 
-import GameMove
+import gameMoves.GameMove2D
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -22,7 +22,7 @@ class ChessBoard(
     textures, playerMapping
 ) {
 
-    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove>, flipped: Boolean, isPromotionScreen: Boolean) {
+    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val colour2: Color = Color.TAN

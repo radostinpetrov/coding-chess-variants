@@ -1,6 +1,7 @@
 package testRules
 
-import Coordinate
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -27,26 +28,41 @@ class StalemateTest {
         // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
-        val turn10Stalemate: List<GameMove.BasicGameMove> = listOf(
-            GameMove.BasicGameMove(Coordinate(4, 1), Coordinate(4, 2), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(0, 6), Coordinate(0, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(3, 0), Coordinate(7, 4), Queen(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(0, 7), Coordinate(0, 5), Rook(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(7, 4), Coordinate(0, 4), Queen(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(7, 6), Coordinate(7, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(0, 4), Coordinate(2, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(2, 6))),
-            GameMove.BasicGameMove(Coordinate(0, 5), Coordinate(7, 5), Rook(mockHumanPlayer2), mockHumanPlayer2, board.getPiece(Coordinate(7, 5))),
-            GameMove.BasicGameMove(Coordinate(7, 1), Coordinate(7, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(5, 6), Coordinate(5, 5), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(2, 6), Coordinate(3, 6), Queen(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(4, 7), Coordinate(5, 6), King(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(3, 6), Coordinate(1, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(1, 6))),
-            GameMove.BasicGameMove(Coordinate(3, 7), Coordinate(3, 2), Queen(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(1, 6), Coordinate(1, 7), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(1, 7))),
-            GameMove.BasicGameMove(Coordinate(3, 2), Coordinate(7, 6), Queen(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(1, 7), Coordinate(2, 7), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(2, 7))),
-            GameMove.BasicGameMove(Coordinate(5, 6), Coordinate(6, 5), King(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(2, 7), Coordinate(4, 5), Queen(mockHumanPlayer1), mockHumanPlayer1),
+        val turn10Stalemate: List<GameMove2D.BasicGameMove> = listOf(
+            GameMove2D.BasicGameMove(Coordinate2D(4, 1), Coordinate2D(4, 2), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(0, 6), Coordinate2D(0, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(Coordinate2D(3, 0), Coordinate2D(7, 4), Queen(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(0, 7), Coordinate2D(0, 5), Rook(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(Coordinate2D(7, 4), Coordinate2D(0, 4), Queen(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(7, 6), Coordinate2D(7, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(
+                Coordinate2D(0, 4), Coordinate2D(2, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(
+                    Coordinate2D(2, 6)
+                )),
+            GameMove2D.BasicGameMove(
+                Coordinate2D(0, 5), Coordinate2D(7, 5), Rook(mockHumanPlayer2), mockHumanPlayer2, board.getPiece(
+                    Coordinate2D(7, 5)
+                )),
+            GameMove2D.BasicGameMove(Coordinate2D(7, 1), Coordinate2D(7, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(5, 6), Coordinate2D(5, 5), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(Coordinate2D(2, 6), Coordinate2D(3, 6), Queen(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(4, 7), Coordinate2D(5, 6), King(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(
+                Coordinate2D(3, 6), Coordinate2D(1, 6), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(
+                    Coordinate2D(1, 6)
+                )),
+            GameMove2D.BasicGameMove(Coordinate2D(3, 7), Coordinate2D(3, 2), Queen(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(
+                Coordinate2D(1, 6), Coordinate2D(1, 7), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(
+                    Coordinate2D(1, 7)
+                )),
+            GameMove2D.BasicGameMove(Coordinate2D(3, 2), Coordinate2D(7, 6), Queen(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(
+                Coordinate2D(1, 7), Coordinate2D(2, 7), Queen(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(
+                    Coordinate2D(2, 7)
+                )),
+            GameMove2D.BasicGameMove(Coordinate2D(5, 6), Coordinate2D(6, 5), King(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(Coordinate2D(2, 7), Coordinate2D(4, 5), Queen(mockHumanPlayer1), mockHumanPlayer1),
         )
 
         for (move in turn10Stalemate) {
