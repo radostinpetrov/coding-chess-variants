@@ -1,12 +1,12 @@
 package notationFormatter
 
-import Coordinate
-import GameMove
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
 
 class ChessNotationInput(val height: Int) : NotationFormatter {
 
     /* Converts the string representation of a coordinate to a coordinate. e.g A1 -> Coordinate(0, 6) */
-    override fun strToCoordinate(s: String): Coordinate? {
+    override fun strToCoordinate(s: String): Coordinate2D? {
         /* Check that the input string matches the pattern for standard chess notation. */
         val regex = """([a-z]+)(\d+)""".toRegex()
         val matchResult = regex.matchEntire(s) ?: return null
@@ -14,26 +14,26 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
 
         val c1 = l[0].toInt() - 'a'.toInt()
         val c2 = height - n.toInt()
-        return Coordinate(c1, c2)
+        return Coordinate2D(c1, c2)
     }
 
     /* Converts a coordinate to the string representation of a coordinate. e.g Coordinate(0, 6) -> A1
     * TODO: aa -> 27 etc.*/
-    override fun coordinateToStr(c: Coordinate): String? {
+    override fun coordinateToStr(c: Coordinate2D): String? {
         val c1 = (c.x + 'a'.toInt()).toChar()
         val c2 = height - c.y
         return "$c1$c2"
     }
 
     /* Get the string representation of a game move. */
-    override fun gameMoveToStr(gameMove: GameMove): String {
+    override fun gameMoveToStr(gameMove: GameMove2D): String {
         val sb = StringBuilder()
 
         when (gameMove) {
-            is GameMove.BasicGameMove -> {
+            is GameMove2D.BasicGameMove -> {
                 sb.append(basicGameMoveToStr(gameMove))
             }
-            is GameMove.CompositeGameMove -> {
+            is GameMove2D.CompositeGameMove -> {
                 for (move in gameMove.gameMoves) {
                     sb.append(gameMoveToStr(move))
                     sb.append(' ')
@@ -45,7 +45,7 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
         return sb.toString()
     }
 
-    private fun basicGameMoveToStr(gameMove: GameMove.BasicGameMove): String {
+    private fun basicGameMoveToStr(gameMove: GameMove2D.BasicGameMove): String {
         val sb = StringBuilder()
         sb.append("${gameMove.pieceMoved.getSymbol()} moves from ${coordinateToStr(gameMove.from)} to ${coordinateToStr(gameMove.to)}")
 

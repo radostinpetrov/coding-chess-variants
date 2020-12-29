@@ -1,7 +1,7 @@
 package gameTypes.xiangqi.rules
 
-import Coordinate
-import GameMove
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
 import gameTypes.chess.rules.SpecialRules
 import pieces.King
@@ -10,11 +10,11 @@ import kotlin.math.max
 import kotlin.math.min
 
 class GeneralsRule : SpecialRules<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<GameMove>) {
+    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<GameMove2D>) {
         moves.retainAll { !generalsFaceEachOther(game, it) }
     }
 
-    private fun generalsFaceEachOther(game: AbstractChess, move: GameMove): Boolean {
+    private fun generalsFaceEachOther(game: AbstractChess, move: GameMove2D): Boolean {
         game.makeMove(move)
         val generalCoordinates = game.board.getPieces().filter { it.first is King }
         if (generalCoordinates.size < 2) {
@@ -30,7 +30,7 @@ class GeneralsRule : SpecialRules<AbstractChess> {
             val start = min(coordinate1.y, coordinate2.y) + 1
             val end = max(coordinate1.y, coordinate2.y) - 1
             for (y in start..end) {
-                if (game.board.getPiece(Coordinate(x, y)) != null) {
+                if (game.board.getPiece(Coordinate2D(x, y)) != null) {
                     blocked = true
                 }
             }

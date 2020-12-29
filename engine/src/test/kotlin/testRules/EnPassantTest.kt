@@ -1,7 +1,7 @@
 package testRules
 
-import Coordinate
-import GameMove
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -29,24 +29,27 @@ class EnPassantTest {
         mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
-        val enPassantMove: List<GameMove.BasicGameMove> = listOf(
-            GameMove.BasicGameMove(Coordinate(4, 4), Coordinate(3, 4), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(Coordinate(3, 4))),
-            GameMove.BasicGameMove(Coordinate(3, 4), Coordinate(3, 5), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
+        val enPassantMove: List<GameMove2D.BasicGameMove> = listOf(
+            GameMove2D.BasicGameMove(
+                Coordinate2D(4, 4), Coordinate2D(3, 4), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1, board.getPiece(
+                    Coordinate2D(3, 4)
+                )),
+            GameMove2D.BasicGameMove(Coordinate2D(3, 4), Coordinate2D(3, 5), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1)
         )
 
-        val initMoves: List<GameMove> = listOf(
-            GameMove.BasicGameMove(Coordinate(4, 1), Coordinate(4, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(3, 6), Coordinate(3, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.BasicGameMove(Coordinate(4, 3), Coordinate(4, 4), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
-            GameMove.BasicGameMove(Coordinate(1, 6), Coordinate(1, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
-            GameMove.CompositeGameMove(enPassantMove, mockHumanPlayer1)
+        val initMoves: List<GameMove2D> = listOf(
+            GameMove2D.BasicGameMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(3, 6), Coordinate2D(3, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.BasicGameMove(Coordinate2D(4, 3), Coordinate2D(4, 4), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1),
+            GameMove2D.BasicGameMove(Coordinate2D(1, 6), Coordinate2D(1, 4), StandardBlackPawn(mockHumanPlayer2), mockHumanPlayer2),
+            GameMove2D.CompositeGameMove(enPassantMove, mockHumanPlayer1)
         )
 
         for (move in initMoves) {
             mockStandardChess.makeMove(move)
         }
 
-        assert(board.getPiece(Coordinate(3, 5)) is StandardWhitePawn)
-        assert(board.getPiece(Coordinate(3, 4)) == null)
+        assert(board.getPiece(Coordinate2D(3, 5)) is StandardWhitePawn)
+        assert(board.getPiece(Coordinate2D(3, 4)) == null)
     }
 }

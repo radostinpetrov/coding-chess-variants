@@ -1,7 +1,7 @@
 package boards
 
-import Coordinate
-import GameMove
+import coordinates.Coordinate2D
+import gameMoves.GameMove2D
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -17,13 +17,13 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color.FOREST
 
-    fun draw(srcX: Int?, srcY: Int?, moves: List<GameMove>, flipped: Boolean, isPromotionScreen: Boolean) {
+    fun draw(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
         drawBoard(srcX, srcY, moves, flipped, isPromotionScreen)
         drawPieces(batch, flipped)
         drawDots(srcX, srcY, isPromotionScreen, moves, flipped)
     }
 
-    abstract fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove>, flipped: Boolean, isPromotionScreen: Boolean)
+    abstract fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean)
 
     private fun drawPieces(batch: Batch, flipped: Boolean) {
         batch.begin()
@@ -47,13 +47,13 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         batch.end()
     }
 
-    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<GameMove>, flipped: Boolean) {
+    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<GameMove2D>, flipped: Boolean) {
         if (srcX == null || srcY == null || isPromotionScreen) {
             return
         }
 
         var toCoordinates = moves.filter { m ->
-            m.displayFrom == Coordinate(
+            m.displayFrom == Coordinate2D(
                 srcX / squareWidth.toInt(),
                 srcY / squareWidth.toInt()
             )
@@ -61,7 +61,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
             .map { m -> m.displayTo }
 
         if (flipped) {
-            toCoordinates = toCoordinates.map { c -> Coordinate(columns - c.x - 1, rows - c.y - 1) }
+            toCoordinates = toCoordinates.map { c -> Coordinate2D(columns - c.x - 1, rows - c.y - 1) }
         }
 
         /* Draw toCoordinates dots for a selected piece. */

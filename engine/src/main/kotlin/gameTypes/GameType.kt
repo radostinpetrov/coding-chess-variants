@@ -1,24 +1,22 @@
 package gameTypes
 
-import GameMove
+import gameMoves.GameMove2D
 import boards.Board2D
-import moves.visitors.MoveVisitor
 import players.Player
 
 interface GameType {
     val board: Board2D
     val players: List<Player>
     var playerTurn: Int
-    val moveVisitor: MoveVisitor<Board2D>
     var seed: Double?
     val NUM_PLAYERS: Int
-    val moveLog: MutableList<GameMove>
+    val moveLog: MutableList<GameMove2D>
 
     fun initGame()
     fun isOver(): Boolean
     // fun getWinner()
-    fun getValidMoves(player: Player): List<GameMove>
-    fun makeMove(gameMove: GameMove)
+    fun getValidMoves(player: Player): List<GameMove2D>
+    fun makeMove(gameMove: GameMove2D)
 //    fun turn() {
 //        val player = players[playerTurn]
 //        val moves = getValidMoves(player)
@@ -50,7 +48,7 @@ interface GameType {
         }
         return true
     }
-    fun playerMakeMove(move: GameMove) {
+    fun playerMakeMove(move: GameMove2D) {
 
         // TODO discuss if we should keep this first check
 //        val validMoves = getValidMoves(getCurrentPlayer())
