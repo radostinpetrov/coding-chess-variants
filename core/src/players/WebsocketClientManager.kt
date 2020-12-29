@@ -1,6 +1,6 @@
 package players
 
-import GameMove
+import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -13,7 +13,7 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
     val serverUri: URI = URI("ws://207.246.87.201:8080")
-    private var turnMove: GameMove? = null
+    private var turnMove: GameMove2D? = null
 
     private lateinit var webSocketClient: WebSocketClient
 
@@ -111,11 +111,11 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
 //        )
 //    }
 
-    fun setTurnMove(move: GameMove) {
+    fun setTurnMove(move: GameMove2D) {
         turnMove = move
     }
 
-//    override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
+//    override fun getTurn(choiceOfMoves: List<gameMoves.GameMove>): gameMoves.GameMove? {
 //        if (turnMove) {
 //
 //        }

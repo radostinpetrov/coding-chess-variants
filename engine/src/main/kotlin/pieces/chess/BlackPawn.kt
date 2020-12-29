@@ -1,29 +1,29 @@
 package pieces.chess
 
 import moves.Direction
-import moves.Move
+import moves.Move2D
 import moves.region.RowRegion
-import pieces.Piece
+import pieces.Piece2D
 import players.Player
 
-open class BlackPawn(override val player: Player, val startingRow: Int, val promotionRow: Int, val pawnPromotions: List<Piece>) : Piece {
-    override val moveTypes: List<Move>
+open class BlackPawn(override val player: Player, val startingRow: Int, val promotionRow: Int, val pawnPromotions: List<Piece2D>) : Piece2D {
+    override val moveTypes: List<Move2D>
         get() = listOf(
-            Move.Restricted(Move.Stepper(Direction.SOUTH, 2), RowRegion(startingRow)),
-            Move.AddPromotion(
-                Move.Stepper(Direction.SOUTH, 1),
+            Move2D.Restricted(Move2D.Stepper(Direction.SOUTH, 2), RowRegion(startingRow)),
+            Move2D.AddPromotion(
+                Move2D.Stepper(Direction.SOUTH, 1),
                 RowRegion(promotionRow),
                 pawnPromotions,
                 true
             ),
-            Move.AddPromotion(
-                Move.CaptureOnly(Move.Stepper(Direction.SOUTH_EAST, 1, true)),
+            Move2D.AddPromotion(
+                Move2D.CaptureOnly(Move2D.Stepper(Direction.SOUTH_EAST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,
                 true
             ),
-            Move.AddPromotion(
-                Move.CaptureOnly(Move.Stepper(Direction.SOUTH_WEST, 1, true)),
+            Move2D.AddPromotion(
+                Move2D.CaptureOnly(Move2D.Stepper(Direction.SOUTH_WEST, 1, true)),
                 RowRegion(promotionRow),
                 pawnPromotions,
                 true

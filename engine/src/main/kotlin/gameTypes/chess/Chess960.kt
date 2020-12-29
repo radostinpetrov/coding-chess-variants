@@ -1,20 +1,19 @@
 package gameTypes.chess
 
-import Coordinate
+import coordinates.Coordinate2D
 import boards.Board2D
 import gameTypes.chess.rules.Enpassant
-import moves.visitors.Board2DMoveVisitor
 import pieces.chess.*
 
 class Chess960 : AbstractChess(listOf(Enpassant())) {
     override val board = Board2D(8, 8)
-    override val moveVisitor by lazy { Board2DMoveVisitor(board) }
+
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..7) {
-            board.addPiece(Coordinate(i, 1), StandardWhitePawn(player1))
-            board.addPiece(Coordinate(i, 6), StandardBlackPawn(player2))
+            board.addPiece(Coordinate2D(i, 1), StandardWhitePawn(player1))
+            board.addPiece(Coordinate2D(i, 6), StandardBlackPawn(player2))
         }
 
         /**
@@ -41,24 +40,24 @@ class Chess960 : AbstractChess(listOf(Enpassant())) {
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
-                    board.addPiece(Coordinate(i, 0), Rook(player1))
-                    board.addPiece(Coordinate(i, 7), Rook(player2))
+                    board.addPiece(Coordinate2D(i, 0), Rook(player1))
+                    board.addPiece(Coordinate2D(i, 7), Rook(player2))
                 }
                 'B' -> {
-                    board.addPiece(Coordinate(i, 0), Bishop(player1))
-                    board.addPiece(Coordinate(i, 7), Bishop(player2))
+                    board.addPiece(Coordinate2D(i, 0), Bishop(player1))
+                    board.addPiece(Coordinate2D(i, 7), Bishop(player2))
                 }
                 'N' -> {
-                    board.addPiece(Coordinate(i, 0), Knight(player1))
-                    board.addPiece(Coordinate(i, 7), Knight(player2))
+                    board.addPiece(Coordinate2D(i, 0), Knight(player1))
+                    board.addPiece(Coordinate2D(i, 7), Knight(player2))
                 }
                 'Q' -> {
-                    board.addPiece(Coordinate(i, 0), Queen(player1))
-                    board.addPiece(Coordinate(i, 7), Queen(player2))
+                    board.addPiece(Coordinate2D(i, 0), Queen(player1))
+                    board.addPiece(Coordinate2D(i, 7), Queen(player2))
                 }
                 'K' -> {
-                    board.addPiece(Coordinate(i, 0), King(player1))
-                    board.addPiece(Coordinate(i, 7), King(player2))
+                    board.addPiece(Coordinate2D(i, 0), King(player1))
+                    board.addPiece(Coordinate2D(i, 7), King(player2))
                 }
             }
         }

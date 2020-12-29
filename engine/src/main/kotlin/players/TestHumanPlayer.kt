@@ -1,13 +1,13 @@
 //package players
 //
-//import GameMove
+//import gameMoves.GameMove
 //import notationFormatter.NotationFormatter
 //
 //class TestHumanPlayer(val notationFormatter: NotationFormatter) : ConsolePlayer() {
 //    fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-//    override var playerMove: GameMove? = null
-//    override fun getTurn(choiceOfMoves: List<GameMove>): GameMove? {
-//        var possibleMoves: List<GameMove> = mutableListOf()
+//    override var playerMove: gameMoves.GameMove? = null
+//    override fun getTurn(choiceOfMoves: List<gameMoves.GameMove>): gameMoves.GameMove? {
+//        var possibleMoves: List<gameMoves.GameMove> = mutableListOf()
 //        var input: String?
 //        while (possibleMoves.isEmpty()) {
 //            print("Enter the coordinate of the piece to move: ")
@@ -23,8 +23,8 @@
 //            }
 //            possibleMoves = choiceOfMoves.filter {
 //                when (it) {
-//                    is GameMove.BasicGameMove -> it.from == coordinate
-//                    is GameMove.CompositeGameMove -> {
+//                    is gameMoves.GameMove.BasicGameMove -> it.from == coordinate
+//                    is gameMoves.GameMove.CompositeGameMove -> {
 //                        true
 //                    }
 //                }
