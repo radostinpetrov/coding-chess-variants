@@ -22,21 +22,21 @@ class Chess960 : AbstractChess(listOf(Enpassant())) {
          * 2. The king must be placed between rooks
          * **/
 
-        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
+//        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
+//
+//        val permutations = permute(pieces)
+//
+//        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
+//        val regKing = """.*R.*K.*R.*""".toRegex()
+//        val possiblePermutations = mutableSetOf<String>()
+//        for (permutation in permutations) {
+//            val strPermutation = permutation.joinToString("")
+//            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
+//                possiblePermutations.add(strPermutation)
+//            }
+//        }
 
-        val permutations = permute(pieces)
-
-        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
-        val regKing = """.*R.*K.*R.*""".toRegex()
-        val possiblePermutations = mutableSetOf<String>()
-        for (permutation in permutations) {
-            val strPermutation = permutation.joinToString("")
-            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
-                possiblePermutations.add(strPermutation)
-            }
-        }
-
-        val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
+        val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
@@ -61,6 +61,24 @@ class Chess960 : AbstractChess(listOf(Enpassant())) {
                 }
             }
         }
+    }
+
+    fun getPossiblePermutations(): Set<String> {
+        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
+
+        val permutations = permute(pieces)
+
+        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
+        val regKing = """.*R.*K.*R.*""".toRegex()
+        val possiblePermutations = mutableSetOf<String>()
+        for (permutation in permutations) {
+            val strPermutation = permutation.joinToString("")
+            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
+                possiblePermutations.add(strPermutation)
+            }
+        }
+
+        return possiblePermutations
     }
 
     private fun <T> permute(input: List<T>): List<List<T>> {

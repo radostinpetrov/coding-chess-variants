@@ -16,7 +16,7 @@ class CapablancaChessTest {
     private val board = mockCapablancaChess.board
 
     val player1 = mockCapablancaChess.players[0]
-    val player2 =  mockCapablancaChess.players[1]
+    val player2 = mockCapablancaChess.players[1]
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
