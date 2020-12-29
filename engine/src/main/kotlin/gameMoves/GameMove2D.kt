@@ -25,7 +25,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             get() = gameMoves[0].from
         override var displayTo: Coordinate2D = Coordinate2D(0, 0)
         override var displayPiecePromotedTo = gameMoves.last().piecePromotedTo
-        override var displayPieceCaptured = gameMoves.last().pieceCaptured
+        override var displayPieceCaptured = gameMoves.lastOrNull { it.pieceCaptured != null }?.pieceCaptured
 
         init {
             val piece = gameMoves[0].pieceMoved

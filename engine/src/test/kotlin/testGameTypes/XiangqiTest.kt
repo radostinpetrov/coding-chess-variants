@@ -1,4 +1,4 @@
-package testGameTypesInitialisation
+package testGameTypes
 
 import coordinates.Coordinate2D
 import gameTypes.xiangqi.Xiangqi
@@ -22,7 +22,6 @@ class XiangqiTest {
 
     @Test
     fun boardIsInitialized() {
-
         val initPiecesTest = listOf(
             // Soldiers
             Pair(XiangqiRedSoldier(player1), Coordinate2D(0, 3)),

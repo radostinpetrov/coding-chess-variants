@@ -89,7 +89,7 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
                 Coordinate2D(coordinate.x + dy, coordinate.y - dx),
                 Coordinate2D(coordinate.x - dy, coordinate.y + dx),
                 Coordinate2D(coordinate.x - dy, coordinate.y - dx),
-            )
+            ).distinct()
 
             for (destCoordinate in destCoordinates) {
                 if (board.isInBounds(destCoordinate)) {

@@ -1,4 +1,4 @@
-package testGameTypesInitialisation
+package testGameTypes
 
 import coordinates.Coordinate2D
 import gameTypes.chess.GrandChess
