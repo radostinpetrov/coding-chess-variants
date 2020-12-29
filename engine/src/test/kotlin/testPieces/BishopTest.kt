@@ -13,19 +13,15 @@ import players.Player
 
 class BishopTest {
     val mockStandardChess = spyk<StandardChess>()
-    val mockHumanPlayer1 = mockk<Player>()
-    val mockHumanPlayer2 = mockk<Player>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun checkBishopMoves() {
-        // mockStandardChess.addPlayer(mockHumanPlayer1)
-        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
+        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
         val bishopMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Bishop }
-        Assertions.assertTrue(bishopMoves.size == 0)
+        Assertions.assertTrue(bishopMoves.isEmpty())
     }
 }
