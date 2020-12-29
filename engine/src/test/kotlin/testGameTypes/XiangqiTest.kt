@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import pieces.xiangqi.*
 
 class XiangqiTest {
-
     private var mockXiangqi = spyk<Xiangqi>()
 
     private val board = mockXiangqi.board

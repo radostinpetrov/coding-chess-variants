@@ -13,19 +13,15 @@ import players.Player
 
 class QueenTest {
     val mockStandardChess = spyk<StandardChess>()
-    val mockHumanPlayer1 = mockk<Player>()
-    val mockHumanPlayer2 = mockk<Player>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun checkQueenMoves() {
-        // mockStandardChess.addPlayer(mockHumanPlayer1)
-        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
+        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
         val queenMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Queen }
-        Assertions.assertTrue(queenMoves.size == 0)
+        Assertions.assertTrue(queenMoves.isEmpty())
     }
 }

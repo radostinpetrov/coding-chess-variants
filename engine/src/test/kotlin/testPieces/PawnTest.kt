@@ -13,20 +13,16 @@ import players.Player
 
 class PawnTest {
     val mockStandardChess = spyk<StandardChess>()
-    val mockHumanPlayer1 = mockk<Player>()
-    val mockHumanPlayer2 = mockk<Player>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun checkPawnMoves() {
-        // mockStandardChess.addPlayer(mockHumanPlayer1)
-        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
+        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
         val firstPawn = (moves.first { it is GameMove2D.BasicGameMove && it.pieceMoved is StandardWhitePawn } as GameMove2D.BasicGameMove).pieceMoved
-        val firstPawnMoves = moves.filter { it is GameMove2D.BasicGameMove && (it as GameMove2D.BasicGameMove).pieceMoved === firstPawn }
+        val firstPawnMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved === firstPawn }
         Assertions.assertTrue(firstPawnMoves.size == 2)
         mockStandardChess.makeMove(firstPawnMoves[0])
     }
