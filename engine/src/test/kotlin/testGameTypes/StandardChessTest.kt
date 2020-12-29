@@ -2,7 +2,6 @@ package testGameTypes
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
-import gameTypes.chess.AbstractChess
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
 import testPerft.PerftUtility
-import testPerft.PerftUtility.testHelper
+import testPerft.PerftUtility.test
 
 class StandardChessTest {
     val mockStandardChess = spyk<StandardChess>()
@@ -104,26 +103,26 @@ class StandardChessTest {
 
     @Test
     fun testStandardChessInitialPositionsWithDepth1() {
-        testHelper(StandardChess(), 1, PerftUtility.PerftData(20, 0, 0, 0))
+        test(StandardChess(), 1, PerftUtility.PerftData(20, 0, 0, 0))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth2() {
-        testHelper(StandardChess(), 2, PerftUtility.PerftData(400, 0, 0, 0))
+        test(StandardChess(), 2, PerftUtility.PerftData(400, 0, 0, 0))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth3() {
-        testHelper(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
+        test(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth4() {
-        testHelper(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
+        test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth5() {
-        testHelper(StandardChess(), 5, PerftUtility.PerftData(4865609, 82719, 27351, 347))
+        test(StandardChess(), 5, PerftUtility.PerftData(4865609, 82719, 27351, 347))
     }
 }

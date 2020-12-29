@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
+import testPerft.PerftUtility
 
 class CapablancaChessTest {
     private var mockCapablancaChess = spyk<CapablancaChess>()
@@ -79,5 +80,25 @@ class CapablancaChessTest {
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))
         Assertions.assertEquals(initPieces.size, initPiecesTest.size)
+    }
+
+    @Test
+    fun testCapablancaChessInitialPositionsWithDepth1() {
+        PerftUtility.testSimple(CapablancaChess(), 1, 28)
+    }
+
+    @Test
+    fun testCapablancaChessInitialPositionsWithDepth2() {
+        PerftUtility.testSimple(CapablancaChess(), 2, 784)
+    }
+
+    @Test
+    fun testCapablancaChessInitialPositionsWithDepth3() {
+        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
+    }
+
+    @Test
+    fun testCapablancaChessInitialPositionsWithDepth4() {
+        PerftUtility.testSimple(CapablancaChess(), 4, 805128)
     }
 }

@@ -59,8 +59,13 @@ object PerftUtility {
         return data
     }
 
-    fun testHelper(game: AbstractChess, depth: Int, expectedData: PerftData) {
+    fun test(game: AbstractChess, depth: Int, expectedData: PerftData) {
         game.initGame()
         Assertions.assertEquals(expectedData, perft(depth, game))
+    }
+
+    fun testSimple(game: AbstractChess, depth: Int, expectedNodes: Int) {
+        game.initGame()
+        Assertions.assertEquals(expectedNodes, perft(depth, game).nodes)
     }
 }
