@@ -15,7 +15,7 @@ object PerftUtility {
         override fun equals(other: Any?): Boolean {
             val otherData = other as PerftData
 
-            return ((otherData.nodes == nodes) and (otherData.captures == captures) && otherData.checks == checks)
+            return ((otherData.nodes == nodes) and (otherData.captures == captures) && otherData.checks == checks && otherData.checkmates == checkmates)
         }
 
         override fun toString(): String {
@@ -34,7 +34,7 @@ object PerftUtility {
 
         for (move in moves) {
             game.playerMakeMove(move)
-//            game.getValidMoves(game.getCurrentPlayer())
+            game.getValidMoves(game.getCurrentPlayer())
 
             if (depth == 1) {
                 if (move.displayPieceCaptured != null) {
