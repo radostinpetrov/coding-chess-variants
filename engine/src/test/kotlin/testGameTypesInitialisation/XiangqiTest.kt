@@ -1,4 +1,4 @@
-package testGameTypes
+package testGameTypesInitialisation
 
 import coordinates.Coordinate2D
 import gameTypes.xiangqi.Xiangqi

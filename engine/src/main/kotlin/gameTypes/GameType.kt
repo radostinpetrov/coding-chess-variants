@@ -17,6 +17,7 @@ interface GameType {
     // fun getWinner()
     fun getValidMoves(player: Player): List<GameMove2D>
     fun makeMove(gameMove: GameMove2D)
+    fun undoMove()
 //    fun turn() {
 //        val player = players[playerTurn]
 //        val moves = getValidMoves(player)

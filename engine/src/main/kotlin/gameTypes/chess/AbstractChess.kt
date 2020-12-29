@@ -113,7 +113,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return false
     }
 
-    fun undoMove() {
+    override fun undoMove() {
         if (moveLog.size == 0) {
             return
         }
