@@ -1,6 +1,7 @@
 package testGameTypes
 
 import coordinates.Coordinate2D
+import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.xiangqi.*
+import testPerft.PerftUtility
 
 class XiangqiTest {
     private var mockXiangqi = spyk<Xiangqi>()
@@ -70,4 +72,24 @@ class XiangqiTest {
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))
         Assertions.assertEquals(initPieces.size, initPiecesTest.size)
     }
+
+    @Test
+    fun testXiangqiInitialPositionsWithDepth1() {
+        PerftUtility.testSimple(Xiangqi(), 1, 44)
+    }
+
+    @Test
+    fun testXiangqiInitialPositionsWithDepth2() {
+        PerftUtility.testSimple(Xiangqi(), 2, 1920)
+    }
+
+//    @Test
+//    fun testXiangqiInitialPositionsWithDepth3() {
+//        PerftUtility.testSimple(Xiangqi(), 3, 79666)
+//    }
+//
+//    @Test
+//    fun testXiangqiInitialPositionsWithDepth4() {
+//        PerftUtility.testSimple(Xiangqi(), 4, 3920240)
+//    }
 }
