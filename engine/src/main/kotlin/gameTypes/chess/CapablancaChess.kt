@@ -1,7 +1,7 @@
 package gameTypes.chess
 
-import coordinates.Coordinate2D
 import boards.Board2D
+import coordinates.Coordinate2D
 import gameTypes.chess.rules.CapablancaCastling
 import gameTypes.chess.rules.Enpassant
 import pieces.chess.*
