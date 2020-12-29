@@ -18,6 +18,7 @@ interface GameType {
     fun getValidMoves(player: Player): List<GameMove2D>
     fun makeMove(gameMove: GameMove2D)
     fun undoMove()
+    fun inCheck(player: Player) : Boolean
 //    fun turn() {
 //        val player = players[playerTurn]
 //        val moves = getValidMoves(player)

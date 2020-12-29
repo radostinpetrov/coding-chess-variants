@@ -10,12 +10,14 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
     abstract val displayFrom: Coordinate2D
     abstract var displayTo: Coordinate2D
     abstract var displayPiecePromotedTo: Piece2D?
+    abstract var displayPieceCaptured: Piece2D?
 
     data class BasicGameMove(val from: Coordinate2D, val to: Coordinate2D, val pieceMoved: Piece2D, override val player: Player, val pieceCaptured: Piece2D? = null, val piecePromotedTo: Piece2D? = null, val checkForCheck: Boolean = true) : GameMove2D(player) {
         override val displayFrom: Coordinate2D
             get() = from
         override var displayTo: Coordinate2D = to
         override var displayPiecePromotedTo = piecePromotedTo
+        override var displayPieceCaptured = pieceCaptured
     }
 
     data class CompositeGameMove(val gameMoves: List<BasicGameMove>, override val player: Player) : GameMove2D(player) {
@@ -23,6 +25,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             get() = gameMoves[0].from
         override var displayTo: Coordinate2D = Coordinate2D(0, 0)
         override var displayPiecePromotedTo = gameMoves.last().piecePromotedTo
+        override var displayPieceCaptured = gameMoves.last().pieceCaptured
 
         init {
             val piece = gameMoves[0].pieceMoved

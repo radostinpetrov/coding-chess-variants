@@ -6,46 +6,75 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class PerftTests {
-    private fun perft(depth: Int, gameType: GameType): Int {
+
+    class PerftData(var nodes: Int, var captures: Int, var checks: Int) {
+        fun plus(other: PerftData) {
+            nodes += other.nodes
+            captures += other.captures
+            checks += other.checks
+        }
+
+        override fun equals(other: Any?): Boolean {
+            val otherData = other as PerftData
+
+            return ((otherData.nodes == nodes) and (otherData.captures == captures) && otherData.checks == checks)
+        }
+
+        override fun toString(): String {
+            return ("PerftData(nodes = $nodes, captures = $captures, checks = $checks)")
+        }
+    }
+
+    private fun perft(depth: Int, gameType: GameType): PerftData {
         if (depth == 0) {
-            return 1
+            return PerftData(1, 0, 0)
         }
 
         val moves = gameType.getValidMoves(gameType.getCurrentPlayer())
-        var nodes = 0
+        var data = PerftData(0, 0, 0)
+
         for (move in moves) {
             gameType.playerMakeMove(move)
-            nodes += perft(depth - 1, gameType)
+
+            if (move.displayPieceCaptured != null) {
+                data.captures += 1
+            }
+
+            if (gameType.inCheck(gameType.getCurrentPlayer())) {
+                data.checks += 1
+            }
+
+            data.plus(perft(depth - 1, gameType))
 
             gameType.undoMove()
             gameType.nextPlayer()
         }
 
-        return nodes
+        return data
     }
 
-    private fun testHelper(gameType: GameType, depth: Int, expected: Int) {
+    private fun testHelper(gameType: GameType, depth: Int, expectedData: PerftData) {
         gameType.initGame()
-        assertEquals(perft(depth, gameType), expected)
+        assertEquals(perft(depth, gameType), expectedData)
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth1() {
-        testHelper(StandardChess(), 1, 20)
+        testHelper(StandardChess(), 1, PerftData(20 ,0, 0))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth2() {
-        testHelper(StandardChess(), 2, 400)
+        testHelper(StandardChess(), 2, PerftData(400 ,0, 0))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth3() {
-        testHelper(StandardChess(), 3, 8902)
+        testHelper(StandardChess(), 3, PerftData(8902 ,34, 12))
     }
 
     @Test
     fun testStandardChessInitialPositionsWithDepth4() {
-        testHelper(StandardChess(), 4, 197281)
+        testHelper(StandardChess(), 4, PerftData(197281,1576, 469))
     }
 }
