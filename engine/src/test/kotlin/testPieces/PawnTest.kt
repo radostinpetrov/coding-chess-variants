@@ -20,7 +20,7 @@ class PawnTest {
     @Test
     fun checkPawnMoves() {
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
+        val moves = mockStandardChess.getValidMoves()
         val firstPawn = (moves.first { it is GameMove2D.BasicGameMove && it.pieceMoved is StandardWhitePawn } as GameMove2D.BasicGameMove).pieceMoved
         val firstPawnMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved === firstPawn }
         Assertions.assertTrue(firstPawnMoves.size == 2)

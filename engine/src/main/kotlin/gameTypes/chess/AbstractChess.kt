@@ -14,6 +14,8 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     override var seed: Double? = null
 
+    override lateinit var moves: List<GameMove2D>
+
     override val moveLog: MutableList<GameMove2D> = mutableListOf()
     var stalemate = false
     var checkmate = false
@@ -24,8 +26,19 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return checkmate || stalemate
     }
 
-    override fun getValidMoves(player: Player): List<GameMove2D> {
-        val possibleMoves = getPossibleMoves(player).toMutableList()
+    override fun initGame() {
+        initBoard()
+        moves = generateValidMoves(getCurrentPlayer())
+    }
+
+    abstract fun initBoard()
+
+    override fun getValidMoves(): List<GameMove2D> {
+        return moves
+    }
+
+    override fun generateValidMoves(player: Player): List<GameMove2D> {
+        val possibleMoves = generatePossibleMoves(player).toMutableList()
         val moves = filterForCheck(player, possibleMoves)
         if (moves.isEmpty()) {
             if (inCheck(player)) {
@@ -40,7 +53,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         return moves
     }
 
-    private fun getPossibleMoves(player: Player): List<GameMove2D> {
+    private fun generatePossibleMoves(player: Player): List<GameMove2D> {
         val pieces = board.getPieces(player)
         val possibleMoves = mutableListOf<GameMove2D>()
         for (piece in pieces) {
@@ -91,7 +104,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     private fun squareUnderAttack(coordinate: Coordinate2D, player: Player): Boolean {
         val nextPlayer = players[(players.indexOf(player) + 1) % 2]
-        val moves = getPossibleMoves(nextPlayer)
+        val moves = generatePossibleMoves(nextPlayer)
 
         for (m in moves) {
             when (m) {

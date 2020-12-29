@@ -11,11 +11,13 @@ interface GameType {
     var seed: Double?
     val NUM_PLAYERS: Int
     val moveLog: MutableList<GameMove2D>
+    var moves: List<GameMove2D>
 
     fun initGame()
     fun isOver(): Boolean
     // fun getWinner()
-    fun getValidMoves(player: Player): List<GameMove2D>
+    fun getValidMoves(): List<GameMove2D>
+    fun generateValidMoves(player: Player): List<GameMove2D>
     fun makeMove(gameMove: GameMove2D)
 //    fun turn() {
 //        val player = players[playerTurn]
@@ -59,5 +61,6 @@ interface GameType {
 
         makeMove(move)
         nextPlayer()
+        moves = generateValidMoves(getCurrentPlayer())
     }
 }

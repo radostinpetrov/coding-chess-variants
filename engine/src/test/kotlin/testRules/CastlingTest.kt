@@ -39,7 +39,7 @@ class CastlingTest {
             mockStandardChess.makeMove(move)
         }
 
-        val moves = mockStandardChess.getValidMoves(player1)
+        val moves = mockStandardChess.getValidMoves()
         val castleMove = GameMove2D.CompositeGameMove(
             gameMoves = listOf(
                 GameMove2D.BasicGameMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
@@ -70,7 +70,7 @@ class CastlingTest {
             mockStandardChess.makeMove(move)
         }
 
-        val moves = mockStandardChess.getValidMoves(player1)
+        val moves = mockStandardChess.getValidMoves()
         val castleMove = GameMove2D.CompositeGameMove(
             gameMoves = listOf(
                 GameMove2D.BasicGameMove(from = Coordinate2D(4, 0), to = Coordinate2D(3, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),

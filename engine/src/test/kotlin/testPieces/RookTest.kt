@@ -20,7 +20,7 @@ class RookTest {
     @Test
     fun checkRookMoves() {
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
+        val moves = mockStandardChess.getValidMoves()
         val rookMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Rook }
         Assertions.assertTrue(rookMoves.isEmpty())
     }

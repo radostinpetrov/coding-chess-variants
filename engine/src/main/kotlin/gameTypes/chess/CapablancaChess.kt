@@ -9,7 +9,7 @@ import pieces.chess.*
 open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
     override val board = Board2D(8, 10)
 
-    override fun initGame() {
+    override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
 

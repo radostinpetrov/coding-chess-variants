@@ -20,7 +20,7 @@ class BishopTest {
     @Test
     fun checkBishopMoves() {
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
+        val moves = mockStandardChess.getValidMoves()
         val bishopMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Bishop }
         Assertions.assertTrue(bishopMoves.isEmpty())
     }

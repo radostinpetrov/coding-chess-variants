@@ -18,7 +18,7 @@ class KnightTest {
     @Test
     fun checkKnightMoves() {
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
+        val moves = mockStandardChess.getValidMoves()
         val firstKnight = (moves.first { it is GameMove2D.BasicGameMove && it.pieceMoved is Knight } as GameMove2D.BasicGameMove).pieceMoved
         val firstKnightMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved === firstKnight }
         Assertions.assertTrue(firstKnightMoves.size == 2)

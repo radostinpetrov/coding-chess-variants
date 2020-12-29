@@ -67,7 +67,7 @@ class StalemateTest {
             mockStandardChess.makeMove(move)
         }
 
-        mockStandardChess.getValidMoves(player2)
+        mockStandardChess.getValidMoves()
         assertTrue(mockStandardChess.stalemate)
     }
 }

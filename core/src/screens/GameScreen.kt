@@ -109,7 +109,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
         Gdx.input.inputProcessor = Stage()
         startGame()
-        moves = gameEngine.getValidMoves(currPlayer!!)
+        moves = gameEngine.getValidMoves()
 
         guiBoard = when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerColorMapping!!)
@@ -199,7 +199,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
             currPlayer = gameEngine.getCurrentPlayer()
-            moves = gameEngine.getValidMoves(currPlayer!!)
+            moves = gameEngine.getValidMoves()
             resetClicks()
             if (gameEngine.isOver()) {
                 Gdx.app.postRunnable {

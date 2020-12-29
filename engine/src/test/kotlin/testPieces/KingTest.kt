@@ -20,7 +20,7 @@ class KingTest {
     @Test
     fun checkKingMoves() {
         mockStandardChess.initGame()
-        val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
+        val moves = mockStandardChess.getValidMoves()
         val kingMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is King }
         Assertions.assertTrue(kingMoves.isEmpty())
     }
