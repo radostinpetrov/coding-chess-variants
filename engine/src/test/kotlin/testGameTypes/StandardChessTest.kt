@@ -4,7 +4,6 @@ import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
-import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -12,15 +11,14 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
-import players.Player
 
 class StandardChessTest {
     val mockStandardChess = spyk<StandardChess>()
 
     private val board = mockStandardChess.board
 
-    val mockHumanPlayer1 = mockk<Player>()
-    val mockHumanPlayer2 = mockk<Player>()
+    val player1 = mockStandardChess.players[0]
+    val player2 = mockStandardChess.players[1]
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -31,46 +29,45 @@ class StandardChessTest {
         val initPiecesTest = listOf(
 
             // Pawns
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(0, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(1, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(2, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(3, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(4, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(5, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(6, 1)),
-            Pair(StandardWhitePawn(mockHumanPlayer1), Coordinate2D(7, 1)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(0, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(1, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(2, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(3, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(4, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(5, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(6, 6)),
-            Pair(StandardBlackPawn(mockHumanPlayer2), Coordinate2D(7, 6)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(0, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(1, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(2, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(3, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(4, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(5, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(6, 1)),
+            Pair(StandardWhitePawn(player1), Coordinate2D(7, 1)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(0, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(1, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(2, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(3, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(4, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(5, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(6, 6)),
+            Pair(StandardBlackPawn(player2), Coordinate2D(7, 6)),
             // Rooks
-            Pair(Rook(mockHumanPlayer1), Coordinate2D(0, 0)),
-            Pair(Rook(mockHumanPlayer1), Coordinate2D(7, 0)),
-            Pair(Rook(mockHumanPlayer2), Coordinate2D(0, 7)),
-            Pair(Rook(mockHumanPlayer2), Coordinate2D(7, 7)),
+            Pair(Rook(player1), Coordinate2D(0, 0)),
+            Pair(Rook(player1), Coordinate2D(7, 0)),
+            Pair(Rook(player2), Coordinate2D(0, 7)),
+            Pair(Rook(player2), Coordinate2D(7, 7)),
             // Knights
-            Pair(Knight(mockHumanPlayer1), Coordinate2D(1, 0)),
-            Pair(Knight(mockHumanPlayer1), Coordinate2D(6, 0)),
-            Pair(Knight(mockHumanPlayer2), Coordinate2D(1, 7)),
-            Pair(Knight(mockHumanPlayer2), Coordinate2D(6, 7)),
+            Pair(Knight(player1), Coordinate2D(1, 0)),
+            Pair(Knight(player1), Coordinate2D(6, 0)),
+            Pair(Knight(player2), Coordinate2D(1, 7)),
+            Pair(Knight(player2), Coordinate2D(6, 7)),
             // Bishops
-            Pair(Bishop(mockHumanPlayer1), Coordinate2D(2, 0)),
-            Pair(Bishop(mockHumanPlayer1), Coordinate2D(5, 0)),
-            Pair(Bishop(mockHumanPlayer2), Coordinate2D(2, 7)),
-            Pair(Bishop(mockHumanPlayer2), Coordinate2D(5, 7)),
+            Pair(Bishop(player1), Coordinate2D(2, 0)),
+            Pair(Bishop(player1), Coordinate2D(5, 0)),
+            Pair(Bishop(player2), Coordinate2D(2, 7)),
+            Pair(Bishop(player2), Coordinate2D(5, 7)),
             // Queens
-            Pair(Queen(mockHumanPlayer1), Coordinate2D(3, 0)),
-            Pair(Queen(mockHumanPlayer2), Coordinate2D(3, 7)),
+            Pair(Queen(player1), Coordinate2D(3, 0)),
+            Pair(Queen(player2), Coordinate2D(3, 7)),
             // Kings
-            Pair(King(mockHumanPlayer1), Coordinate2D(4, 0)),
-            Pair(King(mockHumanPlayer2), Coordinate2D(4, 7))
+            Pair(King(player1), Coordinate2D(4, 0)),
+            Pair(King(player2), Coordinate2D(4, 7))
         )
-        // mockStandardChess.addPlayer(mockHumanPlayer1)
-        // mockStandardChess.addPlayer(mockHumanPlayer2)
+
         mockStandardChess.initGame()
         val initPieces = board.getPieces()
         assertTrue(initPieces.containsAll(initPiecesTest))
@@ -79,10 +76,10 @@ class StandardChessTest {
 
     @Test
     fun fromCoordinateIsEmptyAfterMove() {
-        board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(mockHumanPlayer1))
+        board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
         val gameMove = GameMove2D.BasicGameMove(
             Coordinate2D(0, 0),
-            Coordinate2D(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1
+            Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.from) == null)
@@ -90,10 +87,10 @@ class StandardChessTest {
 
     @Test
     fun toCoordinateIsNewPiece() {
-        board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(mockHumanPlayer1))
+        board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
         val gameMove = GameMove2D.BasicGameMove(
             Coordinate2D(0, 0),
-            Coordinate2D(1, 0), StandardWhitePawn(mockHumanPlayer1), mockHumanPlayer1
+            Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
         mockStandardChess.makeMove(gameMove)
         assertTrue(board.getPiece(gameMove.to) == gameMove.pieceMoved)
