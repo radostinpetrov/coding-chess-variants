@@ -25,8 +25,8 @@ class CheckmateTest {
 
     @Test
     fun turn4CheckmateTest() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
         val turn4Checkmate: List<GameMove.BasicGameMove> = listOf(
@@ -50,8 +50,8 @@ class CheckmateTest {
 
     @Test
     fun bishopsOnlyCheckmate() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         board.addPiece(Coordinate(6,5), King(mockHumanPlayer1))
         board.addPiece(Coordinate(4, 5), Bishop(mockHumanPlayer1))
         board.addPiece(Coordinate(4, 4), Bishop(mockHumanPlayer1))

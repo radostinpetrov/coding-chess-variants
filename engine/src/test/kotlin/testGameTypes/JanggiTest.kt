@@ -67,8 +67,8 @@ class JanggiTest {
             Pair(General(mockHumanPlayer1), Coordinate(4, 1)),
             Pair(General(mockHumanPlayer2), Coordinate(4, 8))
         )
-        mockJanggi.addPlayer(mockHumanPlayer1)
-        mockJanggi.addPlayer(mockHumanPlayer2)
+        // mockJanggi.addPlayer(mockHumanPlayer1)
+        // mockJanggi.addPlayer(mockHumanPlayer2)
         mockJanggi.initGame()
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))

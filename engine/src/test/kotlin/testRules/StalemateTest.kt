@@ -23,8 +23,8 @@ class StalemateTest {
 
     @Test
     fun quickStalemateTest() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
         val turn10Stalemate: List<GameMove.BasicGameMove> = listOf(

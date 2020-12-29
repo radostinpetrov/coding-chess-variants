@@ -20,8 +20,8 @@ class BishopTest {
 
     @Test
     fun checkBishopMoves() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
         val bishopMoves = moves.filter { it is GameMove.BasicGameMove && it.pieceMoved is Bishop }

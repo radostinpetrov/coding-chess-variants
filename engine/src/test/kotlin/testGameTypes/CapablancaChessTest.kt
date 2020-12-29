@@ -76,8 +76,8 @@ class CapablancaChessTest {
             Pair(King(mockHumanPlayer1), Coordinate(5, 0)),
             Pair(King(mockHumanPlayer2), Coordinate(5, 7))
         )
-        mockCapablancaChess.addPlayer(mockHumanPlayer1)
-        mockCapablancaChess.addPlayer(mockHumanPlayer2)
+        // mockCapablancaChess.addPlayer(mockHumanPlayer1)
+        // mockCapablancaChess.addPlayer(mockHumanPlayer2)
         mockCapablancaChess.initGame()
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))

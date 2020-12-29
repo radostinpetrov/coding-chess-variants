@@ -76,8 +76,8 @@ class GrandChessTest {
             Pair(King(mockHumanPlayer1), Coordinate(4, 1)),
             Pair(King(mockHumanPlayer2), Coordinate(4, 8))
         )
-        mockGrandChess.addPlayer(mockHumanPlayer1)
-        mockGrandChess.addPlayer(mockHumanPlayer2)
+        // mockGrandChess.addPlayer(mockHumanPlayer1)
+        // mockGrandChess.addPlayer(mockHumanPlayer2)
         mockGrandChess.initGame()
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))

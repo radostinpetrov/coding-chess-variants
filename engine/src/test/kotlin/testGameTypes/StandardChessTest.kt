@@ -68,8 +68,8 @@ class StandardChessTest {
             Pair(King(mockHumanPlayer1), Coordinate(4, 0)),
             Pair(King(mockHumanPlayer2), Coordinate(4, 7))
         )
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
         val initPieces = board.getPieces()
         assertTrue(initPieces.containsAll(initPiecesTest))

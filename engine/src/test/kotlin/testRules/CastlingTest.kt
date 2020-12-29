@@ -24,8 +24,8 @@ class CastlingTest {
 
     @Test
     fun castleRightTest() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
         val initMoves: List<GameMove.BasicGameMove> = listOf(
@@ -55,8 +55,8 @@ class CastlingTest {
 
     @Test
     fun castleLeftTest() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
         val initMoves: List<GameMove.BasicGameMove> = listOf(

@@ -68,8 +68,8 @@ class XiangqiTest {
             Pair(XiangqiGeneral(mockHumanPlayer1), Coordinate(4, 0)),
             Pair(XiangqiGeneral(mockHumanPlayer2), Coordinate(4, 9))
         )
-        mockXiangqi.addPlayer(mockHumanPlayer1)
-        mockXiangqi.addPlayer(mockHumanPlayer2)
+        // mockXiangqi.addPlayer(mockHumanPlayer1)
+        // mockXiangqi.addPlayer(mockHumanPlayer2)
         mockXiangqi.initGame()
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))

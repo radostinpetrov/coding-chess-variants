@@ -20,8 +20,8 @@ class KnightTest {
 
     @Test
     fun checkKnightMoves() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockHumanPlayer1)
         val firstKnight = (moves.first { it is GameMove.BasicGameMove && it.pieceMoved is Knight } as GameMove.BasicGameMove).pieceMoved

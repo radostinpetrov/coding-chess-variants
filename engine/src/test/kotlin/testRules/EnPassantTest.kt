@@ -25,8 +25,8 @@ class EnPassantTest {
 
     @Test
     fun simplePawnEnPassant() {
-        mockStandardChess.addPlayer(mockHumanPlayer1)
-        mockStandardChess.addPlayer(mockHumanPlayer2)
+        // mockStandardChess.addPlayer(mockHumanPlayer1)
+        // mockStandardChess.addPlayer(mockHumanPlayer2)
         mockStandardChess.initGame()
 
         val enPassantMove: List<GameMove.BasicGameMove> = listOf(
