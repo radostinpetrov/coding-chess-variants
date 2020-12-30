@@ -17,7 +17,7 @@ class Chess960Castling : SpecialRules<Chess960> {
 
         for (move in currentPlayerMoves) {
             when (move) {
-                is GameMove2D.BasicGameMove -> {
+                is GameMove2D.SimpleGameMove.BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
@@ -25,11 +25,16 @@ class Chess960Castling : SpecialRules<Chess960> {
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
-                        if (basicMove.pieceMoved is King) {
-                            return
+                        if (basicMove is GameMove2D.SimpleGameMove.BasicGameMove) {
+                            if (basicMove.pieceMoved is King) {
+                                return
+                            }
+                            rooks.removeAll { it.first === basicMove.pieceMoved }
                         }
-                        rooks.removeAll { it.first === basicMove.pieceMoved }
                     }
+                }
+                else -> {
+                    continue
                 }
             }
         }
@@ -80,7 +85,7 @@ class Chess960Castling : SpecialRules<Chess960> {
         if (leftRook != null) {
             val rook = leftRook.first
 
-            val castleList = mutableListOf<GameMove2D.BasicGameMove>()
+            val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
             var prevKingCoordinate = kingCoordinate
 
             for (i in range) {
@@ -88,7 +93,7 @@ class Chess960Castling : SpecialRules<Chess960> {
 
                 if (newCoordinate != leftRook.second) {
                     castleList.add(
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             prevKingCoordinate,
                             newCoordinate, king, player)
                     )
@@ -97,7 +102,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                GameMove2D.BasicGameMove(
+                GameMove2D.SimpleGameMove.BasicGameMove(
                     leftRook.second,
                     Coordinate2D(3, kingCoordinate.y), rook, player)
             )
@@ -128,7 +133,7 @@ class Chess960Castling : SpecialRules<Chess960> {
         if (rightRook != null) {
             val rook = rightRook.first
 
-            val castleList = mutableListOf<GameMove2D.BasicGameMove>()
+            val castleList = mutableListOf<GameMove2D.SimpleGameMove.BasicGameMove>()
 
             var prevKingCoordinate = kingCoordinate
 
@@ -136,7 +141,7 @@ class Chess960Castling : SpecialRules<Chess960> {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
                 if (newCoordinate != rightRook.second) {
                     castleList.add(
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             prevKingCoordinate,
                             newCoordinate, king, player
                         )
@@ -146,7 +151,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                GameMove2D.BasicGameMove(
+                GameMove2D.SimpleGameMove.BasicGameMove(
                     rightRook.second,
                     Coordinate2D(5, kingCoordinate.y), rook, player)
             )

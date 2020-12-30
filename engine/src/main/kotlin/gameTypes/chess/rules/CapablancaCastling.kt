@@ -12,18 +12,15 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
-        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
 
-        val res = mutableListOf<GameMove2D>()
         for (move in currentPlayerMoves) {
             when (move) {
                 is GameMove2D.SimpleGameMove.BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
-                    if (rooks.contains(move.pieceMoved)) {
-                        rooks.remove(move.pieceMoved)
-                    }
+                    rooks.removeAll { it.first === move.pieceMoved }
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
@@ -31,9 +28,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                             if (basicMove.pieceMoved is King) {
                                 return
                             }
-                            if (rooks.contains(basicMove.pieceMoved)) {
-                                rooks.remove(basicMove.pieceMoved)
-                            }
+                            rooks.removeAll { it.first === basicMove.pieceMoved }
                         }
                     }
                 }
@@ -43,19 +38,22 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             }
         }
 
+        val res = mutableListOf<GameMove2D>()
         val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
         val king = game.board.getPiece(kingCoordinate) ?: return
+
         // Check Left for check
         var leftRook: Coordinate2D? = null
         var rightRook: Coordinate2D? = null
         for (rook in rooks) {
-            if (rook.value.x == 0) {
-                leftRook = rook.value
+            if (rook.second.x == 0) {
+                leftRook = rook.second
             }
-            if (rook.value.x == board.m - 1) {
-                rightRook = rook.value
+            if (rook.second.x == board.m - 1) {
+                rightRook = rook.second
             }
         }
+
         for (i in 1..4) {
             val toCheckCoordLeft = Coordinate2D(kingCoordinate.x - i, kingCoordinate.y)
             if (board.getPiece(toCheckCoordLeft) != null) {
