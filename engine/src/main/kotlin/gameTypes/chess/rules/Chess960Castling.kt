@@ -78,7 +78,8 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
         }
 
-        if (board.getPiece(Coordinate2D(3, kingCoordinate.y)) != null) {
+        val leftRookSquarePiece = board.getPiece(Coordinate2D(3, kingCoordinate.y))
+        if (leftRookSquarePiece != null && leftRookSquarePiece != king) {
             leftRook = null
         }
 
@@ -86,25 +87,31 @@ class Chess960Castling : SpecialRules<Chess960> {
             val rook = leftRook.first
 
             val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
-            var prevKingCoordinate = kingCoordinate
+            castleList.add(
+                GameMove2D.SimpleGameMove.RemovePiece(
+                    player,
+                    rook,
+                    leftRook.second
+                    )
+            )
 
+            var prevKingCoordinate = kingCoordinate
             for (i in range) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
-
-                if (newCoordinate != leftRook.second) {
-                    castleList.add(
-                        GameMove2D.SimpleGameMove.BasicGameMove(
-                            prevKingCoordinate,
-                            newCoordinate, king, player)
-                    )
-                    prevKingCoordinate = newCoordinate
-                }
+                castleList.add(
+                    GameMove2D.SimpleGameMove.BasicGameMove(
+                        prevKingCoordinate,
+                        newCoordinate, king, player)
+                )
+                prevKingCoordinate = newCoordinate
             }
 
             castleList.add(
-                GameMove2D.SimpleGameMove.BasicGameMove(
-                    leftRook.second,
-                    Coordinate2D(3, kingCoordinate.y), rook, player)
+                GameMove2D.SimpleGameMove.AddPiece(
+                    player,
+                    rook,
+                    Coordinate2D(3, kingCoordinate.y)
+                )
             )
 
             res.add(
@@ -126,34 +133,42 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
         }
 
-        if (board.getPiece(Coordinate2D(5, kingCoordinate.y)) != null) {
+        val rightRookSquarePiece = board.getPiece(Coordinate2D(5, kingCoordinate.y))
+        if (rightRookSquarePiece != null && rightRookSquarePiece != king) {
             rightRook = null
         }
 
         if (rightRook != null) {
             val rook = rightRook.first
 
-            val castleList = mutableListOf<GameMove2D.SimpleGameMove.BasicGameMove>()
+            val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
+
+            castleList.add(
+                GameMove2D.SimpleGameMove.RemovePiece(
+                    player,
+                    rook,
+                    rightRook.second
+                )
+            )
 
             var prevKingCoordinate = kingCoordinate
-
             for (i in (kingCoordinate.x + 1) .. 6) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
-                if (newCoordinate != rightRook.second) {
-                    castleList.add(
-                        GameMove2D.SimpleGameMove.BasicGameMove(
-                            prevKingCoordinate,
-                            newCoordinate, king, player
-                        )
+                castleList.add(
+                    GameMove2D.SimpleGameMove.BasicGameMove(
+                        prevKingCoordinate,
+                        newCoordinate, king, player
                     )
-                    prevKingCoordinate = newCoordinate
-                }
+                )
+                prevKingCoordinate = newCoordinate
             }
 
             castleList.add(
-                GameMove2D.SimpleGameMove.BasicGameMove(
-                    rightRook.second,
-                    Coordinate2D(5, kingCoordinate.y), rook, player)
+                GameMove2D.SimpleGameMove.AddPiece(
+                    player,
+                    rook,
+                    Coordinate2D(5, kingCoordinate.y)
+                )
             )
 
             res.add(
