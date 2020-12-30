@@ -34,9 +34,12 @@ class ChessNotationInput() : NotationFormatter {
                 sb.append(basicGameMoveToStr(gameMove))
             }
             is GameMove2D.CompositeGameMove -> {
-                for (move in gameMove.gameMoves) {
+                val gameMoves = gameMove.gameMoves
+                for ((i, move) in gameMoves.withIndex()) {
                     sb.append(gameMoveToStr(move))
-                    sb.append(' ')
+                    if (i != gameMoves.size - 1) {
+                        sb.append(", ")
+                    }
                 }
                 sb.trimEnd()
             }
