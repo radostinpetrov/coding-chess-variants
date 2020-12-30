@@ -73,7 +73,7 @@ class Chess960Castling : SpecialRules<Chess960> {
         if (leftRook != null) {
             for (i in lo until hi) {
                 val piece = board.getPiece(Coordinate2D(i, kingCoordinate.y))
-                if (piece != null && piece != leftRook!!.first) {
+                if (piece != null && piece != leftRook!!.first && piece != king) {
                     leftRook = null
                     break
                 }
@@ -81,7 +81,7 @@ class Chess960Castling : SpecialRules<Chess960> {
         }
 
         val leftRookSquarePiece = board.getPiece(Coordinate2D(3, kingCoordinate.y))
-        if (leftRookSquarePiece != null && leftRookSquarePiece != king) {
+        if (leftRookSquarePiece != null && leftRookSquarePiece != king && leftRook != null && leftRookSquarePiece != leftRook.first) {
             leftRook = null
         }
 
@@ -116,19 +116,18 @@ class Chess960Castling : SpecialRules<Chess960> {
                 )
             )
 
-            res.add(
-                CompositeGameMove(
-                    castleList,
-                    player
-                )
-            )
+            val move = CompositeGameMove(castleList, player)
+            move.displayFrom = kingCoordinate
+            move.displayTo = Coordinate2D(2, kingCoordinate.y)
+
+            res.add(move)
         }
 
         //right castling
         if (rightRook != null) {
             for (i in (kingCoordinate.x + 1) until 7) {
                 val piece = board.getPiece(Coordinate2D(i, kingCoordinate.y))
-                if (piece != null && piece != rightRook!!.first) {
+                if (piece != null && piece != rightRook!!.first && piece != king) {
                     rightRook = null
                     break
                 }
@@ -136,7 +135,7 @@ class Chess960Castling : SpecialRules<Chess960> {
         }
 
         val rightRookSquarePiece = board.getPiece(Coordinate2D(5, kingCoordinate.y))
-        if (rightRookSquarePiece != null && rightRookSquarePiece != king) {
+        if (rightRookSquarePiece != null && rightRookSquarePiece != king && rightRook != null && rightRookSquarePiece != rightRook.first) {
             rightRook = null
         }
 
@@ -173,12 +172,11 @@ class Chess960Castling : SpecialRules<Chess960> {
                 )
             )
 
-            res.add(
-                CompositeGameMove(
-                    castleList,
-                    player
-                )
-            )
+            val move = CompositeGameMove(castleList, player)
+            move.displayFrom = kingCoordinate
+            move.displayTo = Coordinate2D(6, kingCoordinate.y)
+
+            res.add(move)
         }
 
         moves.addAll(res)

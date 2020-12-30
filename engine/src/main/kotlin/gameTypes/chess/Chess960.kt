@@ -37,7 +37,11 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
             }
         }
 
-//        seed = 5.0/960.0
+        // rook king positions
+        // seed = 18 swap
+        // seed = 5 rook on king pos
+        // seed = 20 king on king pos
+        seed = 8.0/960.0
         val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
