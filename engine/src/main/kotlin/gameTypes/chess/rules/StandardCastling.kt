@@ -64,6 +64,7 @@ class StandardCastling : SpecialRules<StandardChess> {
                 rightRook = null
             }
         }
+
         if (leftRook != null) {
             val rook = board.getPiece(leftRook)
             res.add(

@@ -2,10 +2,11 @@ package gameTypes.chess
 
 import coordinates.Coordinate2D
 import boards.Board2D
+import gameTypes.chess.rules.Chess960Castling
 import gameTypes.chess.rules.Enpassant
 import pieces.chess.*
 
-class Chess960 : AbstractChess(listOf(Enpassant())) {
+class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {

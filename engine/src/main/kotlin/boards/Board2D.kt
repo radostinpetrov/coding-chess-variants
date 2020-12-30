@@ -69,4 +69,27 @@ class Board2D(val n: Int, val m: Int) : Board<Board2D, Move2D, GameMove2D.BasicG
     fun isInBounds(coordinate: Coordinate2D): Boolean {
         return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
     }
+
+    fun display() {
+        val resetColour = "\u001B[0m"
+        val n = getBoardState().size
+
+        for ((i, row) in getBoardState().withIndex()) {
+            print("${n - i} ")
+            for (piece in row) {
+                if (piece != null) {
+                    print(piece.getSymbol() + ' ' + resetColour)
+                } else {
+                    print("_ ")
+                }
+            }
+            println()
+        }
+        print("  ")
+
+        for (i in getBoardState()[0].indices) {
+            print("${(i + 'a'.toInt()).toChar()} ")
+        }
+        println("\n-----------------")
+    }
 }
