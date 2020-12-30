@@ -1,7 +1,7 @@
 package moves
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D.BasicGameMove
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import boards.Board2D
 import moves.region.Region
 import pieces.Piece2D

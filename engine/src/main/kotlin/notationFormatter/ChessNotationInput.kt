@@ -30,8 +30,14 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
         val sb = StringBuilder()
 
         when (gameMove) {
-            is GameMove2D.BasicGameMove -> {
+            is GameMove2D.SimpleGameMove.BasicGameMove -> {
                 sb.append(basicGameMoveToStr(gameMove))
+            }
+            is GameMove2D.SimpleGameMove.AddPiece -> {
+                sb.append("${gameMove.piece.getSymbol()} is placed on the board at ${coordinateToStr(gameMove.coordinate)}")
+            }
+            is GameMove2D.SimpleGameMove.RemovePiece -> {
+                sb.append("${gameMove.piece.getSymbol()} is removed from the board at ${coordinateToStr(gameMove.coordinate)}")
             }
             is GameMove2D.CompositeGameMove -> {
                 for (move in gameMove.gameMoves) {
@@ -45,7 +51,7 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
         return sb.toString()
     }
 
-    private fun basicGameMoveToStr(gameMove: GameMove2D.BasicGameMove): String {
+    private fun basicGameMoveToStr(gameMove: GameMove2D.SimpleGameMove.BasicGameMove): String {
         val sb = StringBuilder()
         sb.append("${gameMove.pieceMoved.getSymbol()} moves from ${coordinateToStr(gameMove.from)} to ${coordinateToStr(gameMove.to)}")
 
