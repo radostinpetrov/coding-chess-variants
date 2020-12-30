@@ -143,6 +143,7 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
             return result
         }
     }
+
     data class CaptureOnly(val move: Move2D) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
             return move.generate(board, coordinate, piece, player).filter {

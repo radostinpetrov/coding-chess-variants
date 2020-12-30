@@ -17,7 +17,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
         val res = mutableListOf<GameMove2D>()
         for (move in currentPlayerMoves) {
             when (move) {
-                is GameMove2D.BasicGameMove -> {
+                is GameMove2D.SimpleGameMove.BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
@@ -27,13 +27,18 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
-                        if (basicMove.pieceMoved is King) {
-                            return
-                        }
-                        if (rooks.contains(basicMove.pieceMoved)) {
-                            rooks.remove(basicMove.pieceMoved)
+                        if (basicMove is GameMove2D.SimpleGameMove.BasicGameMove) {
+                            if (basicMove.pieceMoved is King) {
+                                return
+                            }
+                            if (rooks.contains(basicMove.pieceMoved)) {
+                                rooks.remove(basicMove.pieceMoved)
+                            }
                         }
                     }
+                }
+                else -> {
+                    continue
                 }
             }
         }
@@ -66,16 +71,16 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove2D.CompositeGameMove(
                     listOf(
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(leftRook.x, leftRook.y),
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
                     ),
@@ -88,16 +93,16 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove2D.CompositeGameMove(
                     listOf(
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player),
-                        GameMove2D.BasicGameMove(
+                        GameMove2D.SimpleGameMove.BasicGameMove(
                             Coordinate2D(rightRook.x, rightRook.y),
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
                     ),
