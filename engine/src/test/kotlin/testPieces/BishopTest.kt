@@ -1,6 +1,7 @@
 package testPieces
 
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -21,7 +22,7 @@ class BishopTest {
     fun checkBishopMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val bishopMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved is Bishop }
+        val bishopMoves = moves.filter { it is BasicGameMove && it.pieceMoved is Bishop }
         Assertions.assertTrue(bishopMoves.isEmpty())
     }
 }

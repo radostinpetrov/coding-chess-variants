@@ -2,6 +2,7 @@ package testRules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -27,14 +28,14 @@ class CheckmateTest {
     fun turn4CheckmateTest() {
         mockStandardChess.initGame()
 
-        val turn4Checkmate: List<GameMove2D.BasicGameMove> = listOf(
-            GameMove2D.BasicGameMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1),
-            GameMove2D.BasicGameMove(Coordinate2D(4, 6), Coordinate2D(4, 4), StandardBlackPawn(player2), player2),
-            GameMove2D.BasicGameMove(Coordinate2D(5, 0), Coordinate2D(2, 3), Bishop(player1), player1),
-            GameMove2D.BasicGameMove(Coordinate2D(1, 7), Coordinate2D(2, 5), Knight(player2), player2),
-            GameMove2D.BasicGameMove(Coordinate2D(3, 0), Coordinate2D(7, 4), Queen(player1), player1),
-            GameMove2D.BasicGameMove(Coordinate2D(6, 7), Coordinate2D(5, 5), Knight(player2), player2),
-            GameMove2D.BasicGameMove(
+        val turn4Checkmate: List<BasicGameMove> = listOf(
+            BasicGameMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1),
+            BasicGameMove(Coordinate2D(4, 6), Coordinate2D(4, 4), StandardBlackPawn(player2), player2),
+            BasicGameMove(Coordinate2D(5, 0), Coordinate2D(2, 3), Bishop(player1), player1),
+            BasicGameMove(Coordinate2D(1, 7), Coordinate2D(2, 5), Knight(player2), player2),
+            BasicGameMove(Coordinate2D(3, 0), Coordinate2D(7, 4), Queen(player1), player1),
+            BasicGameMove(Coordinate2D(6, 7), Coordinate2D(5, 5), Knight(player2), player2),
+            BasicGameMove(
                 Coordinate2D(7, 4), Coordinate2D(5, 6), Queen(player1), player1, board.getPiece(
                     Coordinate2D(5, 6)
                 ), null, true)
