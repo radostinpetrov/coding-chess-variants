@@ -37,7 +37,7 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
             }
         }
 
-        seed = 5.0/960.0
+//        seed = 5.0/960.0
         val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
