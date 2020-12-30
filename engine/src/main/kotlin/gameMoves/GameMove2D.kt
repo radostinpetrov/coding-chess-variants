@@ -13,9 +13,9 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
     abstract var displayPieceCaptured: Piece2D?
 
     sealed class SimpleGameMove(override val player: Player): GameMove2D(player) {
-        val checkForCheck: Boolean = true
+        open val checkForCheck: Boolean = true
 
-        data class BasicGameMove(val from: Coordinate2D, val to: Coordinate2D, val pieceMoved: Piece2D, override val player: Player, val pieceCaptured: Piece2D? = null, val piecePromotedTo: Piece2D? = null)
+        data class BasicGameMove(val from: Coordinate2D, val to: Coordinate2D, val pieceMoved: Piece2D, override val player: Player, val pieceCaptured: Piece2D? = null, val piecePromotedTo: Piece2D? = null, override val checkForCheck: Boolean = true)
             : SimpleGameMove(player) {
             override val displayFrom: Coordinate2D
                 get() = from
