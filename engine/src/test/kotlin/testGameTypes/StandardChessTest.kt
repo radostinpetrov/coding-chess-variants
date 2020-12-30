@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import pieces.chess.*
 import testPerft.PerftUtility
 import testPerft.PerftUtility.test
+import testPerft.PerftUtility.testSimple
 
 class StandardChessTest {
     val mockStandardChess = spyk<StandardChess>()
@@ -121,6 +122,20 @@ class StandardChessTest {
         test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
     }
 
+    @Test
+    fun testStandardChessInGamePosition1WithDepth1() {
+        testSimple(StandardChess("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"), 1, 48)
+    }
+
+    @Test
+    fun testStandardChessInGamePosition1WithDepth2() {
+        testSimple(StandardChess("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"), 2, 2039)
+    }
+
+    @Test
+    fun testStandardChessInGamePosition2WithDepth2() {
+        testSimple(StandardChess("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8"), 2, 191)
+    }
 //    @Test
 //    fun testStandardChessInitialPositionsWithDepth5() {
 //        test(StandardChess(), 5, PerftUtility.PerftData(4865609, 82719, 27351, 347))
