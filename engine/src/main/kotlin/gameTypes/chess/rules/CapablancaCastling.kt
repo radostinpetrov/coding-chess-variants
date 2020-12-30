@@ -2,6 +2,7 @@ package gameTypes.chess.rules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.CapablancaChess
 import pieces.chess.King
 import pieces.chess.Rook
@@ -16,7 +17,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
 
         for (move in currentPlayerMoves) {
             when (move) {
-                is GameMove2D.SimpleGameMove.BasicGameMove -> {
+                is BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
@@ -24,7 +25,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
-                        if (basicMove is GameMove2D.SimpleGameMove.BasicGameMove) {
+                        if (basicMove is BasicGameMove) {
                             if (basicMove.pieceMoved is King) {
                                 return
                             }
@@ -69,16 +70,16 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove2D.CompositeGameMove(
                     listOf(
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(leftRook.x, leftRook.y),
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
                     ),
@@ -91,16 +92,16 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             res.add(
                 GameMove2D.CompositeGameMove(
                     listOf(
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y),
                             Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player),
-                        GameMove2D.SimpleGameMove.BasicGameMove(
+                        BasicGameMove(
                             Coordinate2D(rightRook.x, rightRook.y),
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
                     ),

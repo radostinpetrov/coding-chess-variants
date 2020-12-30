@@ -2,6 +2,7 @@ package gameTypes.chess.rules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.Chess960
 import pieces.Piece2D
 import pieces.chess.King
@@ -17,7 +18,7 @@ class Chess960Castling : SpecialRules<Chess960> {
 
         for (move in currentPlayerMoves) {
             when (move) {
-                is GameMove2D.SimpleGameMove.BasicGameMove -> {
+                is BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
@@ -25,7 +26,7 @@ class Chess960Castling : SpecialRules<Chess960> {
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
-                        if (basicMove is GameMove2D.SimpleGameMove.BasicGameMove) {
+                        if (basicMove is BasicGameMove) {
                             if (basicMove.pieceMoved is King) {
                                 return
                             }
@@ -99,7 +100,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             for (i in range) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
                 castleList.add(
-                    GameMove2D.SimpleGameMove.BasicGameMove(
+                    BasicGameMove(
                         prevKingCoordinate,
                         newCoordinate, king, player)
                 )
@@ -155,7 +156,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             for (i in (kingCoordinate.x + 1) .. 6) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
                 castleList.add(
-                    GameMove2D.SimpleGameMove.BasicGameMove(
+                    BasicGameMove(
                         prevKingCoordinate,
                         newCoordinate, king, player
                     )

@@ -1,8 +1,10 @@
 package gameTypes.chess
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.CompositeGameMove
+import gameMoves.GameMove2D.SimpleGameMove
+import gameMoves.GameMove2D.SimpleGameMove.*
 import gameTypes.GameType
 import gameTypes.chess.rules.SpecialRules
 import pieces.King
@@ -57,14 +59,14 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         val res = mutableListOf<GameMove2D>()
         for (move in possibleMoves) {
             when (move) {
-                is GameMove2D.SimpleGameMove -> {
+                is SimpleGameMove -> {
                     makeMove(move)
                     if (!inCheck(player)) {
                         res.add(move)
                     }
                     undoMove()
                 }
-                is GameMove2D.CompositeGameMove -> {
+                is CompositeGameMove -> {
                     var valid = true
                     for (m in move.gameMoves) {
                         makeMove(m)
@@ -96,18 +98,18 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
         for (m in moves) {
             when (m) {
-                is GameMove2D.SimpleGameMove.BasicGameMove -> {
+                is BasicGameMove -> {
                     if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
                         return true
                     }
                 }
-                is GameMove2D.SimpleGameMove.AddPiece -> {
+                is AddPiece -> {
                     return false
                 }
-                is GameMove2D.SimpleGameMove.RemovePiece -> {
+                is RemovePiece -> {
                     return false
                 }
-                is GameMove2D.CompositeGameMove -> {
+                is CompositeGameMove -> {
                     for (move in m.gameMoves) {
                         if (move.displayTo.x == coordinate.x && move.displayTo.y == coordinate.y) {
                             return true
@@ -129,16 +131,16 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     private fun undoMoveHelper(gameMove: GameMove2D) {
         when (gameMove) {
-            is GameMove2D.SimpleGameMove.BasicGameMove -> {
+            is BasicGameMove -> {
                 undoBasicMove(gameMove)
             }
-            is GameMove2D.SimpleGameMove.AddPiece -> {
+            is AddPiece -> {
                 board.removePiece(gameMove.coordinate, gameMove.piece)
             }
-            is GameMove2D.SimpleGameMove.RemovePiece -> {
+            is RemovePiece -> {
                 board.addPiece(gameMove.coordinate, gameMove.piece)
             }
-            is GameMove2D.CompositeGameMove -> {
+            is CompositeGameMove -> {
                 for (move in gameMove.gameMoves.reversed()) {
                     undoMoveHelper(move)
                 }
@@ -146,7 +148,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         }
     }
 
-    private fun undoBasicMove(gameMove: GameMove2D.SimpleGameMove.BasicGameMove) {
+    private fun undoBasicMove(gameMove: BasicGameMove) {
         if (gameMove.piecePromotedTo != null) {
             board.removePiece(gameMove.to, gameMove.piecePromotedTo)
         } else {
@@ -176,10 +178,10 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     override fun makeMove(gameMove: GameMove2D) {
         when (gameMove) {
-            is GameMove2D.SimpleGameMove -> {
+            is SimpleGameMove -> {
                 makeSimpleMove(gameMove)
             }
-            is GameMove2D.CompositeGameMove -> {
+            is CompositeGameMove -> {
                 for (move in gameMove.gameMoves) {
                     makeSimpleMove(move)
                 }
@@ -188,21 +190,21 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         moveLog.add(gameMove)
     }
 
-    private fun makeSimpleMove(gameMove: GameMove2D.SimpleGameMove) {
+    private fun makeSimpleMove(gameMove: SimpleGameMove) {
         when (gameMove) {
-            is GameMove2D.SimpleGameMove.BasicGameMove -> {
+            is BasicGameMove -> {
                 makeBasicMove(gameMove)
             }
-            is GameMove2D.SimpleGameMove.AddPiece -> {
+            is AddPiece -> {
                 makeAddPieceMove(gameMove)
             }
-            is GameMove2D.SimpleGameMove.RemovePiece -> {
+            is RemovePiece -> {
                 makeRemovePieceMove(gameMove)
             }
         }
     }
 
-    private fun makeBasicMove(gameMove: GameMove2D.SimpleGameMove.BasicGameMove) {
+    private fun makeBasicMove(gameMove: BasicGameMove) {
         board.removePiece(gameMove.from, gameMove.pieceMoved)
         if (gameMove.pieceCaptured != null) {
             board.removePiece(board.getPieceCoordinate(gameMove.pieceCaptured)!!, gameMove.pieceCaptured)
@@ -214,11 +216,11 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         }
     }
 
-    private fun makeAddPieceMove(gameMove: GameMove2D.SimpleGameMove.AddPiece) {
+    private fun makeAddPieceMove(gameMove: AddPiece) {
         board.addPiece(gameMove.coordinate, gameMove.piece)
     }
 
-    private fun makeRemovePieceMove(gameMove: GameMove2D.SimpleGameMove.RemovePiece) {
+    private fun makeRemovePieceMove(gameMove: RemovePiece) {
         board.removePiece(gameMove.coordinate, gameMove.piece)
     }
 }
