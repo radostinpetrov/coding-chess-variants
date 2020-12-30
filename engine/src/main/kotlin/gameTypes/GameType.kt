@@ -16,6 +16,9 @@ interface GameType {
     fun isOver(): Boolean
     // fun getWinner()
     fun getValidMoves(player: Player): List<GameMove2D>
+    fun getValidMoves(): List<GameMove2D> {
+        return getValidMoves(getCurrentPlayer())
+    }
     fun makeMove(gameMove: GameMove2D)
     fun undoMove()
     fun inCheck(player: Player) : Boolean

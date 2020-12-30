@@ -1,36 +1,28 @@
 // TODO we will soon deprecate this file, any remaining logic should move to new console frontend
 
 import gameTypes.GameType
-class ConsoleGameHelper(val gameType: GameType) {
+import players.ConsolePlayer
+
+class ConsoleGameHelper(val gameType: GameType, val player1: ConsolePlayer, val player2: ConsolePlayer) {
     var turn = 0
 
     fun start() {
-        if (!gameType.checkValidGame()) {
-            return
-        }
+        // TODO: Remove check valid game
+//        if (!gameType.checkValidGame()) {
+//            return
+//        }
 
         gameType.initGame()
+
+        val playerMapping = mapOf(gameType.players[0] to player1, gameType.players[1] to player2)
         this.display()
 
-//        while (true) {
-//            if (gameType.isOver()) {
-//                break
-//            }
-//
-//            gameType.turn()
-//            this.notifyObservers()
-//            Thread.sleep(100)
-//        }
+        while (!gameType.isOver()) {
+            playerMapping[gameType.getCurrentPlayer()]!!.playTurn()
+            this.display()
+            Thread.sleep(100)
+        }
     }
-
-//    fun turn(): Boolean {
-//        if (gameType.isOver()) {
-//            return false
-//        }
-//
-//        gameType.turn()
-//        return true
-//    }
 
     /* Display the board in terminal. */
     fun display() {
