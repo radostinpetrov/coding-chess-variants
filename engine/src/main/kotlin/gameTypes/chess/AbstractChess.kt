@@ -98,23 +98,13 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
         for (m in moves) {
             when (m) {
-                is BasicGameMove -> {
-                    if (m.to.x == coordinate.x && m.to.y == coordinate.y) {
+                is BasicGameMove, is CompositeGameMove -> {
+                    if (m.displayTo.x == coordinate.x && m.displayTo.y == coordinate.y) {
                         return true
                     }
                 }
-                is AddPiece -> {
+                is AddPiece, is RemovePiece -> {
                     return false
-                }
-                is RemovePiece -> {
-                    return false
-                }
-                is CompositeGameMove -> {
-                    for (move in m.gameMoves) {
-                        if (move.displayTo.x == coordinate.x && move.displayTo.y == coordinate.y) {
-                            return true
-                        }
-                    }
                 }
             }
         }

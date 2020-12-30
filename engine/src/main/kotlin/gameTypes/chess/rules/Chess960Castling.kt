@@ -2,7 +2,8 @@ package gameTypes.chess.rules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
+import gameMoves.GameMove2D.CompositeGameMove
+import gameMoves.GameMove2D.SimpleGameMove.*
 import gameTypes.chess.Chess960
 import pieces.Piece2D
 import pieces.chess.King
@@ -24,7 +25,7 @@ class Chess960Castling : SpecialRules<Chess960> {
                     }
                     rooks.removeAll { it.first === move.pieceMoved }
                 }
-                is GameMove2D.CompositeGameMove -> {
+                is CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove is BasicGameMove) {
                             if (basicMove.pieceMoved is King) {
@@ -89,7 +90,7 @@ class Chess960Castling : SpecialRules<Chess960> {
 
             val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
             castleList.add(
-                GameMove2D.SimpleGameMove.RemovePiece(
+                RemovePiece(
                     player,
                     rook,
                     leftRook.second
@@ -108,7 +109,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                GameMove2D.SimpleGameMove.AddPiece(
+                AddPiece(
                     player,
                     rook,
                     Coordinate2D(3, kingCoordinate.y)
@@ -116,7 +117,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             )
 
             res.add(
-                GameMove2D.CompositeGameMove(
+                CompositeGameMove(
                     castleList,
                     player
                 )
@@ -145,7 +146,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
 
             castleList.add(
-                GameMove2D.SimpleGameMove.RemovePiece(
+                RemovePiece(
                     player,
                     rook,
                     rightRook.second
@@ -165,7 +166,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                GameMove2D.SimpleGameMove.AddPiece(
+                AddPiece(
                     player,
                     rook,
                     Coordinate2D(5, kingCoordinate.y)
@@ -173,7 +174,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             )
 
             res.add(
-                GameMove2D.CompositeGameMove(
+                CompositeGameMove(
                     castleList,
                     player
                 )
