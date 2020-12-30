@@ -38,8 +38,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     var dstY: Int? = null
 
     var board = gameEngine.board
-    val rows = board.n
-    val columns = board.m
+    val rows = board.rows
+    val columns = board.cols
 
     lateinit var guiBoard: GUIBoard
 

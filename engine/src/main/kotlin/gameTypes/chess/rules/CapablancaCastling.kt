@@ -47,7 +47,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             if (rook.value.x == 0) {
                 leftRook = rook.value
             }
-            if (rook.value.x == board.m - 1) {
+            if (rook.value.x == board.cols - 1) {
                 rightRook = rook.value
             }
         }

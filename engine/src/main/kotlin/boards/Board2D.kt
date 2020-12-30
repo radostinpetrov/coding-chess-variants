@@ -7,16 +7,16 @@ import pieces.Piece2D
 import players.Player
 import java.lang.Exception
 
-class Board2D(val n: Int, val m: Int) : Board<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D> {
-    private var board: Array<Array<Piece2D?>> = Array(n) { Array(m) { null } }
+class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D> {
+    private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Array<Array<Piece2D?>> {
         return board
     }
 
     override fun getPieces(): List<Pair<Piece2D, Coordinate2D>> {
         val res = mutableListOf<Pair<Piece2D, Coordinate2D>>()
-        for (i in 0 until n) {
-            for (j in 0 until m) {
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
                 val c = Coordinate2D(j, i)
                 val p = getPiece(c)
                 if (p != null) {
@@ -39,8 +39,8 @@ class Board2D(val n: Int, val m: Int) : Board<Board2D, Move2D, GameMove2D.BasicG
     }
 
     override fun getPieceCoordinate(piece: Piece2D): Coordinate2D? {
-        for (y in 0 until n) {
-            for (x in 0 until m) {
+        for (y in 0 until rows) {
+            for (x in 0 until cols) {
                 if (piece === board[y][x]) {
                     return Coordinate2D(x, y)
                 }
@@ -67,6 +67,6 @@ class Board2D(val n: Int, val m: Int) : Board<Board2D, Move2D, GameMove2D.BasicG
     }
 
     fun isInBounds(coordinate: Coordinate2D): Boolean {
-        return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < m) && (coordinate.y < n)
+        return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < cols) && (coordinate.y < rows)
     }
 }

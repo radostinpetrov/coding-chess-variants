@@ -6,7 +6,7 @@ import players.ComputerConsolePlayer
 fun main() {
     println("Let's play chess!")
     val chess: AbstractChess = StandardChess()
-    val player1 = HumanConsolePlayer(ChessNotationInput(8), chess, chess.players[0])
+    val player1 = HumanConsolePlayer(ChessNotationInput(), chess, chess.players[0])
     val player2 = ComputerConsolePlayer(10, chess, chess.players[1])
 //    chess.playerTurn = 1
 

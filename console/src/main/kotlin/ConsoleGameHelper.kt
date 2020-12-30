@@ -27,13 +27,14 @@ class ConsoleGameHelper(val gameType: GameType, val player1: ConsolePlayer, val 
     /* Display the board in terminal. */
     fun display() {
         val board = gameType.board
+        // Player 1 is red and player 2 is blue
         val colour1 = "\u001B[31m"
         val colour2 = "\u001B[34m"
         val resetColour = "\u001B[0m"
         val player1 = gameType.players[0]
         val n = board.getBoardState().size
 
-        for ((i, row) in board.getBoardState().withIndex()) {
+        for ((i, row) in board.getBoardState().reversed().withIndex()) {
             print("${n - i} ")
             for (piece in row) {
                 if (piece != null) {

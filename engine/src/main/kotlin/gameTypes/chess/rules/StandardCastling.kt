@@ -50,7 +50,7 @@ class StandardCastling : SpecialRules<StandardChess> {
             if (rook.second.x == 0) {
                 leftRook = rook.second
             }
-            if (rook.second.x == board.m - 1) {
+            if (rook.second.x == board.cols - 1) {
                 rightRook = rook.second
             }
         }

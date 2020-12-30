@@ -11,8 +11,8 @@ import players.Player
 
 abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val playerMapping: Map<Player, Color>) {
 
-    val rows = board.n
-    val columns = board.m
+    val rows = board.rows
+    val columns = board.cols
     private val pieceWidth: Float = squareWidth * 0.85f
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color.FOREST
