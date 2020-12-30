@@ -90,7 +90,7 @@ class Chess960Castling : SpecialRules<Chess960> {
 
             val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
             castleList.add(
-                RemovePiece(
+                RemovePieceGameMove(
                     player,
                     rook,
                     leftRook.second
@@ -109,7 +109,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                AddPiece(
+                AddPieceGameMove(
                     player,
                     rook,
                     Coordinate2D(3, kingCoordinate.y)
@@ -146,7 +146,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
 
             castleList.add(
-                RemovePiece(
+                RemovePieceGameMove(
                     player,
                     rook,
                     rightRook.second
@@ -166,7 +166,7 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
 
             castleList.add(
-                AddPiece(
+                AddPieceGameMove(
                     player,
                     rook,
                     Coordinate2D(5, kingCoordinate.y)

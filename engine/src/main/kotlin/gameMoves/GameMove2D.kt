@@ -25,14 +25,14 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
         }
 
         /* make it into something else later :  ) */
-        data class AddPiece(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
+        data class AddPieceGameMove(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
             override val displayFrom = coordinate
             override var displayTo = coordinate
             override var displayPiecePromotedTo: Piece2D? = null
             override var displayPieceCaptured: Piece2D? = null
         }
 
-        data class RemovePiece(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
+        data class RemovePieceGameMove(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
             override val displayFrom = Coordinate2D(-1, -1)
             override var displayTo = Coordinate2D(-1, -1)
             override var displayPiecePromotedTo: Piece2D? = null

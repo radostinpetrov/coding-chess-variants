@@ -35,10 +35,10 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
             is BasicGameMove -> {
                 sb.append(basicGameMoveToStr(gameMove))
             }
-            is AddPiece -> {
+            is AddPieceGameMove -> {
                 sb.append("${gameMove.piece.getSymbol()} is placed on the board at ${coordinateToStr(gameMove.coordinate)}")
             }
-            is RemovePiece -> {
+            is RemovePieceGameMove -> {
                 sb.append("${gameMove.piece.getSymbol()} is removed from the board at ${coordinateToStr(gameMove.coordinate)}")
             }
             is CompositeGameMove -> {

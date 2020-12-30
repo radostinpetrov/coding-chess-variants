@@ -103,7 +103,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
                         return true
                     }
                 }
-                is AddPiece, is RemovePiece -> {
+                is AddPieceGameMove, is RemovePieceGameMove -> {
                     return false
                 }
             }
@@ -124,10 +124,10 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             is BasicGameMove -> {
                 undoBasicMove(gameMove)
             }
-            is AddPiece -> {
+            is AddPieceGameMove -> {
                 board.removePiece(gameMove.coordinate, gameMove.piece)
             }
-            is RemovePiece -> {
+            is RemovePieceGameMove -> {
                 board.addPiece(gameMove.coordinate, gameMove.piece)
             }
             is CompositeGameMove -> {
@@ -185,10 +185,10 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             is BasicGameMove -> {
                 makeBasicMove(gameMove)
             }
-            is AddPiece -> {
+            is AddPieceGameMove -> {
                 makeAddPieceMove(gameMove)
             }
-            is RemovePiece -> {
+            is RemovePieceGameMove -> {
                 makeRemovePieceMove(gameMove)
             }
         }
@@ -206,11 +206,11 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         }
     }
 
-    private fun makeAddPieceMove(gameMove: AddPiece) {
+    private fun makeAddPieceMove(gameMove: AddPieceGameMove) {
         board.addPiece(gameMove.coordinate, gameMove.piece)
     }
 
-    private fun makeRemovePieceMove(gameMove: RemovePiece) {
+    private fun makeRemovePieceMove(gameMove: RemovePieceGameMove) {
         board.removePiece(gameMove.coordinate, gameMove.piece)
     }
 }
