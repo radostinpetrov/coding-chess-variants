@@ -176,6 +176,20 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     override fun makeMove(gameMove: GameMove2D) {
         when (gameMove) {
+            is GameMove2D.SimpleGameMove -> {
+                makeSimpleMove(gameMove)
+            }
+            is GameMove2D.CompositeGameMove -> {
+                for (move in gameMove.gameMoves) {
+                    makeSimpleMove(move)
+                }
+            }
+        }
+        moveLog.add(gameMove)
+    }
+
+    private fun makeSimpleMove(gameMove: GameMove2D.SimpleGameMove) {
+        when (gameMove) {
             is GameMove2D.SimpleGameMove.BasicGameMove -> {
                 makeBasicMove(gameMove)
             }
@@ -185,13 +199,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             is GameMove2D.SimpleGameMove.RemovePiece -> {
                 makeRemovePieceMove(gameMove)
             }
-            is GameMove2D.CompositeGameMove -> {
-                for (move in gameMove.gameMoves) {
-                    makeMove(move)
-                }
-            }
         }
-        moveLog.add(gameMove)
     }
 
     private fun makeBasicMove(gameMove: GameMove2D.SimpleGameMove.BasicGameMove) {
