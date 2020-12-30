@@ -56,11 +56,11 @@ class Chess960Castling : SpecialRules<Chess960> {
         if (kingCoordinate.x < 2) {
             hi = 2
             lo = kingCoordinate.x
-            range = lo .. hi
+            range = (lo + 1) .. hi
         } else {
             hi = kingCoordinate.x
             lo = 2
-            range = hi downTo lo
+            range = (hi - 1) downTo lo
         }
 
         if (leftRook != null) {
@@ -138,11 +138,10 @@ class Chess960Castling : SpecialRules<Chess960> {
                     castleList.add(
                         GameMove2D.BasicGameMove(
                             prevKingCoordinate,
-                            newCoordinate, king, player)
+                            newCoordinate, king, player
+                        )
                     )
                     prevKingCoordinate = newCoordinate
-                } else {
-                    println("hello")
                 }
             }
 
