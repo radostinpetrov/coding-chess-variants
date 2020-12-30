@@ -5,7 +5,6 @@ import gameMoves.GameMove2D
 import moves.Move2D
 import pieces.Piece2D
 import players.Player
-import java.lang.Exception
 
 class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
@@ -51,7 +50,7 @@ class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D.
 
     override fun addPiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {
-            throw ArrayIndexOutOfBoundsException()
+            throw Exception("Coordinate not in bound")
         }
         board[coordinate.y][coordinate.x] = piece
     }

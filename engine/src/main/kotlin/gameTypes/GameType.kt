@@ -1,5 +1,6 @@
 package gameTypes
 
+import Outcome
 import gameMoves.GameMove2D
 import boards.Board2D
 import players.Player
@@ -14,7 +15,10 @@ interface GameType {
 
     fun initGame()
     fun isOver(): Boolean
-    // fun getWinner()
+    fun getOutcome(player: Player): Outcome?
+    fun getOutcome(): Outcome? {
+        return getOutcome(getCurrentPlayer())
+    }
     fun getValidMoves(player: Player): List<GameMove2D>
     fun getValidMoves(): List<GameMove2D> {
         return getValidMoves(getCurrentPlayer())
@@ -22,20 +26,6 @@ interface GameType {
     fun makeMove(gameMove: GameMove2D)
     fun undoMove()
     fun inCheck(player: Player) : Boolean
-//    fun turn() {
-//        val player = players[playerTurn]
-//        val moves = getValidMoves(player)
-//        if (moves.isEmpty()) {
-//            return
-//        }
-//
-//        val move = player.getTurn(moves)
-//
-//        if (move != null) {
-//            this.makeMove(move)
-//            nextPlayer()
-//        }
-//    }
     fun nextPlayer() {
         playerTurn++
         playerTurn %= players.size

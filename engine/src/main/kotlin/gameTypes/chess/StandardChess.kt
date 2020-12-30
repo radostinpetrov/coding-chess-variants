@@ -1,12 +1,13 @@
 package gameTypes.chess
 
-import coordinates.Coordinate2D
 import boards.Board2D
+import coordinates.Coordinate2D
 import gameTypes.chess.rules.Enpassant
 import gameTypes.chess.rules.StandardCastling
+import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant())) {
+open class StandardChess : AbstractChess(listOf(StandardCastling(), Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {

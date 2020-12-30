@@ -68,16 +68,20 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                     listOf(
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(leftRook.x, leftRook.y),
-                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )
@@ -90,16 +94,20 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                     listOf(
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(rightRook.x, rightRook.y),
-                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )

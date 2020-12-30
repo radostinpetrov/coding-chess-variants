@@ -1,42 +1,43 @@
 package gameTypes.chess
 
+import Outcome
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import gameTypes.GameType
 import gameTypes.chess.rules.SpecialRules
+import gameTypes.chess.winconditions.WinCondition
 import pieces.King
 import pieces.Piece2D
 import players.Player
 
-abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf()) : GameType {
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>) : GameType {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = 0
 
     override var seed: Double? = null
 
     override val moveLog: MutableList<GameMove2D> = mutableListOf()
-    var stalemate = false
-    var checkmate = false
 
     override val NUM_PLAYERS = 2
 
     override fun isOver(): Boolean {
-        return checkmate || stalemate
+        return getOutcome(getCurrentPlayer()) != null
+    }
+
+    override fun getOutcome(player: Player): Outcome? {
+        val moves = getValidMoves(player)
+        for (wc in winConditions) {
+            val outcome = wc.evaluate(this, player, moves)
+            if (outcome != null) {
+                return outcome
+            }
+        }
+        return null
     }
 
     override fun getValidMoves(player: Player): List<GameMove2D> {
         val possibleMoves = getPossibleMoves(player).toMutableList()
         val moves = filterForCheck(player, possibleMoves)
-        if (moves.isEmpty()) {
-            if (inCheck(player)) {
-                checkmate = true
-            } else {
-                stalemate = true
-            }
-        } else {
-            checkmate = false
-            stalemate = false
-        }
         return moves
     }
 

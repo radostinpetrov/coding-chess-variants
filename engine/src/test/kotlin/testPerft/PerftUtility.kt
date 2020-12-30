@@ -45,8 +45,8 @@ object PerftUtility {
                 }
 
                 if (checkForCheckmate) {
-                    game.getValidMoves(game.getCurrentPlayer())
-                    if (game.checkmate) {
+                    val outcome = game.getOutcome()
+                    if (outcome != null && outcome is Outcome.Win) {
                         data.checkmates += 1
                     }
                 }

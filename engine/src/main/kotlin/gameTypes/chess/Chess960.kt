@@ -3,9 +3,10 @@ package gameTypes.chess
 import coordinates.Coordinate2D
 import boards.Board2D
 import gameTypes.chess.rules.Enpassant
+import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-class Chess960 : AbstractChess(listOf(Enpassant())) {
+class Chess960 : AbstractChess(listOf(Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {

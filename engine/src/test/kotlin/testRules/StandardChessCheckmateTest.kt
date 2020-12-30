@@ -5,12 +5,13 @@ import gameMoves.GameMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
 
-class CheckmateTest {
+class StandardChessCheckmateTest {
 
     val mockStandardChess = spyk<StandardChess>()
     val board = mockStandardChess.board
@@ -42,12 +43,11 @@ class CheckmateTest {
         )
 
         for (move in turn4Checkmate) {
-            mockStandardChess.makeMove(move)
+            mockStandardChess.playerMakeMove(move)
         }
 
-        mockStandardChess.getValidMoves(player2)
-
-        assertTrue(mockStandardChess.checkmate)
+        assertTrue(mockStandardChess.isOver())
+        assertEquals(mockStandardChess.getOutcome(), Outcome.Win(player1, "Win by Checkmate"))
     }
 
     @Test
@@ -57,8 +57,6 @@ class CheckmateTest {
         board.addPiece(Coordinate2D(4, 4), Bishop(player1))
         board.addPiece(Coordinate2D(7, 7), King(player2))
 
-        mockStandardChess.getValidMoves(player2)
-
-        assertTrue(mockStandardChess.checkmate)
+        assertEquals(mockStandardChess.getOutcome(player2), Outcome.Win(player1, "Win by Checkmate"))
     }
 }
