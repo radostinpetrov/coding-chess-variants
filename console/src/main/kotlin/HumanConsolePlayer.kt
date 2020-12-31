@@ -23,7 +23,7 @@ class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: Gam
             }
             possibleMoves = choiceOfMoves.filter {
                 when (it) {
-                    is GameMove2D.BasicGameMove -> it.from == coordinate
+                    is GameMove2D.SimpleGameMove -> it.displayFrom == coordinate
                     is GameMove2D.CompositeGameMove -> {
                         true
                     }
