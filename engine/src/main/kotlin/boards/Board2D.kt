@@ -1,7 +1,6 @@
 package boards
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import moves.Move2D
 import pieces.Piece2D

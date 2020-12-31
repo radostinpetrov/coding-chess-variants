@@ -24,7 +24,6 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             override var displayPieceCaptured = pieceCaptured
         }
 
-        /* make it into something else later :  ) */
         data class AddPieceGameMove(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
             override val displayFrom = coordinate
             override var displayTo = coordinate

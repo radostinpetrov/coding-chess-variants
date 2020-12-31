@@ -61,7 +61,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             when (move) {
                 is SimpleGameMove -> {
                     makeMove(move)
-                    if (!inCheck(player)) {
+                    if (!move.checkForCheck || !inCheck(player)) {
                         res.add(move)
                     }
                     undoMove()
