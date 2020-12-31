@@ -7,7 +7,7 @@ import gameTypes.chess.rules.Enpassant
 import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-class Chess960 : AbstractChess(Chess960Castling(), listOf(Enpassant()), listOf(StandardWinConditions())) {
+class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {
@@ -39,6 +39,7 @@ class Chess960 : AbstractChess(Chess960Castling(), listOf(Enpassant()), listOf(S
 //        }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         val regBishop = """.*B(..|....|......|)B.*""".toRegex()
         val regKing = """.*R.*K.*R.*""".toRegex()
         val possiblePermutations = mutableSetOf<String>()
@@ -54,6 +55,14 @@ class Chess960 : AbstractChess(Chess960Castling(), listOf(Enpassant()), listOf(S
 =======
         val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
 >>>>>>> c8b4da00c2ba5cce0396bce8c5c46fd1e73cc18f
+=======
+        // rook king positions
+        // seed = 18 swap
+        // seed = 5 rook on king pos
+        // seed = 20 king on king pos
+        seed = 8.0/960.0
+        val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
+>>>>>>> 9a901aa081df0e7d78e595549ee1249e750a565c
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {

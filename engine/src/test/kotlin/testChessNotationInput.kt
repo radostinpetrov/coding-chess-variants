@@ -1,5 +1,6 @@
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import notationFormatter.ChessNotationInput
@@ -42,7 +43,12 @@ class testChessNotationInput {
     @Test
     fun testBasicGameMoveToStr() {
         val player1 = Player()
-        val basicMove = GameMove2D.BasicGameMove(Coordinate2D(4, 1), Coordinate2D(4, 2), StandardWhitePawn(player1), player1)
+        val basicMove = BasicGameMove(
+            Coordinate2D(4, 1),
+            Coordinate2D(4, 2),
+            StandardWhitePawn(player1),
+            player1
+        )
         Assertions.assertEquals("P moves from e2 to e3", chessNotationInput.gameMoveToStr(basicMove))
     }
 
@@ -51,9 +57,9 @@ class testChessNotationInput {
         val player1 = Player()
         val compositeMove = GameMove2D.CompositeGameMove(
             gameMoves = listOf(
-                GameMove2D.BasicGameMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                GameMove2D.BasicGameMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                GameMove2D.BasicGameMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
+                BasicGameMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicGameMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicGameMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
             ),
             player = player1
         )

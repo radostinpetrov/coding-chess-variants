@@ -1,6 +1,7 @@
 package testPieces
 
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.mockk
@@ -21,8 +22,8 @@ class PawnTest {
     fun checkPawnMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val firstPawn = (moves.first { it is GameMove2D.BasicGameMove && it.pieceMoved is StandardWhitePawn } as GameMove2D.BasicGameMove).pieceMoved
-        val firstPawnMoves = moves.filter { it is GameMove2D.BasicGameMove && it.pieceMoved === firstPawn }
+        val firstPawn = (moves.first { it is BasicGameMove && it.pieceMoved is StandardWhitePawn } as BasicGameMove).pieceMoved
+        val firstPawnMoves = moves.filter { it is BasicGameMove && it.pieceMoved === firstPawn }
         Assertions.assertTrue(firstPawnMoves.size == 2)
         mockStandardChess.makeMove(firstPawnMoves[0])
     }

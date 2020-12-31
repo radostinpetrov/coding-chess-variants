@@ -2,7 +2,7 @@ package testRules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
-import gameMoves.GameMove2D.BasicGameMove
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk

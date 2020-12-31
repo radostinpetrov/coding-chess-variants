@@ -2,6 +2,7 @@ package testGameTypes
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -79,7 +80,7 @@ class StandardChessTest {
     @Test
     fun fromCoordinateIsEmptyAfterMove() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val gameMove = GameMove2D.BasicGameMove(
+        val gameMove = BasicGameMove(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
@@ -90,7 +91,7 @@ class StandardChessTest {
     @Test
     fun toCoordinateIsNewPiece() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val gameMove = GameMove2D.BasicGameMove(
+        val gameMove = BasicGameMove(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
@@ -115,11 +116,11 @@ class StandardChessTest {
     fun testStandardChessInitialPositionsWithDepth3() {
         test(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
     }
-
-    @Test
-    fun testStandardChessInitialPositionsWithDepth4() {
-        test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
-    }
+//
+//    @Test
+//    fun testStandardChessInitialPositionsWithDepth4() {
+//        test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
+//    }
 
 //    @Test
 //    fun testStandardChessInitialPositionsWithDepth5() {

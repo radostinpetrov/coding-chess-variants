@@ -2,6 +2,8 @@ package gameTypes.chess.rules
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.CompositeGameMove
+import gameMoves.GameMove2D.SimpleGameMove.*
 import gameTypes.chess.Chess960
 import pieces.Piece2D
 import pieces.chess.King
@@ -17,19 +19,24 @@ class Chess960Castling : SpecialRules<Chess960> {
 
         for (move in currentPlayerMoves) {
             when (move) {
-                is GameMove2D.BasicGameMove -> {
+                is BasicGameMove -> {
                     if (move.pieceMoved is King) {
                         return
                     }
                     rooks.removeAll { it.first === move.pieceMoved }
                 }
-                is GameMove2D.CompositeGameMove -> {
+                is CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
-                        if (basicMove.pieceMoved is King) {
-                            return
+                        if (basicMove is BasicGameMove) {
+                            if (basicMove.pieceMoved is King) {
+                                return
+                            }
+                            rooks.removeAll { it.first === basicMove.pieceMoved }
                         }
-                        rooks.removeAll { it.first === basicMove.pieceMoved }
                     }
+                }
+                else -> {
+                    continue
                 }
             }
         }
@@ -66,97 +73,110 @@ class Chess960Castling : SpecialRules<Chess960> {
         if (leftRook != null) {
             for (i in lo until hi) {
                 val piece = board.getPiece(Coordinate2D(i, kingCoordinate.y))
-                if (piece != null && piece != leftRook!!.first) {
+                if (piece != null && piece != leftRook!!.first && piece != king) {
                     leftRook = null
                     break
                 }
             }
         }
 
-        if (board.getPiece(Coordinate2D(3, kingCoordinate.y)) != null) {
+        val leftRookSquarePiece = board.getPiece(Coordinate2D(3, kingCoordinate.y))
+        if (leftRookSquarePiece != null && leftRookSquarePiece != king && leftRook != null && leftRookSquarePiece != leftRook.first) {
             leftRook = null
         }
 
         if (leftRook != null) {
             val rook = leftRook.first
 
-            val castleList = mutableListOf<GameMove2D.BasicGameMove>()
-            var prevKingCoordinate = kingCoordinate
+            val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
+            castleList.add(
+                RemovePieceGameMove(
+                    player,
+                    rook,
+                    leftRook.second
+                    )
+            )
 
+            var prevKingCoordinate = kingCoordinate
             for (i in range) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
-
-                if (newCoordinate != leftRook.second) {
-                    castleList.add(
-                        GameMove2D.BasicGameMove(
-                            prevKingCoordinate,
-                            newCoordinate, king, player)
-                    )
-                    prevKingCoordinate = newCoordinate
-                }
+                castleList.add(
+                    BasicGameMove(
+                        prevKingCoordinate,
+                        newCoordinate, king, player)
+                )
+                prevKingCoordinate = newCoordinate
             }
 
             castleList.add(
-                GameMove2D.BasicGameMove(
-                    leftRook.second,
-                    Coordinate2D(3, kingCoordinate.y), rook, player)
-            )
-
-            res.add(
-                GameMove2D.CompositeGameMove(
-                    castleList,
-                    player
+                AddPieceGameMove(
+                    player,
+                    rook,
+                    Coordinate2D(3, kingCoordinate.y)
                 )
             )
+
+            val move = CompositeGameMove(castleList, player)
+            move.displayFrom = kingCoordinate
+            move.displayTo = Coordinate2D(2, kingCoordinate.y)
+
+            res.add(move)
         }
 
         //right castling
         if (rightRook != null) {
             for (i in (kingCoordinate.x + 1) until 7) {
                 val piece = board.getPiece(Coordinate2D(i, kingCoordinate.y))
-                if (piece != null && piece != rightRook!!.first) {
+                if (piece != null && piece != rightRook!!.first && piece != king) {
                     rightRook = null
                     break
                 }
             }
         }
 
-        if (board.getPiece(Coordinate2D(5, kingCoordinate.y)) != null) {
+        val rightRookSquarePiece = board.getPiece(Coordinate2D(5, kingCoordinate.y))
+        if (rightRookSquarePiece != null && rightRookSquarePiece != king && rightRook != null && rightRookSquarePiece != rightRook.first) {
             rightRook = null
         }
 
         if (rightRook != null) {
             val rook = rightRook.first
 
-            val castleList = mutableListOf<GameMove2D.BasicGameMove>()
+            val castleList = mutableListOf<GameMove2D.SimpleGameMove>()
+
+            castleList.add(
+                RemovePieceGameMove(
+                    player,
+                    rook,
+                    rightRook.second
+                )
+            )
 
             var prevKingCoordinate = kingCoordinate
-
             for (i in (kingCoordinate.x + 1) .. 6) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
-                if (newCoordinate != rightRook.second) {
-                    castleList.add(
-                        GameMove2D.BasicGameMove(
-                            prevKingCoordinate,
-                            newCoordinate, king, player
-                        )
+                castleList.add(
+                    BasicGameMove(
+                        prevKingCoordinate,
+                        newCoordinate, king, player
                     )
-                    prevKingCoordinate = newCoordinate
-                }
+                )
+                prevKingCoordinate = newCoordinate
             }
 
             castleList.add(
-                GameMove2D.BasicGameMove(
-                    rightRook.second,
-                    Coordinate2D(5, kingCoordinate.y), rook, player)
-            )
-
-            res.add(
-                GameMove2D.CompositeGameMove(
-                    castleList,
-                    player
+                AddPieceGameMove(
+                    player,
+                    rook,
+                    Coordinate2D(5, kingCoordinate.y)
                 )
             )
+
+            val move = CompositeGameMove(castleList, player)
+            move.displayFrom = kingCoordinate
+            move.displayTo = Coordinate2D(6, kingCoordinate.y)
+
+            res.add(move)
         }
 
         moves.addAll(res)
