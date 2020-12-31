@@ -3,14 +3,14 @@ package gameTypes.chess
 import Outcome
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
-import gameTypes.GameType
+import gameTypes.GameType2D
 import gameTypes.chess.rules.SpecialRules
 import gameTypes.chess.winconditions.WinCondition
 import pieces.King
 import pieces.Piece2D
 import players.Player
 
-abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>) : GameType {
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>) : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = 0
 
