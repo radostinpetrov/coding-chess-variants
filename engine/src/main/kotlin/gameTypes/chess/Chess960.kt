@@ -38,31 +38,12 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(S
 //            }
 //        }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
-        val regKing = """.*R.*K.*R.*""".toRegex()
-        val possiblePermutations = mutableSetOf<String>()
-        for (permutation in permutations) {
-            val strPermutation = permutation.joinToString("")
-            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
-                possiblePermutations.add(strPermutation)
-            }
-        }
-
-//        seed = 116.0/960.0
-        val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
-=======
-        val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
->>>>>>> c8b4da00c2ba5cce0396bce8c5c46fd1e73cc18f
-=======
         // rook king positions
         // seed = 18 swap
         // seed = 5 rook on king pos
         // seed = 20 king on king pos
         seed = 8.0/960.0
         val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
->>>>>>> 9a901aa081df0e7d78e595549ee1249e750a565c
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
