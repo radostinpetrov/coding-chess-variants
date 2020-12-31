@@ -1,10 +1,10 @@
 import gameMoves.GameMove2D
-import gameTypes.GameType
+import gameTypes.GameType2D
 import notationFormatter.NotationFormatter
 import players.ConsolePlayer
 import players.Player
 
-class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: GameType, player: Player) : ConsolePlayer(gameType, player) {
+class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: GameType2D, player: Player) : ConsolePlayer(gameType, player) {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
     override fun getTurn(choiceOfMoves: List<GameMove2D>): GameMove2D {
         var possibleMoves: List<GameMove2D> = mutableListOf()

@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
-import gameTypes.GameType
+import gameTypes.GameType2D
 
-class GameOverScreen(val game: MyGdxGame, val gameEngine: GameType, val winner: String) : KtxScreen {
+class GameOverScreen(val game: MyGdxGame, val gameEngine: GameType2D, val winner: String) : KtxScreen {
     val stage = Stage()
     val table = Table()
 

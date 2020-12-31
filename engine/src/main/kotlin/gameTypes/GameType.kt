@@ -1,16 +1,19 @@
 package gameTypes
 
 import Outcome
-import gameMoves.GameMove2D
-import boards.Board2D
+import boards.Board
+import coordinates.Coordinate
+import gameMoves.GameMove
+import moves.Move
+import pieces.Piece
 import players.Player
 
-interface GameType {
-    val board: Board2D
+interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: GameMove<B, M, GM, P, C>, P: Piece<B, M, GM, P, C>, C: Coordinate> {
+    val board: B
     val players: List<Player>
     var playerTurn: Int
     var seed: Double?
-    val moveLog: MutableList<GameMove2D>
+    val moveLog: MutableList<GM>
 
     fun initGame()
     fun isOver(): Boolean
@@ -18,11 +21,11 @@ interface GameType {
     fun getOutcome(): Outcome? {
         return getOutcome(getCurrentPlayer())
     }
-    fun getValidMoves(player: Player): List<GameMove2D>
-    fun getValidMoves(): List<GameMove2D> {
+    fun getValidMoves(player: Player): List<GM>
+    fun getValidMoves(): List<GM> {
         return getValidMoves(getCurrentPlayer())
     }
-    fun makeMove(gameMove: GameMove2D)
+    fun makeMove(gameMove: GM)
     fun undoMove()
     fun inCheck(player: Player) : Boolean
     fun nextPlayer() {
@@ -35,7 +38,7 @@ interface GameType {
     fun getNextPlayer(): Player {
         return players[(playerTurn + 1) % players.size]
     }
-    fun playerMakeMove(move: GameMove2D) {
+    fun playerMakeMove(move: GM) {
 
         // TODO discuss if we should keep this first check
 //        val validMoves = getValidMoves(getCurrentPlayer())

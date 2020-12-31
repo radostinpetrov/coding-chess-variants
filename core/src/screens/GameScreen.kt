@@ -15,13 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
-import gameTypes.GameType
+import gameTypes.GameType2D
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList: List<Int>?) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
