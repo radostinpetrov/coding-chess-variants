@@ -4,9 +4,10 @@ import coordinates.Coordinate2D
 import boards.Board2D
 import gameTypes.chess.rules.Chess960Castling
 import gameTypes.chess.rules.Enpassant
+import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
+class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {
@@ -23,26 +24,26 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
          * 2. The king must be placed between rooks
          * **/
 
-        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
-
-        val permutations = permute(pieces)
-
-        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
-        val regKing = """.*R.*K.*R.*""".toRegex()
-        val possiblePermutations = mutableSetOf<String>()
-        for (permutation in permutations) {
-            val strPermutation = permutation.joinToString("")
-            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
-                possiblePermutations.add(strPermutation)
-            }
-        }
+//        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
+//
+//        val permutations = permute(pieces)
+//
+//        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
+//        val regKing = """.*R.*K.*R.*""".toRegex()
+//        val possiblePermutations = mutableSetOf<String>()
+//        for (permutation in permutations) {
+//            val strPermutation = permutation.joinToString("")
+//            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
+//                possiblePermutations.add(strPermutation)
+//            }
+//        }
 
         // rook king positions
         // seed = 18 swap
         // seed = 5 rook on king pos
         // seed = 20 king on king pos
         seed = 8.0/960.0
-        val permutation = if (seed == null) possiblePermutations.random() else possiblePermutations.toList()[(seed!! * possiblePermutations.size).toInt()]
+        val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
@@ -67,6 +68,24 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant())) {
                 }
             }
         }
+    }
+
+    fun getPossiblePermutations(): Set<String> {
+        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
+
+        val permutations = permute(pieces)
+
+        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
+        val regKing = """.*R.*K.*R.*""".toRegex()
+        val possiblePermutations = mutableSetOf<String>()
+        for (permutation in permutations) {
+            val strPermutation = permutation.joinToString("")
+            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
+                possiblePermutations.add(strPermutation)
+            }
+        }
+
+        return possiblePermutations
     }
 
     private fun <T> permute(input: List<T>): List<List<T>> {

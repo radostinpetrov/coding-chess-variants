@@ -23,18 +23,17 @@ object PerftUtility {
         }
     }
 
-    fun perft(depth: Int, game: AbstractChess): PerftData {
+    fun perft(depth: Int, game: AbstractChess, checkForCheckmate: Boolean = true): PerftData {
         if (depth == 0) {
             return PerftData(1, 0, 0, 0)
         }
 
-        val moves = game.getValidMoves(game.getCurrentPlayer())
+        val moves = game.getValidMoves(game.getCurrentPlayer()).distinct()
 
         var data = PerftData(0, 0, 0, 0)
 
         for (move in moves) {
             game.playerMakeMove(move)
-            game.getValidMoves(game.getCurrentPlayer())
 
             if (depth == 1) {
                 if (move.displayPieceCaptured != null) {
@@ -45,8 +44,11 @@ object PerftUtility {
                     data.checks += 1
                 }
 
-                if (game.checkmate) {
-                    data.checkmates += 1
+                if (checkForCheckmate) {
+                    val outcome = game.getOutcome()
+                    if (outcome != null && outcome is Outcome.Win) {
+                        data.checkmates += 1
+                    }
                 }
             }
 
@@ -66,6 +68,6 @@ object PerftUtility {
 
     fun testSimple(game: AbstractChess, depth: Int, expectedNodes: Int) {
         game.initGame()
-        Assertions.assertEquals(expectedNodes, perft(depth, game).nodes)
+        Assertions.assertEquals(expectedNodes, perft(depth, game, false).nodes)
     }
 }

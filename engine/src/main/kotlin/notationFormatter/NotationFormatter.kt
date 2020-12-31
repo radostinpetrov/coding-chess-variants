@@ -8,7 +8,7 @@ interface NotationFormatter {
     fun strToCoordinate(s: String): Coordinate2D?
 
     /* Converts a coordinate to the string representation of a coordinate. */
-    fun coordinateToStr(c: Coordinate2D): String?
+    fun coordinateToStr(c: Coordinate2D): String
 
     /* Get the string representation of a game move. */
     fun gameMoveToStr(gameMove: GameMove2D): String

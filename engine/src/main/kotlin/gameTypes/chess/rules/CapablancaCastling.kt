@@ -50,7 +50,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
             if (rook.second.x == 0) {
                 leftRook = rook.second
             }
-            if (rook.second.x == board.m - 1) {
+            if (rook.second.x == board.cols - 1) {
                 rightRook = rook.second
             }
         }
@@ -81,7 +81,8 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                             Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player),
                         BasicGameMove(
                             Coordinate2D(leftRook.x, leftRook.y),
-                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )
@@ -103,7 +104,8 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                             Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player),
                         BasicGameMove(
                             Coordinate2D(rightRook.x, rightRook.y),
-                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )

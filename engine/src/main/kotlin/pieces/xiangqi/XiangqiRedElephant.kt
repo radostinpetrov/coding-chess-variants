@@ -8,7 +8,7 @@ import pieces.Piece2D
 import players.Player
 
 data class XiangqiRedElephant(override val player: Player) : Piece2D {
-    private val river = BoxRegion(Coordinate2D(0, 0), Coordinate2D(9, 4))
+    private val river = BoxRegion(Coordinate2D(0, 0), Coordinate2D(8, 4))
 
     override val moveTypes: List<Move2D>
         get() = listOf(

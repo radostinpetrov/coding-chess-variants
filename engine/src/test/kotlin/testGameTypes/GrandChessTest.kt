@@ -1,6 +1,7 @@
 package testGameTypes
 
 import coordinates.Coordinate2D
+import gameTypes.chess.CapablancaChess
 import gameTypes.chess.GrandChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
+import testPerft.PerftUtility
 
 class GrandChessTest {
     private var mockGrandChess = spyk<GrandChess>()
@@ -15,7 +17,7 @@ class GrandChessTest {
     private val board = mockGrandChess.board
 
     val player1 = mockGrandChess.players[0]
-    val player2 =  mockGrandChess.players[1]
+    val player2 = mockGrandChess.players[1]
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -80,4 +82,24 @@ class GrandChessTest {
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))
         Assertions.assertEquals(initPieces.size, initPiecesTest.size)
     }
+
+    @Test
+    fun testGrandChessInitialPositionsWithDepth1() {
+        PerftUtility.testSimple(GrandChess(), 1, 65)
+    }
+
+    @Test
+    fun testGrandChessInitialPositionsWithDepth2() {
+        PerftUtility.testSimple(GrandChess(), 2, 4225)
+    }
+
+//    @Test
+//    fun testGrandChessInitialPositionsWithDepth3() {
+//        PerftUtility.testSimple(GrandChess(), 3, 259514)
+//    }
+//
+//    @Test
+//    fun testGrandChessInitialPositionsWithDepth4() {
+//        PerftUtility.testSimple(GrandChess(), 4, 15921643)
+//    }
 }

@@ -5,18 +5,16 @@ import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
-import io.mockk.mockk
 import io.mockk.spyk
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
-import players.Player
 
 class StalemateTest {
     val mockStandardChess = spyk<StandardChess>()
     val board = mockStandardChess.board
-    
+
     val player1 = mockStandardChess.players[0]
     val player2 = mockStandardChess.players[1]
 
@@ -68,7 +66,7 @@ class StalemateTest {
             mockStandardChess.makeMove(move)
         }
 
-        mockStandardChess.getValidMoves(player2)
-        assertTrue(mockStandardChess.stalemate)
+        val outcome = mockStandardChess.getOutcome(player2)
+        assertEquals(Outcome.Draw("Stalemate by No Legal Moves"), outcome)
     }
 }

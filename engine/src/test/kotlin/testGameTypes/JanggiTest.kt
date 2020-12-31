@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.janggi.*
+import testPerft.PerftUtility
 
 class JanggiTest {
     private var mockJanggi = spyk<Janggi>()
@@ -71,4 +72,24 @@ class JanggiTest {
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))
         Assertions.assertEquals(initPieces.size, initPiecesTest.size)
     }
+
+    @Test
+    fun testJanggiInitialPositionsWithDepth1() {
+        PerftUtility.testSimple(Janggi(), 1, 31)
+    }
+
+    @Test
+    fun testJanggiInitialPositionsWithDepth2() {
+        PerftUtility.testSimple(Janggi(), 2, 949)
+    }
+
+//    @Test
+//    fun testJanggiInitialPositionsWithDepth3() {
+//        PerftUtility.testSimple(Janggi(), 3, 29697)
+//    }
+//
+//    @Test
+//    fun testJanggiInitialPositionsWithDepth4() {
+//        PerftUtility.testSimple(Janggi(), 4, 15921643)
+//    }
 }

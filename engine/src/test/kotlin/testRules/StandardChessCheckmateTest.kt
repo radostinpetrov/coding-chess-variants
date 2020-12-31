@@ -1,23 +1,21 @@
 package testRules
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
-import io.mockk.mockk
 import io.mockk.spyk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
-import players.Player
 
-class CheckmateTest {
+class StandardChessCheckmateTest {
 
     val mockStandardChess = spyk<StandardChess>()
     val board = mockStandardChess.board
-    
+
     val player1 = mockStandardChess.players[0]
     val player2 = mockStandardChess.players[1]
 
@@ -38,27 +36,26 @@ class CheckmateTest {
             BasicGameMove(
                 Coordinate2D(7, 4), Coordinate2D(5, 6), Queen(player1), player1, board.getPiece(
                     Coordinate2D(5, 6)
-                ), null, true)
+                ),
+                null, true
+            )
         )
 
         for (move in turn4Checkmate) {
-            mockStandardChess.makeMove(move)
+            mockStandardChess.playerMakeMove(move)
         }
 
-        mockStandardChess.getValidMoves(player2)
-
-        assertTrue(mockStandardChess.checkmate)
+        assertTrue(mockStandardChess.isOver())
+        assertEquals(mockStandardChess.getOutcome(), Outcome.Win(player1, "Win by Checkmate"))
     }
 
     @Test
     fun bishopsOnlyCheckmate() {
-        board.addPiece(Coordinate2D(6,5), King(player1))
+        board.addPiece(Coordinate2D(6, 5), King(player1))
         board.addPiece(Coordinate2D(4, 5), Bishop(player1))
         board.addPiece(Coordinate2D(4, 4), Bishop(player1))
-        board.addPiece(Coordinate2D(7,7), King(player2))
+        board.addPiece(Coordinate2D(7, 7), King(player2))
 
-        mockStandardChess.getValidMoves(player2)
-
-        assertTrue(mockStandardChess.checkmate)
+        assertEquals(mockStandardChess.getOutcome(player2), Outcome.Win(player1, "Win by Checkmate"))
     }
 }

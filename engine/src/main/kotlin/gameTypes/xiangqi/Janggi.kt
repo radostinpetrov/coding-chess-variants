@@ -3,10 +3,11 @@ package gameTypes.xiangqi
 import coordinates.Coordinate2D
 import boards.Board2D
 import gameTypes.chess.AbstractChess
+import gameTypes.chess.winconditions.StandardWinConditions
 import gameTypes.xiangqi.rules.GeneralsRule
 import pieces.janggi.* // ktlint-disable no-wildcard-imports
 
-class Janggi : AbstractChess(listOf(GeneralsRule())) {
+class Janggi : AbstractChess(listOf(GeneralsRule()), listOf(StandardWinConditions())) {
     override val board = Board2D(10, 9)
 
     override fun initGame() {

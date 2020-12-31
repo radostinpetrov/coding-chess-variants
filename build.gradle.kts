@@ -103,3 +103,10 @@ project(":core") {
         api("io.github.libktx:ktx-assets:$ktxVersion")
     }
 }
+
+project(":console") {
+    dependencies {
+        implementation(project(":engine"))
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    }
+}

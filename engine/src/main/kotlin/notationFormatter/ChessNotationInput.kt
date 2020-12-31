@@ -5,7 +5,7 @@ import gameMoves.GameMove2D
 import gameMoves.GameMove2D.CompositeGameMove
 import gameMoves.GameMove2D.SimpleGameMove.*
 
-class ChessNotationInput(val height: Int) : NotationFormatter {
+class ChessNotationInput() : NotationFormatter {
 
     /* Converts the string representation of a coordinate to a coordinate. e.g A1 -> Coordinate(0, 6) */
     override fun strToCoordinate(s: String): Coordinate2D? {
@@ -15,15 +15,15 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
         val (l, n) = matchResult.destructured
 
         val c1 = l[0].toInt() - 'a'.toInt()
-        val c2 = height - n.toInt()
+        val c2 = n.toInt() - 1
         return Coordinate2D(c1, c2)
     }
 
     /* Converts a coordinate to the string representation of a coordinate. e.g Coordinate(0, 6) -> A1
     * TODO: aa -> 27 etc.*/
-    override fun coordinateToStr(c: Coordinate2D): String? {
+    override fun coordinateToStr(c: Coordinate2D): String {
         val c1 = (c.x + 'a'.toInt()).toChar()
-        val c2 = height - c.y
+        val c2 = c.y + 1
         return "$c1$c2"
     }
 
@@ -42,9 +42,12 @@ class ChessNotationInput(val height: Int) : NotationFormatter {
                 sb.append("${gameMove.piece.getSymbol()} is removed from the board at ${coordinateToStr(gameMove.coordinate)}")
             }
             is CompositeGameMove -> {
-                for (move in gameMove.gameMoves) {
+                val gameMoves = gameMove.gameMoves
+                for ((i, move) in gameMoves.withIndex()) {
                     sb.append(gameMoveToStr(move))
-                    sb.append(' ')
+                    if (i != gameMoves.size - 1) {
+                        sb.append(", ")
+                    }
                 }
                 sb.trimEnd()
             }

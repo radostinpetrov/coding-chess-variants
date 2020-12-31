@@ -16,7 +16,7 @@ class CapablancaChessTest {
     private val board = mockCapablancaChess.board
 
     val player1 = mockCapablancaChess.players[0]
-    val player2 =  mockCapablancaChess.players[1]
+    val player2 = mockCapablancaChess.players[1]
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -26,27 +26,27 @@ class CapablancaChessTest {
 
         val initPiecesTest = listOf(
             // Pawns
-            Pair(StandardWhitePawn(player1), Coordinate2D(0, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(1, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(2, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(3, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(4, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(5, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(6, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(7, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(8, 1)),
-            Pair(StandardWhitePawn(player1), Coordinate2D(9, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(0, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(1, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(2, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(3, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(4, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(5, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(6, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(7, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(8, 1)),
+            Pair(CapablancaWhitePawn(player1), Coordinate2D(9, 1)),
 
-            Pair(StandardBlackPawn(player2), Coordinate2D(0, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(1, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(2, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(3, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(4, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(5, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(6, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(7, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(8, 6)),
-            Pair(StandardBlackPawn(player2), Coordinate2D(9, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(0, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(1, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(2, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(3, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(4, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(5, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(6, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(7, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(8, 6)),
+            Pair(CapablancaBlackPawn(player2), Coordinate2D(9, 6)),
             // Rooks
             Pair(Rook(player1), Coordinate2D(0, 0)),
             Pair(Rook(player1), Coordinate2D(9, 0)),
@@ -92,13 +92,13 @@ class CapablancaChessTest {
         PerftUtility.testSimple(CapablancaChess(), 2, 784)
     }
 
-    @Test
-    fun testCapablancaChessInitialPositionsWithDepth3() {
-        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
-    }
+//    @Test
+//    fun testCapablancaChessInitialPositionsWithDepth3() {
+//        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
+//    }
 
-    @Test
-    fun testCapablancaChessInitialPositionsWithDepth4() {
-        PerftUtility.testSimple(CapablancaChess(), 4, 805128)
-    }
+//    @Test
+//    fun testCapablancaChessInitialPositionsWithDepth4() {
+//        PerftUtility.testSimple(CapablancaChess(), 4, 805128)
+//    }
 }
