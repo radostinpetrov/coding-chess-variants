@@ -68,7 +68,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
         val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
 
-        for (i in 0 until gameEngine.NUM_PLAYERS) {
+        gameEngine.players.indices.forEach { i ->
             if (inputFrontendPlayers[i] is HumanPlayer) {
                 tempHumanPlayerSet.add(gameEngine.players[i])
             }
@@ -83,10 +83,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     }
 
     fun startGame() {
-        if (!gameEngine.checkValidGame()) {
-            TODO("INVALID GAME")
-        }
-
         gameEngine.initGame()
     }
 

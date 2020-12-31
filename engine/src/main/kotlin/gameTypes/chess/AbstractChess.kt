@@ -18,8 +18,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
 
     override val moveLog: MutableList<GameMove2D> = mutableListOf()
 
-    override val NUM_PLAYERS = 2
-
     override fun isOver(): Boolean {
         return getOutcome(getCurrentPlayer()) != null
     }

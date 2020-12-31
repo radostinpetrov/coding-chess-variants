@@ -10,7 +10,6 @@ interface GameType {
     val players: List<Player>
     var playerTurn: Int
     var seed: Double?
-    val NUM_PLAYERS: Int
     val moveLog: MutableList<GameMove2D>
 
     fun initGame()
@@ -35,13 +34,6 @@ interface GameType {
     }
     fun getNextPlayer(): Player {
         return players[(playerTurn + 1) % players.size]
-    }
-    fun checkValidGame(): Boolean {
-        if (players.size != NUM_PLAYERS) {
-            print("Incorrect number of players")
-            return false
-        }
-        return true
     }
     fun playerMakeMove(move: GameMove2D) {
 

@@ -38,7 +38,7 @@ class CapablancaCastlingTest {
 
         for (move in initMoves) {
             println(move)
-            mockStandardChess.makeMove(move)
+            mockStandardChess.playerMakeMove(move)
         }
 
         val moves = mockStandardChess.getValidMoves(player1)
@@ -106,7 +106,7 @@ class CapablancaCastlingTest {
 
         for (move in initMoves) {
             println(move)
-            mockStandardChess.makeMove(move)
+            mockStandardChess.playerMakeMove(move)
         }
 
         val moves = mockStandardChess.getValidMoves(player1)
@@ -115,7 +115,7 @@ class CapablancaCastlingTest {
                 gameMoves = listOf(
                     BasicGameMove(
                         from = Coordinate2D(5, 0),
-                        to = Coordinate2D(6, 0),
+                        to = Coordinate2D(4, 0),
                         pieceMoved = King(player = player1),
                         player = player1,
                         pieceCaptured = null,
@@ -123,8 +123,8 @@ class CapablancaCastlingTest {
                         checkForCheck = true
                     ),
                     BasicGameMove(
-                        from = Coordinate2D(6, 0),
-                        to = Coordinate2D(7, 0),
+                        from = Coordinate2D(4, 0),
+                        to = Coordinate2D(3, 0),
                         pieceMoved = King(player = player1),
                         player = player1,
                         pieceCaptured = null,
@@ -132,17 +132,16 @@ class CapablancaCastlingTest {
                         checkForCheck = true
                     ),
                     BasicGameMove(
-                        from = Coordinate2D(7, 0),
-                        to = Coordinate2D(8, 0),
-                        pieceMoved = King(player = player1),
-                        player = player1,
+                        from = Coordinate2D(3, 0),
+                        to = Coordinate2D(2, 0),
+                        pieceMoved = King(player = player1), player = player1,
                         pieceCaptured = null,
                         piecePromotedTo = null,
                         checkForCheck = true
                     ),
                     BasicGameMove(
-                        from = Coordinate2D(9, 0),
-                        to = Coordinate2D(7, 0),
+                        from = Coordinate2D(0, 0),
+                        to = Coordinate2D(3, 0),
                         pieceMoved = Rook(player = player1),
                         player = player1,
                         pieceCaptured = null,

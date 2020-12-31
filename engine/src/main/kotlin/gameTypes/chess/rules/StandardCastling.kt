@@ -23,9 +23,6 @@ class StandardCastling : SpecialRules<StandardChess> {
                         return
                     }
                     rooks.removeAll { it.first === move.pieceMoved }
-//                    if (rooks.contains(move.pieceMoved)) {
-//                        rooks.remove(move.pieceMoved)
-//                    }
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
