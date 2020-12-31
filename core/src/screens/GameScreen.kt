@@ -51,7 +51,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     // TODO put color in player?
     var playerColorMapping: Map<Player, Color>? = null
-    lateinit var frontendToLibPlayer: Map<FrontendPlayer, Player>
+
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
@@ -64,7 +64,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     lateinit var promotableMoves: List<GameMove2D>
 
     fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
-        val tempFrontendToLibPlayer: MutableMap<FrontendPlayer, Player> = mutableMapOf()
         val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
 
@@ -72,12 +71,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             if (inputFrontendPlayers[i] is HumanPlayer) {
                 tempHumanPlayerSet.add(gameEngine.players[i])
             }
-            tempFrontendToLibPlayer[inputFrontendPlayers[i]] = gameEngine.players[i]
+            inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
             tempLibToFrontendPlayer[gameEngine.players[i]] = inputFrontendPlayers[i]
         }
 
         frontendPlayers = inputFrontendPlayers.toList()
-        frontendToLibPlayer = tempFrontendToLibPlayer.toMap()
         libToFrontendPlayer = tempLibToFrontendPlayer.toMap()
         humanPlayerSet = tempHumanPlayerSet.toSet()
     }
