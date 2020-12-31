@@ -3,11 +3,12 @@ package moves
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D.BasicGameMove
 import boards.Board2D
+import gameMoves.GameMove2D
 import moves.region.Region
 import pieces.Piece2D
 import players.Player
 
-sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D> {
+sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
     class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
             val result = mutableListOf<BasicGameMove>()
@@ -145,7 +146,7 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
     }
     data class CaptureOnly(val move: Move2D) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
-            return move.generate(board, coordinate, piece, player).filter {
+            return move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().filter {
                 it.pieceCaptured != null
             }
         }
@@ -153,7 +154,7 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
 
     data class NoCapture(val move: Move2D) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
-            return move.generate(board, coordinate, piece, player).filter {
+            return move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().filter {
                 it.pieceCaptured == null
             }
         }
@@ -161,14 +162,14 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
 
     data class Restricted(val move: Move2D, val region: Region) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
-            return move.generate(board, coordinate, piece, player).filter {
+            return move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().filter {
                 region.isInRegion(it.from)
             }
         }
     }
     data class RestrictedDestination(val move: Move2D, val region: Region) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
-            return move.generate(board, coordinate, piece, player).filter {
+            return move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().filter {
                 region.isInRegion(it.to)
             }
         }
@@ -181,7 +182,7 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
             player: Player
         ): List<BasicGameMove> {
             val result: MutableList<BasicGameMove> = mutableListOf()
-            move.generate(board, coordinate, piece, player).forEach {
+            move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().forEach {
                 if (region.isInRegion(it.to)) {
                     for (promoPiece in promoPieces) {
                         result.add(
@@ -209,12 +210,12 @@ sealed class Move2D : Move<Board2D, Move2D, BasicGameMove, Piece2D, Coordinate2D
     data class Composite(val moves: List<Move2D>) : Move2D() {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
             val iter = moves.iterator()
-            var gameMoves: List<BasicGameMove> = iter.next().generate(board, coordinate, piece, player)
+            var gameMoves: List<BasicGameMove> = iter.next().generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>()
             while (iter.hasNext()) {
                 val move = iter.next()
                 val newGameMoves: MutableList<BasicGameMove> = mutableListOf()
                 gameMoves.forEach { prevMove ->
-                    move.generate(board, prevMove.to, prevMove.pieceMoved, player).forEach { currMove ->
+                    move.generate(board, prevMove.to, prevMove.pieceMoved, player).filterIsInstance<BasicGameMove>().forEach { currMove ->
                         newGameMoves.add(
                             BasicGameMove(
                                 prevMove.from,

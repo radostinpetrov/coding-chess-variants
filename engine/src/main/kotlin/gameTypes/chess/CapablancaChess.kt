@@ -4,9 +4,10 @@ import boards.Board2D
 import coordinates.Coordinate2D
 import gameTypes.chess.rules.CapablancaCastling
 import gameTypes.chess.rules.Enpassant
+import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant())) {
+open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(8, 10)
 
     override fun initGame() {
@@ -14,8 +15,8 @@ open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassan
         val player2 = players[1]
 
         for (i in 0..9) {
-            board.addPiece(Coordinate2D(i, 1), StandardWhitePawn(player1))
-            board.addPiece(Coordinate2D(i, 6), StandardBlackPawn(player2))
+            board.addPiece(Coordinate2D(i, 1), CapablancaWhitePawn(player1))
+            board.addPiece(Coordinate2D(i, 6), CapablancaBlackPawn(player2))
         }
 
         board.addPiece(Coordinate2D(0, 0), Rook(player1))

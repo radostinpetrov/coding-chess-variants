@@ -12,7 +12,7 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
-        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
+        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
 
         val res = mutableListOf<GameMove2D>()
         for (move in currentPlayerMoves) {
@@ -21,18 +21,14 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                     if (move.pieceMoved is King) {
                         return
                     }
-                    if (rooks.contains(move.pieceMoved)) {
-                        rooks.remove(move.pieceMoved)
-                    }
+                    rooks.removeAll { it.first === move.pieceMoved }
                 }
                 is GameMove2D.CompositeGameMove -> {
                     for (basicMove in move.gameMoves) {
                         if (basicMove.pieceMoved is King) {
                             return
                         }
-                        if (rooks.contains(basicMove.pieceMoved)) {
-                            rooks.remove(basicMove.pieceMoved)
-                        }
+                        rooks.removeAll { it.first === basicMove.pieceMoved }
                     }
                 }
             }
@@ -44,11 +40,11 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
         var leftRook: Coordinate2D? = null
         var rightRook: Coordinate2D? = null
         for (rook in rooks) {
-            if (rook.value.x == 0) {
-                leftRook = rook.value
+            if (rook.second.x == 0) {
+                leftRook = rook.second
             }
-            if (rook.value.x == board.m - 1) {
-                rightRook = rook.value
+            if (rook.second.x == board.cols - 1) {
+                rightRook = rook.second
             }
         }
         for (i in 1..4) {
@@ -68,16 +64,20 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                     listOf(
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 1, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x - 3, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(leftRook.x, leftRook.y),
-                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x - 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )
@@ -90,16 +90,20 @@ class CapablancaCastling : SpecialRules<CapablancaChess> {
                     listOf(
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 1, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y),
-                            Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player),
+                            Coordinate2D(kingCoordinate.x + 3, kingCoordinate.y), king, player
+                        ),
                         GameMove2D.BasicGameMove(
                             Coordinate2D(rightRook.x, rightRook.y),
-                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player)
+                            Coordinate2D(kingCoordinate.x + 2, kingCoordinate.y), rook!!, player
+                        )
                     ),
                     player
                 )

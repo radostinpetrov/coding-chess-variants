@@ -1,47 +1,33 @@
-// TODO we will soon deprecate this file, any remaining logic should move to new console frontend
+import gameTypes.GameType2D
+import players.ConsolePlayer
 
-import gameTypes.GameType
-class ConsoleGameHelper(val gameType: GameType) {
+class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, val player2: ConsolePlayer) {
     var turn = 0
 
     fun start() {
-        if (!gameType.checkValidGame()) {
-            return
-        }
-
         gameType.initGame()
+
+        val playerMapping = mapOf(gameType.players[0] to player1, gameType.players[1] to player2)
         this.display()
 
-//        while (true) {
-//            if (gameType.isOver()) {
-//                break
-//            }
-//
-//            gameType.turn()
-//            this.notifyObservers()
-//            Thread.sleep(100)
-//        }
+        while (!gameType.isOver()) {
+            playerMapping[gameType.getCurrentPlayer()]!!.playTurn()
+            this.display()
+            Thread.sleep(100)
+        }
     }
-
-//    fun turn(): Boolean {
-//        if (gameType.isOver()) {
-//            return false
-//        }
-//
-//        gameType.turn()
-//        return true
-//    }
 
     /* Display the board in terminal. */
     fun display() {
         val board = gameType.board
+        // Player 1 is red and player 2 is blue
         val colour1 = "\u001B[31m"
         val colour2 = "\u001B[34m"
         val resetColour = "\u001B[0m"
         val player1 = gameType.players[0]
         val n = board.getBoardState().size
 
-        for ((i, row) in board.getBoardState().withIndex()) {
+        for ((i, row) in board.getBoardState().reversed().withIndex()) {
             print("${n - i} ")
             for (piece in row) {
                 if (piece != null) {

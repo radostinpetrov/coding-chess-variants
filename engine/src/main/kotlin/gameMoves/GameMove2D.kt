@@ -6,7 +6,7 @@ import moves.Move2D
 import pieces.Piece2D
 import players.Player
 
-sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D>  {
+sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
     abstract val displayFrom: Coordinate2D
     abstract var displayTo: Coordinate2D
     abstract var displayPiecePromotedTo: Piece2D?
