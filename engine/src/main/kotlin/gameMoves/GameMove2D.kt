@@ -11,6 +11,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
     abstract var displayTo: Coordinate2D
     abstract var displayPiecePromotedTo: Piece2D?
     abstract var displayPieceCaptured: Piece2D?
+    abstract var displayPieceMoved: Piece2D
 
     sealed class SimpleGameMove(override val player: Player): GameMove2D(player) {
         open val checkForCheck: Boolean = true
@@ -22,6 +23,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             override var displayTo: Coordinate2D = to
             override var displayPiecePromotedTo = piecePromotedTo
             override var displayPieceCaptured = pieceCaptured
+            override var displayPieceMoved = pieceMoved
         }
 
         data class AddPieceGameMove(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
@@ -29,6 +31,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             override var displayTo = coordinate
             override var displayPiecePromotedTo: Piece2D? = null
             override var displayPieceCaptured: Piece2D? = null
+            override var displayPieceMoved = piece
         }
 
         data class RemovePieceGameMove(override val player: Player, val piece: Piece2D, val coordinate: Coordinate2D): SimpleGameMove(player) {
@@ -36,7 +39,8 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
             override var displayTo = Coordinate2D(-1, -1)
             override var displayPiecePromotedTo: Piece2D? = null
             override var displayPieceCaptured: Piece2D? = null
-            }
+            override var displayPieceMoved = piece
+        }
     }
 
     data class CompositeGameMove(val gameMoves: List<SimpleGameMove>, override val player: Player) : GameMove2D(player) {
@@ -44,6 +48,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
         override var displayTo: Coordinate2D = Coordinate2D(0, 0)
         override var displayPiecePromotedTo: Piece2D? = null
         override var displayPieceCaptured: Piece2D? = null
+        override lateinit var displayPieceMoved: Piece2D
 
         init {
             val moves = gameMoves.filterIsInstance<SimpleGameMove.BasicGameMove>()
@@ -60,6 +65,7 @@ sealed class GameMove2D(open val player: Player) : GameMove<Board2D, Move2D, Gam
 
                 displayPiecePromotedTo = moves.last().piecePromotedTo
                 displayPieceCaptured =  moves.lastOrNull { it.pieceCaptured != null }?.pieceCaptured
+                displayPieceMoved = moves.first().pieceMoved
             }
         }
     }

@@ -5,13 +5,11 @@ import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
-import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.StandardBlackPawn
 import pieces.chess.StandardWhitePawn
-import players.Player
 
 class EnPassantTest {
 

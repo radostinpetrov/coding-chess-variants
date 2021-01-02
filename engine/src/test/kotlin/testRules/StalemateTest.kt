@@ -1,7 +1,6 @@
 package testRules
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
@@ -67,6 +66,6 @@ class StalemateTest {
         }
 
         val outcome = mockStandardChess.getOutcome(player2)
-        assertEquals(Outcome.Draw("Stalemate by No Legal Moves"), outcome)
+        assertEquals(Outcome.Draw("by No Legal Moves"), outcome)
     }
 }

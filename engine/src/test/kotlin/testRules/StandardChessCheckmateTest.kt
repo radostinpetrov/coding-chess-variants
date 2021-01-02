@@ -46,7 +46,7 @@ class StandardChessCheckmateTest {
         }
 
         assertTrue(mockStandardChess.isOver())
-        assertEquals(mockStandardChess.getOutcome(), Outcome.Win(player1, "Win by Checkmate"))
+        assertEquals(mockStandardChess.getOutcome(), Outcome.Win(player1, "by Checkmate"))
     }
 
     @Test
@@ -56,6 +56,6 @@ class StandardChessCheckmateTest {
         board.addPiece(Coordinate2D(4, 4), Bishop(player1))
         board.addPiece(Coordinate2D(7, 7), King(player2))
 
-        assertEquals(mockStandardChess.getOutcome(player2), Outcome.Win(player1, "Win by Checkmate"))
+        assertEquals(mockStandardChess.getOutcome(player2), Outcome.Win(player1, "by Checkmate"))
     }
 }

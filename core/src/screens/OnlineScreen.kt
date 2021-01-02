@@ -1,6 +1,7 @@
 package screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -57,22 +58,28 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
     }
 
     private fun switchToGameScreen() {
-        val gameScreen = GameScreen(game, gameType, clockList)
+        val clockFlag = clockList != null
+        val gameScreen = GameScreen(game, gameType, clockFlag)
         val players = mutableListOf<FrontendPlayer>()
         when (humanPlayer) {
             1 -> {
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager))
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.WHITE, "White"))
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.BLACK,"Black")
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen)
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.WHITE, "White")
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager))
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.BLACK, "Black"))
             }
         }
+        if (clockFlag) {
+            players[0].endClock = clockList!![0]
+            players[1].endClock = clockList[1]
+        }
+
         gameScreen.initPlayers(players)
         game.removeScreen<GameScreen>()
         game.addScreen(gameScreen)

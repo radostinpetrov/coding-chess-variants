@@ -4,10 +4,11 @@ import coordinates.Coordinate2D
 import moves.Direction
 import moves.Move2D
 import moves.region.BoxRegion
+import pieces.Pawn
 import pieces.Piece2D
 import players.Player
 
-data class XiangqiRedSoldier(override val player: Player) : Piece2D {
+data class XiangqiRedSoldier(override val player: Player) : Piece2D, Pawn {
     private val acrossRiver = BoxRegion(Coordinate2D(0, 5), Coordinate2D(9, 9))
 
     override val moveTypes: List<Move2D>
