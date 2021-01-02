@@ -78,28 +78,26 @@ class FenUtility(
                     if (x > board.cols) {
                         throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                     }
-                }
-                val piece = when (char) {
-                    'p', 'P' -> if (char.isUpperCase()) WhitePawn(player1, whiteStartingRow, whitePromotionRow, whitePawnPromotions) else BlackPawn(player2, blackStartingRow, blackPromotionRow, blackPawnPromotions)
-                    'r', 'R' -> if (char.isUpperCase()) Rook(player1) else Rook(player2)
-                    'n', 'N' -> if (char.isUpperCase()) Knight(player1) else Knight(player2)
-                    'b', 'B' -> if (char.isUpperCase()) Bishop(player1) else Bishop(player2)
-                    'q', 'Q' -> if (char.isUpperCase()) Queen(player1) else Queen(player2)
-                    'k', 'K' -> if (char.isUpperCase()) King(player1) else King(player2)
-                    else -> null
-                }
-                if (x >= board.cols) {
-                    throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                 } else {
-                    board.addPiece(Coordinate2D(x, y), piece!!)
-                    x += 1
+                    val piece = when (char) {
+                        'p', 'P' -> if (char.isUpperCase()) WhitePawn(player1, whiteStartingRow, whitePromotionRow, whitePawnPromotions) else BlackPawn(player2, blackStartingRow, blackPromotionRow, blackPawnPromotions)
+                        'r', 'R' -> if (char.isUpperCase()) Rook(player1) else Rook(player2)
+                        'n', 'N' -> if (char.isUpperCase()) Knight(player1) else Knight(player2)
+                        'b', 'B' -> if (char.isUpperCase()) Bishop(player1) else Bishop(player2)
+                        'q', 'Q' -> if (char.isUpperCase()) Queen(player1) else Queen(player2)
+                        'k', 'K' -> if (char.isUpperCase()) King(player1) else King(player2)
+                        else -> null
+                    }
+                    if (x >= board.cols) {
+                        throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
+                    } else {
+                        board.addPiece(Coordinate2D(x, y), piece!!)
+                        x += 1
+                    }
                 }
+
             }
             y -= 1
         }
-    }
-
-    fun usePawns(any: Any, any1: Any) {
-        TODO("Not yet implemented")
     }
 }
