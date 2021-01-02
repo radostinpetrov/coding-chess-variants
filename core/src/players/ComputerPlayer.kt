@@ -1,9 +1,12 @@
 package players
 
+import com.badlogic.gdx.graphics.Color
 import gameMoves.GameMove2D
 import screens.GameScreen
 
-class ComputerPlayer(gameScreen: GameScreen, val delay: Long) : FrontendPlayer(gameScreen) {
+class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color) : FrontendPlayer(
+    gameScreen, colour
+) {
 
     override fun signalTurn() {
         val validMoves: List<GameMove2D> = gameType.getValidMoves(libPlayer)

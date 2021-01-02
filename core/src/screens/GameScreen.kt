@@ -21,7 +21,7 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList: List<Int>?) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag: Boolean) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
@@ -50,14 +50,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
     var currPlayer: Player? = null
 
     // TODO put color in player?
-    var playerColorMapping: Map<Player, Color>? = null
+//    var playerColorMapping: Map<Player, Color>? = null
 
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
     // TODO and this?
-    var playerMappingInitialClock: MutableMap<Player, Int>? = null
-    var playerMappingEndClock: Map<Player, Int>? = null
+//    var playerMappingInitialClock: MutableMap<Player, Int>? = null
+//    var playerMappingEndClock: Map<Player, Int>? = null
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
@@ -73,6 +73,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
             }
             inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
             tempLibToFrontendPlayer[gameEngine.players[i]] = inputFrontendPlayers[i]
+//
+//            libToFrontendPlayer[currPlayer!!]!!.colour = Color.WHITE
+//            libToFrontendPlayer[gameEngine.getNextPlayer()]!!.colour = Color.BLACK
+//
+//            if (clockList != null) {
+//                libToFrontendPlayer[currPlayer!!]!!.endClock = clockList[0]
+//                libToFrontendPlayer[gameEngine.getNextPlayer()]!!.endClock = clockList[1]
+//            }
         }
 
         frontendPlayers = inputFrontendPlayers.toList()
@@ -94,20 +102,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
         shapeRenderer = ShapeRenderer()
 
         currPlayer = gameEngine.getCurrentPlayer()
-        playerColorMapping = mapOf(currPlayer!! to Color.WHITE, gameEngine.getNextPlayer() to Color.BLACK)
-
-        if (clockList != null) {
-            playerMappingInitialClock = mutableMapOf(currPlayer!! to 0, gameEngine.getNextPlayer() to 0)
-            playerMappingEndClock = mapOf(currPlayer!! to clockList[0], gameEngine.getNextPlayer() to clockList[1])
-        }
 
         Gdx.input.inputProcessor = Stage()
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
 
         guiBoard = when (gameEngine) {
-            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerColorMapping!!)
-            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, playerColorMapping!!)
+            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
+            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
         }
 
         libToFrontendPlayer[currPlayer!!]!!.signalTurn()
@@ -143,7 +145,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
         for ((i, m) in moves.withIndex()) {
             val p = m.displayPiecePromotedTo
 
-            val texture = textures.getTextureFromPiece(p!!, playerColorMapping!![p.player]!!)
+            val texture = textures.getTextureFromPiece(p!!, libToFrontendPlayer[p.player]!!.colour)
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
@@ -170,7 +172,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
     fun switchToGameOverScreen(player: Player) {
         game.removeScreen<GameOverScreen>()
         // change this.
-        val playerName = playerColorMapping?.get(player)!!.toString()
+        val playerName = libToFrontendPlayer[player]!!.colour.toString()
         // White player reports result
 
         if (playerName == "fffffff") {
@@ -206,8 +208,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
     }
 
     override fun render(delta: Float) {
-        val flip = (playerColorMapping?.get(currPlayer!!) == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(gameEngine.getNextPlayer())) ||
-            (playerColorMapping?.get(currPlayer!!) == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(gameEngine.getNextPlayer()))
+        libToFrontendPlayer[currPlayer!!]!!.colour
+        val nextPlayer = gameEngine.getNextPlayer()
+        val flip = (libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
+            nextPlayer
+        )) ||
+                (libToFrontendPlayer[nextPlayer]!!.colour == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(
+                    nextPlayer
+                ))
 
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
@@ -218,8 +226,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
         drawPanel()
         drawHistoryBox()
 
-        if (clockList != null && !drawClocks(flip)) {
-            switchToGameOverScreen(gameEngine.getNextPlayer())
+        if (clockFlag && !drawClocks(flip)) {
+            switchToGameOverScreen(nextPlayer)
         }
 
         if (isPromotionScreen) {
@@ -314,14 +322,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
 
     private fun drawClocks(flipped: Boolean): Boolean {
         val currTime = System.currentTimeMillis() / 1000L
-        val otherPlayerTime = playerMappingInitialClock!![gameEngine.getNextPlayer()]!!
+        val nextPlayer = gameEngine.getNextPlayer()
+        val otherPlayerTime = libToFrontendPlayer[nextPlayer]!!.initialClock
 
         val playerTime = (currTime - initialTime - otherPlayerTime).toInt()
 
-        val displayTimeCurr = playerMappingEndClock!![currPlayer!!]!! - playerTime
-        val displayTimeOther = playerMappingEndClock!![gameEngine.getNextPlayer()]!! - otherPlayerTime
+        val displayTimeCurr = libToFrontendPlayer[currPlayer!!]!!.endClock!! - playerTime
+        val displayTimeOther = libToFrontendPlayer[nextPlayer]!!.endClock!! - otherPlayerTime
 
-        playerMappingInitialClock!![currPlayer!!] = playerTime
+        libToFrontendPlayer[currPlayer!!]!!.initialClock = playerTime
 
         if (displayTimeCurr <= 0) {
             return false
@@ -333,7 +342,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList:
         val str1: String
         val str2: String
 
-        if (flipped.xor(playerColorMapping!![currPlayer!!] == Color.WHITE)) {
+        if (flipped.xor(libToFrontendPlayer[currPlayer!!]!!.colour == Color.WHITE)) {
             str1 = currStr
             str2 = otherStr
         } else {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import gameMoves.GameMove2D
+import players.FrontendPlayer
 import players.Player
 
 class ChessBoard(
@@ -15,7 +16,7 @@ class ChessBoard(
     batch: Batch,
     squareWidth: Float,
     textures: Textures,
-    playerMapping: Map<Player, Color>
+    playerMapping: Map<Player, FrontendPlayer>
 ) : GUIBoard(
     shapeRenderer, board, batch,
     squareWidth,

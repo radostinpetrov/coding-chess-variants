@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
+import players.FrontendPlayer
 import players.Player
 
 class XiangqiBoard(
@@ -15,7 +16,7 @@ class XiangqiBoard(
     batch: Batch,
     squareWidth: Float,
     textures: Textures,
-    playerMapping: Map<Player, Color>
+    playerMapping: Map<Player, FrontendPlayer>
 ) : GUIBoard(
     shapeRenderer, board, batch,
     squareWidth,
