@@ -10,14 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
-import gameTypes.GameType
+import gameTypes.GameType2D
 import ktx.app.KtxScreen
 import players.ComputerPlayer
 import players.FrontendPlayer
 import players.HumanPlayer
-import players.Player
 
-class PlayerScreen(val game: MyGdxGame, val gameType: GameType, val clockList: List<Int>?) : KtxScreen {
+class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
@@ -106,7 +105,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType, val clockList: L
         stage.act()
     }
 
-    private fun switchToGameScreen(gameType: GameType) {
+    private fun switchToGameScreen(gameType: GameType2D) {
         val gameScreen = GameScreen(game, gameType, clockList)
 
         game.removeScreen<GameScreen>()

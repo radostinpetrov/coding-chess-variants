@@ -31,6 +31,7 @@ data class General(override val player: Player) : Piece2D, King {
             Move2D.Restricted(Move2D.Stepper(Direction.SOUTH_WEST, 1, true), CoordinateRegion(5, 2)),
             Move2D.Restricted(Move2D.Stepper(Direction.NORTH_EAST, 1, true), CoordinateRegion(3, 0)),
             Move2D.Restricted(Move2D.Stepper(Direction.NORTH_WEST, 1, true), CoordinateRegion(5, 0)),
+            Move2D.Skip,
         )
 
     override fun getSymbol(): String {

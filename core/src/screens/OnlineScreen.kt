@@ -8,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
-import gameTypes.GameType
+import gameTypes.GameType2D
 import players.FrontendPlayer
 import players.NetworkEnemyPlayer
 import players.NetworkHumanPlayer
 import players.WebsocketClientManager
 
-class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType, val clockList: List<Int>?) : KtxScreen {
+class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 

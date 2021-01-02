@@ -6,7 +6,7 @@ import moves.Move2D
 import pieces.Piece2D
 import players.Player
 
-class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D.BasicGameMove, Piece2D, Coordinate2D> {
+class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Array<Array<Piece2D?>> {
         return board
@@ -60,6 +60,7 @@ class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D.
             throw ArrayIndexOutOfBoundsException()
         }
         if (board[coordinate.y][coordinate.x] != piece) {
+            print(piece)
             throw Exception("Cannot remove non-existing piece")
         }
         board[coordinate.y][coordinate.x] = null

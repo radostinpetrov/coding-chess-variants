@@ -1,17 +1,10 @@
-// TODO we will soon deprecate this file, any remaining logic should move to new console frontend
-
-import gameTypes.GameType
+import gameTypes.GameType2D
 import players.ConsolePlayer
 
-class ConsoleGameHelper(val gameType: GameType, val player1: ConsolePlayer, val player2: ConsolePlayer) {
+class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, val player2: ConsolePlayer) {
     var turn = 0
 
     fun start() {
-        // TODO: Remove check valid game
-//        if (!gameType.checkValidGame()) {
-//            return
-//        }
-
         gameType.initGame()
 
         val playerMapping = mapOf(gameType.players[0] to player1, gameType.players[1] to player2)

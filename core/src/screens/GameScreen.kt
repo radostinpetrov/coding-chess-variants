@@ -15,13 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
-import gameTypes.GameType
+import gameTypes.GameType2D
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: List<Int>?) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockList: List<Int>?) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
@@ -51,7 +51,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
 
     // TODO put color in player?
     var playerColorMapping: Map<Player, Color>? = null
-    lateinit var frontendToLibPlayer: Map<FrontendPlayer, Player>
+
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
@@ -64,29 +64,23 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
     lateinit var promotableMoves: List<GameMove2D>
 
     fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
-        val tempFrontendToLibPlayer: MutableMap<FrontendPlayer, Player> = mutableMapOf()
         val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
 
-        for (i in 0 until gameEngine.NUM_PLAYERS) {
+        gameEngine.players.indices.forEach { i ->
             if (inputFrontendPlayers[i] is HumanPlayer) {
                 tempHumanPlayerSet.add(gameEngine.players[i])
             }
-            tempFrontendToLibPlayer[inputFrontendPlayers[i]] = gameEngine.players[i]
+            inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
             tempLibToFrontendPlayer[gameEngine.players[i]] = inputFrontendPlayers[i]
         }
 
         frontendPlayers = inputFrontendPlayers.toList()
-        frontendToLibPlayer = tempFrontendToLibPlayer.toMap()
         libToFrontendPlayer = tempLibToFrontendPlayer.toMap()
         humanPlayerSet = tempHumanPlayerSet.toSet()
     }
 
     fun startGame() {
-        if (!gameEngine.checkValidGame()) {
-            TODO("INVALID GAME")
-        }
-
         gameEngine.initGame()
     }
 
@@ -391,11 +385,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType, val clockList: L
             val coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
-                val str = "TURN ${offset + i / 2 + 1} : (${(coor.x + 65).toChar()},${coor.y + 1})"
+                val str = "TURN ${offset + i / 2 + 1} :  ${(coor.x + 97).toChar()}${coor.y + 1}"
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * i))
             } else {
                 font.setColor(Color.BLACK)
-                val str = "(${(coor.x + 65).toChar()},${coor.y + 1})"
+                val str = " ${(coor.x + 97).toChar()}${coor.y + 1}"
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
             }
             i++

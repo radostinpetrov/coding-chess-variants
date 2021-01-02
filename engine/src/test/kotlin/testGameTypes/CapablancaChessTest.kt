@@ -92,10 +92,10 @@ class CapablancaChessTest {
         PerftUtility.testSimple(CapablancaChess(), 2, 784)
     }
 
-    @Test
-    fun testCapablancaChessInitialPositionsWithDepth3() {
-        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
-    }
+//    @Test
+//    fun testCapablancaChessInitialPositionsWithDepth3() {
+//        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
+//    }
 
 //    @Test
 //    fun testCapablancaChessInitialPositionsWithDepth4() {
