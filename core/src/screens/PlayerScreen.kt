@@ -112,8 +112,8 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
 
         game.removeScreen<GameScreen>()
         val players = mutableListOf<FrontendPlayer>()
-        players.add(createPlayer(playerTypes[0], gameScreen, Color.WHITE))
-        players.add(createPlayer(playerTypes[1], gameScreen, Color.BLACK))
+        players.add(createPlayer(playerTypes[0], gameScreen, Color.WHITE, "White"))
+        players.add(createPlayer(playerTypes[1], gameScreen, Color.BLACK, "Black"))
 
         if (clockFlag) {
             players[0].endClock = clockList!![0]
@@ -127,10 +127,10 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         game.setScreen<GameScreen>()
     }
 
-    private fun createPlayer(player: PlayerType, gameScreen: GameScreen, colour: Color): FrontendPlayer {
+    private fun createPlayer(player: PlayerType, gameScreen: GameScreen, colour: Color, colourName: String): FrontendPlayer {
         return when (player) {
-            PlayerType.HUMAN -> HumanPlayer(gameScreen, colour)
-            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour)
+            PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)
+            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour, colourName)
         }
     }
 }

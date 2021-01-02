@@ -63,16 +63,16 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         val players = mutableListOf<FrontendPlayer>()
         when (humanPlayer) {
             1 -> {
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.WHITE))
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.BLACK)
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.WHITE, "White"))
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.BLACK,"Black")
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.WHITE)
+                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.WHITE, "White")
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.BLACK))
+                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.BLACK, "Black"))
             }
         }
         if (clockFlag) {

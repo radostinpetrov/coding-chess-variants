@@ -8,7 +8,7 @@ import players.Player
 class NoLegalMovesStalemate : WinCondition<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<GameMove2D>): Outcome? {
         if (moves.isEmpty()) {
-            return Outcome.Draw("Stalemate by No Legal Moves")
+            return Outcome.Draw("by No Legal Moves")
         }
         return null
     }

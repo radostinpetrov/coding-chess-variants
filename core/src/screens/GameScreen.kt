@@ -1,5 +1,6 @@
 package screens
 
+import Outcome
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import boards.ChessBoard
@@ -161,24 +162,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
     }
 
-    fun switchToGameOverScreen(player: Player) {
+    fun switchToGameOverScreen(outcome: Outcome) {
         game.removeScreen<GameOverScreen>()
-        // change this.
-        val playerName = libToFrontendPlayer[player]!!.colour.toString()
-        // White player reports result
-
-        if (playerName == "fffffff") {
-            if (frontendPlayers[0] is NetworkHumanPlayer) {
-                (frontendPlayers[0] as NetworkHumanPlayer).websocketClientManager.sendResult(0f)
-            }
-            game.addScreen(GameOverScreen(game, gameEngine, "White"))
-        } else {
-            if (frontendPlayers[0] is NetworkHumanPlayer) {
-                (frontendPlayers[0] as NetworkHumanPlayer).websocketClientManager.sendResult(1f)
-            }
-            game.addScreen(GameOverScreen(game, gameEngine, "Black"))
-        }
-
+        game.addScreen(GameOverScreen(game, outcome, libToFrontendPlayer))
         game.setScreen<GameOverScreen>()
     }
 
@@ -191,7 +177,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             resetClicks()
             if (gameEngine.isOver()) {
                 Gdx.app.postRunnable {
-                    switchToGameOverScreen(currPlayer!!)
+                    switchToGameOverScreen(gameEngine.getOutcome()!!)
                 }
             }
 
@@ -219,7 +205,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         drawHistoryBox()
 
         if (clockFlag && !drawClocks(flip)) {
-            switchToGameOverScreen(nextPlayer)
+            val outcome = Outcome.Win(nextPlayer, "by time")
+            switchToGameOverScreen(outcome)
         }
 
         if (isPromotionScreen) {

@@ -67,6 +67,6 @@ class StalemateTest {
         }
 
         val outcome = mockStandardChess.getOutcome(player2)
-        assertEquals(Outcome.Draw("Stalemate by No Legal Moves"), outcome)
+        assertEquals(Outcome.Draw("by No Legal Moves"), outcome)
     }
 }

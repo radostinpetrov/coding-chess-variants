@@ -10,11 +10,11 @@ class AntiChessWinConditions : WinCondition<AbstractChess> {
         for (p in game.players) {
             val pieces = game.board.getPieces(player)
             if (pieces.isEmpty()) {
-                return Outcome.Win(p, "Win by losing all pieces")
+                return Outcome.Win(p, "by losing all pieces")
             }
         }
         if (moves.isEmpty()) {
-            return Outcome.Win(player, "Win by stalemated player")
+            return Outcome.Win(player, "by stalemated player")
         }
         return null
     }

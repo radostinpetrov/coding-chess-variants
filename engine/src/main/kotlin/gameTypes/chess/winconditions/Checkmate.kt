@@ -10,7 +10,7 @@ class Checkmate : WinCondition<AbstractChess> {
         if (moves.isEmpty() && game.inCheck(player)) {
             val players = game.players
             val winners = players[(players.indexOf(player) + 1) % players.size]
-            return Outcome.Win(winners, "Win by Checkmate")
+            return Outcome.Win(winners, "by Checkmate")
         }
         return null
     }
