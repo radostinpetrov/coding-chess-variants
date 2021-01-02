@@ -197,7 +197,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-            controls(flip)
+            controls(!isPromotionScreen && flip)
         }
 
         // TODO why does draw panel come after controls?
