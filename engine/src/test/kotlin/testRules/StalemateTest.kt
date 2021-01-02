@@ -4,15 +4,18 @@ import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
+import gameTypes.xiangqi.Janggi
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
+import pieces.janggi.General
 
 class StalemateTest {
     val mockStandardChess = spyk<StandardChess>()
+    val mockJanggiChess = spyk<Janggi>()
     val board = mockStandardChess.board
 
     val player1 = mockStandardChess.players[0]
@@ -68,5 +71,28 @@ class StalemateTest {
 
         val outcome = mockStandardChess.getOutcome(player2)
         assertEquals(Outcome.Draw("Stalemate by No Legal Moves"), outcome)
+    }
+
+    @Test
+    fun threeFoldRepetitionStalemateTest() {
+        mockJanggiChess.initGame()
+
+        val general1Pos = Coordinate2D(4, 1)
+        val general1 = mockJanggiChess.board.getPiece(general1Pos)
+        val general2Pos = Coordinate2D(4, 8)
+        val general2 = mockJanggiChess.board.getPiece(general2Pos)
+
+        val stalemateMoves: List<BasicGameMove> = listOf(
+            BasicGameMove(general1Pos, general1Pos, general1!!, player1),
+            BasicGameMove(general2Pos, general2Pos, general2!!, player2),
+            BasicGameMove(general1Pos, general1Pos, general1, player1),
+            )
+
+        for (move in stalemateMoves) {
+            mockJanggiChess.makeMove(move)
+        }
+
+        val outcome = mockJanggiChess.getOutcome(player2)
+        assertEquals(Outcome.Draw("Stalemate by Threefold Repetition"), outcome)
     }
 }
