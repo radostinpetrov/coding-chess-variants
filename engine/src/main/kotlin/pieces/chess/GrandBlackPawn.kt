@@ -7,8 +7,7 @@ import moves.region.RowRegion
 import pieces.Piece2D
 import players.Player
 
-data class GrandBlackPawn(override val player: Player) : Piece2D {
-    private val pawnPromotions = listOf(Queen(player), Bishop(player), Knight(player), Rook(player), Marshal(player), Cardinal(player))
+data class GrandBlackPawn(override val player: Player) : BlackPawn(player, 2, RowRegion(0), listOf(Queen(player), Bishop(player), Knight(player), Rook(player), Marshal(player), Cardinal(player))) {
     private val forcedPromotionRegion = RowRegion(0)
     private val optionalPromotionRegion = CompositeRegion(listOf(RowRegion(1), RowRegion(2)))
     private val moveList = listOf(

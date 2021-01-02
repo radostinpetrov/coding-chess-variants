@@ -1,7 +1,6 @@
 package testRules
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
 import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
