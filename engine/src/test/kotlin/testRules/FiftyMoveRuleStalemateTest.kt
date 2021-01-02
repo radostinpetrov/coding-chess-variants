@@ -115,4 +115,11 @@ class FiftyMoveRuleStalemateTest {
         val outcome = FiftyMoveRuleStalemate().evaluate(mockStandardChess, player1, moveList)
         Assertions.assertEquals(Outcome.Draw("by 50-move rule"), outcome)
     }
+
+    @Test
+    fun noFiftyMoveStalemateTest() {
+        val moveList = listOf<GameMove2D>()
+        val outcome = FiftyMoveRuleStalemate().evaluate(mockStandardChess, player1, moveList)
+        Assertions.assertNull(outcome)
+    }
 }
