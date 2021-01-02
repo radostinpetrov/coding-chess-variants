@@ -13,9 +13,9 @@ import pieces.King
 import pieces.Piece2D
 import players.Player
 
-abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>) : GameType2D {
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>, startPlayer : Int = 0) : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
-    override var playerTurn: Int = 0
+    override var playerTurn: Int = startPlayer
 
     override var seed: Double? = null
 
