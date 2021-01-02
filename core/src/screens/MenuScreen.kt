@@ -30,6 +30,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val janggiButton = TextButton("Janggi", skin)
     val xiangqiButton = TextButton("Xiangqi", skin)
     val antiChessButton = TextButton("AntiChess", skin)
+    val miniChessButton = TextButton("MiniChess", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -156,6 +157,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        miniChessButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToPreGameScreen(MiniChess(), isOnline)
+            }
+        })
+
         leaderboardButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToLeaderboardScreen()
@@ -192,6 +199,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(xiangqiButton).colspan(4).padBottom(20f)
         table.row()
         table.add(antiChessButton).colspan(4).padBottom(50f)
+        table.add(miniChessButton).colspan(4).padBottom(50f)
         table.row()
         table.add(leaderboardButton).colspan(12).padTop(100f).padBottom(20f).center()
         table.row()

@@ -40,7 +40,7 @@ class Textures(assets: AssetManager) {
 
     // instead of symbol, use something else...
     val whites = mapOf(
-        "StandardWhitePawn" to whitePawn, "GrandWhitePawn" to whitePawn, "Rook" to whiteRook,
+        "WhitePawn" to whitePawn, "StandardWhitePawn" to whitePawn, "GrandWhitePawn" to whitePawn, "Rook" to whiteRook,
         "Knight" to whiteKnight, "Bishop" to whiteBishop, "Queen" to whiteQueen, "King" to whiteKing,
         "Cardinal" to whiteCardinal, "Marshal" to whiteMarshal, "Advisor" to whiteAdvisor,
         "Cannon" to whiteCannon, "Chariot" to whiteChariot, "Elephant" to whiteElephant,
@@ -51,7 +51,7 @@ class Textures(assets: AssetManager) {
     )
 
     val blacks = mapOf(
-        "StandardBlackPawn" to blackPawn, "GrandBlackPawn" to blackPawn, "Rook" to blackRook,
+        "BlackPawn" to blackPawn, "StandardBlackPawn" to blackPawn, "GrandBlackPawn" to blackPawn, "Rook" to blackRook,
         "Knight" to blackKnight, "Bishop" to blackBishop, "Queen" to blackQueen, "King" to blackKing,
         "Cardinal" to blackCardinal, "Marshal" to blackMarshal, "Advisor" to blackAdvisor,
         "Cannon" to blackCannon, "Chariot" to blackChariot, "Elephant" to blackElephant,
