@@ -21,20 +21,21 @@ class FenUtility(val string: String) {
 
     init {
         if (fields.size != 3) {
-            throw Exception("Wrong number of fields in FEN. Expected: 3 Actual: ${fields.size}")
+            throw IllegalArgumentException("Wrong number of fields in FEN. Expected: 3 Actual: ${fields.size}")
         }
         piecePlacement = fields[0]
 
         if (fields[1].single() != 'b' && fields[1].single() != 'w') {
-            throw Exception("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
+            throw IllegalArgumentException("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
         }
         activeColour = if (fields[1].single() == 'w') 0 else 1
 
-        if (!fields[2].contains('Q') && !fields[2].contains('q') && !fields[2].contains('K') && !fields[2].contains('k') && !fields[2].contains('-')) {
-            throw Exception("Wrong argument for castling availability FEN.")
-        }
-        if (fields[2].length !in 1..4) {
-            throw Exception("Wrong argument for castling availability FEN. Expected: 1 to 4 characters Actual: ${fields[2]}")
+        // if (!fields[2].contains('Q') && !fields[2].contains('q') && !fields[2].contains('K') && !fields[2].contains('k') && !fields[2].contains('-')) {
+        //     throw IllegalArgumentException("Wrong argument for castling availability FEN.")
+        // }
+
+        if (!"""(-|K?Q?k?q?)""".toRegex().matches(fields[2])) {
+            throw IllegalArgumentException("Wrong argument for castling availability FEN.")
         }
         castling = fields[2]
     }
@@ -44,34 +45,12 @@ class FenUtility(val string: String) {
     val p2CanCastleLeft = castling.contains("q")
     val p2CanCastleRight = castling.contains("k")
 
-    fun getPlayersCantCastleLeft(player1: Player, player2: Player): List<Player> {
-        val playersCantCastleLeft = mutableListOf<Player>()
-        if (!castling.contains('Q')) {
-            playersCantCastleLeft.add(player1)
-        }
-        if (!castling.contains('q')) {
-            playersCantCastleLeft.add(player2)
-        }
-        return playersCantCastleLeft
-    }
-
-    fun getPlayersCantCastleRight(player1: Player, player2: Player): List<Player> {
-        val playersCantCastleRight = mutableListOf<Player>()
-        if (!castling.contains('K')) {
-            playersCantCastleRight.add(player1)
-        }
-        if (!castling.contains('k')) {
-            playersCantCastleRight.add(player2)
-        }
-        return playersCantCastleRight
-    }
-
     fun initBoardWithFEN(board: Board2D, player1: Player, player2: Player) {
 
         val rows = piecePlacement.split("/")
 
         if (rows.size != board.rows) {
-            throw Exception("Wrong number of rows in piece placement FEN. Expected: ${board.rows} Actual: ${rows.size}")
+            throw IllegalArgumentException("Wrong number of rows in piece placement FEN. Expected: ${board.rows} Actual: ${rows.size}")
         } else {
 
             var y = board.rows - 1
@@ -81,6 +60,11 @@ class FenUtility(val string: String) {
                 for (char in row) {
                     if (char.isDigit()) {
                         x += char.toString().toInt()
+
+                        if (x >= board.cols) {
+                            throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
+                        }
+
                     } else {
                         val piece = when (char) {
                             'p','P'  -> if (char.isUpperCase()) StandardWhitePawn(player1) else StandardBlackPawn(player2)
@@ -92,7 +76,7 @@ class FenUtility(val string: String) {
                             else -> null
                         }
                         if (x >= board.cols) {
-                            throw Exception("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
+                            throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                         } else {
                             board.addPiece(Coordinate2D(x, y), piece!!)
                             x += 1
