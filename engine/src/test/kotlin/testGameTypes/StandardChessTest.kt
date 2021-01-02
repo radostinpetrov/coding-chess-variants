@@ -2,6 +2,7 @@ package testGameTypes
 
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameTypes.FenUtility
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -124,20 +125,27 @@ class StandardChessTest {
 
     @Test
     fun testStandardChessInGamePosition1WithDepth1() {
-        testSimple(StandardChess("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"), 1, 48)
+        testSimple(StandardChess(FenUtility("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq")), 1, 48)
     }
 
     @Test
     fun testStandardChessInGamePosition1WithDepth2() {
-        testSimple(StandardChess("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"), 2, 2039)
+        testSimple(StandardChess(FenUtility("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq")), 2, 2039)
     }
 
     @Test
-    fun testStandardChessInGamePosition2WithDepth2() {
-        testSimple(StandardChess("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8"), 2, 191)
+    fun testStandardChessInGamePosition2NoCastlingWithDepth2() {
+        testSimple(StandardChess(FenUtility("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w -")), 2, 191)
     }
-//    @Test
-//    fun testStandardChessInitialPositionsWithDepth5() {
-//        test(StandardChess(), 5, PerftUtility.PerftData(4865609, 82719, 27351, 347))
-//    }
+
+    @Test
+    fun testStandardChessInGamePosition3NoCastlingWithDepth2() {
+        testSimple(StandardChess(FenUtility("8/PPP4k/8/8/8/8/4Kppp/8 w -")), 2, 290)
+    }
+
+    @Test
+    fun testStandardChessInGamePosition4NoCastlingWithDepth2() {
+        testSimple(StandardChess(FenUtility("8/3K4/2p5/p2b2r1/5k2/8/8/1q6 b -")), 2, 279)
+    }
+
 }

@@ -10,14 +10,68 @@ import pieces.chess.Rook
 import pieces.chess.StandardBlackPawn
 import pieces.chess.StandardWhitePawn
 import players.Player
+import java.lang.Exception
 
-object FenUtility {
+class FenUtility(val string: String) {
 
-    fun initBoardWithFEN(board: Board2D, FENString: String, player1: Player, player2: Player) {
-        val rows = FENString.split("/")
+    private val fields : List<String> = string.split(" ")
+    private val piecePlacement: String
+    val activeColour: Int
+    private val castling: String
+
+    init {
+        if (fields.size != 3) {
+            throw Exception("Wrong number of fields in FEN. Expected: 3 Actual: ${fields.size}")
+        }
+        piecePlacement = fields[0]
+
+        if (fields[1].single() != 'b' && fields[1].single() != 'w') {
+            throw Exception("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
+        }
+        activeColour = if (fields[1].single() == 'w') 0 else 1
+
+        if (!fields[2].contains('Q') && !fields[2].contains('q') && !fields[2].contains('K') && !fields[2].contains('k') && !fields[2].contains('-')) {
+            throw Exception("Wrong argument for castling availability FEN.")
+        }
+        if (fields[2].length !in 1..4) {
+            throw Exception("Wrong argument for castling availability FEN. Expected: 1 to 4 characters Actual: ${fields[2]}")
+        }
+        castling = fields[2]
+    }
+
+    val p1CanCastleLeft = castling.contains("Q")
+    val p1CanCastleRight = castling.contains("K")
+    val p2CanCastleLeft = castling.contains("q")
+    val p2CanCastleRight = castling.contains("k")
+
+    fun getPlayersCantCastleLeft(player1: Player, player2: Player): List<Player> {
+        val playersCantCastleLeft = mutableListOf<Player>()
+        if (!castling.contains('Q')) {
+            playersCantCastleLeft.add(player1)
+        }
+        if (!castling.contains('q')) {
+            playersCantCastleLeft.add(player2)
+        }
+        return playersCantCastleLeft
+    }
+
+    fun getPlayersCantCastleRight(player1: Player, player2: Player): List<Player> {
+        val playersCantCastleRight = mutableListOf<Player>()
+        if (!castling.contains('K')) {
+            playersCantCastleRight.add(player1)
+        }
+        if (!castling.contains('k')) {
+            playersCantCastleRight.add(player2)
+        }
+        return playersCantCastleRight
+    }
+
+    fun initBoardWithFEN(board: Board2D, player1: Player, player2: Player) {
+
+        val rows = piecePlacement.split("/")
 
         if (rows.size != board.rows) {
-            //TODO fen notation is wrong
+            throw Exception("Wrong number of rows in piece placement FEN. Expected: ${board.rows} Actual: ${rows.size}")
         } else {
 
             var y = board.rows - 1
@@ -38,7 +92,7 @@ object FenUtility {
                             else -> null
                         }
                         if (x >= board.cols) {
-                            //TODO fen notation is wrong
+                            throw Exception("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                         } else {
                             board.addPiece(Coordinate2D(x, y), piece!!)
                             x += 1

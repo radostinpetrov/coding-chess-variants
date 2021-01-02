@@ -2,19 +2,19 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.FenUtility.initBoardWithFEN
+import gameTypes.FenUtility
 import gameTypes.chess.rules.Enpassant
 import gameTypes.chess.rules.StandardCastling
 import gameTypes.chess.winconditions.StandardWinConditions
 import pieces.chess.*
 
-open class StandardChess(val FENString: String = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR") : AbstractChess(listOf(StandardCastling(), Enpassant()), listOf(StandardWinConditions())) {
+open class StandardChess(val fen: FenUtility = FenUtility("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq")) : AbstractChess(mutableListOf(StandardCastling(fen.p1CanCastleLeft, fen.p1CanCastleRight, fen.p2CanCastleLeft, fen.p2CanCastleRight), Enpassant()), listOf(StandardWinConditions()), fen.activeColour) {
     override val board = Board2D(8, 8)
 
     override fun initGame() {
         val player1 = players[0]
         val player2 = players[1]
-        initBoardWithFEN(board, FENString, player1, player2)
+        fen.initBoardWithFEN(board, player1, player2)
         // for (i in 0..7) {
         //     board.addPiece(Coordinate2D(i, 1), StandardWhitePawn(player1))
         //     board.addPiece(Coordinate2D(i, 6), StandardBlackPawn(player2))

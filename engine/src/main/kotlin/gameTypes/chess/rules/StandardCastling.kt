@@ -7,13 +7,16 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
-class StandardCastling : SpecialRules<StandardChess> {
+class StandardCastling(val p1CanCastleLeft : Boolean = true, val p1CanCastleRight : Boolean = true, val p2CanCastleLeft : Boolean = true, val p2CanCastleRight : Boolean = true) : SpecialRules<StandardChess> {
     override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<GameMove2D>) {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
 //        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.associateBy({ it.first }, { it.second })).toMutableMap()
         val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
+
+        val playerCanCastleLeft = if (player == game.players[0]) p1CanCastleLeft else p2CanCastleLeft
+        val playerCanCastleRight = if (player == game.players[1]) p2CanCastleRight else p2CanCastleRight
 
         val res = mutableListOf<GameMove2D>()
         for (move in currentPlayerMoves) {
@@ -64,7 +67,8 @@ class StandardCastling : SpecialRules<StandardChess> {
                 rightRook = null
             }
         }
-        if (leftRook != null) {
+
+        if (playerCanCastleLeft && leftRook != null) {
             val rook = board.getPiece(leftRook)
             res.add(
                 GameMove2D.CompositeGameMove(
@@ -86,7 +90,7 @@ class StandardCastling : SpecialRules<StandardChess> {
                 )
             )
         }
-        if (rightRook != null) {
+        if (playerCanCastleRight && rightRook != null) {
             val rook = board.getPiece(rightRook)
             res.add(
                 GameMove2D.CompositeGameMove(
