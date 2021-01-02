@@ -234,4 +234,12 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
             return gameMoves
         }
     }
+
+    object Skip : Move2D() {
+        override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
+            return listOf(
+                BasicGameMove(coordinate, coordinate, piece, player, null, null)
+            )
+        }
+    }
 }
