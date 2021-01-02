@@ -77,15 +77,16 @@ class StalemateTest {
     fun threeFoldRepetitionStalemateTest() {
         mockJanggiChess.initGame()
 
+        val player1 = mockJanggiChess.players[0]
+        val player2 = mockJanggiChess.players[1]
+
         val general1Pos = Coordinate2D(4, 1)
-        val general1 = mockJanggiChess.board.getPiece(general1Pos)
         val general2Pos = Coordinate2D(4, 8)
-        val general2 = mockJanggiChess.board.getPiece(general2Pos)
 
         val stalemateMoves: List<BasicGameMove> = listOf(
-            BasicGameMove(general1Pos, general1Pos, general1!!, player1),
-            BasicGameMove(general2Pos, general2Pos, general2!!, player2),
-            BasicGameMove(general1Pos, general1Pos, general1, player1),
+            BasicGameMove(general1Pos, general1Pos, General(player1), player1),
+            BasicGameMove(general2Pos, general2Pos, General(player2), player2),
+            BasicGameMove(general1Pos, general1Pos, General(player1), player1),
             )
 
         for (move in stalemateMoves) {

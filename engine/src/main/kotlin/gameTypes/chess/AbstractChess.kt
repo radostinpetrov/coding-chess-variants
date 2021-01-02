@@ -37,6 +37,9 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     override fun getValidMoves(player: Player): List<GameMove2D> {
+        if (!players.contains(player)) {
+            throw Exception("Not a valid player")
+        }
         val possibleMoves = getPossibleMoves(player).toMutableList()
         val moves = filterForCheck(player, possibleMoves)
         return moves
