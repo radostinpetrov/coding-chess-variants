@@ -73,14 +73,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             }
             inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
             tempLibToFrontendPlayer[gameEngine.players[i]] = inputFrontendPlayers[i]
-//
-//            libToFrontendPlayer[currPlayer!!]!!.colour = Color.WHITE
-//            libToFrontendPlayer[gameEngine.getNextPlayer()]!!.colour = Color.BLACK
-//
-//            if (clockList != null) {
-//                libToFrontendPlayer[currPlayer!!]!!.endClock = clockList[0]
-//                libToFrontendPlayer[gameEngine.getNextPlayer()]!!.endClock = clockList[1]
-//            }
         }
 
         frontendPlayers = inputFrontendPlayers.toList()
