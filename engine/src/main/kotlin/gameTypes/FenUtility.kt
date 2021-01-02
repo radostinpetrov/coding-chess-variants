@@ -61,7 +61,7 @@ class FenUtility(val string: String) {
                     if (char.isDigit()) {
                         x += char.toString().toInt()
 
-                        if (x >= board.cols) {
+                        if (x > board.cols) {
                             throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                         }
 
