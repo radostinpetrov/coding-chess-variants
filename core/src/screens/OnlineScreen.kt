@@ -23,8 +23,6 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     val title = Label("Looking for Players...", skin)
 
-    val startButton = TextButton("Start", skin)
-
     val websocketClientManager = WebsocketClientManager (
         { m: Int, seed: Double ->
             humanPlayer = m

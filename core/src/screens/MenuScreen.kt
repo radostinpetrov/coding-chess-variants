@@ -16,9 +16,6 @@ import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
-//    class CustomButton(text: String, skin: Skin) : TextButton(text, skin) {
-//        
-//    }
     val stage = Stage()
     val table = Table()
 
@@ -170,13 +167,15 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         })
 
         noClockButton.setColor(200f, 0f, 0f, 100f)
+        localModeButton.setColor(200f, 0f, 0f, 100f)
+
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 0f)
         table.add(title).colspan(12).padBottom(20f).top()
         table.row()
-        table.add(onlineModeButton).colspan(6).padBottom(50f)
         table.add(localModeButton).colspan(6).padBottom(50f)
+        table.add(onlineModeButton).colspan(6).padBottom(50f)
         table.row()
         table.add(usernameLabel).colspan(6).padBottom(50f)
         table.add(usernameTextField).colspan(6).padBottom(50f)

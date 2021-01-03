@@ -16,6 +16,7 @@ import ktx.app.KtxScreen
 import players.ComputerPlayer
 import players.FrontendPlayer
 import players.HumanPlayer
+import screens.leaderboard.LeaderboardScreen
 
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
@@ -32,6 +33,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
     val computerPlayer2Button = TextButton("Computer Player", skin)
 
     val startButton = TextButton("Start", skin)
+    val backButton = TextButton("Go Back", skin)
 
     val titlePlayer1 = Label("Add player1", skin)
     val titlePlayer2 = Label("Add player2", skin)
@@ -77,6 +79,12 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
             }
         })
 
+        backButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToMenuScreen()
+            }
+        })
+
         humanPlayer1Button.setColor(200f, 0f, 0f, 100f)
         humanPlayer2Button.setColor(200f, 0f, 0f, 100f)
         table.width = 800f
@@ -96,6 +104,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         table.row()
         table.add(startButton).colspan(6).padBottom(20f).center()
         table.row()
+        table.add(backButton).colspan(6).padBottom(20f).center()
         stage.addActor(table)
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
@@ -132,5 +141,12 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
             PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)
             PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour, colourName)
         }
+    }
+
+    private fun switchToMenuScreen() {
+        game.removeScreen<MenuScreen>()
+        game.addScreen(MenuScreen(game))
+        dispose()
+        game.setScreen<MenuScreen>()
     }
 }
