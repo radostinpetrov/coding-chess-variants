@@ -14,30 +14,40 @@ class Enpassant : SpecialRules<AbstractChess> {
         val board = game.board
         val moveLog = game.moveLog
         val res = mutableListOf<GameMove2D>()
-        if (moveLog.isEmpty()) {
+        if (moveLog.size < 2) {
             return
         }
-        val prevMove = moveLog[moveLog.size - 1]
-        if (!(prevMove is BasicGameMove && ((prevMove.pieceMoved is WhitePawn || prevMove.pieceMoved is BlackPawn) && abs(prevMove.from.y - prevMove.to.y) == 2))) {
-            return
+        val prevMove = if (player == game.getCurrentPlayer()) {
+            moveLog[moveLog.size - 1]
+        } else {
+            moveLog[moveLog.size - 2]
         }
-        val pawns = board.getPieces(player).filter { p -> (p.first is WhitePawn || p.first is BlackPawn) && (p.second.y == prevMove.to.y) && (abs(p.second.x - prevMove.to.x) == 1) }
-        for (pawn in pawns) {
-            val dy = if (pawn.first is BlackPawn) -1 else 1
-            res.add(
-                GameMove2D.CompositeGameMove(
-                    listOf(
-                        BasicGameMove(
-                            Coordinate2D(pawn.second.x, pawn.second.y),
-                            Coordinate2D(prevMove.to.x, prevMove.to.y), pawn.first, player, prevMove.pieceMoved, checkForCheck = false),
-                        BasicGameMove(
-                            Coordinate2D(prevMove.to.x, prevMove.to.y),
-                            Coordinate2D(prevMove.to.x, prevMove.to.y + dy), pawn.first, player)
-                    ),
-                    player
+
+        if (prevMove is BasicGameMove && (prevMove.pieceMoved is WhitePawn || prevMove.pieceMoved is BlackPawn) && abs(prevMove.from.y - prevMove.to.y) == 2) {
+            val pawns = board.getPieces(player).filter { p -> (p.first is WhitePawn || p.first is BlackPawn) && (p.second.y == prevMove.to.y) && (abs(p.second.x - prevMove.to.x) == 1) }
+            for (pawn in pawns) {
+                val dy = if (pawn.first is BlackPawn) -1 else 1
+                res.add(
+                    GameMove2D.CompositeGameMove(
+                        listOf(
+                            BasicGameMove(
+                                Coordinate2D(pawn.second.x, pawn.second.y),
+                                Coordinate2D(prevMove.to.x, prevMove.to.y), pawn.first, player, prevMove.pieceMoved, checkForCheck = false
+                            ),
+                            BasicGameMove(
+                                Coordinate2D(prevMove.to.x, prevMove.to.y),
+                                Coordinate2D(prevMove.to.x, prevMove.to.y + dy), pawn.first, player
+                            )
+                        ),
+                        player
+                    )
                 )
-            )
+            }
+            moves.addAll(res)
         }
-        moves.addAll(res)
+
+//        if (!(prevMove is BasicGameMove && ((prevMove.pieceMoved is WhitePawn || prevMove.pieceMoved is BlackPawn) && abs(prevMove.from.y - prevMove.to.y) == 2))) {
+//            return
+//        }
     }
 }

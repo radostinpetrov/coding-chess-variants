@@ -46,7 +46,7 @@ class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
 
             undoneMoves.add(move)
             game.undoMove()
-            game.prevPlayer()
+            game.nextPlayer()
         }
 
         for (i in undoneMoves.indices.reversed()) {
