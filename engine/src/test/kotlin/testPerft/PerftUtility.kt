@@ -2,6 +2,7 @@ package testPerft
 
 import gameTypes.chess.AbstractChess
 import org.junit.jupiter.api.Assertions
+import pieces.chess.King
 
 object PerftUtility {
     class PerftData(var nodes: Int, var captures: Int, var checks: Int, var checkmates: Int) {
@@ -22,8 +23,9 @@ object PerftUtility {
             return ("PerftData(nodes = $nodes, captures = $captures, checks = $checks, checkmates = $checkmates)")
         }
     }
-
+    var counter = 0
     fun perft(depth: Int, game: AbstractChess, checkForCheckmate: Boolean = true): PerftData {
+        counter += 1
         if (depth == 0) {
             return PerftData(1, 0, 0, 0)
         }
@@ -33,8 +35,8 @@ object PerftUtility {
         var data = PerftData(0, 0, 0, 0)
 
         for (move in moves) {
-            game.playerMakeMove(move)
 
+            game.playerMakeMove(move)
             if (depth == 1) {
                 if (move.displayPieceCaptured != null) {
                     data.captures += 1

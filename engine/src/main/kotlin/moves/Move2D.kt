@@ -1,9 +1,9 @@
 package moves
 
-import coordinates.Coordinate2D
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import boards.Board2D
+import coordinates.Coordinate2D
 import gameMoves.GameMove2D
+import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import moves.region.Region
 import pieces.Piece2D
 import players.Player
@@ -49,29 +49,32 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
             return result
         }
     }
-    data class Stepper(val direction: Direction, val step: Int, val canCapture: Boolean = false) : Move2D() {
+    data class Stepper(val directions: List<Direction>, val step: Int, val canCapture: Boolean = false) : Move2D() {
+        constructor(direction: Direction, step: Int, canCapture: Boolean = false) : this(listOf(direction), step, canCapture)
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicGameMove> {
             val result = mutableListOf<BasicGameMove>()
-            var s = 1
-            var nextCoordinate = Coordinate2D(
-                coordinate.x + direction.coordinate.x,
-                coordinate.y + direction.coordinate.y
-            )
-            while (s < step) {
-                if (!board.isInBounds(nextCoordinate) || board.getPiece(nextCoordinate) != null) {
-                    return result
-                }
-                nextCoordinate = Coordinate2D(
-                    nextCoordinate.x + direction.coordinate.x,
-                    nextCoordinate.y + direction.coordinate.y
+            for (direction in directions) {
+                var s = 1
+                var nextCoordinate = Coordinate2D(
+                    coordinate.x + direction.coordinate.x,
+                    coordinate.y + direction.coordinate.y
                 )
-                s++
-            }
+                while (s < step) {
+                    if (!board.isInBounds(nextCoordinate) || board.getPiece(nextCoordinate) != null) {
+                        return result
+                    }
+                    nextCoordinate = Coordinate2D(
+                        nextCoordinate.x + direction.coordinate.x,
+                        nextCoordinate.y + direction.coordinate.y
+                    )
+                    s++
+                }
 
-            val destPiece = board.getPiece(nextCoordinate)
-            if (board.isInBounds(nextCoordinate)) {
-                if (destPiece == null || (canCapture && destPiece.player != piece.player)) {
-                    result.add(BasicGameMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                val destPiece = board.getPiece(nextCoordinate)
+                if (board.isInBounds(nextCoordinate)) {
+                    if (destPiece == null || (canCapture && destPiece.player != piece.player)) {
+                        result.add(BasicGameMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                    }
                 }
             }
 
@@ -121,7 +124,7 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
             return result
         }
 
-        private fun helper(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, dx: Int, dy: Int, player: Player): List<BasicGameMove>  {
+        private fun helper(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, dx: Int, dy: Int, player: Player): List<BasicGameMove> {
             val result = mutableListOf<BasicGameMove>()
             var nextCoordinate = Coordinate2D(coordinate.x + dx, coordinate.y + dy)
             var count = 0
@@ -176,6 +179,7 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
         }
     }
     data class AddPromotion(val moves: List<Move2D>, val region: Region, val promoPieces: List<Piece2D>, val forced: Boolean) : Move2D() {
+        constructor(move: Move2D, region: Region, promoPieces: List<Piece2D>, forced: Boolean) : this(listOf(move), region, promoPieces, forced)
         override fun generate(
             board: Board2D,
             coordinate: Coordinate2D,
@@ -187,26 +191,26 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
                 move.generate(board, coordinate, piece, player)
                     .filterIsInstance<BasicGameMove>()
                     .forEach {
-                    if (region.isInRegion(it.to)) {
-                        for (promoPiece in promoPieces) {
-                            result.add(
-                                BasicGameMove(
-                                    it.from,
-                                    it.to,
-                                    it.pieceMoved,
-                                    player,
-                                    it.pieceCaptured,
-                                    promoPiece
+                        if (region.isInRegion(it.to)) {
+                            for (promoPiece in promoPieces) {
+                                result.add(
+                                    BasicGameMove(
+                                        it.from,
+                                        it.to,
+                                        it.pieceMoved,
+                                        player,
+                                        it.pieceCaptured,
+                                        promoPiece
+                                    )
                                 )
-                            )
-                        }
-                        if (!forced) {
+                            }
+                            if (!forced) {
+                                result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
+                            }
+                        } else {
                             result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                         }
-                    } else {
-                        result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                     }
-                }
             }
             return result
         }

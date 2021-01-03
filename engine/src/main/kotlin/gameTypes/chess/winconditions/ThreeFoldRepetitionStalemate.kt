@@ -3,6 +3,7 @@ package gameTypes.chess.winconditions
 import Outcome
 import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
+import pieces.chess.King
 import players.Player
 
 /***
@@ -22,15 +23,16 @@ class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
         // sorted list of valid moves to check if two positions are the same
         val positionCounter: HashMap<Pair<Player, List<GameMove2D>>, Int> = HashMap()
         val undoneMoves: MutableList<GameMove2D> = mutableListOf()
-
         for (i in game.moveLog.indices.reversed()) {
             val move = game.moveLog[i]
-            if (move.displayPieceCaptured != null) {
+
+            if (move is GameMove2D.CompositeGameMove || move.displayPieceCaptured != null) {
                 break
             }
 
             var currentPlayer: Player = game.getCurrentPlayer()
             val validMoves: MutableList<GameMove2D> = mutableListOf()
+
             game.players.map { validMoves.addAll(game.getValidMoves(it)) }
 
             val currentPosition = Pair(currentPlayer, validMoves)
@@ -45,6 +47,7 @@ class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
             }
 
             undoneMoves.add(move)
+
             game.undoMove()
             game.nextPlayer()
         }

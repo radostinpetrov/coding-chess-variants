@@ -18,7 +18,7 @@ import testPerft.PerftUtility.test
 import testPerft.PerftUtility.testSimple
 
 class StandardChessTest {
-    val mockStandardChess = spyk<StandardChess>()
+    val mockStandardChess = StandardChess()
 
     private val board = mockStandardChess.board
 

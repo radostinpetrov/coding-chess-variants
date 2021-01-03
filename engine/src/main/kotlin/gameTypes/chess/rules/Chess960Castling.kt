@@ -41,8 +41,9 @@ class Chess960Castling : SpecialRules<Chess960> {
             }
         }
 
-        val kingCoordinate = board.getPieces(player).find { p -> p.first.player == player && p.first is King }!!.second
-        val king = game.board.getPiece(kingCoordinate) ?: return
+        val king = board.getPieces(player).find { p -> p.first.player == player && p.first is King } ?: return
+        val kingPiece = king.first
+        val kingCoordinate = king.second
 
         var leftRook: Pair<Piece2D, Coordinate2D>? = null
         var rightRook: Pair<Piece2D, Coordinate2D>? = null

@@ -9,7 +9,7 @@ import players.Player
 
 open class WhitePawn(override val player: Player, val startingRow: Int, val promotionRegion: RowRegion, val pawnPromotions: List<Piece2D>) : Piece2D, Pawn {
     constructor(player: Player, startingRow: Int, promotionRow: Int, pawnPromotions: List<Piece2D>) :
-            this(player, startingRow, RowRegion(promotionRow), pawnPromotions)
+        this(player, startingRow, RowRegion(promotionRow), pawnPromotions)
 
     override val moveTypes: List<Move2D> = listOf(
         Move2D.Restricted(Move2D.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
