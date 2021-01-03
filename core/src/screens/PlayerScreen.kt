@@ -1,6 +1,7 @@
 package screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -106,12 +107,18 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
     }
 
     private fun switchToGameScreen(gameType: GameType2D) {
-        val gameScreen = GameScreen(game, gameType, clockList)
+        val clockFlag = clockList != null
+        val gameScreen = GameScreen(game, gameType, clockFlag)
 
         game.removeScreen<GameScreen>()
         val players = mutableListOf<FrontendPlayer>()
-        players.add(createPlayer(playerTypes[0], gameScreen))
-        players.add(createPlayer(playerTypes[1], gameScreen))
+        players.add(createPlayer(playerTypes[0], gameScreen, Color.WHITE, "White"))
+        players.add(createPlayer(playerTypes[1], gameScreen, Color.BLACK, "Black"))
+
+        if (clockFlag) {
+            players[0].endClock = clockList!![0]
+            players[1].endClock = clockList[1]
+        }
 
         gameScreen.initPlayers(players)
 
@@ -120,10 +127,10 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         game.setScreen<GameScreen>()
     }
 
-    private fun createPlayer(player: PlayerType, gameScreen: GameScreen): FrontendPlayer {
+    private fun createPlayer(player: PlayerType, gameScreen: GameScreen, colour: Color, colourName: String): FrontendPlayer {
         return when (player) {
-            PlayerType.HUMAN -> HumanPlayer(gameScreen)
-            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200)
+            PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)
+            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour, colourName)
         }
     }
 }

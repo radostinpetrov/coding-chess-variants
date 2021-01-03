@@ -8,12 +8,13 @@ import gameMoves.GameMove2D.SimpleGameMove
 import gameMoves.GameMove2D.SimpleGameMove.*
 import gameTypes.GameType2D
 import gameTypes.chess.rules.SpecialRules
+import gameTypes.chess.winconditions.StandardWinConditions
 import gameTypes.chess.winconditions.WinCondition
 import pieces.King
 import pieces.Piece2D
 import players.Player
 
-abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>>, startPlayer : Int = 0) : GameType2D {
+abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>> = listOf(StandardWinConditions()), startPlayer: Int = 0) : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = startPlayer
 

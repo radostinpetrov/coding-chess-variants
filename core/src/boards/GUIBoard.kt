@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
+import players.FrontendPlayer
 import players.Player
 
-abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val playerMapping: Map<Player, Color>) {
+abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val libToFrontEndPlayer: Map<Player, FrontendPlayer>) {
 
     val rows = board.rows
     val columns = board.cols
@@ -30,7 +31,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         val pieces = board.getPieces()
 
         for ((p, c) in pieces) {
-            val texture = textures.getTextureFromPiece(p, playerMapping[p.player]!!)
+            val texture = textures.getTextureFromPiece(p, libToFrontEndPlayer[p.player]!!.colour)
             val sprite = Sprite(texture)
 
             val posWithinSquare = (squareWidth - pieceWidth) / 2
