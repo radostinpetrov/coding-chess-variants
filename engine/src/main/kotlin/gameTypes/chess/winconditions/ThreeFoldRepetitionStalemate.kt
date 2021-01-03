@@ -18,8 +18,9 @@ import players.Player
  * The repeated positions need not occur in succession. ***/
 class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<GameMove2D>): Outcome? {
-        // Keep track of count of sorted list of valid moves
-        val positionCounter: HashMap<List<GameMove2D>, Int> = HashMap()
+        // We use a pair of the player that has the move and
+        // sorted list of valid moves to check if two positions are the same
+        val positionCounter: HashMap<Pair<Player, List<GameMove2D>>, Int> = HashMap()
         val undoneMoves: MutableList<GameMove2D> = mutableListOf()
 
         for (i in game.moveLog.indices.reversed()) {
@@ -27,30 +28,30 @@ class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
             if (move.displayPieceCaptured != null) {
                 break
             }
-            println(move)
 
-//            val currentPosition: MutableList<GameMove2D> = mutableListOf()
-            val currentPosition: List<GameMove2D> = game.getValidMoves()
-//            game.players.map { currentPosition.addAll(game.getValidMoves(it)) }
-//            currentPosition.sortBy { it.hashCode() }
-            println(currentPosition)
+            var currentPlayer: Player = game.getCurrentPlayer()
+            val validMoves: MutableList<GameMove2D> = mutableListOf()
+            game.players.map { validMoves.addAll(game.getValidMoves(it)) }
 
+            val currentPosition = Pair(currentPlayer, validMoves)
             positionCounter[currentPosition] =
                 positionCounter.getOrDefault(currentPosition, 0) + 1
-            println(positionCounter[currentPosition])
             if (positionCounter[currentPosition] == 3) {
                 for (j in undoneMoves.indices.reversed()) {
                     game.makeMove(undoneMoves[j])
+                    game.nextPlayer()
                 }
                 return Outcome.Draw("Stalemate by Threefold Repetition")
             }
 
             undoneMoves.add(move)
             game.undoMove()
+            game.prevPlayer()
         }
 
         for (i in undoneMoves.indices.reversed()) {
             game.makeMove(undoneMoves[i])
+            game.nextPlayer()
         }
         return null
     }

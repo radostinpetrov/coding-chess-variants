@@ -28,6 +28,12 @@ interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: Game
     fun makeMove(gameMove: GM)
     fun undoMove()
     fun inCheck(player: Player) : Boolean
+
+    fun prevPlayer() {
+        playerTurn--
+        playerTurn += players.size
+        playerTurn %= players.size
+    }
     fun nextPlayer() {
         playerTurn++
         playerTurn %= players.size

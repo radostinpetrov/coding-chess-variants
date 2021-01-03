@@ -15,7 +15,6 @@ import pieces.janggi.General
 
 class StalemateTest {
     val mockStandardChess = spyk<StandardChess>()
-    val mockJanggiChess = spyk<Janggi>()
     val board = mockStandardChess.board
 
     val player1 = mockStandardChess.players[0]
@@ -75,10 +74,11 @@ class StalemateTest {
 
     @Test
     fun threeFoldRepetitionStalemateTest() {
-        mockJanggiChess.initGame()
+        val janggi = Janggi()
+        janggi.initGame()
 
-        val player1 = mockJanggiChess.players[0]
-        val player2 = mockJanggiChess.players[1]
+        val player1 = janggi.players[0]
+        val player2 = janggi.players[1]
 
         val general1Pos = Coordinate2D(4, 1)
         val general2Pos = Coordinate2D(4, 8)
@@ -87,13 +87,15 @@ class StalemateTest {
             BasicGameMove(general1Pos, general1Pos, General(player1), player1),
             BasicGameMove(general2Pos, general2Pos, General(player2), player2),
             BasicGameMove(general1Pos, general1Pos, General(player1), player1),
+            BasicGameMove(general2Pos, general2Pos, General(player2), player2),
+            BasicGameMove(general1Pos, general1Pos, General(player1), player1),
             )
 
         for (move in stalemateMoves) {
-            mockJanggiChess.makeMove(move)
+            janggi.makeMove(move)
         }
 
-        val outcome = mockJanggiChess.getOutcome(player2)
+        val outcome = janggi.getOutcome(player2)
         assertEquals(Outcome.Draw("Stalemate by Threefold Repetition"), outcome)
     }
 }
