@@ -18,12 +18,8 @@ data class GrandWhitePawn(override val player: Player) : Piece2D {
     )
     override val moveTypes: List<Move2D> = listOf(
         Move2D.Restricted(Move2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
-        Move2D.AddPromotion(moveList[0], forcedPromotionRegion, pawnPromotions, true),
-        Move2D.AddPromotion(moveList[1], forcedPromotionRegion, pawnPromotions, true),
-        Move2D.AddPromotion(moveList[2], forcedPromotionRegion, pawnPromotions, true),
-        Move2D.AddPromotion(moveList[0], optionalPromotionRegion, pawnPromotions, false),
-        Move2D.AddPromotion(moveList[1], optionalPromotionRegion, pawnPromotions, false),
-        Move2D.AddPromotion(moveList[2], optionalPromotionRegion, pawnPromotions, false)
+        Move2D.AddPromotion(moveList, forcedPromotionRegion, pawnPromotions, true),
+        Move2D.AddPromotion(moveList, optionalPromotionRegion, pawnPromotions, false),
     )
 
     override fun getSymbol(): String {

@@ -175,7 +175,7 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
             }
         }
     }
-    data class AddPromotion(val move: Move2D, val region: Region, val promoPieces: List<Piece2D>, val forced: Boolean) : Move2D() {
+    data class AddPromotion(val moves: List<Move2D>, val region: Region, val promoPieces: List<Piece2D>, val forced: Boolean) : Move2D() {
         override fun generate(
             board: Board2D,
             coordinate: Coordinate2D,
@@ -183,25 +183,29 @@ sealed class Move2D : Move<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
             player: Player
         ): List<BasicGameMove> {
             val result: MutableList<BasicGameMove> = mutableListOf()
-            move.generate(board, coordinate, piece, player).filterIsInstance<BasicGameMove>().forEach {
-                if (region.isInRegion(it.to)) {
-                    for (promoPiece in promoPieces) {
-                        result.add(
-                            BasicGameMove(
-                                it.from,
-                                it.to,
-                                it.pieceMoved,
-                                player,
-                                it.pieceCaptured,
-                                promoPiece
+            moves.forEach { move ->
+                move.generate(board, coordinate, piece, player)
+                    .filterIsInstance<BasicGameMove>()
+                    .forEach {
+                    if (region.isInRegion(it.to)) {
+                        for (promoPiece in promoPieces) {
+                            result.add(
+                                BasicGameMove(
+                                    it.from,
+                                    it.to,
+                                    it.pieceMoved,
+                                    player,
+                                    it.pieceCaptured,
+                                    promoPiece
+                                )
                             )
-                        )
-                    }
-                    if (!forced) {
+                        }
+                        if (!forced) {
+                            result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
+                        }
+                    } else {
                         result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                     }
-                } else {
-                    result.add(BasicGameMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                 }
             }
             return result

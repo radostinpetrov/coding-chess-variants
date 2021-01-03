@@ -10,19 +10,11 @@ open class WhitePawn(override val player: Player, val startingRow: Int, val prom
     override val moveTypes: List<Move2D> = listOf(
         Move2D.Restricted(Move2D.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
         Move2D.AddPromotion(
-            Move2D.Stepper(Direction.NORTH, 1),
-            RowRegion(promotionRow),
-            pawnPromotions,
-            true
-        ),
-        Move2D.AddPromotion(
-            Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_EAST, 1, true)),
-            RowRegion(promotionRow),
-            pawnPromotions,
-            true
-        ),
-        Move2D.AddPromotion(
-            Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_WEST, 1, true)),
+            listOf(
+                Move2D.Stepper(Direction.NORTH, 1),
+                Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_EAST, 1, true)),
+                Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_WEST, 1, true)),
+            ),
             RowRegion(promotionRow),
             pawnPromotions,
             true
