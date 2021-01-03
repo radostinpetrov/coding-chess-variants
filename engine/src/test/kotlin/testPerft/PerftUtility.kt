@@ -23,9 +23,8 @@ object PerftUtility {
             return ("PerftData(nodes = $nodes, captures = $captures, checks = $checks, checkmates = $checkmates)")
         }
     }
-    var counter = 0
+
     fun perft(depth: Int, game: AbstractChess, checkForCheckmate: Boolean = true): PerftData {
-        counter += 1
         if (depth == 0) {
             return PerftData(1, 0, 0, 0)
         }

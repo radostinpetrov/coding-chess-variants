@@ -16,7 +16,7 @@ class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight
         val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
 
         val playerCanCastleLeft = if (player == game.players[0]) p1CanCastleLeft else p2CanCastleLeft
-        val playerCanCastleRight = if (player == game.players[1]) p2CanCastleRight else p2CanCastleRight
+        val playerCanCastleRight = if (player == game.players[0]) p1CanCastleRight else p2CanCastleRight
 
         for (move in currentPlayerMoves) {
             when (move) {

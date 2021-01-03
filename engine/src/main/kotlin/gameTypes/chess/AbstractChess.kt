@@ -42,9 +42,6 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             throw Exception("Not a valid player")
         }
         val possibleMoves = getPossibleMoves(player).toMutableList()
-        if (possibleMoves.any {it.displayPieceCaptured is King}) {
-            val reee = getPossibleMoves(player).toMutableList()
-        }
         val moves = filterForCheck(player, possibleMoves)
         return moves
     }
@@ -66,18 +63,7 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
         for (move in possibleMoves) {
             when (move) {
                 is SimpleGameMove -> {
-                    if (move.displayPieceCaptured is King) {
-                        println("...")
-                    }
                     makeMove(move)
-                    try {
-                        val player1 = getCurrentPlayer()
-                        val player2 = getNextPlayer()
-                        val kingCoordinate1 = board.getPieces(player1).find { p -> p.first.player == player1 && p.first is pieces.chess.King }!!.second
-                        val kingCoordinate2 = board.getPieces(player2).find { p -> p.first.player == player2 && p.first is pieces.chess.King }!!.second
-                    } catch (e: Exception) {
-                        println("OK")
-                    }
                     if (!move.checkForCheck || !inCheck(player)) {
                         res.add(move)
                     }
