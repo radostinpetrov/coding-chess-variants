@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
+import gameTypes.GameType
 import gameTypes.GameType2D
 import gameTypes.chess.*
 import gameTypes.xiangqi.Janggi
@@ -46,6 +47,18 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
     val usernameLabel = Label("Online Username: ", skin)
     val usernameTextField = TextField("Guest", skin)
+
+    val startButton = TextButton("Start", skin)
+
+    var chessType: GameType2D = StandardChess()
+    val chessTypes = mapOf(standardChessButton to StandardChess(),
+        grandChessButton to GrandChess(),
+        capablancaChessButton to CapablancaChess(),
+        chess960Button to Chess960(),
+        janggiButton to Janggi(),
+        xiangqiButton to Xiangqi(),
+        antiChessButton to AntiChess(),
+        miniChessButton to MiniChess())
 
     override fun show() {
         onlineModeButton.addListener(object : ChangeListener() {
@@ -114,49 +127,55 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
         standardChessButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                switchToPreGameScreen(StandardChess(), isOnline)
+                selectChessType(standardChessButton)
             }
         })
 
         grandChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(GrandChess(), isOnline)
+                selectChessType(grandChessButton)
             }
         })
 
         capablancaChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(CapablancaChess(), isOnline)
+                selectChessType(capablancaChessButton)
             }
         })
 
         chess960Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(Chess960(), isOnline)
+                selectChessType(chess960Button)
             }
         })
 
         janggiButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(Janggi(), isOnline)
+                selectChessType(janggiButton)
             }
         })
 
         xiangqiButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(Xiangqi(), isOnline)
+                selectChessType(xiangqiButton)
             }
         })
 
         antiChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(AntiChess(), isOnline)
+                selectChessType(antiChessButton)
             }
         })
 
         miniChessButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                switchToPreGameScreen(MiniChess(), isOnline)
+                selectChessType(miniChessButton)
+            }
+        })
+
+        startButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                switchToPreGameScreen(chessType, isOnline)
             }
         })
 
@@ -168,6 +187,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
         noClockButton.setColor(200f, 0f, 0f, 100f)
         localModeButton.setColor(200f, 0f, 0f, 100f)
+        standardChessButton.setColor(200f, 0f, 0f, 100f)
 
         table.width = 800f
         table.height = 800f
@@ -197,13 +217,13 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(janggiButton).colspan(4).padBottom(20f)
         table.add(xiangqiButton).colspan(4).padBottom(20f)
         table.row()
-        table.add(antiChessButton).colspan(4).padBottom(50f)
-        table.add(miniChessButton).colspan(4).padBottom(50f)
+        table.add(antiChessButton).colspan(4).padBottom(40f)
+        table.add(miniChessButton).colspan(4).padBottom(40f)
         table.row()
-        table.add(leaderboardButton).colspan(12).padTop(100f).padBottom(20f).center()
+        table.add(startButton).colspan(12).padBottom(30f).center()
         table.row()
-//        table.add(startButton).colspan(6).padBottom(20f).center()
-//        table.row()
+        table.add(leaderboardButton).colspan(12).padTop(50f).padBottom(20f).center()
+        table.row()
         stage.addActor(table)
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
@@ -233,5 +253,16 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         game.addScreen(LeaderboardScreen(game))
         game.setScreen<LeaderboardScreen>()
         dispose()
+    }
+
+    private fun selectChessType(button: TextButton) {
+        chessType = chessTypes[button]!!
+        for ((b, t) in chessTypes) {
+            if (t == chessType) {
+                b.setColor(200f, 0f, 0f, 100f)
+            } else {
+                b.setColor(255f, 255f, 255f, 100f)
+            }
+        }
     }
 }
