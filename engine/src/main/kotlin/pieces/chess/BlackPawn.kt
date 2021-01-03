@@ -28,6 +28,14 @@ open class BlackPawn(override val player: Player, val startingRow: Int, val prom
             )
         )
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is BlackPawn) {
+            return false
+        }
+
+        return (other.startingRow == this.startingRow && other.promotionRegion == this.promotionRegion && other.pawnPromotions == this.pawnPromotions)
+    }
+
     override fun getSymbol(): String {
         return "P"
     }

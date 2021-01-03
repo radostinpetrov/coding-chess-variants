@@ -25,6 +25,10 @@ open class WhitePawn(override val player: Player, val startingRow: Int, val prom
         ),
     )
 
+    override fun equals(other: Any?): Boolean {
+        return (other is WhitePawn && other.player == this.player && other.startingRow == this.startingRow && other.promotionRegion == this.promotionRegion && other.pawnPromotions == this.pawnPromotions)
+    }
+
     override fun getSymbol(): String {
         return "P"
     }

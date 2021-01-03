@@ -75,12 +75,12 @@ class JanggiTest {
 
     @Test
     fun testJanggiInitialPositionsWithDepth1() {
-        PerftUtility.testSimple(Janggi(), 1, 31)
+        PerftUtility.testSimple(Janggi(), 1, 32)
     }
 
     @Test
     fun testJanggiInitialPositionsWithDepth2() {
-        PerftUtility.testSimple(Janggi(), 2, 949)
+        PerftUtility.testSimple(Janggi(), 2, 1012)
     }
 
 //    @Test

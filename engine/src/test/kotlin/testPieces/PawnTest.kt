@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.StandardWhitePawn
+import pieces.chess.WhitePawn
 import players.Player
 
 class PawnTest {
@@ -22,7 +23,7 @@ class PawnTest {
     fun checkPawnMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val firstPawn = (moves.first { it is BasicGameMove && it.pieceMoved is StandardWhitePawn } as BasicGameMove).pieceMoved
+        val firstPawn = (moves.first { it is BasicGameMove && it.pieceMoved is WhitePawn } as BasicGameMove).pieceMoved
         val firstPawnMoves = moves.filter { it is BasicGameMove && it.pieceMoved === firstPawn }
         Assertions.assertTrue(firstPawnMoves.size == 2)
         mockStandardChess.makeMove(firstPawnMoves[0])
