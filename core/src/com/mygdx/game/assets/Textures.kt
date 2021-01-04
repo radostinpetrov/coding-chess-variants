@@ -3,8 +3,13 @@ package com.mygdx.game.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import pieces.Piece
 import pieces.Piece2D
+import pieces.chess.*
+import pieces.xiangqi.*
+import pieces.janggi.*
+import pieces.antichess.*
+import java.lang.UnsupportedOperationException
+import kotlin.reflect.KClass
 
 class Textures(assets: AssetManager) {
     val whitePawn = assets[TextureAssets.WhitePawn]
@@ -38,37 +43,38 @@ class Textures(assets: AssetManager) {
     val blackHorse = assets[TextureAssets.BlackHorse]
     val blackSoldier = assets[TextureAssets.BlackSoldier]
 
-    // instead of symbol, use something else...
-    val whites = mapOf(
-        "WhitePawn" to whitePawn, "StandardWhitePawn" to whitePawn, "GrandWhitePawn" to whitePawn, "Rook" to whiteRook,
-        "Knight" to whiteKnight, "Bishop" to whiteBishop, "Queen" to whiteQueen, "King" to whiteKing,
-        "Cardinal" to whiteCardinal, "Marshal" to whiteMarshal, "Advisor" to whiteAdvisor,
-        "Cannon" to whiteCannon, "Chariot" to whiteChariot, "Elephant" to whiteElephant,
-        "General" to whiteGeneral, "Horse" to whiteHorse, "RedSoldier" to whiteSoldier,
-        "XiangqiAdvisor" to whiteAdvisor, "XiangqiCannon" to whiteCannon, "XiangqiChariot" to whiteChariot,
-        "XiangqiRedElephant" to whiteElephant, "XiangqiGeneral" to whiteGeneral, "XiangqiHorse" to whiteHorse,
-        "XiangqiRedSoldier" to whiteSoldier, "AntiChessWhitePawn" to whitePawn, "AntiChessKing" to whiteKing,
-        "CapablancaWhitePawn" to whitePawn
+    val whites = mapOf<KClass<*>, Texture>(
+        WhitePawn::class to whitePawn, StandardWhitePawn::class to whitePawn, GrandWhitePawn::class to whitePawn, Rook::class to whiteRook,
+        Knight::class to whiteKnight, Bishop::class to whiteBishop, Queen::class to whiteQueen, King::class to whiteKing,
+        Cardinal::class to whiteCardinal, Marshal::class to whiteMarshal, Advisor::class to whiteAdvisor,
+        Cannon::class to whiteCannon, Chariot::class to whiteChariot, Elephant::class to whiteElephant,
+        General::class to whiteGeneral, Horse::class to whiteHorse, RedSoldier::class to whiteSoldier,
+        XiangqiAdvisor::class to whiteAdvisor, XiangqiCannon::class to whiteCannon, XiangqiChariot::class to whiteChariot,
+        XiangqiRedElephant::class to whiteElephant, XiangqiGeneral::class to whiteGeneral, XiangqiHorse::class to whiteHorse,
+        XiangqiRedSoldier::class to whiteSoldier, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
+        CapablancaWhitePawn::class to whitePawn
     )
 
     val blacks = mapOf(
-        "BlackPawn" to blackPawn, "StandardBlackPawn" to blackPawn, "GrandBlackPawn" to blackPawn, "Rook" to blackRook,
-        "Knight" to blackKnight, "Bishop" to blackBishop, "Queen" to blackQueen, "King" to blackKing,
-        "Cardinal" to blackCardinal, "Marshal" to blackMarshal, "Advisor" to blackAdvisor,
-        "Cannon" to blackCannon, "Chariot" to blackChariot, "Elephant" to blackElephant,
-        "General" to blackGeneral, "Horse" to blackHorse, "BlueSoldier" to blackSoldier,
-        "XiangqiAdvisor" to blackAdvisor, "XiangqiCannon" to blackCannon, "XiangqiChariot" to blackChariot,
-        "XiangqiBlueElephant" to blackElephant, "XiangqiGeneral" to blackGeneral, "XiangqiHorse" to blackHorse,
-        "XiangqiBlueSoldier" to blackSoldier, "AntiChessBlackPawn" to blackPawn, "AntiChessKing" to blackKing,
-        "CapablancaBlackPawn" to blackPawn
+        BlackPawn::class to blackPawn, StandardBlackPawn::class to blackPawn, GrandBlackPawn::class to blackPawn, Rook::class to blackRook,
+        Knight::class to blackKnight, Bishop::class to blackBishop, Queen::class to blackQueen, King::class to blackKing,
+        Cardinal::class to blackCardinal, Marshal::class to blackMarshal, Advisor::class to blackAdvisor,
+        Cannon::class to blackCannon, Chariot::class to blackChariot, Elephant::class to blackElephant,
+        General::class to blackGeneral, Horse::class to blackHorse, BlueSoldier::class to blackSoldier,
+        XiangqiAdvisor::class to blackAdvisor, XiangqiCannon::class to blackCannon, XiangqiChariot::class to blackChariot,
+        XiangqiBlueElephant::class to blackElephant, XiangqiGeneral::class to blackGeneral, XiangqiHorse::class to blackHorse,
+        XiangqiBlueSoldier::class to blackSoldier, AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
+        CapablancaBlackPawn::class to blackPawn
     )
 
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites
             Color.BLACK -> blacks
-            else -> TODO()
+            else -> {
+                throw UnsupportedOperationException("Only two players are supported")
+            }
         }
-        return col["${piece::class.simpleName}"]
+        return col[piece::class]
     }
 }

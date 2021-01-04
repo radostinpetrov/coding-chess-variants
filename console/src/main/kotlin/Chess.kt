@@ -1,8 +1,6 @@
 import gameTypes.chess.AbstractChess
 import gameTypes.chess.CapablancaChess
-import gameTypes.chess.StandardChess
 import notationFormatter.ChessNotationInput
-import players.ComputerConsolePlayer
 
 fun main() {
     println("Let's play chess!")

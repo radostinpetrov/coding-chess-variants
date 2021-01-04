@@ -33,7 +33,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
     val gameModeTitle = Label("Select Game Mode", skin)
     val onlineModeButton = TextButton("Play Online", skin)
-    val localModeButton = TextButton("Play Local/Against Computer", skin)
+    val localModeButton = TextButton("Play Local", skin)
     var isOnline = false
 
     val clockTitle = Label("Select Clock Options", skin)
