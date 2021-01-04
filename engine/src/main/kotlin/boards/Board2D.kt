@@ -3,10 +3,11 @@ package boards
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import moves.Move2D
+import moves.region.Region
 import pieces.Piece2D
 import players.Player
 
-class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
+class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Region? = null) : Board<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Array<Array<Piece2D?>> {
         return board
@@ -16,6 +17,9 @@ class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D,
         val res = mutableListOf<Pair<Piece2D, Coordinate2D>>()
         for (i in 0 until rows) {
             for (j in 0 until cols) {
+                if (!isInBounds(Coordinate2D(i, j))) {
+                    continue
+                }
                 val c = Coordinate2D(j, i)
                 val p = getPiece(c)
                 if (p != null) {
@@ -67,6 +71,9 @@ class Board2D(val rows: Int, val cols: Int) : Board<Board2D, Move2D, GameMove2D,
     }
 
     fun isInBounds(coordinate: Coordinate2D): Boolean {
-        return (coordinate.x >= 0) && (coordinate.y >= 0) && (coordinate.x < cols) && (coordinate.y < rows)
+        if (coordinate.x < 0 || coordinate.y < 0 || coordinate.x >= cols || coordinate.y >= rows) {
+            return false
+        }
+        return outOfBoundsRegion == null || !outOfBoundsRegion.isInRegion(coordinate)
     }
 }
