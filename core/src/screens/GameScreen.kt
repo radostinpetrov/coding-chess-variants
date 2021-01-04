@@ -33,6 +33,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
     private var panelWidth: Int = 300
 
+    private val font = game.font
+    private val batch = game.batch
+
     var srcX: Int? = null
     var srcY: Int? = null
     var dstX: Int? = null
@@ -102,7 +105,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
         guiBoard = when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
-            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
+            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font)
         }
 
         libToFrontendPlayer[currPlayer!!]!!.signalTurn()
@@ -349,9 +352,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         shapeRenderer.color = Color.WHITE
         shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
         shapeRenderer.end()
-
-        val batch = game.batch
-        val font = game.font
 
         var i = 0
         var history: List<GameMove2D> = gameEngine.moveLog.toList()

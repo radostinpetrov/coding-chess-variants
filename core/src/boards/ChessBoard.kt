@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import gameMoves.GameMove2D
@@ -16,11 +18,12 @@ class ChessBoard(
     batch: Batch,
     squareWidth: Float,
     textures: Textures,
-    playerMapping: Map<Player, FrontendPlayer>
+    playerMapping: Map<Player, FrontendPlayer>,
+    font: BitmapFont
 ) : GUIBoard(
     shapeRenderer, board, batch,
     squareWidth,
-    textures, playerMapping
+    textures, playerMapping, font
 ) {
 
     override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
@@ -55,5 +58,23 @@ class ChessBoard(
         }
 
         shapeRenderer.end()
+
+
+        batch.begin()
+        font!!.setColor(Color.BLACK)
+        font.data.setScale(1.3f)
+
+        var letter = 'a'
+        for (i in 0 until columns) {
+            font.draw(batch, letter.toString(), squareWidth * (i + 1) - 20, 20f)
+            letter += 1
+        }
+
+        for (i in 0 until rows) {
+            font.draw(batch, (i + 1).toString(), 10f, squareWidth * (i + 1) - 10)
+        }
+        font.data.setScale(1f)
+
+        batch.end()
     }
 }

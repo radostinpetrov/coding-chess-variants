@@ -20,7 +20,7 @@ class XiangqiBoard(
 ) : GUIBoard(
     shapeRenderer, board, batch,
     squareWidth,
-    textures, playerMapping
+    textures, playerMapping, font = null
 ) {
 
     private fun drawLineWithCenterOffset(x1: Int, y1: Int, x2: Int, y2: Int, width: Float) {

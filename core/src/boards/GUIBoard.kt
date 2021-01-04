@@ -4,13 +4,15 @@ import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import players.FrontendPlayer
 import players.Player
 
-abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val libToFrontEndPlayer: Map<Player, FrontendPlayer>) {
+abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, val batch: Batch, val squareWidth: Float, val textures: Textures, val libToFrontEndPlayer: Map<Player, FrontendPlayer>, val font: BitmapFont?) {
 
     val rows = board.rows
     val columns = board.cols
