@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm") version "1.4.10"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+//    kotlin("plugin.serialization") version "1.4.10"
 }
 group = "me.lukyxu"
 version = "1.0-SNAPSHOT"
@@ -12,6 +13,8 @@ version = "1.0-SNAPSHOT"
 val ktxVersion = "1.9.10-b2"
 val gdxVersion = "1.9.11"
 val kotlinVersion = "1.4.10"
+val ktorVersion = "1.5.0"
+val logbackVersion = "1.2.1"
 
 repositories {
     mavenCentral()
@@ -108,5 +111,25 @@ project(":console") {
     dependencies {
         implementation(project(":engine"))
         implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    }
+}
+
+project(":server") {
+    tasks.withType<KotlinCompile>() {
+        kotlinOptions.jvmTarget = "11"
+    }
+
+    dependencies {
+        implementation(project(":engine"))
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+        implementation("io.ktor:ktor-server-netty:$ktorVersion")
+        implementation("io.ktor:ktor-server-core:$ktorVersion")
+        implementation("io.ktor:ktor-websockets:$ktorVersion")
+        implementation("ch.qos.logback:logback-classic:$logbackVersion")
+        implementation("org.litote.kmongo:kmongo:4.2.3")
+        implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+//        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+        testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+
     }
 }
