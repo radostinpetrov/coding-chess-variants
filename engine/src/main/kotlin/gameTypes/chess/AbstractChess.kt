@@ -10,15 +10,15 @@ import gameTypes.GameType2D
 import gameTypes.chess.rules.SpecialRules2D
 import gameTypes.chess.winconditions.StandardWinConditions
 import gameTypes.chess.winconditions.WinCondition2D
-import pieces.King
 import pieces.Piece2D
+import pieces.Royal
 import players.Player
 
 abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = listOf(), var winConditions: List<WinCondition2D<AbstractChess>> = listOf(StandardWinConditions()), startPlayer: Int = 0) : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = startPlayer
     // This is set as the winner when either player concedes
-    private var concededWinner : Player? = null
+    private var concededWinner: Player? = null
 
     override var seed: Double? = null
 
@@ -95,7 +95,7 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
     }
 
     override fun inCheck(player: Player): Boolean {
-        val king = board.getPieces(player).find { p -> p.first.player == player && p.first is King } ?: return false
+        val king = board.getPieces(player).find { p -> p.first.player == player && p.first is Royal } ?: return false
         val kingCoordinate = king.second
         return squareUnderAttack(kingCoordinate, player)
     }

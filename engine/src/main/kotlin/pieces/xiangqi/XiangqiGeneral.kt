@@ -6,11 +6,11 @@ import moves.Move2D
 import moves.region.BoxRegion
 import moves.region.CompositeRegion
 import moves.region.CoordinateRegion
-import pieces.King
+import pieces.Royal
 import pieces.Piece2D
 import players.Player
 
-data class XiangqiGeneral(override val player: Player) : Piece2D, King {
+data class XiangqiGeneral(override val player: Player) : Piece2D, Royal {
     private val palace1 = BoxRegion(Coordinate2D(3, 0), Coordinate2D(5, 2))
     private val palace2 = BoxRegion(Coordinate2D(3, 7), Coordinate2D(5, 9))
     private val palace = CompositeRegion(listOf(palace1, palace2))

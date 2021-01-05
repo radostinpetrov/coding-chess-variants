@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
+import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import players.FrontendPlayer
 import players.Player
@@ -36,7 +37,9 @@ class ChessBoard(
 
         for (i in 0 until columns) {
             for (j in 0 until rows) {
-                if ((i + j) % 2 == 0) {
+                if (!board.isInBounds(Coordinate2D(i, j))) {
+                    shapeRenderer.color = Color.WHITE
+                } else if ((i + j) % 2 == 0) {
                     shapeRenderer.color = colour1
                 } else {
                     shapeRenderer.color = colour2

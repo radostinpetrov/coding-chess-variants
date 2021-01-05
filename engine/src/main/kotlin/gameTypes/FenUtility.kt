@@ -2,7 +2,6 @@ package gameTypes
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import pieces.Piece
 import pieces.Piece2D
 import pieces.chess.*
 import players.Player
@@ -46,13 +45,11 @@ class FenUtility(
         }
         castling = fields[2]
 
-        p1CanCastleLeft =  castling.contains("Q")
+        p1CanCastleLeft = castling.contains("Q")
         p1CanCastleRight = castling.contains("K")
-        p2CanCastleLeft =  castling.contains("q")
+        p2CanCastleLeft = castling.contains("q")
         p2CanCastleRight = castling.contains("k")
     }
-
-
 
 //    fun mapSymbol(symbol: Character, )
 
@@ -95,7 +92,6 @@ class FenUtility(
                         x += 1
                     }
                 }
-
             }
             y -= 1
         }

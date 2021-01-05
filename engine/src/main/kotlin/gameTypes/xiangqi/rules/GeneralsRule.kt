@@ -4,7 +4,7 @@ import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
 import gameTypes.chess.rules.SpecialRules2D
-import pieces.King
+import pieces.Royal
 import players.Player
 import kotlin.math.max
 import kotlin.math.min
@@ -16,7 +16,7 @@ class GeneralsRule : SpecialRules2D<AbstractChess> {
 
     private fun generalsFaceEachOther(game: AbstractChess, move: GameMove2D): Boolean {
         game.makeMove(move)
-        val generalCoordinates = game.board.getPieces().filter { it.first is King }
+        val generalCoordinates = game.board.getPieces().filter { it.first is Royal }
         if (generalCoordinates.size < 2) {
             game.undoMove()
             return false

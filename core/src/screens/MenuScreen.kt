@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
-import gameTypes.GameType
 import gameTypes.GameType2D
 import gameTypes.chess.*
 import gameTypes.xiangqi.Janggi
@@ -29,6 +28,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val xiangqiButton = TextButton("Xiangqi", skin)
     val antiChessButton = TextButton("AntiChess", skin)
     val miniChessButton = TextButton("MiniChess", skin)
+    val balbosGameButton = TextButton("Balbo's Game", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -51,14 +51,17 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val startButton = TextButton("Start", skin)
 
     var chessType: GameType2D = StandardChess()
-    val chessTypes = mapOf(standardChessButton to StandardChess(),
+    val chessTypes = mapOf(
+        standardChessButton to StandardChess(),
         grandChessButton to GrandChess(),
         capablancaChessButton to CapablancaChess(),
         chess960Button to Chess960(),
         janggiButton to Janggi(),
         xiangqiButton to Xiangqi(),
         antiChessButton to AntiChess(),
-        miniChessButton to MiniChess())
+        miniChessButton to MiniChess(),
+        balbosGameButton to BalbosGame()
+    )
 
     override fun show() {
         onlineModeButton.addListener(object : ChangeListener() {
@@ -173,6 +176,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        balbosGameButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                selectChessType(balbosGameButton)
+            }
+        })
+
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToPreGameScreen(chessType, isOnline)
@@ -219,6 +228,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.row()
         table.add(antiChessButton).colspan(4).padBottom(40f)
         table.add(miniChessButton).colspan(4).padBottom(40f)
+        table.add(balbosGameButton).colspan(4).padBottom(40f)
         table.row()
         table.add(startButton).colspan(12).padBottom(30f).center()
         table.row()
