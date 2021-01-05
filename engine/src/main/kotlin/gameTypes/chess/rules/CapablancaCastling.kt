@@ -8,7 +8,7 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
-class CapablancaCastling : SpecialRules<CapablancaChess> {
+class CapablancaCastling : SpecialRules2D<CapablancaChess> {
     override fun getPossibleMoves(game: CapablancaChess, player: Player, moves: MutableList<GameMove2D>) {
         val board = game.board
         val moveLog = game.moveLog

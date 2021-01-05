@@ -9,7 +9,7 @@ import pieces.chess.WhitePawn
 import players.Player
 import kotlin.math.abs
 
-class Enpassant : SpecialRules<AbstractChess> {
+class Enpassant : SpecialRules2D<AbstractChess> {
     override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<GameMove2D>) {
         val board = game.board
         val moveLog = game.moveLog

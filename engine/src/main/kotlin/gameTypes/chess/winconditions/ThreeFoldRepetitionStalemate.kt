@@ -3,7 +3,6 @@ package gameTypes.chess.winconditions
 import Outcome
 import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
-import pieces.chess.King
 import players.Player
 
 /***
@@ -17,7 +16,7 @@ import players.Player
  * and the possibility to capture en passant is the same.
  *
  * The repeated positions need not occur in succession. ***/
-class ThreeFoldRepetitionStalemate : WinCondition<AbstractChess> {
+class ThreeFoldRepetitionStalemate : WinCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<GameMove2D>): Outcome? {
         // We use a pair of the player that has the move and
         // sorted list of valid moves to check if two positions are the same

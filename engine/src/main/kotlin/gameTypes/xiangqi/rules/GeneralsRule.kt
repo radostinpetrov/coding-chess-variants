@@ -3,13 +3,13 @@ package gameTypes.xiangqi.rules
 import coordinates.Coordinate2D
 import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
-import gameTypes.chess.rules.SpecialRules
+import gameTypes.chess.rules.SpecialRules2D
 import pieces.King
 import players.Player
 import kotlin.math.max
 import kotlin.math.min
 
-class GeneralsRule : SpecialRules<AbstractChess> {
+class GeneralsRule : SpecialRules2D<AbstractChess> {
     override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<GameMove2D>) {
         moves.retainAll { !generalsFaceEachOther(game, it) }
     }

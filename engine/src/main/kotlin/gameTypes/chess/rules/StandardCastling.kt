@@ -8,7 +8,7 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
-class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight: Boolean = true, val p2CanCastleLeft: Boolean = true, val p2CanCastleRight: Boolean = true) : SpecialRules<StandardChess> {
+class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight: Boolean = true, val p2CanCastleLeft: Boolean = true, val p2CanCastleRight: Boolean = true) : SpecialRules2D<StandardChess> {
     override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<GameMove2D>) {
         val board = game.board
         val moveLog = game.moveLog

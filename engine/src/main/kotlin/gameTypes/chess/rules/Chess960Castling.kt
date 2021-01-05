@@ -10,7 +10,7 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
-class Chess960Castling : SpecialRules<Chess960> {
+class Chess960Castling : SpecialRules2D<Chess960> {
     override fun getPossibleMoves(game: Chess960, player: Player, moves: MutableList<GameMove2D>) {
         val board = game.board
         val moveLog = game.moveLog

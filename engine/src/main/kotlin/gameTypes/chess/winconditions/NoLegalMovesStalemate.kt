@@ -5,7 +5,7 @@ import gameMoves.GameMove2D
 import gameTypes.chess.AbstractChess
 import players.Player
 
-class NoLegalMovesStalemate : WinCondition<AbstractChess> {
+class NoLegalMovesStalemate : WinCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<GameMove2D>): Outcome? {
         if (moves.isEmpty()) {
             return Outcome.Draw("by No Legal Moves")

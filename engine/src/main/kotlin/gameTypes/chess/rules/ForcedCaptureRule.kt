@@ -5,7 +5,7 @@ import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
 import gameTypes.chess.AbstractChess
 import players.Player
 
-class ForcedCaptureRule : SpecialRules<AbstractChess> {
+class ForcedCaptureRule : SpecialRules2D<AbstractChess> {
     override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<GameMove2D>) {
         val pred = { it: GameMove2D -> it is BasicGameMove && it.pieceCaptured != null }
         if (moves.any(pred)) {
