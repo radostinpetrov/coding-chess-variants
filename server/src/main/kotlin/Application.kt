@@ -3,7 +3,6 @@ package server
 import Outcome
 import com.mongodb.MongoWriteException
 import com.mongodb.client.MongoCollection
-import gameTypes.GameType2D
 import gameTypes.chess.*
 import gameTypes.xiangqi.*
 import io.ktor.application.*
@@ -12,7 +11,9 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.websocket.*
 import io.ktor.http.cio.websocket.*
+import io.ktor.util.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.sync.Mutex
 import java.time.*
 import org.litote.kmongo.*
 import server.models.Players
@@ -25,8 +26,9 @@ import kotlin.random.Random
 
 val jsonFormat = Json { encodeDefaults = true }
 
+val matchesMutex = Mutex()
 
-val matchMakingQueues : MutableMap<String, MutableList<PlayerWrapper>> = mutableMapOf()
+val matchMakingQueues : MutableMap<GameQueue, MutableList<PlayerWrapper>> = mutableMapOf()
 val matches : MutableMap<UUID, MatchWrapper> = mutableMapOf()
 val players: MutableMap<UUID, DefaultWebSocketServerSession> = mutableMapOf()
 
@@ -62,7 +64,8 @@ fun Application.module(testing: Boolean = false) {
             players[uuid] = this
 
             try {
-                for (frame in incoming){
+                while (true) {
+                    val frame = incoming.receive()
                     if (frame !is Frame.Text) {
                         continue
                     }
@@ -100,8 +103,38 @@ fun Application.module(testing: Boolean = false) {
                 println("onError ${closeReason.await()}")
                 e.printStackTrace()
             }
+            println("bonk")
+            removeUser(uuid)
         }
     }
+}
+
+suspend fun removeUser(uuid: UUID) {
+    for (kv in matchMakingQueues) {
+        val queue = kv.value
+        queue.removeAll { e -> e.uuid == uuid }
+    }
+
+    concedeGame(uuid)
+
+    players.remove(uuid)
+}
+
+suspend fun concedeGame(uuid: UUID) {
+    val match = matches[uuid]
+    if (match != null) {
+        matches.remove(uuid)
+        matches.remove(match.opponentId)
+
+        @Serializable
+        data class ConcedeMessage(val type: String = "opponentConcede")
+
+        players[match.opponentId]?.send(jsonFormat.encodeToString(ConcedeMessage()))
+
+        updateElo(match.myUsername, 0.0, match.opponentUsername, 1.0)
+    }
+
+
 }
 
 //fun finishGame(outcome: Outcome, game: GameType2D, winner: String, loser: String, msg: Message) {
@@ -159,19 +192,18 @@ suspend fun getLeaderboard(ws: DefaultWebSocketServerSession) {
 }
 
 suspend fun makeMove(uuid: UUID, msg: Message) {
-    val opponentId = msg.opponentId
-
-    if (opponentId == null || msg.move == null) {
-        println("Found invalid opponentId or move")
+    if (msg.move == null) {
+        println("Missing move")
         return
     }
-
     // Check if valid move
     val match = matches[uuid]
     if (match == null) {
         println("Error: Player is not in a match")
         return
     }
+
+    val opponentId = match.opponentId
 
     val game = match.game
 
@@ -197,8 +229,8 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
                                val move: Int,
                                val opponentId: String)
 
-    val msgToSend = MakeMoveMessage("receiveMove", msg.move, opponentId)
-    val wsDest = players[UUID.fromString(opponentId)]
+    val msgToSend = MakeMoveMessage("receiveMove", msg.move, opponentId.toString())
+    val wsDest = players[opponentId]
     if (wsDest == null) {
         println("Found invalid UUID")
         return
@@ -223,10 +255,15 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
                 updateElo(myUsername, 0.5, opponentUsername, 0.5)
             }
         }
+        matches.remove(uuid)
+        matches.remove(opponentId)
     }
 }
 
 fun updateElo(myUsername: String, myResult: Double, opponentUsername: String, opponentResult: Double) {
+    if (myUsername == opponentUsername) {
+        return
+    }
     val myPlayer = col.findOne(Players::username eq myUsername)
     val opponentPlayer = col.findOne(Players::username eq opponentUsername)
 
@@ -251,19 +288,20 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
     lateinit var pw2: PlayerWrapper
     var start = false
 
-    synchronized(matchMakingQueues) {
-        matchMakingQueues.putIfAbsent(msg.gameMode, mutableListOf())
+    val gameQueue = GameQueue(msg.gameMode, msg.clockOption)
 
-        val queue = matchMakingQueues[msg.gameMode]!!
+    matchMakingQueues.putIfAbsent(gameQueue, mutableListOf())
 
-        queue.add(PlayerWrapper(ws, uuid, msg.username))
-        if (queue.size == 2) {
-            pw1 = queue[0]
-            pw2 = queue[1]
-            queue.clear()
-            start = true
-        }
+    val queue = matchMakingQueues[gameQueue]!!
+
+    queue.add(PlayerWrapper(ws, uuid, msg.username))
+    if (queue.size == 2) {
+        pw1 = queue[0]
+        pw2 = queue[1]
+        queue.clear()
+        start = true
     }
+
 
     if (!start) {
         return
@@ -273,10 +311,10 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
 
     @Serializable
     data class StartGameMessage(val type: String,
-                                        val player: Int,
-                                        val opponentId: String,
-                                        val opponentUsername: String,
-                                        val seed: Double)
+                                val player: Int,
+                                val opponentId: String,
+                                val opponentUsername: String,
+                                val seed: Double)
 
     val game = when (msg.gameMode) {
         "StandardChess" -> StandardChess()
@@ -297,8 +335,8 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
 
     game.initGame()
 
-    matches[pw1.uuid] = MatchWrapper(pw1.username, pw2.username, game, 0)
-    matches[pw2.uuid] = MatchWrapper(pw2.username, pw1.username, game, 1)
+    matches[pw1.uuid] = MatchWrapper(pw1.username, pw2.username, pw2.uuid, game, 0)
+    matches[pw2.uuid] = MatchWrapper(pw2.username, pw1.username, pw1.uuid, game, 1)
 
     pw1.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 1, pw2.uuid.toString(), pw2.username, seed)))
     pw2.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 2, pw1.uuid.toString(), pw1.username, seed)))

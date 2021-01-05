@@ -17,6 +17,8 @@ import players.Player
 abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = listOf(), var winConditions: List<WinCondition<AbstractChess>> = listOf(StandardWinConditions()), startPlayer: Int = 0) : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = startPlayer
+    // This is set as the winner when either player concedes
+    private var concededWinner : Player? = null
 
     override var seed: Double? = null
 
@@ -27,6 +29,9 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
     }
 
     override fun getOutcome(player: Player): Outcome? {
+        if (concededWinner != null) {
+            return Outcome.Win(player, "by enemy concede")
+        }
         val moves = getValidMoves(player)
         for (wc in winConditions) {
             val outcome = wc.evaluate(this, player, moves)
@@ -181,6 +186,11 @@ abstract class AbstractChess(val rules: List<SpecialRules<AbstractChess>> = list
             }
         }
         moveLog.add(gameMove)
+    }
+
+    override fun concede(player: Player) {
+        // TODO discuss for a way to improve
+        concededWinner = players.filterNot { p -> p != player }[0]
     }
 
     private fun makeSimpleMove(gameMove: SimpleGameMove) {

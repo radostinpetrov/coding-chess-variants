@@ -26,6 +26,7 @@ interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: Game
         return getValidMoves(getCurrentPlayer())
     }
     fun makeMove(gameMove: GM)
+    fun concede(player: Player)
     fun undoMove()
     fun inCheck(player: Player) : Boolean
 

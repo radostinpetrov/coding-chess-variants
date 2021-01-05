@@ -8,4 +8,8 @@ class NetworkEnemyPlayer(game: GameScreen, colour: Color, name: String) : Fronte
         val validMoves = gameType.getValidMoves(libPlayer)
         gameScreen.processTurn(validMoves[moveIndex])
     }
+
+    fun concede() {
+        gameScreen.processConcede(libPlayer)
+    }
 }

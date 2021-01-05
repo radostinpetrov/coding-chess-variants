@@ -188,6 +188,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
     }
 
+    fun processConcede(player: Player) {
+        gameEngine.concede(player)
+        Gdx.app.postRunnable {
+            switchToGameOverScreen(gameEngine.getOutcome()!!)
+        }
+    }
+
     override fun render(delta: Float) {
         libToFrontendPlayer[currPlayer!!]!!.colour
         val nextPlayer = gameEngine.getNextPlayer()
