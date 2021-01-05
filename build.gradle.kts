@@ -130,6 +130,5 @@ project(":server") {
         implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 //        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
         testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
-
     }
 }

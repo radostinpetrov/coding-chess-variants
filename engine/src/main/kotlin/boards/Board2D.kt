@@ -17,7 +17,7 @@ class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Regio
         val res = mutableListOf<Pair<Piece2D, Coordinate2D>>()
         for (i in 0 until rows) {
             for (j in 0 until cols) {
-                if (!isInBounds(Coordinate2D(i, j))) {
+                if (!isInBounds(Coordinate2D(j, i))) {
                     continue
                 }
                 val c = Coordinate2D(j, i)
