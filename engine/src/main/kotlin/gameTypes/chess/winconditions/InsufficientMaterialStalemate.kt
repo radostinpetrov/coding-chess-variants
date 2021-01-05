@@ -12,7 +12,7 @@ class InsufficientMaterialStalemate : WinCondition<AbstractChess> {
         val pieces = board.getPieces()
         val piecesBySymbol = pieces.map { it.first.getSymbol() }
 
-        val kingKnightVsSoleKing = piecesBySymbol.filter { it == "K" }.size == 2 &&
+        val kingKnightOrCardinalVsSoleKing = piecesBySymbol.filter { it == "K" || it == "C" }.size == 2 &&
             piecesBySymbol.filter { it == "N" }.size == 1 &&
             pieces.size == 3
 
@@ -37,7 +37,7 @@ class InsufficientMaterialStalemate : WinCondition<AbstractChess> {
             }
         }
 
-        if (kingKnightVsSoleKing || draw) {
+        if (kingKnightOrCardinalVsSoleKing || draw) {
             return Outcome.Draw("Stalemate by Insufficient Material")
         }
 

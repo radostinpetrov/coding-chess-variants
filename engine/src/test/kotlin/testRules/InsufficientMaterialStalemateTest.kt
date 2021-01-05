@@ -1,6 +1,8 @@
 package testRules
 
 import coordinates.Coordinate2D
+import gameTypes.chess.CapablancaChess
+import gameTypes.chess.GrandChess
 import gameTypes.chess.StandardChess
 import gameTypes.chess.winconditions.InsufficientMaterialStalemate
 import io.mockk.MockKAnnotations
@@ -8,56 +10,94 @@ import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import pieces.chess.Bishop
-import pieces.chess.King
-import pieces.chess.Knight
+import pieces.chess.*
 
 class InsufficientMaterialStalemateTest {
     val mockStandardChess = spyk<StandardChess>()
-    val board = mockStandardChess.board
+    val mockCapablancaChess = spyk<CapablancaChess>()
+    val mockGrandChess = spyk<GrandChess>()
+    val standardChessBoard = mockStandardChess.board
+    val capablancaChessBoard = mockCapablancaChess.board
+    val grandChessBoard = mockGrandChess.board
 
-    val player1 = mockStandardChess.players[0]
-    val player2 = mockStandardChess.players[1]
+    val standardPlayer1 = mockStandardChess.players[0]
+    val standardPlayer2 = mockStandardChess.players[1]
+    val capablancaPlayer1 = mockCapablancaChess.players[0]
+    val capablancaPlayer2 = mockCapablancaChess.players[1]
+    val grandChessPlayer1 = mockGrandChess.players[0]
+    val grandChessPlayer2 = mockGrandChess.players[1]
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
     fun twoSoleKings() {
-        board.addPiece(Coordinate2D(3, 3), King(player1))
-        board.addPiece(Coordinate2D(5, 5), King(player2))
-        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, player1, listOf())
+        standardChessBoard.addPiece(Coordinate2D(3, 3), King(standardPlayer1))
+        standardChessBoard.addPiece(Coordinate2D(5, 5), King(standardPlayer2))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, standardPlayer1, listOf())
 
         assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
     }
 
     @Test
     fun kingBishopVsSoleKing() {
-        board.addPiece(Coordinate2D(3, 3), King(player1))
-        board.addPiece(Coordinate2D(5, 5), King(player2))
-        board.addPiece(Coordinate2D(2, 5), Bishop(player1))
-        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, player1, listOf())
+        standardChessBoard.addPiece(Coordinate2D(3, 3), King(standardPlayer1))
+        standardChessBoard.addPiece(Coordinate2D(5, 5), King(standardPlayer2))
+        standardChessBoard.addPiece(Coordinate2D(2, 5), Bishop(standardPlayer1))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, standardPlayer1, listOf())
 
         assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
     }
 
     @Test
     fun kingTwoSameBishopsVsSoleKing() {
-        board.addPiece(Coordinate2D(3, 3), King(player1))
-        board.addPiece(Coordinate2D(5, 5), King(player2))
-        board.addPiece(Coordinate2D(3, 4), Bishop(player1))
-        board.addPiece(Coordinate2D(2, 5), Bishop(player1))
-        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, player1, listOf())
+        standardChessBoard.addPiece(Coordinate2D(3, 3), King(standardPlayer1))
+        standardChessBoard.addPiece(Coordinate2D(5, 5), King(standardPlayer2))
+        standardChessBoard.addPiece(Coordinate2D(3, 4), Bishop(standardPlayer1))
+        standardChessBoard.addPiece(Coordinate2D(2, 5), Bishop(standardPlayer1))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, standardPlayer1, listOf())
 
         assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
     }
 
     @Test
     fun kingKnightVsSoleKing() {
-        board.addPiece(Coordinate2D(3, 3), King(player1))
-        board.addPiece(Coordinate2D(5, 5), King(player2))
-        board.addPiece(Coordinate2D(0, 0), Knight(player1))
-        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, player1, listOf())
+        standardChessBoard.addPiece(Coordinate2D(3, 3), King(standardPlayer1))
+        standardChessBoard.addPiece(Coordinate2D(5, 5), King(standardPlayer2))
+        standardChessBoard.addPiece(Coordinate2D(0, 0), Knight(standardPlayer1))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockStandardChess, standardPlayer1, listOf())
+
+        assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
+    }
+
+    @Test
+    fun kingKnightVsSoleKingCapablanca() {
+        capablancaChessBoard.addPiece(Coordinate2D(3, 3), King(capablancaPlayer1))
+        capablancaChessBoard.addPiece(Coordinate2D(5, 5), King(capablancaPlayer2))
+        capablancaChessBoard.addPiece(Coordinate2D(0, 0), Knight(capablancaPlayer1))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockCapablancaChess, capablancaPlayer1, listOf())
+
+        assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
+    }
+    @Test
+    fun kingKnightVsSoleKingGrand() {
+        grandChessBoard.addPiece(Coordinate2D(3, 3), King(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(5, 5), King(grandChessPlayer2))
+        grandChessBoard.addPiece(Coordinate2D(0, 0), Knight(grandChessPlayer1))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockGrandChess, grandChessPlayer1, listOf())
+
+        assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
+    }
+
+    @Test
+    fun kingFourSameBishopsGrand() {
+        grandChessBoard.addPiece(Coordinate2D(0, 0), Bishop(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(1, 1), Bishop(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(2, 2), Bishop(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(3, 3), Bishop(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(2, 5), King(grandChessPlayer1))
+        grandChessBoard.addPiece(Coordinate2D(3, 9), King(grandChessPlayer2))
+        val outcome = InsufficientMaterialStalemate().evaluate(mockGrandChess, grandChessPlayer1, listOf())
 
         assertEquals(Outcome.Draw("Stalemate by Insufficient Material"), outcome)
     }
