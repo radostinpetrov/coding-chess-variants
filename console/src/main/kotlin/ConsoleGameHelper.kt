@@ -1,3 +1,5 @@
+import boards.Board2D
+import coordinates.Coordinate2D
 import gameTypes.GameType2D
 import players.ConsolePlayer
 
@@ -19,17 +21,24 @@ class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, va
 
     /* Display the board in terminal. */
     fun display() {
-        val board = gameType.board
+        val board: Board2D = gameType.board
         // Player 1 is red and player 2 is blue
         val colour1 = "\u001B[31m"
         val colour2 = "\u001B[34m"
         val resetColour = "\u001B[0m"
         val player1 = gameType.players[0]
-        val n = board.getBoardState().size
 
-        for ((i, row) in board.getBoardState().reversed().withIndex()) {
-            print("${n - i} ")
-            for (piece in row) {
+        val boardState = board.getBoardState()
+
+        for (i in (board.rows - 1) downTo 0) {
+            print("$i ")
+            for (j in 0 until board.cols) {
+                val coordinate = Coordinate2D(j, i)
+                if (!board.isInBounds(coordinate)) {
+                    print("  ")
+                    continue
+                }
+                val piece = boardState[coordinate]
                 if (piece != null) {
                     print((if (piece.player == player1) colour1 else colour2) + piece.getSymbol() + ' ' + resetColour)
                 } else {
@@ -40,7 +49,7 @@ class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, va
         }
         print("  ")
 
-        for (i in board.getBoardState()[0].indices) {
+        for (i in 0 until board.cols) {
             print("${(i + 'a'.toInt()).toChar()} ")
         }
         println("\n----------------- turn: $turn")

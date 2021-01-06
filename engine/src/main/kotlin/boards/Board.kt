@@ -7,7 +7,7 @@ import pieces.Piece
 import players.Player
 
 interface Board<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
-    fun getBoardState(): Array<Array<P?>>
+    fun getBoardState(): Map<C, P?>
     fun addPiece(coordinate: C, piece: P)
     fun removePiece(coordinate: C, piece: P)
     fun getPieces(): List<Pair<P, C>>

@@ -1,10 +1,11 @@
 import gameTypes.chess.AbstractChess
+import gameTypes.chess.BalbosGame
 import gameTypes.chess.CapablancaChess
 import utils.notationFormatter.ChessNotationInput
 
 fun main() {
     println("Let's play chess!")
-    val chess: AbstractChess = CapablancaChess()
+    val chess: AbstractChess = BalbosGame()
     val player1 = HumanConsolePlayer(ChessNotationInput(), chess, chess.players[0])
     val player2 = HumanConsolePlayer(ChessNotationInput(), chess, chess.players[1])
 //    val player2 = ComputerConsolePlayer(10, chess, chess.players[1])

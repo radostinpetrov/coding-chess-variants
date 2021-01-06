@@ -28,7 +28,7 @@ class BalbosGame() : AbstractChess(listOf(), listOf(StandardWinConditions())) {
             BoxRegion(Coordinate2D(10, 0), Coordinate2D(10, 3)),
         )
     )
-    override val board: Board2D = Board2D(10, 10, OutOfBoundsRegion)
+    override val board: Board2D = Board2D(10, 11, OutOfBoundsRegion)
 
     override fun initGame() {
         val player1 = players[0]
