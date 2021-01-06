@@ -19,7 +19,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
-    val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val standardChessButton = TextButton("Standard Chess", skin)
     val grandChessButton = TextButton("Grand Chess", skin)
     val capablancaChessButton = TextButton("Capablanca Chess", skin)

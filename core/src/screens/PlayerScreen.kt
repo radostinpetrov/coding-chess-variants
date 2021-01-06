@@ -22,7 +22,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
     val stage = Stage()
     val table = Table()
 
-    val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
 
     val title = Label("Select Players", skin)
 

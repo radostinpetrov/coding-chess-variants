@@ -18,7 +18,7 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
     val table = Table()
     val leaderboardTable = Table()
 
-    val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val menuButton = TextButton("Menu Screen", skin)
 
     val websocketClient = LeaderboardWebsocketClient(this)
@@ -76,6 +76,5 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
             leaderboardTable.add(labelElo).colspan(4)
             leaderboardTable.row()
         }
-
     }
 }

@@ -18,7 +18,7 @@ class GameOverScreen(val game: MyGdxGame, val outcome: Outcome, val libToFrontEn
     val stage = Stage()
     val table = Table()
 
-    val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val playAgainButton = TextButton("Play Again?", skin)
 
     override fun show() {

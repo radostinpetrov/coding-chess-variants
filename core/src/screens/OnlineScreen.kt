@@ -19,7 +19,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
     val stage = Stage()
     val table = Table()
 
-    val skin = Skin(Gdx.files.internal("core/assets/skin/uiskin.json"))
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
 
     val title = Label("Looking for Players...", skin)
 

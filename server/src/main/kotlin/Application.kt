@@ -6,21 +6,21 @@ import com.mongodb.client.MongoCollection
 import gameTypes.chess.*
 import gameTypes.xiangqi.*
 import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.http.cio.websocket.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.websocket.*
-import io.ktor.http.cio.websocket.*
 import io.ktor.util.*
+import io.ktor.websocket.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.sync.Mutex
-import java.time.*
-import org.litote.kmongo.*
-import server.models.Players
-import java.util.UUID
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
+import org.litote.kmongo.*
+import server.models.Players
 import server.utils.*
+import java.time.*
+import java.util.UUID
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -28,13 +28,13 @@ val jsonFormat = Json { encodeDefaults = true }
 
 val matchesMutex = Mutex()
 
-val matchMakingQueues : MutableMap<GameQueue, MutableList<PlayerWrapper>> = mutableMapOf()
-val matches : MutableMap<UUID, MatchWrapper> = mutableMapOf()
+val matchMakingQueues: MutableMap<GameQueue, MutableList<PlayerWrapper>> = mutableMapOf()
+val matches: MutableMap<UUID, MatchWrapper> = mutableMapOf()
 val players: MutableMap<UUID, DefaultWebSocketServerSession> = mutableMapOf()
 
 lateinit var col: MongoCollection<Players>
 
-fun main(args: Array<String>) : Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
@@ -133,11 +133,9 @@ suspend fun concedeGame(uuid: UUID) {
 
         updateElo(match.myUsername, 0.0, match.opponentUsername, 1.0)
     }
-
-
 }
 
-//fun finishGame(outcome: Outcome, game: GameType2D, winner: String, loser: String, msg: Message) {
+// fun finishGame(outcome: Outcome, game: GameType2D, winner: String, loser: String, msg: Message) {
 //    val match = matches[uuid]
 //
 //    if (match == null) {
@@ -166,14 +164,14 @@ suspend fun concedeGame(uuid: UUID) {
 //
 //    col.updateOne(Players::username eq myUsername, setValue(Players::elo, myNewElo))
 //    col.updateOne(Players::username eq opponentUsername, setValue(Players::elo, opponentNewElo))
-//}
+// }
 
-fun getNewRating(myRating: Int, opponentRating: Int, gameResult: Double) : Int {
+fun getNewRating(myRating: Int, opponentRating: Int, gameResult: Double): Int {
     return myRating + getRatingDelta(myRating, opponentRating, gameResult)
 }
 
 fun getRatingDelta(myRating: Int, opponentRating: Int, gameResult: Double): Int {
-    val myChanceToWin = 1.0 / ( 1.0 + Math.pow(10.0, ((opponentRating - myRating).toDouble() / 400.0)))
+    val myChanceToWin = 1.0 / (1.0 + Math.pow(10.0, ((opponentRating - myRating).toDouble() / 400.0)))
 
     return (32 * (gameResult - myChanceToWin)).roundToInt()
 }
@@ -182,9 +180,11 @@ suspend fun getLeaderboard(ws: DefaultWebSocketServerSession) {
     val sortedPlayers = col.find().toList().sortedDescending()
 
     @Serializable
-    data class LeaderboardMessage(val type: String = "receiveLeaderboard",
-                                  val error: String? = null,
-                                  val players: List<Players>)
+    data class LeaderboardMessage(
+        val type: String = "receiveLeaderboard",
+        val error: String? = null,
+        val players: List<Players>
+    )
 
     val msgToSend = LeaderboardMessage(players = sortedPlayers)
 
@@ -225,9 +225,11 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
 
     // Send move to opponent player
     @Serializable
-    data class MakeMoveMessage(val type: String,
-                               val move: Int,
-                               val opponentId: String)
+    data class MakeMoveMessage(
+        val type: String,
+        val move: Int,
+        val opponentId: String
+    )
 
     val msgToSend = MakeMoveMessage("receiveMove", msg.move, opponentId.toString())
     val wsDest = players[opponentId]
@@ -240,7 +242,7 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
 
     // Check if game is finished
     val outcome = game.getOutcome()
-    if (outcome != null ) {
+    if (outcome != null) {
         val myUsername = match.myUsername
         val opponentUsername = match.opponentUsername
         when (outcome) {
@@ -302,7 +304,6 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
         start = true
     }
 
-
     if (!start) {
         return
     }
@@ -310,11 +311,13 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
     val seed = Random.nextDouble()
 
     @Serializable
-    data class StartGameMessage(val type: String,
-                                val player: Int,
-                                val opponentId: String,
-                                val opponentUsername: String,
-                                val seed: Double)
+    data class StartGameMessage(
+        val type: String,
+        val player: Int,
+        val opponentId: String,
+        val opponentUsername: String,
+        val seed: Double
+    )
 
     val game = when (msg.gameMode) {
         "StandardChess" -> StandardChess()
@@ -341,4 +344,3 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
     pw1.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 1, pw2.uuid.toString(), pw2.username, seed)))
     pw2.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 2, pw1.uuid.toString(), pw1.username, seed)))
 }
-

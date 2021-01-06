@@ -15,8 +15,28 @@ repositories {
     mavenCentral()
 }
 
+buildscript {
+    val kotlinVersion: String by project
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url = uri("https://plugins.gradle.org/m2/") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.0.2")
+//        classpath("com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12")
+//        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+        classpath(kotlin("gradle-plugin", kotlinVersion))
+    }
+}
+
 allprojects {
+//    if (name != "android") {
     apply(plugin = "kotlin")
+//    }
     group = "me.lukyxu"
     version = "1.0-SNAPSHOT"
 
