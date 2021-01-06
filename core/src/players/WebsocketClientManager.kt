@@ -1,6 +1,5 @@
 package players
 
-import moves.Move2D
 import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -13,7 +12,6 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
     val serverUri: URI = URI("ws://83.136.252.48:8080")
-    private var turnMove: Move2D? = null
 
     private lateinit var webSocketClient: WebSocketClient
 
@@ -40,15 +38,11 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
             }
 
             override fun onMessage(message: String?) {
-//                println("onMessage")
-//                println(message)
                 val jsonMessage = JSONObject(message)
                 when (jsonMessage.getString("type")) {
                     "startGame" -> {
                         // we need to do something with the screen here we pass in the change to game screen function
                         // but we need to pass in this class as well and set networkPlayer 1 and 2
-//                        networkHumanPlayer = NetworkHumanPlayer()
-//                        networkEnemyPlayer = game.
                         enemyId = jsonMessage.getString("opponentId")
                         startGameFunction(jsonMessage.getInt("player"), jsonMessage.getDouble("seed"))
                     }
@@ -64,14 +58,11 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
 
             override fun onClose(code: Int, reason: String?, remote: Boolean) {
                 println("onClose")
-//            Log.d(TAG, "onClose")
-//                unsubscribe()
             }
 
             override fun onError(ex: Exception?) {
                 println(ex?.message)
                 println("onError")
-//            Log.e(TAG, "onError: ${ex?.message}")
             }
         }
     }
@@ -105,19 +96,4 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
                 "}"
         )
     }
-
-//    private fun unsubscribe() {
-//        webSocketClient.send(
-//                "{\n" +
-//                        "    \"type\": \"unsubscribe\",\n" +
-//                        "    \"channels\": [\"ticker\"]\n" +
-//                        "}"
-//        )
-//    }
-
-    fun setTurnMove(move: Move2D) {
-        turnMove = move
-    }
-
-
 }
