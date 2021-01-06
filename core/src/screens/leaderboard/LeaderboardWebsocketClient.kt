@@ -6,7 +6,7 @@ import org.json.JSONObject
 import java.net.URI
 
 class LeaderboardWebsocketClient(val leaderboardScreen: LeaderboardScreen) {
-    val serverUri: URI = URI("ws://207.246.87.201:8080")
+    val serverUri: URI = URI("ws://83.136.252.48:8080")
 
     private lateinit var webSocketClient: WebSocketClient
 
