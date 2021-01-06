@@ -1,9 +1,9 @@
 package pieces.janggi
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.region.BoxRegion
-import moves.region.CompositeRegion
+import moveGenerators.MoveGenerator2D
+import regions.BoxRegion
+import regions.CompositeRegion
 import pieces.Piece2D
 import players.Player
 
@@ -12,10 +12,10 @@ data class Cannon(override val  player: Player) : Piece2D {
     private val palace2 = BoxRegion(Coordinate2D(3, 7), Coordinate2D(5, 9))
     private val palace = CompositeRegion(listOf(palace1, palace2))
 
-    override val moveTypes: List<Move2D>
+    override val moveGenerators: List<MoveGenerator2D>
         get() = listOf(
-            Move2D.Hopper(HV = true, canJumpOverSamePiece = false),
-            Move2D.Restricted(Move2D.Hopper(D = true, canJumpOverSamePiece = false), palace)
+            MoveGenerator2D.Hopper(HV = true, canJumpOverSamePiece = false),
+            MoveGenerator2D.Restricted(MoveGenerator2D.Hopper(D = true, canJumpOverSamePiece = false), palace)
         )
 
     override fun getSymbol(): String {

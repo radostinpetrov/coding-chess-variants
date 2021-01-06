@@ -2,7 +2,7 @@ package screens
 
 import Outcome
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
+import moves.Move2D
 import boards.ChessBoard
 import boards.GUIBoard
 import boards.XiangqiBoard
@@ -29,7 +29,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     private var windowWidth: Int = 800
 
     private lateinit var shapeRenderer: ShapeRenderer
-    private lateinit var moves: List<GameMove2D>
+    private lateinit var moves: List<Move2D>
 
     private var panelWidth: Int = 300
 
@@ -65,7 +65,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
-    lateinit var promotableMoves: List<GameMove2D>
+    lateinit var promotableMoves: List<Move2D>
 
     fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
         val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
@@ -111,7 +111,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         libToFrontendPlayer[currPlayer!!]!!.signalTurn()
     }
 
-    private fun showPromotionScreen(moves: List<GameMove2D>) {
+    private fun showPromotionScreen(moves: List<Move2D>) {
         Gdx.gl.glEnable(GL20.GL_BLEND)
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
@@ -128,7 +128,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         val batch = game.batch
         batch.begin()
 
-        val coordinateMap = mutableMapOf<Int, GameMove2D>()
+        val coordinateMap = mutableMapOf<Int, Move2D>()
 
         val xCoordinate = (rows - moves.size) / 2
         val yCoordinate = (columns - 1) / 2
@@ -172,7 +172,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     }
 
     // Function to be called when current player plays a turn
-    fun processTurn(nextMove: GameMove2D) {
+    fun processTurn(nextMove: Move2D) {
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
             currPlayer = gameEngine.getCurrentPlayer()
@@ -283,7 +283,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         dstY = null
     }
 
-    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<GameMove2D>): GameMove2D? {
+    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<Move2D>): Move2D? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
             return null
@@ -361,7 +361,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         shapeRenderer.end()
 
         var i = 0
-        var history: List<GameMove2D> = gameEngine.moveLog.toList()
+        var history: List<Move2D> = gameEngine.moveLog.toList()
         val len = gameEngine.moveLog.size
 
         var offset = 0

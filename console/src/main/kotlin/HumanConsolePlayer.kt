@@ -1,13 +1,13 @@
-import gameMoves.GameMove2D
+import moves.Move2D
 import gameTypes.GameType2D
-import notationFormatter.NotationFormatter
+import utils.notationFormatter.NotationFormatter
 import players.ConsolePlayer
 import players.Player
 
 class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: GameType2D, player: Player) : ConsolePlayer(gameType, player) {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-    override fun getTurn(choiceOfMoves: List<GameMove2D>): GameMove2D {
-        var possibleMoves: List<GameMove2D> = mutableListOf()
+    override fun getTurn(choiceOfMoves: List<Move2D>): Move2D {
+        var possibleMoves: List<Move2D> = mutableListOf()
         var input: String?
         while (possibleMoves.isEmpty()) {
             print("Enter the coordinate of the piece to move: ")
@@ -23,8 +23,8 @@ class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: Gam
             }
             possibleMoves = choiceOfMoves.filter {
                 when (it) {
-                    is GameMove2D.SimpleGameMove -> it.displayFrom == coordinate
-                    is GameMove2D.CompositeGameMove -> {
+                    is Move2D.SimpleMove -> it.displayFrom == coordinate
+                    is Move2D.CompositeMove -> {
                         true
                     }
                 }
@@ -36,7 +36,7 @@ class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: Gam
 
         println("Select the move index from the following: ")
         for (i in possibleMoves.indices) {
-            println((i + 1).toString() + ": " + notationFormatter.gameMoveToStr(possibleMoves[i]))
+            println((i + 1).toString() + ": " + notationFormatter.moveToStr(possibleMoves[i]))
         }
 
         /* Ask user which move they want to make until they give a valid index. */

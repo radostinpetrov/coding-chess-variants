@@ -1,13 +1,12 @@
 package boards
 
 import coordinates.Coordinate
-import coordinates.Coordinate2D
-import gameMoves.GameMove
 import moves.Move
+import moveGenerators.MoveGenerator
 import pieces.Piece
 import players.Player
 
-interface Board<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: GameMove<B, M, GM, P, C>, P: Piece<B, M, GM, P, C>, C: Coordinate> {
+interface Board<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
     fun getBoardState(): Array<Array<P?>>
     fun addPiece(coordinate: C, piece: P)
     fun removePiece(coordinate: C, piece: P)

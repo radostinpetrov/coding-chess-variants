@@ -1,11 +1,10 @@
 package gameTypes.chess
 
 import boards.Board2D
-import gameTypes.FenUtility
-import gameTypes.chess.rules.Enpassant
-import gameTypes.chess.rules.StandardCastling
-import gameTypes.chess.winconditions.StandardWinConditions
-import pieces.chess.*
+import utils.FenUtility
+import rules.Enpassant
+import rules.StandardCastling
+import winconditions.StandardWinConditions
 
 open class StandardChess(val fen: FenUtility = FenUtility("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq")) : AbstractChess(mutableListOf(StandardCastling(fen.p1CanCastleLeft, fen.p1CanCastleRight, fen.p2CanCastleLeft, fen.p2CanCastleRight), Enpassant()), listOf(StandardWinConditions()), fen.activeColour) {
     override val board = Board2D(8, 8)

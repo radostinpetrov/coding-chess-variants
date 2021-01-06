@@ -1,12 +1,10 @@
 package testGameTypes
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
-import gameTypes.FenUtility
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
+import utils.FenUtility
+import moves.Move2D.SimpleMove.BasicMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
-import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -82,25 +80,25 @@ class StandardChessTest {
     @Test
     fun fromCoordinateIsEmptyAfterMove() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val gameMove = BasicGameMove(
+        val move = BasicMove(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
-        mockStandardChess.makeMove(gameMove)
-        assertTrue(board.getPiece(gameMove.from) == null)
+        mockStandardChess.makeMove(move)
+        assertTrue(board.getPiece(move.from) == null)
     }
 
     @Test
     fun toCoordinateIsNewPiece() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val gameMove = BasicGameMove(
+        val move = BasicMove(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
-        mockStandardChess.makeMove(gameMove)
-        assertTrue(board.getPiece(gameMove.to) == gameMove.pieceMoved)
-        if (gameMove.pieceCaptured != null) {
-            assertFalse(board.getPiece(gameMove.to) == gameMove.pieceCaptured)
+        mockStandardChess.makeMove(move)
+        assertTrue(board.getPiece(move.to) == move.pieceMoved)
+        if (move.pieceCaptured != null) {
+            assertFalse(board.getPiece(move.to) == move.pieceCaptured)
         }
     }
 

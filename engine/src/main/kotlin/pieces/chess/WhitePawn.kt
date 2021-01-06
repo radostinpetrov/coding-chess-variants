@@ -1,8 +1,8 @@
 package pieces.chess
 
-import moves.Direction
-import moves.Move2D
-import moves.region.RowRegion
+import moveGenerators.Direction
+import moveGenerators.MoveGenerator2D
+import regions.RowRegion
 import pieces.Pawn
 import pieces.Piece2D
 import players.Player
@@ -11,13 +11,13 @@ open class WhitePawn(override val player: Player, val startingRow: Int, val prom
     constructor(player: Player, startingRow: Int, promotionRow: Int, pawnPromotions: List<Piece2D>) :
         this(player, startingRow, RowRegion(promotionRow), pawnPromotions)
 
-    override val moveTypes: List<Move2D> = listOf(
-        Move2D.Restricted(Move2D.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
-        Move2D.AddPromotion(
+    override val moveGenerators: List<MoveGenerator2D> = listOf(
+        MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(startingRow)),
+        MoveGenerator2D.AddPromotion(
             listOf(
-                Move2D.Stepper(Direction.NORTH, 1),
-                Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_EAST, 1, true)),
-                Move2D.CaptureOnly(Move2D.Stepper(Direction.NORTH_WEST, 1, true)),
+                MoveGenerator2D.Stepper(Direction.NORTH, 1),
+                MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_EAST, 1, true)),
+                MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_WEST, 1, true)),
             ),
             promotionRegion,
             pawnPromotions,

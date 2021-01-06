@@ -4,7 +4,7 @@ import coordinates.Coordinate2D
 import gameTypes.chess.CapablancaChess
 import gameTypes.chess.GrandChess
 import gameTypes.chess.StandardChess
-import gameTypes.chess.winconditions.InsufficientMaterialStalemate
+import winconditions.InsufficientMaterialStalemate
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertEquals

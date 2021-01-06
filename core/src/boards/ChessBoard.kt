@@ -5,11 +5,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
+import moves.Move2D
 import players.FrontendPlayer
 import players.Player
 
@@ -27,7 +26,7 @@ class ChessBoard(
     textures, playerMapping, font
 ) {
 
-    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
+    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val colour2: Color = Color.TAN

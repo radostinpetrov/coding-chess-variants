@@ -1,6 +1,6 @@
 package players
 
-import gameMoves.GameMove2D
+import moves.Move2D
 import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
@@ -13,7 +13,7 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
 
     val serverUri: URI = URI("ws://207.246.87.201:8080")
-    private var turnMove: GameMove2D? = null
+    private var turnMove: Move2D? = null
 
     private lateinit var webSocketClient: WebSocketClient
 
@@ -56,6 +56,9 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
                         val move = jsonMessage.getInt("move")
                         networkEnemyPlayer.makeMove(move)
                     }
+                    "opponentConcede" -> {
+                        networkEnemyPlayer.concede()
+                    }
                 }
             }
 
@@ -87,7 +90,8 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
         webSocketClient.send(
             "{\n" +
                 "    \"type\": \"matchmaking\",\n" +
-                "    \"gameMode\": \"standard\",\n" +
+                "    \"gameMode\": \"$gameName\",\n" +
+                "    \"clockOption\": \"$clockOption\",\n" +
                 "    \"username\": \"$username\"" +
                 "}"
         )
@@ -111,16 +115,9 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
 //        )
 //    }
 
-    fun setTurnMove(move: GameMove2D) {
+    fun setTurnMove(move: Move2D) {
         turnMove = move
     }
 
-//    override fun getTurn(choiceOfMoves: List<gameMoves.GameMove>): gameMoves.GameMove? {
-//        if (turnMove) {
-//
-//        }
-//
-//
-//        return null
-//    }
+
 }

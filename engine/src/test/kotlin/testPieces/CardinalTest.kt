@@ -1,7 +1,6 @@
 package testPieces
 
-import gameMoves.GameMove2D
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
+import moves.Move2D.SimpleMove.BasicMove
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -19,8 +18,8 @@ class CardinalTest {
     fun checkCardinalMoves() {
         mockCapablancaChess.initGame()
         val moves = mockCapablancaChess.getValidMoves(mockCapablancaChess.players[0])
-        val firstCardinal = (moves.first { it is BasicGameMove && it.pieceMoved is Cardinal } as BasicGameMove).pieceMoved
-        val firstCardinalMoves = moves.filter { it is BasicGameMove && it.pieceMoved === firstCardinal }
+        val firstCardinal = (moves.first { it is BasicMove && it.pieceMoved is Cardinal } as BasicMove).pieceMoved
+        val firstCardinalMoves = moves.filter { it is BasicMove && it.pieceMoved === firstCardinal }
         Assertions.assertTrue(firstCardinalMoves.size == 2)
     }
 }

@@ -1,12 +1,12 @@
 package pieces.chess
 
-import moves.Move2D
-import moves.Move2D.Slider
+import moveGenerators.MoveGenerator2D
+import moveGenerators.MoveGenerator2D.Slider
 import pieces.Piece2D
 import players.Player
 
 data class Bishop(override val player: Player) : Piece2D {
-    override val moveTypes: List<Move2D>
+    override val moveGenerators: List<MoveGenerator2D>
         get() = listOf(Slider(A = true, D = true))
 
     override fun getSymbol(): String {

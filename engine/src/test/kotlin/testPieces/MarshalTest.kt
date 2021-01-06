@@ -1,7 +1,6 @@
 package testPieces
 
-import gameMoves.GameMove2D
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
+import moves.Move2D.SimpleMove.BasicMove
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -19,8 +18,8 @@ class MarshalTest {
     fun checkMarshalMoves() {
         mockCapablancaChess.initGame()
         val moves = mockCapablancaChess.getValidMoves(mockCapablancaChess.players[0])
-        val firstMarshal = (moves.first { it is BasicGameMove && it.pieceMoved is Marshal } as BasicGameMove).pieceMoved
-        val firstMarshalMoves = moves.filter { it is BasicGameMove && it.pieceMoved === firstMarshal }
+        val firstMarshal = (moves.first { it is BasicMove && it.pieceMoved is Marshal } as BasicMove).pieceMoved
+        val firstMarshalMoves = moves.filter { it is BasicMove && it.pieceMoved === firstMarshal }
         Assertions.assertTrue(firstMarshalMoves.size == 2)
     }
 }

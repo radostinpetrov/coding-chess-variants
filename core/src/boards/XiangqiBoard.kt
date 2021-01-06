@@ -1,6 +1,6 @@
 package boards
 
-import gameMoves.GameMove2D
+import moves.Move2D
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
@@ -28,7 +28,7 @@ class XiangqiBoard(
         shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset, squareWidth * y2 + offset, width)
     }
 
-    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
+    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
         val lineWidth = 4f
         Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)

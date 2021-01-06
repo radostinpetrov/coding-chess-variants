@@ -1,6 +1,6 @@
 package players
 
-import gameMoves.GameMove2D
+import moves.Move2D
 import gameTypes.GameType2D
 
 // TODO fix this or something
@@ -13,5 +13,5 @@ abstract class ConsolePlayer(val gameType: GameType2D, val player: Player) {
         gameType.playerMakeMove(getTurn(moves))
     }
 
-    abstract fun getTurn(choiceOfMoves: List<GameMove2D>): GameMove2D
+    abstract fun getTurn(choiceOfMoves: List<Move2D>): Move2D
 }

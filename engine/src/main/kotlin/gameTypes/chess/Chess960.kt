@@ -2,9 +2,9 @@ package gameTypes.chess
 
 import coordinates.Coordinate2D
 import boards.Board2D
-import gameTypes.chess.rules.Chess960Castling
-import gameTypes.chess.rules.Enpassant
-import gameTypes.chess.winconditions.StandardWinConditions
+import rules.Chess960Castling
+import rules.Enpassant
+import winconditions.StandardWinConditions
 import pieces.chess.*
 
 class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardWinConditions())) {

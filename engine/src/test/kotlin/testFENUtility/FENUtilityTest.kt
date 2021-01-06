@@ -1,6 +1,6 @@
 package testFENUtility
 
-import gameTypes.FenUtility
+import utils.FenUtility
 import gameTypes.chess.StandardChess
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

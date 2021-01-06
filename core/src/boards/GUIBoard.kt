@@ -1,12 +1,11 @@
 package boards
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
+import moves.Move2D
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import players.FrontendPlayer
@@ -20,13 +19,13 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color.FOREST
 
-    fun draw(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean) {
+    fun draw(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
         drawBoard(srcX, srcY, moves, flipped, isPromotionScreen)
         drawPieces(batch, flipped)
         drawDots(srcX, srcY, isPromotionScreen, moves, flipped)
     }
 
-    abstract fun drawBoard(srcX: Int?, srcY: Int?, moves: List<GameMove2D>, flipped: Boolean, isPromotionScreen: Boolean)
+    abstract fun drawBoard(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean)
 
     private fun drawPieces(batch: Batch, flipped: Boolean) {
         batch.begin()
@@ -50,7 +49,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         batch.end()
     }
 
-    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<GameMove2D>, flipped: Boolean) {
+    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<Move2D>, flipped: Boolean) {
         if (srcX == null || srcY == null || isPromotionScreen) {
             return
         }

@@ -2,14 +2,12 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.chess.rules.ForcedCaptureRule
-import gameTypes.chess.winconditions.AntiChessWinConditions
-import moves.region.BoxRegion
-import moves.region.CompositeRegion
-import pieces.antichess.AntiChessKing
+import winconditions.StandardWinConditions
+import regions.BoxRegion
+import regions.CompositeRegion
 import pieces.chess.*
 
-class BalbosGame() : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
+class BalbosGame() : AbstractChess(listOf(), listOf(StandardWinConditions())) {
     private val OutOfBoundsRegion = CompositeRegion(
         listOf(
             BoxRegion(Coordinate2D(0, 0), Coordinate2D(3, 0)),

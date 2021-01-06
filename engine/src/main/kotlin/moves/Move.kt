@@ -2,10 +2,7 @@ package moves
 
 import boards.Board
 import coordinates.Coordinate
-import gameMoves.GameMove
+import moveGenerators.MoveGenerator
 import pieces.Piece
-import players.Player
 
-interface Move<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: GameMove<B, M, GM, P, C>, P: Piece<B, M, GM, P, C>, C: Coordinate> {
-    fun generate(board: B, coordinate: C, piece: P, player: Player): List<GM>
-}
+interface Move<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M : Move<B, MG, M, P, C>, P : Piece<B, MG, M, P, C>, C : Coordinate>

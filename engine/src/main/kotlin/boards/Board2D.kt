@@ -1,13 +1,13 @@
 package boards
 
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
 import moves.Move2D
-import moves.region.Region
+import moveGenerators.MoveGenerator2D
+import regions.Region2D
 import pieces.Piece2D
 import players.Player
 
-class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Region? = null) : Board<Board2D, Move2D, GameMove2D, Piece2D, Coordinate2D> {
+class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Region2D? = null) : Board<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Array<Array<Piece2D?>> {
         return board

@@ -3,17 +3,17 @@ package gameTypes
 import Outcome
 import boards.Board
 import coordinates.Coordinate
-import gameMoves.GameMove
 import moves.Move
+import moveGenerators.MoveGenerator
 import pieces.Piece
 import players.Player
 
-interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: GameMove<B, M, GM, P, C>, P: Piece<B, M, GM, P, C>, C: Coordinate> {
+interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
     val board: B
     val players: List<Player>
     var playerTurn: Int
     var seed: Double?
-    val moveLog: MutableList<GM>
+    val moveLog: MutableList<M>
 
     fun initGame()
     fun isOver(): Boolean
@@ -21,11 +21,11 @@ interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: Game
     fun getOutcome(): Outcome? {
         return getOutcome(getCurrentPlayer())
     }
-    fun getValidMoves(player: Player): List<GM>
-    fun getValidMoves(): List<GM> {
+    fun getValidMoves(player: Player): List<M>
+    fun getValidMoves(): List<M> {
         return getValidMoves(getCurrentPlayer())
     }
-    fun makeMove(gameMove: GM)
+    fun makeMove(move: M)
     fun concede(player: Player)
     fun undoMove()
     fun inCheck(player: Player) : Boolean
@@ -45,7 +45,7 @@ interface GameType<B : Board<B, M, GM, P, C>, M : Move<B, M, GM, P, C>, GM: Game
     fun getNextPlayer(): Player {
         return players[(playerTurn + 1) % players.size]
     }
-    fun playerMakeMove(move: GM) {
+    fun playerMakeMove(move: M) {
 
         // TODO discuss if we should keep this first check
 //        val validMoves = getValidMoves(getCurrentPlayer())

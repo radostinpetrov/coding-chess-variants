@@ -2,8 +2,8 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.chess.rules.ForcedCaptureRule
-import gameTypes.chess.winconditions.AntiChessWinConditions
+import rules.ForcedCaptureRule
+import winconditions.AntiChessWinConditions
 import pieces.antichess.AntiChessBlackPawn
 import pieces.antichess.AntiChessKing
 import pieces.antichess.AntiChessWhitePawn

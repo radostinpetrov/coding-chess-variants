@@ -1,9 +1,9 @@
 import coordinates.Coordinate2D
-import gameMoves.GameMove2D
-import gameMoves.GameMove2D.SimpleGameMove.BasicGameMove
+import moves.Move2D
+import moves.Move2D.SimpleMove.BasicMove
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
-import notationFormatter.ChessNotationInput
+import utils.notationFormatter.ChessNotationInput
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -41,28 +41,28 @@ class testChessNotationInput {
     }
 
     @Test
-    fun testBasicGameMoveToStr() {
+    fun testBasicMoveToStr() {
         val player1 = Player()
-        val basicMove = BasicGameMove(
+        val basicMove = BasicMove(
             Coordinate2D(4, 1),
             Coordinate2D(4, 2),
             StandardWhitePawn(player1),
             player1
         )
-        Assertions.assertEquals("P moves from e2 to e3", chessNotationInput.gameMoveToStr(basicMove))
+        Assertions.assertEquals("P moves from e2 to e3", chessNotationInput.moveToStr(basicMove))
     }
 
     @Test
-    fun testCompositeGameMoveToStr() {
+    fun testCompositeMoveToStr() {
         val player1 = Player()
-        val compositeMove = GameMove2D.CompositeGameMove(
-            gameMoves = listOf(
-                BasicGameMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicGameMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicGameMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
+        val compositeMove = Move2D.CompositeMove(
+            moves = listOf(
+                BasicMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
             ),
             player = player1
         )
-        Assertions.assertEquals("K moves from e1 to f1, K moves from f1 to g1, R moves from h1 to f1", chessNotationInput.gameMoveToStr(compositeMove))
+        Assertions.assertEquals("K moves from e1 to f1, K moves from f1 to g1, R moves from h1 to f1", chessNotationInput.moveToStr(compositeMove))
     }
 }

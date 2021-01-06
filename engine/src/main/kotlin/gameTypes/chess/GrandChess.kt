@@ -2,8 +2,8 @@ package gameTypes.chess
 
 import coordinates.Coordinate2D
 import boards.Board2D
-import gameTypes.chess.rules.Enpassant
-import gameTypes.chess.winconditions.StandardWinConditions
+import rules.Enpassant
+import winconditions.StandardWinConditions
 import pieces.chess.*
 
 class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardWinConditions())) {
