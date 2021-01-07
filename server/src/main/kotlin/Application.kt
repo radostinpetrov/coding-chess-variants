@@ -3,6 +3,7 @@ package server
 import Outcome
 import com.mongodb.MongoWriteException
 import com.mongodb.client.MongoCollection
+import gameTypes.checkers.Checkers
 import gameTypes.chess.*
 import gameTypes.xiangqi.*
 import io.ktor.application.*
@@ -328,6 +329,7 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
         "Xiangqi" -> Xiangqi()
         "AntiChess" -> AntiChess()
         "MiniChess" -> MiniChess()
+        "Checkers" -> Checkers()
         else -> null
     }
 
