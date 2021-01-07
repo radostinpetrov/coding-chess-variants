@@ -3,11 +3,12 @@ package com.mygdx.game.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import gameTypes.chess.BalbosGame
 import pieces.Piece2D
-import pieces.chess.*
-import pieces.xiangqi.*
-import pieces.janggi.*
 import pieces.antichess.*
+import pieces.chess.*
+import pieces.janggi.*
+import pieces.xiangqi.*
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 
@@ -52,7 +53,7 @@ class Textures(assets: AssetManager) {
         XiangqiAdvisor::class to whiteAdvisor, XiangqiCannon::class to whiteCannon, XiangqiChariot::class to whiteChariot,
         XiangqiRedElephant::class to whiteElephant, XiangqiGeneral::class to whiteGeneral, XiangqiHorse::class to whiteHorse,
         XiangqiRedSoldier::class to whiteSoldier, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
-        CapablancaWhitePawn::class to whitePawn
+        CapablancaWhitePawn::class to whitePawn, BalbosGame.BalboWhitePawn::class to whitePawn
     )
 
     val blacks = mapOf(
@@ -64,7 +65,7 @@ class Textures(assets: AssetManager) {
         XiangqiAdvisor::class to blackAdvisor, XiangqiCannon::class to blackCannon, XiangqiChariot::class to blackChariot,
         XiangqiBlueElephant::class to blackElephant, XiangqiGeneral::class to blackGeneral, XiangqiHorse::class to blackHorse,
         XiangqiBlueSoldier::class to blackSoldier, AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
-        CapablancaBlackPawn::class to blackPawn
+        CapablancaBlackPawn::class to blackPawn, BalbosGame.BalboBlackPawn::class to blackPawn
     )
 
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
