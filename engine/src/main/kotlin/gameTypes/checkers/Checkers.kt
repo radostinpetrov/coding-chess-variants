@@ -76,10 +76,11 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
 
     override fun initGame() {
         for (i in 0..2) {
-            val start = if (i % 2 == 0) 0 else 1
+            var start = if (i % 2 == 0) 0 else 1
             for (j in start..7 step 2) {
                 board.addPiece(Coordinate2D(j, i), WhiteChecker(players[0]))
             }
+            start = if (i % 2 == 0) 1 else 0
             for (j in start..7 step 2) {
                 board.addPiece(Coordinate2D(j, i + 5), BlackChecker(players[1]))
             }
