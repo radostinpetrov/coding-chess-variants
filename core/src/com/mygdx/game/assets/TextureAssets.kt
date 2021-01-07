@@ -6,7 +6,7 @@ import ktx.assets.getAsset
 import ktx.assets.load
 
 enum class TextureAssets(val path: String) {
-    WhitePawn("white_pawn.png"),
+    WhitePawn("WhitePawn.png"),
     WhiteRook("WhiteRook.png"),
     WhiteKnight("WhiteKnight.png"),
     WhiteBishop("WhiteBishop.png"),
@@ -36,6 +36,7 @@ enum class TextureAssets(val path: String) {
     BlackGeneral("BlackGeneral.png"),
     BlackHorse("BlackHorse.png"),
     BlackSoldier("BlackSoldier.png"),
+    PlaygroundPiece("PlaygroundPiece.png")
 }
 
 inline fun AssetManager.load(asset: TextureAssets) = load<Texture>(asset.path)

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
 import gameTypes.chess.BalbosGame
+import gameTypes.chess.ChessPlayground
 import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
@@ -44,6 +45,7 @@ class Textures(assets: AssetManager) {
     val blackGeneral = assets[TextureAssets.BlackGeneral]
     val blackHorse = assets[TextureAssets.BlackHorse]
     val blackSoldier = assets[TextureAssets.BlackSoldier]
+    val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
 
     val whites = mapOf<KClass<*>, Texture>(
         WhitePawn::class to whitePawn, StandardWhitePawn::class to whitePawn, GrandWhitePawn::class to whitePawn, Rook::class to whiteRook,
@@ -54,7 +56,9 @@ class Textures(assets: AssetManager) {
         XiangqiAdvisor::class to whiteAdvisor, XiangqiCannon::class to whiteCannon, XiangqiChariot::class to whiteChariot,
         XiangqiRedElephant::class to whiteElephant, XiangqiGeneral::class to whiteGeneral, XiangqiHorse::class to whiteHorse,
         XiangqiRedSoldier::class to whiteSoldier, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
-        CapablancaWhitePawn::class to whitePawn, BalbosGame.BalboWhitePawn::class to whitePawn, Checkers.WhiteChecker::class to whitePawn, Checkers.CheckerKing::class to whiteKing
+        CapablancaWhitePawn::class to whitePawn, BalbosGame.BalboWhitePawn::class to whitePawn,
+        Checkers.WhiteChecker::class to whitePawn, Checkers.CheckerKing::class to whiteKing,
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
     val blacks = mapOf(
@@ -66,7 +70,9 @@ class Textures(assets: AssetManager) {
         XiangqiAdvisor::class to blackAdvisor, XiangqiCannon::class to blackCannon, XiangqiChariot::class to blackChariot,
         XiangqiBlueElephant::class to blackElephant, XiangqiGeneral::class to blackGeneral, XiangqiHorse::class to blackHorse,
         XiangqiBlueSoldier::class to blackSoldier, AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
-        CapablancaBlackPawn::class to blackPawn, BalbosGame.BalboBlackPawn::class to blackPawn, Checkers.BlackChecker::class to blackPawn, Checkers.CheckerKing::class to blackKing
+        CapablancaBlackPawn::class to blackPawn, BalbosGame.BalboBlackPawn::class to blackPawn,
+        Checkers.BlackChecker::class to blackPawn, Checkers.CheckerKing::class to blackKing,
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
