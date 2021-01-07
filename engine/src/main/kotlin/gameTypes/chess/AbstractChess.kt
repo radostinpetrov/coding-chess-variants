@@ -154,8 +154,7 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
         }
 
         if (move.pieceCaptured != null) {
-            // CHECK FOR BUG HERE
-            board.addPiece(move.to, move.pieceCaptured)
+            board.addPiece(move.pieceCapturedCoordinate, move.pieceCaptured)
         }
         board.addPiece(move.from, move.pieceMoved)
     }

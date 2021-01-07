@@ -16,7 +16,7 @@ sealed class Move2D(open val player: Player) : Move<Board2D, MoveGenerator2D, Mo
     sealed class SimpleMove(override val player: Player): Move2D(player) {
         open val checkForCheck: Boolean = true
 
-        data class BasicMove(val from: Coordinate2D, val to: Coordinate2D, val pieceMoved: Piece2D, override val player: Player, val pieceCaptured: Piece2D? = null, val piecePromotedTo: Piece2D? = null, override val checkForCheck: Boolean = true)
+        data class BasicMove(val from: Coordinate2D, val to: Coordinate2D, val pieceMoved: Piece2D, override val player: Player, val pieceCaptured: Piece2D? = null, val pieceCapturedCoordinate: Coordinate2D = to, val piecePromotedTo: Piece2D? = null, override val checkForCheck: Boolean = true)
             : SimpleMove(player) {
             override val displayFrom: Coordinate2D
                 get() = from

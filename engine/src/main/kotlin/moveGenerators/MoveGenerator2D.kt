@@ -4,12 +4,12 @@ import boards.Board2D
 import coordinates.Coordinate2D
 import moves.Move2D
 import moves.Move2D.SimpleMove.BasicMove
-import regions.Region2D
 import pieces.Piece2D
 import players.Player
+import regions.Region2D
 
-sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
-    class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : MoveGenerator2D() {
+interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
+    class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
             if (H) {
@@ -37,10 +37,10 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
             while (board.isInBounds(nextCoordinate)) {
                 val destPiece = board.getPiece(nextCoordinate)
                 if (destPiece == null) {
-                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, null, null))
+                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, null))
                     nextCoordinate = Coordinate2D(nextCoordinate.x + dx, nextCoordinate.y + dy)
                 } else if (piece.player != destPiece.player) {
-                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece))
                     break
                 } else {
                     break
@@ -49,7 +49,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
             return result
         }
     }
-    data class Stepper(val directions: List<Direction>, val step: Int, val canCapture: Boolean = false) : MoveGenerator2D() {
+    data class Stepper(val directions: List<Direction>, val step: Int, val canCapture: Boolean = false) : MoveGenerator2D {
         constructor(direction: Direction, step: Int, canCapture: Boolean = false) : this(listOf(direction), step, canCapture)
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
@@ -73,7 +73,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
                 val destPiece = board.getPiece(nextCoordinate)
                 if (board.isInBounds(nextCoordinate)) {
                     if (destPiece == null || (canCapture && destPiece.player != piece.player)) {
-                        result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                        result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece))
                     }
                 }
             }
@@ -81,7 +81,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
             return result
         }
     }
-    data class Leaper(val dx: Int, val dy: Int) : MoveGenerator2D() {
+    data class Leaper(val dx: Int, val dy: Int) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
             val destCoordinates = listOf(
@@ -99,14 +99,14 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
                 if (board.isInBounds(destCoordinate)) {
                     val destPiece = board.getPiece(destCoordinate)
                     if (destPiece == null || piece.player != destPiece.player) {
-                        result.add(BasicMove(coordinate, destCoordinate, piece, player, destPiece, null))
+                        result.add(BasicMove(coordinate, destCoordinate, piece, player, destPiece))
                     }
                 }
             }
             return result
         }
     }
-    data class Hopper(val HV: Boolean = false, val D: Boolean = false, val canJumpOverSamePiece: Boolean) : MoveGenerator2D() {
+    data class Hopper(val HV: Boolean = false, val D: Boolean = false, val canJumpOverSamePiece: Boolean) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
             if (HV) {
@@ -136,11 +136,11 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
                         break
                     }
                     if (count == 1 && destPiece.player != piece.player) {
-                        result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece, null))
+                        result.add(BasicMove(coordinate, nextCoordinate, piece, player, destPiece))
                     }
                     count++
                 } else if (count == 1) {
-                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, null, null))
+                    result.add(BasicMove(coordinate, nextCoordinate, piece, player, null))
                 }
                 nextCoordinate = Coordinate2D(nextCoordinate.x + dx, nextCoordinate.y + dy)
             }
@@ -148,7 +148,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
         }
     }
 
-    data class CaptureOnly(val moveGenerator: MoveGenerator2D) : MoveGenerator2D() {
+    data class CaptureOnly(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
                 it.pieceCaptured != null
@@ -156,7 +156,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
         }
     }
 
-    data class NoCapture(val moveGenerator: MoveGenerator2D) : MoveGenerator2D() {
+    data class NoCapture(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
                 it.pieceCaptured == null
@@ -164,21 +164,21 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
         }
     }
 
-    data class Restricted(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D() {
+    data class Restricted(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
                 region.isInRegion(it.from)
             }
         }
     }
-    data class RestrictedDestination(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D() {
+    data class RestrictedDestination(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
                 region.isInRegion(it.to)
             }
         }
     }
-    data class AddPromotion(val moveGenerators: List<MoveGenerator2D>, val region: Region2D, val promoPieces: List<Piece2D>, val forced: Boolean) : MoveGenerator2D() {
+    data class AddPromotion(val moveGenerators: List<MoveGenerator2D>, val region: Region2D, val promoPieces: List<Piece2D>, val forced: Boolean) : MoveGenerator2D {
         constructor(move: MoveGenerator2D, region: Region2D, promoPieces: List<Piece2D>, forced: Boolean) : this(listOf(move), region, promoPieces, forced)
         override fun generate(
             board: Board2D,
@@ -200,6 +200,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
                                         it.pieceMoved,
                                         player,
                                         it.pieceCaptured,
+                                        it.pieceCapturedCoordinate,
                                         promoPiece
                                     )
                                 )
@@ -216,7 +217,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
         }
     }
 
-    data class Composite(val moveGenerators: List<MoveGenerator2D>) : MoveGenerator2D() {
+    data class Composite(val moveGenerators: List<MoveGenerator2D>) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val iter = moveGenerators.iterator()
             var moves: List<BasicMove> = iter.next().generate(board, coordinate, piece, player).filterIsInstance<BasicMove>()
@@ -232,6 +233,7 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
                                 currMove.pieceMoved,
                                 player,
                                 currMove.pieceCaptured,
+                                currMove.pieceCapturedCoordinate,
                                 currMove.piecePromotedTo
                             )
                         )
@@ -243,10 +245,10 @@ sealed class MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, P
         }
     }
 
-    object Skip : MoveGenerator2D() {
+    object Skip : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return listOf(
-                BasicMove(coordinate, coordinate, piece, player, null, null)
+                BasicMove(coordinate, coordinate, piece, player, null )
             )
         }
     }
