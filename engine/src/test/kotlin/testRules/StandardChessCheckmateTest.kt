@@ -37,7 +37,7 @@ class StandardChessCheckmateTest {
                 Coordinate2D(7, 4), Coordinate2D(5, 6), Queen(player1), player1, board.getPiece(
                     Coordinate2D(5, 6)
                 ),
-                null, true
+                Coordinate2D(5, 6),null, true
             )
         )
 

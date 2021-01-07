@@ -209,7 +209,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
                                 result.add(BasicMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
                             }
                         } else {
-                            result.add(BasicMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured))
+                            result.add(BasicMove(it.from, it.to, it.pieceMoved, player, it.pieceCaptured, it.pieceCapturedCoordinate))
                         }
                     }
             }

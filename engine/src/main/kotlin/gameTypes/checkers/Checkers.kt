@@ -37,7 +37,8 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
             MoveGenerator2D.Leaper(2, 2).generate(board, coordinate, piece, player).forEach {
                 val captureCoordinate = (it.from + it.to) / 2
                 val pieceCaptured = board.getPiece(captureCoordinate)
-                if (pieceCaptured != null) {
+                val pieceDestination = board.getPiece(it.to)
+                if (pieceCaptured != null && pieceDestination == null && pieceCaptured.player != player) {
                     res.add(Move2D.SimpleMove.BasicMove(it.from, it.to, it.pieceMoved, player, pieceCaptured, captureCoordinate))
                 }
             }
@@ -71,7 +72,7 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
                         MoveGenerator2D.Stepper(listOf(Direction.SOUTH_EAST, Direction.SOUTH_WEST), 1),
                         CheckersCapture()
                     ),
-                    RowRegion(7),
+                    RowRegion(0),
                     listOf(CheckerKing(player)),
                     true
                 ),
