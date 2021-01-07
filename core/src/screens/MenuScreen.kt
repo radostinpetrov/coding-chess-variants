@@ -31,6 +31,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val miniChessButton = TextButton("MiniChess", skin)
     val balbosGameButton = TextButton("Balbo's Game", skin)
     val checkersGameButton = TextButton("Checkers", skin)
+    val playgroundButton = TextButton("Playground", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -63,7 +64,8 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         antiChessButton to AntiChess(),
         miniChessButton to MiniChess(),
         balbosGameButton to BalbosGame(),
-        checkersGameButton to Checkers()
+        checkersGameButton to Checkers(),
+        playgroundButton to ChessPlayground()
     )
 
     override fun show() {
@@ -191,6 +193,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        playgroundButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                selectChessType(playgroundButton)
+            }
+        })
+
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToPreGameScreen(chessType, isOnline)
@@ -235,13 +243,14 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(janggiButton).colspan(4).padBottom(20f)
         table.add(xiangqiButton).colspan(4).padBottom(20f)
         table.row()
-        table.add(antiChessButton).colspan(4).padBottom(40f)
-        table.add(miniChessButton).colspan(4).padBottom(40f)
-        table.add(balbosGameButton).colspan(4).padBottom(40f)
+        table.add(antiChessButton).colspan(4).padBottom(20f)
+        table.add(miniChessButton).colspan(4).padBottom(20f)
+        table.add(balbosGameButton).colspan(4).padBottom(20f)
         table.row()
-        table.add(checkersGameButton).colspan(4).padBottom(40f)
+        table.add(checkersGameButton).colspan(6).padBottom(40f)
+        table.add(playgroundButton).colspan(6).padBottom(40f)
         table.row()
-        table.add(startButton).colspan(6).padBottom(30f).center()
+        table.add(startButton).colspan(12).padBottom(30f).center()
         table.row()
         table.add(leaderboardButton).colspan(12).padTop(50f).padBottom(20f).center()
         table.row()

@@ -38,7 +38,7 @@ tasks.register<Jar>("dist") {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     from(assetsDir)
 
-    archiveBaseName.set("desktop-client")
+    archiveBaseName.set("desktopclient")
     archiveClassifier.set("")
     archiveVersion.set("")
 
