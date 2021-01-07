@@ -46,32 +46,64 @@ class Textures(assets: AssetManager) {
     val blackHorse = assets[TextureAssets.BlackHorse]
     val blackSoldier = assets[TextureAssets.BlackSoldier]
     val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
+    val redChecker = assets[TextureAssets.RedChecker]
+    val whiteChecker = assets[TextureAssets.WhiteChecker]
 
     val whites = mapOf<KClass<*>, Texture>(
-        WhitePawn::class to whitePawn, StandardWhitePawn::class to whitePawn, GrandWhitePawn::class to whitePawn, Rook::class to whiteRook,
+        /* Standard chess. */
+        WhitePawn::class to whitePawn, StandardWhitePawn::class to whitePawn, Rook::class to whiteRook,
         Knight::class to whiteKnight, Bishop::class to whiteBishop, Queen::class to whiteQueen, King::class to whiteKing,
-        Cardinal::class to whiteCardinal, Marshal::class to whiteMarshal, Advisor::class to whiteAdvisor,
-        Cannon::class to whiteCannon, Chariot::class to whiteChariot, Elephant::class to whiteElephant,
-        General::class to whiteGeneral, Horse::class to whiteHorse, RedSoldier::class to whiteSoldier,
-        XiangqiAdvisor::class to whiteAdvisor, XiangqiCannon::class to whiteCannon, XiangqiChariot::class to whiteChariot,
-        XiangqiRedElephant::class to whiteElephant, XiangqiGeneral::class to whiteGeneral, XiangqiHorse::class to whiteHorse,
-        XiangqiRedSoldier::class to whiteSoldier, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
-        CapablancaWhitePawn::class to whitePawn, BalbosGame.BalboWhitePawn::class to whitePawn,
-        Checkers.WhiteChecker::class to whitePawn, Checkers.CheckerKing::class to whiteKing,
+
+        /* Capablanca and Grand chess. */
+        CapablancaWhitePawn::class to whitePawn, GrandWhitePawn::class to whitePawn,
+        Cardinal::class to whiteCardinal, Marshal::class to whiteMarshal,
+
+        /* Xiangqi and Janggi. */
+        Advisor::class to whiteAdvisor, Cannon::class to whiteCannon, Chariot::class to whiteChariot,
+        Elephant::class to whiteElephant, General::class to whiteGeneral, Horse::class to whiteHorse,
+        RedSoldier::class to whiteSoldier, XiangqiAdvisor::class to whiteAdvisor, XiangqiCannon::class to whiteCannon,
+        XiangqiChariot::class to whiteChariot, XiangqiRedElephant::class to whiteElephant, XiangqiGeneral::class to whiteGeneral,
+        XiangqiHorse::class to whiteHorse, XiangqiRedSoldier::class to whiteSoldier,
+
+        /* Antichess. */
+        AntiChessWhitePawn::class to whitePawn, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
+
+        /* Balbo's chess. */
+        BalbosGame.BalboWhitePawn::class to whitePawn,
+
+        /* Checkers. */
+        Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteKing,
+
+        /* Playground. */
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
     val blacks = mapOf(
-        BlackPawn::class to blackPawn, StandardBlackPawn::class to blackPawn, GrandBlackPawn::class to blackPawn, Rook::class to blackRook,
+        /* Standard chess. */
+        BlackPawn::class to blackPawn, StandardBlackPawn::class to blackPawn, Rook::class to blackRook,
         Knight::class to blackKnight, Bishop::class to blackBishop, Queen::class to blackQueen, King::class to blackKing,
-        Cardinal::class to blackCardinal, Marshal::class to blackMarshal, Advisor::class to blackAdvisor,
-        Cannon::class to blackCannon, Chariot::class to blackChariot, Elephant::class to blackElephant,
-        General::class to blackGeneral, Horse::class to blackHorse, BlueSoldier::class to blackSoldier,
-        XiangqiAdvisor::class to blackAdvisor, XiangqiCannon::class to blackCannon, XiangqiChariot::class to blackChariot,
-        XiangqiBlueElephant::class to blackElephant, XiangqiGeneral::class to blackGeneral, XiangqiHorse::class to blackHorse,
-        XiangqiBlueSoldier::class to blackSoldier, AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
-        CapablancaBlackPawn::class to blackPawn, BalbosGame.BalboBlackPawn::class to blackPawn,
-        Checkers.BlackChecker::class to blackPawn, Checkers.CheckerKing::class to blackKing,
+
+        /* Capablanca and Grand Chess. */
+        CapablancaBlackPawn::class to blackPawn, GrandBlackPawn::class to blackPawn,
+        Cardinal::class to blackCardinal, Marshal::class to blackMarshal,
+
+        /* Xiangqi and Janggi. */
+        Advisor::class to blackAdvisor, Cannon::class to blackCannon, Chariot::class to blackChariot,
+        Elephant::class to blackElephant, General::class to blackGeneral, Horse::class to blackHorse,
+        BlueSoldier::class to blackSoldier, XiangqiAdvisor::class to blackAdvisor, XiangqiCannon::class to blackCannon,
+        XiangqiChariot::class to blackChariot, XiangqiBlueElephant::class to blackElephant, XiangqiGeneral::class to blackGeneral,
+        XiangqiHorse::class to blackHorse, XiangqiBlueSoldier::class to blackSoldier,
+
+        /* Antichess. */
+        AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
+
+        /* Balbo's Chess. */
+        BalbosGame.BalboBlackPawn::class to blackPawn,
+
+        /* Checkers. */
+        Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to blackKing,
+
+        /* Playground. */
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 

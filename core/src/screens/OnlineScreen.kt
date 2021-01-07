@@ -57,7 +57,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     private fun switchToGameScreen() {
         val clockFlag = clockList != null
-        val gameScreen = GameScreen(game, gameType, clockFlag)
+        val gameScreen = GameScreen(game, gameType, clockFlag, true)
         val players = mutableListOf<FrontendPlayer>()
         when (humanPlayer) {
             1 -> {
