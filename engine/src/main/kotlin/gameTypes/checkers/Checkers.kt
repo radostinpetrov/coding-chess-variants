@@ -11,11 +11,9 @@ import pieces.Piece2D
 import players.Player
 import regions.RowRegion
 import rules.ForcedCaptureRule
-import rules.SpecialRules2D
 import winconditions.WinCondition2D
 
 class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winConditions = listOf(CheckersWinCondition())) {
-
     class CheckersWinCondition() : WinCondition2D<AbstractChess> {
         override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
             for (p in game.players) {
@@ -46,42 +44,24 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
         }
     }
 
-    data class WhiteChecker(override val player: Player) : Piece2D {
+    abstract class CheckerPawn(override val player: Player, val directions: List<Direction>, val promotionRow: Int) : Piece2D {
         override val moveGenerators: List<MoveGenerator2D>
             get() = listOf(
                 MoveGenerator2D.AddPromotion(
                     listOf(
-                        MoveGenerator2D.Stepper(listOf(Direction.NORTH_EAST, Direction.NORTH_WEST), 1),
+                        MoveGenerator2D.Stepper(directions, 1),
                         CheckersCapture()
                     ),
-                    RowRegion(7),
+                    RowRegion(promotionRow),
                     listOf(CheckerKing(player)),
                     true
                 ),
             )
-
-        override fun getSymbol(): String {
-            return "C"
-        }
+        override fun getSymbol(): String = "C"
     }
-    data class BlackChecker(override val player: Player) : Piece2D {
-        override val moveGenerators: List<MoveGenerator2D>
-            get() = listOf(
-                MoveGenerator2D.AddPromotion(
-                    listOf(
-                        MoveGenerator2D.Stepper(listOf(Direction.SOUTH_EAST, Direction.SOUTH_WEST), 1),
-                        CheckersCapture()
-                    ),
-                    RowRegion(0),
-                    listOf(CheckerKing(player)),
-                    true
-                ),
-            )
 
-        override fun getSymbol(): String {
-            return "C"
-        }
-    }
+    data class WhiteChecker(override val player: Player) : CheckerPawn(player, listOf(Direction.NORTH_EAST, Direction.NORTH_WEST), 7)
+    data class BlackChecker(override val player: Player) : CheckerPawn(player, listOf(Direction.SOUTH_EAST, Direction.SOUTH_WEST), 0)
 
     data class CheckerKing(override val player: Player) : Piece2D {
         override val moveGenerators: List<MoveGenerator2D>
@@ -89,41 +69,21 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
                 MoveGenerator2D.Stepper(listOf(Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.SOUTH_EAST, Direction.SOUTH_WEST), 1),
                 CheckersCapture()
             )
-
-        override fun getSymbol(): String {
-            return "K"
-        }
+        override fun getSymbol(): String = "K"
     }
-
-//    val repeatMove
 
     override val board: Board2D = Board2D(8, 8)
 
     override fun initGame() {
-        board.addPiece(Coordinate2D(0, 0), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(2, 0), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(4, 0), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(6, 0), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(1, 1), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(3, 1), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(5, 1), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(7, 1), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(0, 2), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(2, 2), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(4, 2), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(6, 2), WhiteChecker(players[0]))
-        board.addPiece(Coordinate2D(1, 7), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(3, 7), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(5, 7), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(7, 7), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(0, 6), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(2, 6), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(4, 6), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(6, 6), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(1, 5), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(3, 5), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(5, 5), BlackChecker(players[1]))
-        board.addPiece(Coordinate2D(7, 5), BlackChecker(players[1]))
+        for (i in 0..2) {
+            val start = if (i % 2 == 0) 0 else 1
+            for (j in start..7 step 2) {
+                board.addPiece(Coordinate2D(j, i), WhiteChecker(players[0]))
+            }
+            for (j in start..7 step 2) {
+                board.addPiece(Coordinate2D(j, i + 5), BlackChecker(players[1]))
+            }
+        }
     }
 
     override fun playerMakeMove(move: Move2D) {
