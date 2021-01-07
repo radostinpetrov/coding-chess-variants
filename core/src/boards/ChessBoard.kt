@@ -63,18 +63,32 @@ class ChessBoard(
 
 
         batch.begin()
-        font!!.setColor(Color.BLACK)
+        font!!.color = Color.BLACK
         font.data.setScale(1.3f)
 
         var letter = 'a'
-        for (i in 0 until columns) {
-            font.draw(batch, letter.toString(), squareWidth * (i + 1) - 20, 20f)
-            letter += 1
+        if (!flipped) {
+            for (i in 0 until columns) {
+                font.draw(batch, letter.toString(), squareWidth * (i + 1) - 20, 20f)
+                letter += 1
+            }
+        } else {
+            for (i in 0 until columns) {
+                font.draw(batch, letter.toString(), squareWidth * (columns - i) - 20, 20f)
+                letter += 1
+            }
         }
 
-        for (i in 0 until rows) {
-            font.draw(batch, (i + 1).toString(), 10f, squareWidth * (i + 1) - 10)
+        if (!flipped) {
+            for (i in 0 until rows) {
+                font.draw(batch, (i + 1).toString(), 10f, squareWidth * (i + 1) - 10)
+            }
+        } else {
+            for (i in 0 until rows) {
+                font.draw(batch, (rows - i).toString(), 10f, squareWidth * (i + 1) - 10)
+            }
         }
+
         font.data.setScale(1f)
 
         batch.end()
