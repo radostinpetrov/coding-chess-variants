@@ -8,6 +8,20 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
+/**
+ * Castling in standard chess
+ *
+ * Moves the king two squares towards a rook on the player's first rank,
+ * then moving the rook to the square that the king crossed.
+ *
+ * Can only occur provided all of the following conditions hold:
+ *  1. The castling must be kingside or queenside
+ *  2. Neither the king nor the chosen rook has previously moved.
+ *  3. There are no pieces between the king and the chosen rook.
+ *  4. The king is not currently in check.
+ *  5. The king does not pass through a square that is attacked by an enemy piece.
+ *  6. The king does not end up in check. (True of any legal move.)
+ */
 class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight: Boolean = true, val p2CanCastleLeft: Boolean = true, val p2CanCastleRight: Boolean = true) : SpecialRules2D<StandardChess> {
     override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<Move2D>) {
         val board = game.board

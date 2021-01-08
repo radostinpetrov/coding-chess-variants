@@ -10,6 +10,9 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
+/**
+ * Castling in chess 960
+ */
 class Chess960Castling : SpecialRules2D<Chess960> {
     override fun getPossibleMoves(game: Chess960, player: Player, moves: MutableList<Move2D>) {
         val board = game.board

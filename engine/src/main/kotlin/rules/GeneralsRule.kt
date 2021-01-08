@@ -8,6 +8,12 @@ import players.Player
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * Flying general rule in Janggi and Xiangqi
+ *
+ * The two generals cannot face each other along the same line
+ * without any intervening pieces.
+ */
 class GeneralsRule : SpecialRules2D<AbstractChess> {
     override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
         moves.retainAll { !generalsFaceEachOther(game, it) }

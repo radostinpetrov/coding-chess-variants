@@ -8,6 +8,9 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
+/**
+ * Castling in Capablanca chess
+ */
 class CapablancaCastling : SpecialRules2D<CapablancaChess> {
     override fun getPossibleMoves(game: CapablancaChess, player: Player, moves: MutableList<Move2D>) {
         val board = game.board
