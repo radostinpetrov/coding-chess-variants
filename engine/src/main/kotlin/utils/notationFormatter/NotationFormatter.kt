@@ -3,13 +3,27 @@ package utils.notationFormatter
 import coordinates.Coordinate2D
 import moves.Move2D
 
+/**
+ * Interface for a notation formatter to be used by front end console implementations.
+ * Different notation formatters could be made for standard chess and asian chess variants.
+ */
 interface NotationFormatter {
-    /* Converts the string representation of a coordinate to a coordinate. */
+
+    /**
+     * Takes a string representation of a coordinate and converts to a coordinate.
+     * @return Coordinate2D
+     */
     fun strToCoordinate(s: String): Coordinate2D?
 
-    /* Converts a coordinate to the string representation of a coordinate. */
+    /**
+     * Takes a coordinate and converts to the string representation of a coordinate.
+     * @return String coordinate
+     */
     fun coordinateToStr(c: Coordinate2D): String
 
-    /* Get the string representation of a game move. */
+    /**
+     *  Takes a Move2D and converts to a readable representation
+     *  @return String move
+     */
     fun moveToStr(move: Move2D): String
 }
