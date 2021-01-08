@@ -13,7 +13,7 @@ open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChe
     override val board = Board2D(8, 8)
     override val name = "Anti Chess"
 
-    override fun initGame() {
+    override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..7) {

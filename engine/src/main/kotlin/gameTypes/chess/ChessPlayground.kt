@@ -15,8 +15,9 @@ class ChessPlayground : AbstractChess(winConditions = listOf()) {
         override fun getSymbol(): String = "D"
     }
     override val board: Board2D = Board2D(8, 8)
+    override val name = "Chess Playground"
 
-    override fun initGame() {
+    override fun initBoard() {
         board.addPiece(Coordinate2D(4, 3), PlaygroundPiece(players[0]))
     }
 }

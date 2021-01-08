@@ -17,6 +17,7 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     val moveLog: MutableList<M>
 
     fun initGame()
+    fun initBoard()
     fun isOver(): Boolean
     fun getOutcome(player: Player): Outcome?
     fun getOutcome(): Outcome? {

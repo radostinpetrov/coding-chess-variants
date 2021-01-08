@@ -28,6 +28,10 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
         return getOutcome(getCurrentPlayer()) != null
     }
 
+    override fun initGame() {
+        initBoard()
+    }
+
     override fun getOutcome(player: Player): Outcome? {
         if (concededWinner != null) {
             return Outcome.Win(player, "by enemy concede")

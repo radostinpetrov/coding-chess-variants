@@ -11,7 +11,7 @@ class Janggi : AbstractChess(listOf(GeneralsRule()), listOf(StandardWinCondition
     override val board = Board2D(10, 9)
     override val name = "Janggi"
 
-    override fun initGame() {
+    override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..4) {

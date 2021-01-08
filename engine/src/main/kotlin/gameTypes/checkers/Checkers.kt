@@ -76,7 +76,7 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
 
     override val board: Board2D = Board2D(8, 8)
 
-    override fun initGame() {
+    override fun initBoard() {
         for (i in 0..2) {
             var start = if (i % 2 == 0) 0 else 1
             for (j in start..7 step 2) {

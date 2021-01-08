@@ -11,7 +11,7 @@ open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassan
     override val board = Board2D(8, 10)
     override val name = "Capablanca Chess"
 
-    override fun initGame() {
+    override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
 

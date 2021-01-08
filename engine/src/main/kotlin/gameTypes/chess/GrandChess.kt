@@ -10,7 +10,7 @@ class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardWinConditio
     override val board = Board2D(10, 10)
     override val name = "Grand Chess"
 
-    override fun initGame() {
+    override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
         for (i in 0..9) {
