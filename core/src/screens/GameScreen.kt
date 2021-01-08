@@ -61,9 +61,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     private val pieceWidth: Float = squareWidth * 0.85f
 
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    val forfeitButton = TextButton("Forfeit", skin)
-
-
+    private val forfeitButton = TextButton("Forfeit", skin)
+    private val forfeitButtonPosX = windowWidth + panelWidth - 90f
+    private val forfeitButtonPosY = 23f
 
     // TODO maybe don't need this?
     var currPlayer: Player? = null
@@ -148,7 +148,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 }
             }
         })
-        forfeitButton.setPosition((windowWidth + panelWidth/2 - 30f), 10f)
+        forfeitButton.setPosition(forfeitButtonPosX, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
     }
