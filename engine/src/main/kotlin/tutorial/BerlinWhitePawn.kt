@@ -2,8 +2,7 @@ package tutorial
 
 import moveGenerators.Direction.*
 import moveGenerators.MoveGenerator2D
-import pieces.Pawn
-import pieces.Piece2D
+import pieces.*
 import pieces.chess.*
 import players.Player
 import regions.RowRegion
