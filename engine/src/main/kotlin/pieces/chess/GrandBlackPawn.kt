@@ -6,6 +6,9 @@ import regions.CompositeRegion
 import regions.RowRegion
 import players.Player
 
+/**
+ * Represents a black pawn in grand chess
+ */
 class GrandBlackPawn(override val player: Player) : BlackPawn(player, 2, RowRegion(0), listOf(Queen(player), Bishop(player), Knight(player), Rook(player), Marshal(player), Cardinal(player))) {
     private val forcedPromotionRegion = RowRegion(0)
     private val optionalPromotionRegion = CompositeRegion(listOf(RowRegion(1), RowRegion(2)))
@@ -19,8 +22,4 @@ class GrandBlackPawn(override val player: Player) : BlackPawn(player, 2, RowRegi
         MoveGenerator2D.AddPromotion(moveList, forcedPromotionRegion, pawnPromotions, true),
         MoveGenerator2D.AddPromotion(moveList, optionalPromotionRegion, pawnPromotions, false),
     )
-
-    override fun getSymbol(): String {
-        return "P"
-    }
 }

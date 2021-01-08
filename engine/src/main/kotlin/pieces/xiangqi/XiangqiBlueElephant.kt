@@ -1,11 +1,9 @@
 package pieces.xiangqi
 
-import coordinates.Coordinate2D
-import moveGenerators.Direction
-import moveGenerators.MoveGenerator2D
-import regions.BoxRegion
-import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents a blue elephant in Xiangqi
+ */
 data class XiangqiBlueElephant(override val player: Player) :
-    XiangqiElephant(player, BoxRegion(Coordinate2D(0, 5), Coordinate2D(8, 9)))
+    XiangqiElephant(player, SpecialRegion.blueBeforeRiver)

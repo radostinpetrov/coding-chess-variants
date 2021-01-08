@@ -4,6 +4,9 @@ import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents a chariot in Xiangqi
+ */
 data class XiangqiChariot(override val player: Player) : Piece2D {
 
     override val moveGenerators =

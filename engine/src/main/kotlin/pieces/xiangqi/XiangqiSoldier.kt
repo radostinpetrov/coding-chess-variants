@@ -7,6 +7,9 @@ import pieces.Piece2D
 import players.Player
 import regions.Region2D
 
+/**
+ * Represents a soldier in Xiangqi
+ */
 abstract class XiangqiSoldier(override val player: Player,
                               direction: Direction,
                               acrossRiver: Region2D): Piece2D, Pawn {

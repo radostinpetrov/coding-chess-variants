@@ -7,6 +7,9 @@ import pieces.Piece2D
 import players.Player
 import regions.CoordinateRegion
 
+/**
+ * Represents a soldier in Janggi
+ */
 abstract class JanggiSoldier(override val player: Player, direction: Direction) : Piece2D, Pawn {
     private val palaceDir = if (direction == Direction.SOUTH)
         listOf(Direction.SOUTH_EAST, Direction.SOUTH_WEST)

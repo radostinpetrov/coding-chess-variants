@@ -5,6 +5,11 @@ import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents a horse in Janggi
+ * Moves are similar to a standard to chess knight, but cannot jump over another pieces
+ * i.e. is not a leaper
+ */
 data class Horse(override val player: Player) : Piece2D {
     override val moveGenerators =
         listOf(

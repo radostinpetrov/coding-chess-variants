@@ -5,6 +5,9 @@ import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents a horse in Xiangqi
+ */
 data class XiangqiHorse(override val player: Player) : Piece2D {
     override val moveGenerators =
         listOf(

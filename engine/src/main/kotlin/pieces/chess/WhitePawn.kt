@@ -1,12 +1,13 @@
 package pieces.chess
 
 import moveGenerators.Direction
-import moveGenerators.MoveGenerator2D
 import regions.RowRegion
-import pieces.Pawn
 import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents a white pawn
+ */
 open class WhitePawn(override val player: Player, val startingRow: Int, val promotionRegion: RowRegion, val pawnPromotions: List<Piece2D>)
     : Piece2D, ChessPawn(player, Direction.NORTH, startingRow, promotionRegion, pawnPromotions){
     constructor(player: Player, startingRow: Int, promotionRow: Int, pawnPromotions: List<Piece2D>) :

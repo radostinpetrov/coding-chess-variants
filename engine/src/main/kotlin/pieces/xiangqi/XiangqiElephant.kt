@@ -6,6 +6,9 @@ import pieces.Piece2D
 import players.Player
 import regions.Region2D
 
+/**
+ * Represents an elephant in Xiangqi
+ */
 abstract class XiangqiElephant(override val player: Player, river: Region2D) : Piece2D {
 
     override val moveGenerators =
