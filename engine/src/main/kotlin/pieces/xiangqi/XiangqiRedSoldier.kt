@@ -11,8 +11,8 @@ import players.Player
 data class XiangqiRedSoldier(override val player: Player) : Piece2D, Pawn {
     private val acrossRiver = BoxRegion(Coordinate2D(0, 5), Coordinate2D(9, 9))
 
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators =
+        listOf(
             MoveGenerator2D.Stepper(Direction.NORTH, 1, true),
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.EAST, 1, true), acrossRiver),
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.WEST, 1, true), acrossRiver),

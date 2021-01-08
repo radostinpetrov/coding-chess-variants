@@ -15,8 +15,8 @@ data class General(override val player: Player) : Piece2D, Royal {
     private val palace2 = BoxRegion(Coordinate2D(3, 7), Coordinate2D(5, 9))
     private val palace = CompositeRegion(listOf(palace1, palace2))
 
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators: List<MoveGenerator2D> =
+        listOf(
             MoveGenerator2D.RestrictedDestination(MoveGenerator2D.Stepper(Direction.NORTH, 1, true), palace),
             MoveGenerator2D.RestrictedDestination(MoveGenerator2D.Stepper(Direction.EAST, 1, true), palace),
             MoveGenerator2D.RestrictedDestination(MoveGenerator2D.Stepper(Direction.SOUTH, 1, true), palace),

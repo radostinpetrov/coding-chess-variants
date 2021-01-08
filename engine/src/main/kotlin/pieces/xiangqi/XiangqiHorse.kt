@@ -6,8 +6,8 @@ import pieces.Piece2D
 import players.Player
 
 data class XiangqiHorse(override val player: Player) : Piece2D {
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators =
+        listOf(
             MoveGenerator2D.Composite(listOf(MoveGenerator2D.Stepper(Direction.NORTH, 1, false), MoveGenerator2D.Stepper(Direction.NORTH_EAST, 1, true))),
             MoveGenerator2D.Composite(listOf(MoveGenerator2D.Stepper(Direction.NORTH, 1, false), MoveGenerator2D.Stepper(Direction.NORTH_WEST, 1, true))),
             MoveGenerator2D.Composite(listOf(MoveGenerator2D.Stepper(Direction.EAST, 1, false), MoveGenerator2D.Stepper(Direction.NORTH_EAST, 1, true))),

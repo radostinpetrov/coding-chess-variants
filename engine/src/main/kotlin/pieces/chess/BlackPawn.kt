@@ -13,8 +13,8 @@ open class BlackPawn(override val player: Player, val startingRow: Int, val prom
     constructor(player: Player, startingRow: Int, promotionRow: Int, pawnPromotions: List<Piece2D>):
             this(player, startingRow, RowRegion(promotionRow), pawnPromotions)
 
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators =
+        listOf(
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.SOUTH, 2), RowRegion(startingRow)),
             MoveGenerator2D.AddPromotion(
                 listOf(
@@ -38,5 +38,14 @@ open class BlackPawn(override val player: Player, val startingRow: Int, val prom
 
     override fun getSymbol(): String {
         return "P"
+    }
+
+    override fun hashCode(): Int {
+        var result = player.hashCode()
+        result = 31 * result + startingRow
+        result = 31 * result + promotionRegion.hashCode()
+        result = 31 * result + pawnPromotions.hashCode()
+        result = 31 * result + moveGenerators.hashCode()
+        return result
     }
 }

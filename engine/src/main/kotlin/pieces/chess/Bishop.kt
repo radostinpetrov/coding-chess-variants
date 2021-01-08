@@ -6,8 +6,7 @@ import pieces.Piece2D
 import players.Player
 
 data class Bishop(override val player: Player) : Piece2D {
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(Slider(A = true, D = true))
+    override val moveGenerators = listOf(Slider(A = true, D = true))
 
     override fun getSymbol(): String {
         return "B"

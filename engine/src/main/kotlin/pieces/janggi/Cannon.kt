@@ -12,8 +12,8 @@ data class Cannon(override val  player: Player) : Piece2D {
     private val palace2 = BoxRegion(Coordinate2D(3, 7), Coordinate2D(5, 9))
     private val palace = CompositeRegion(listOf(palace1, palace2))
 
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators =
+        listOf(
             MoveGenerator2D.Hopper(HV = true, canJumpOverSamePiece = false),
             MoveGenerator2D.Restricted(MoveGenerator2D.Hopper(D = true, canJumpOverSamePiece = false), palace)
         )

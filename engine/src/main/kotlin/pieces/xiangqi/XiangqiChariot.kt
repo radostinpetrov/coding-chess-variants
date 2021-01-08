@@ -6,8 +6,8 @@ import players.Player
 
 data class XiangqiChariot(override val player: Player) : Piece2D {
 
-    override val moveGenerators: List<MoveGenerator2D>
-        get() = listOf(
+    override val moveGenerators =
+        listOf(
             MoveGenerator2D.Slider(H = true, V = true, A = false, D = false)
         )
 

@@ -14,7 +14,7 @@ class GrandWhitePawn(override val player: Player) : WhitePawn(player, 2, RowRegi
         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_WEST, 1, true)),
         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_EAST, 1, true))
     )
-    override val moveGenerators: List<MoveGenerator2D> = listOf(
+    override val moveGenerators = listOf(
         MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
         MoveGenerator2D.AddPromotion(moveList, forcedPromotionRegion, pawnPromotions, true),
         MoveGenerator2D.AddPromotion(moveList, optionalPromotionRegion, pawnPromotions, false),
