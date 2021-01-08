@@ -11,6 +11,6 @@ class NoRepeatedMoveFromSamePieceRule() : SpecialRules2D<AbstractChess> {
             return
         }
         val prevMove = game.moveLog[game.moveLog.size - 2]
-        moves.removeAll { it.displayPieceMoved == prevMove.displayPieceMoved }
+        moves.removeAll { it.displayPieceMoved === prevMove.displayPieceMoved }
     }
 }

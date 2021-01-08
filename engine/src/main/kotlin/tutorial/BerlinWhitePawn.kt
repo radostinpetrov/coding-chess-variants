@@ -10,7 +10,7 @@ import regions.RowRegion
 
 data class BerlinWhitePawn(override val player: Player) : Piece2D, Pawn {
     override val moveGenerators = listOf(
-        MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(listOf(NORTH_EAST, NORTH_WEST), 2), RowRegion(2)),
+        MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(listOf(NORTH_EAST, NORTH_WEST), 2), RowRegion(1)),
         MoveGenerator2D.AddPromotion(
             listOf(
                 MoveGenerator2D.Stepper(listOf(NORTH_EAST, NORTH_WEST), 1),
