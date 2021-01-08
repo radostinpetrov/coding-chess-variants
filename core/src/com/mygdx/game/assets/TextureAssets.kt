@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture
 import ktx.assets.getAsset
 import ktx.assets.load
 
+/**
+ * Contains the paths to the piece pictures.
+ */
 enum class TextureAssets(val path: String) {
     WhitePawn("WhitePawn.png"),
     WhiteRook("WhiteRook.png"),
@@ -40,6 +43,8 @@ enum class TextureAssets(val path: String) {
     RedChecker("RedChecker.png"),
     WhiteChecker("WhiteChecker.png")
 }
-
+/* Loads pictures into the asset manager. */
 inline fun AssetManager.load(asset: TextureAssets) = load<Texture>(asset.path)
+
+/* Returns the texture associated to the asset. */
 inline operator fun AssetManager.get(asset: TextureAssets) = getAsset<Texture>(asset.path)

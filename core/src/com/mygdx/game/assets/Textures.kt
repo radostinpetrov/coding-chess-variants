@@ -14,23 +14,39 @@ import pieces.xiangqi.*
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 
+/**
+ * Contains the textures from the asset manager.
+ */
 class Textures(assets: AssetManager) {
+    /* --- Standard chess --- */
+    /* White pieces. */
     val whitePawn = assets[TextureAssets.WhitePawn]
     val whiteRook = assets[TextureAssets.WhiteRook]
     val whiteKnight = assets[TextureAssets.WhiteKnight]
     val whiteBishop = assets[TextureAssets.WhiteBishop]
     val whiteQueen = assets[TextureAssets.WhiteQueen]
     val whiteKing = assets[TextureAssets.WhiteKing]
-    val whiteCardinal = assets[TextureAssets.WhiteCardinal]
-    val whiteMarshal = assets[TextureAssets.WhiteMarshal]
+
+    /* Black pieces. */
     val blackPawn = assets[TextureAssets.BlackPawn]
     val blackRook = assets[TextureAssets.BlackRook]
     val blackKnight = assets[TextureAssets.BlackKnight]
     val blackBishop = assets[TextureAssets.BlackBishop]
     val blackQueen = assets[TextureAssets.BlackQueen]
     val blackKing = assets[TextureAssets.BlackKing]
+
+
+    /* --- Grand chess and Capablanca chess --- */
+    /* White pieces. */
+    val whiteCardinal = assets[TextureAssets.WhiteCardinal]
+    val whiteMarshal = assets[TextureAssets.WhiteMarshal]
+
+    /* Black pieces. */
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
+
+    /* --- Xiangqi and Janggi --- */
+    /* White pieces. */
     val whiteAdvisor = assets[TextureAssets.WhiteAdvisor]
     val whiteCannon = assets[TextureAssets.WhiteCannon]
     val whiteChariot = assets[TextureAssets.WhiteChariot]
@@ -38,6 +54,8 @@ class Textures(assets: AssetManager) {
     val whiteGeneral = assets[TextureAssets.WhiteGeneral]
     val whiteHorse = assets[TextureAssets.WhiteHorse]
     val whiteSoldier = assets[TextureAssets.WhiteSoldier]
+
+    /* Black pieces. */
     val blackAdvisor = assets[TextureAssets.BlackAdvisor]
     val blackCannon = assets[TextureAssets.BlackCannon]
     val blackChariot = assets[TextureAssets.BlackChariot]
@@ -45,10 +63,16 @@ class Textures(assets: AssetManager) {
     val blackGeneral = assets[TextureAssets.BlackGeneral]
     val blackHorse = assets[TextureAssets.BlackHorse]
     val blackSoldier = assets[TextureAssets.BlackSoldier]
-    val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
+
+    /* Checkers. */
     val redChecker = assets[TextureAssets.RedChecker]
     val whiteChecker = assets[TextureAssets.WhiteChecker]
 
+    /* Playground. */
+    val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
+
+
+    /* Contains the mappings to the textures for white pieces. */
     val whites = mapOf<KClass<*>, Texture>(
         /* Standard chess. */
         WhitePawn::class to whitePawn, StandardWhitePawn::class to whitePawn, Rook::class to whiteRook,
@@ -78,6 +102,7 @@ class Textures(assets: AssetManager) {
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
+    /* Contains the mappings to the textures for black pieces. */
     val blacks = mapOf(
         /* Standard chess. */
         BlackPawn::class to blackPawn, StandardBlackPawn::class to blackPawn, Rook::class to blackRook,
@@ -107,6 +132,7 @@ class Textures(assets: AssetManager) {
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
+    /* This method returns the texture associated to a piece, and null if it does not exist. */
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites
