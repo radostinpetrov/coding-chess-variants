@@ -7,6 +7,11 @@ import pieces.chess.*
 import players.Player
 import kotlin.reflect.KFunction1
 
+
+/**
+ * FEN notation utility
+ * This class is able to decode a FEN string and return the piece placement and status of the game.
+ */
 class FenUtility(
     val string: String,
     val whiteStartingRow: Int = 1,
@@ -25,6 +30,10 @@ class FenUtility(
     val p2CanCastleLeft: Boolean
     val p2CanCastleRight: Boolean
 
+    /**
+     * Checks the FEN string to see if it is valid.
+     * @throws IllegalArgumentException if the string is invalid.
+     */
     init {
         if (fields.size != 3) {
             throw IllegalArgumentException("Wrong number of fields in FEN. Expected: 3 Actual: ${fields.size}")
@@ -35,10 +44,6 @@ class FenUtility(
             throw IllegalArgumentException("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
         }
         activeColour = if (fields[1].single() == 'w') 0 else 1
-
-        // if (!fields[2].contains('Q') && !fields[2].contains('q') && !fields[2].contains('K') && !fields[2].contains('k') && !fields[2].contains('-')) {
-        //     throw IllegalArgumentException("Wrong argument for castling availability FEN.")
-        // }
 
         if (!"""(-|K?Q?k?q?)""".toRegex().matches(fields[2])) {
             throw IllegalArgumentException("Wrong argument for castling availability FEN.")
@@ -51,8 +56,10 @@ class FenUtility(
         p2CanCastleRight = castling.contains("k")
     }
 
-//    fun mapSymbol(symbol: Character, )
-
+    /**
+     * Initialises a given board with the piece placement in the FEN string.
+     * @throws IllegalArgumentException if the piece placement does not match the dimensions of the board.
+     */
     fun initBoardWithFEN(board: Board2D, player1: Player, player2: Player) {
 
         val rows = piecePlacement.split("/")

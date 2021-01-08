@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
 import gameTypes.chess.BalbosGame
+import gameTypes.chess.ChessPlayground
 import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
@@ -44,6 +45,7 @@ class Textures(assets: AssetManager) {
     val blackGeneral = assets[TextureAssets.BlackGeneral]
     val blackHorse = assets[TextureAssets.BlackHorse]
     val blackSoldier = assets[TextureAssets.BlackSoldier]
+    val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
     val redChecker = assets[TextureAssets.RedChecker]
     val whiteChecker = assets[TextureAssets.WhiteChecker]
 
@@ -70,7 +72,10 @@ class Textures(assets: AssetManager) {
         BalbosGame.BalboWhitePawn::class to whitePawn,
 
         /* Checkers. */
-        Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteKing
+        Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteKing,
+
+        /* Playground. */
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
     val blacks = mapOf(
@@ -96,7 +101,10 @@ class Textures(assets: AssetManager) {
         BalbosGame.BalboBlackPawn::class to blackPawn,
 
         /* Checkers. */
-        Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to blackKing
+        Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to blackKing,
+
+        /* Playground. */
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {

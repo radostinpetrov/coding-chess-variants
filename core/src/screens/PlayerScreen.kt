@@ -16,7 +16,7 @@ import ktx.app.KtxScreen
 import players.ComputerPlayer
 import players.FrontendPlayer
 import players.HumanPlayer
-import screens.leaderboard.LeaderboardScreen
+
 
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
@@ -117,7 +117,7 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
 
     private fun switchToGameScreen(gameType: GameType2D) {
         val clockFlag = clockList != null
-        val gameScreen = GameScreen(game, gameType, clockFlag)
+        val gameScreen = GameScreen(game, gameType, clockFlag, false)
 
         game.removeScreen<GameScreen>()
         val players = mutableListOf<FrontendPlayer>()

@@ -12,7 +12,12 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
@@ -22,7 +27,7 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag: Boolean) : KtxScreen {
+class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag: Boolean, val isOnline: Boolean) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
     private val windowHeight: Int = 800
@@ -45,10 +50,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     val rows = board.rows
     val columns = board.cols
 
+    private lateinit var stage: Stage
+
     lateinit var guiBoard: GUIBoard
 
     private var squareWidth: Float = (windowHeight / rows).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
+
+    val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
+    val forfeitButton = TextButton("Forfeit", skin)
+
+
 
     // TODO maybe don't need this?
     var currPlayer: Player? = null
@@ -99,7 +111,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
         currPlayer = gameEngine.getCurrentPlayer()
 
-        Gdx.input.inputProcessor = Stage()
+
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
 
@@ -109,6 +121,23 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
 
         libToFrontendPlayer[currPlayer!!]!!.signalTurn()
+
+        stage = Stage()
+        forfeitButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                if (!isOnline) {
+                    switchToGameOverScreen(Outcome.Win(gameEngine.getNextPlayer(), "by forfeit"))
+                } else {
+                    //TODO add networking here
+                }
+            }
+        })
+
+        forfeitButton.setPosition((windowWidth + panelWidth/2 - 30f), 10f)
+        stage.addActor(forfeitButton)
+        Gdx.input.inputProcessor = stage
+
+
     }
 
     private fun showPromotionScreen(moves: List<Move2D>) {
@@ -222,6 +251,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
         }
+
+        stage.draw()
+        stage.act()
     }
 
     private fun controls(flipped: Boolean) {
