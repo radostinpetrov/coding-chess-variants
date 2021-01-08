@@ -29,6 +29,7 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
     }
 
     override fun initGame() {
+        board.clearBoard()
         initBoard()
     }
 

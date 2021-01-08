@@ -86,4 +86,12 @@ class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Regio
         }
         return outOfBoundsRegion == null || !outOfBoundsRegion.isInRegion(coordinate)
     }
+
+    override fun clearBoard() {
+        for (row in 0 until rows) {
+            for (col in 0 until cols) {
+                board[row][col] = null
+            }
+        }
+    }
 }

@@ -14,4 +14,5 @@ interface Board<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M
     fun getPieces(player: Player): List<Pair<P, C>>
     fun getPiece(coordinate: C): P?
     fun getPieceCoordinate(piece: P): C?
+    fun clearBoard()
 }
