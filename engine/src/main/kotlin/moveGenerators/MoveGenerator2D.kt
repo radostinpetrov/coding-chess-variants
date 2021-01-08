@@ -8,7 +8,18 @@ import pieces.Piece2D
 import players.Player
 import regions.Region2D
 
+/**
+ * Implementation of the Move Generator interface for a 2d square board.
+ */
 interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
+    /**
+     * Moves along a ray direction until they encounter another piece or the edge of the board
+     *
+     * @property H horizontal direction
+     * @property V vertical direction
+     * @property D diagonal direction
+     * @property A anti-diagonal direction
+     */
     class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
@@ -49,6 +60,14 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
             return result
         }
     }
+
+    /**
+     * Performs single (repeated) steps in a particular board direction
+     *
+     * @property directions available directions
+     * @property step the number of steps
+     * @property canCapture true if it can capture an enemy piece
+     */
     data class Stepper(val directions: List<Direction>, val step: Int, val canCapture: Boolean = false) : MoveGenerator2D {
         constructor(direction: Direction, step: Int, canCapture: Boolean = false) : this(listOf(direction), step, canCapture)
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
@@ -81,6 +100,15 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
             return result
         }
     }
+
+    /**
+     * Performs single steps to specified target squares
+     * Takes in a step-vector, which is then mirrored to give a total of
+     * up to 8 target coordinates
+     *
+     * @property dx x component of the step-vector
+     * @property dy y component of the step-vector
+     */
     data class Leaper(val dx: Int, val dy: Int) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
@@ -106,6 +134,14 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
             return result
         }
     }
+
+    /**
+     * Can move along a ray direction, but must jump over another piece
+     *
+     * @property HV horizontal and vertical direction
+     * @property D diagonal and anti-diagonal direction
+     * @property canJumpOverSamePiece true if it can jump over the same kind of piece
+     */
     data class Hopper(val HV: Boolean = false, val D: Boolean = false, val canJumpOverSamePiece: Boolean) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val result = mutableListOf<BasicMove>()
@@ -148,6 +184,9 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
         }
     }
 
+    /**
+     * Move can only occur if it captures a piece
+     */
     data class CaptureOnly(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
@@ -156,6 +195,9 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
         }
     }
 
+    /**
+     * Move can only occur if it does not capture a piece
+     */
     data class NoCapture(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
@@ -164,6 +206,11 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
         }
     }
 
+    /**
+     * Move can only occur when the piece starts in a specific region
+     *
+     * @property region the region that the piece can start from
+     */
     data class Restricted(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
@@ -171,6 +218,12 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
             }
         }
     }
+
+    /**
+     * Move can only occur if the destination is within a specific region
+     *
+     * @property region the region that the piece can end in
+     */
     data class RestrictedDestination(val moveGenerator: MoveGenerator2D, val region: Region2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return moveGenerator.generate(board, coordinate, piece, player).filterIsInstance<BasicMove>().filter {
@@ -178,6 +231,15 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
             }
         }
     }
+
+    /**
+     * A piece can be promoted to another piece in a specific region
+     *
+     * @property moves a list of moves which can results in promotion
+     * @property region the region that the promotion can occur
+     * @property promoPieces a list of pieces that the piece can be promoted to
+     * @property forced true if the piece must be promoted to one of promoPieces
+     */
     data class AddPromotion(val moveGenerators: List<MoveGenerator2D>, val region: Region2D, val promoPieces: List<Piece2D>, val forced: Boolean) : MoveGenerator2D {
         constructor(move: MoveGenerator2D, region: Region2D, promoPieces: List<Piece2D>, forced: Boolean) : this(listOf(move), region, promoPieces, forced)
         override fun generate(
@@ -217,6 +279,9 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
         }
     }
 
+    /**
+     * A wrapper around a list of basic moves to represent composite moves
+     */
     data class Composite(val moveGenerators: List<MoveGenerator2D>) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             val iter = moveGenerators.iterator()
@@ -245,6 +310,10 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
         }
     }
 
+    /**
+     * Skip move
+     * A player may decide to pass if there is no safe or desirable move
+     */
     object Skip : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
             return listOf(

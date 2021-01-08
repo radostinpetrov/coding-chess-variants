@@ -9,6 +9,7 @@ import players.Player
 /**
  * Represents chess board
  *
+ * @param B the type of a board.
  * @param MG the type of a move generator.
  * @param M the type of a move.
  * @param P the type of a piece.
