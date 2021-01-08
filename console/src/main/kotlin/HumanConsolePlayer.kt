@@ -1,7 +1,6 @@
 import moves.Move2D
 import gameTypes.GameType2D
 import utils.notationFormatter.NotationFormatter
-import players.ConsolePlayer
 import players.Player
 
 class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: GameType2D, player: Player) : ConsolePlayer(gameType, player) {

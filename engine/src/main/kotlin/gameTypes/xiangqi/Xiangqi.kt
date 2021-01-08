@@ -9,6 +9,7 @@ import pieces.xiangqi.* // ktlint-disable no-wildcard-imports
 
 class Xiangqi : AbstractChess(listOf(GeneralsRule()), listOf(StandardWinConditions())) {
     override val board = Board2D(10, 9)
+    override val name = "Xiangqi"
 
     override fun initGame() {
         val player1 = players[0]

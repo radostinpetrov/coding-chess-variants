@@ -11,6 +11,7 @@ import pieces.chess.*
 
 open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
     override val board = Board2D(8, 8)
+    override val name = "Anti Chess"
 
     override fun initGame() {
         val player1 = players[0]

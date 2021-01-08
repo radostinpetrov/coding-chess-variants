@@ -11,6 +11,7 @@ import players.Player
 interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
     val board: B
     val players: List<Player>
+    val name: String
     var playerTurn: Int
     var seed: Double?
     val moveLog: MutableList<M>

@@ -13,7 +13,6 @@ import screens.MenuScreen
 class MyGdxGame : KtxGame<KtxScreen>() {
 
     internal lateinit var batch: SpriteBatch
-//    internal lateinit var img: Texture
     internal lateinit var font: BitmapFont
     internal lateinit var shapeRenderer: ShapeRenderer
 
@@ -29,7 +28,6 @@ class MyGdxGame : KtxGame<KtxScreen>() {
 
         addScreen(MenuScreen(this))
         setScreen<MenuScreen>()
-//        super.create()
     }
 
     override fun dispose() {

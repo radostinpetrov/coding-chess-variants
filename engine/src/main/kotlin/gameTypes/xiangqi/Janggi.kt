@@ -9,6 +9,7 @@ import pieces.janggi.* // ktlint-disable no-wildcard-imports
 
 class Janggi : AbstractChess(listOf(GeneralsRule()), listOf(StandardWinConditions())) {
     override val board = Board2D(10, 9)
+    override val name = "Janggi"
 
     override fun initGame() {
         val player1 = players[0]

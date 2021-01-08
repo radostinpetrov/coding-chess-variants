@@ -14,6 +14,8 @@ import regions.RowRegion
 import winconditions.StandardWinConditions
 
 class BalbosGame() : AbstractChess(listOf(), listOf(StandardWinConditions())) {
+    override val name = "Balbo's Game"
+
     data class BalboWhitePawn(override val player: Player) : Piece2D, Pawn {
         private val standardMoves = listOf(
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
