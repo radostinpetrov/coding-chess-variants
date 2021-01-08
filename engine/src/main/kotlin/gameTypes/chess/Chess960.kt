@@ -20,29 +20,10 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(S
         }
 
         /**
-         * White non pawns are placed randomly on the first rank following two rules
+         * Non-pawns are placed randomly on the first rank following two rules
          * 1. The bishop must be placed in opposite colour
          * 2. The king must be placed between rooks
-         * **/
-
-//        val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
-//
-//        val permutations = permute(pieces)
-//
-//        val regBishop = """.*B(..|....|......|)B.*""".toRegex()
-//        val regKing = """.*R.*K.*R.*""".toRegex()
-//        val possiblePermutations = mutableSetOf<String>()
-//        for (permutation in permutations) {
-//            val strPermutation = permutation.joinToString("")
-//            if (strPermutation.matches(regBishop) && strPermutation.matches(regKing)) {
-//                possiblePermutations.add(strPermutation)
-//            }
-//        }
-
-        // rook king positions
-        // seed = 18 swap
-        // seed = 5 rook on king pos
-        // seed = 20 king on king pos
+         */
         seed = 8.0/960.0
         val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
         for ((i, c) in permutation.withIndex()) {
@@ -71,6 +52,10 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(S
         }
     }
 
+    /**
+     * @return all possible permutations of positions of non-pawn pieces
+     * that satisfies the rules listed above
+     */
     fun getPossiblePermutations(): Set<String> {
         val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')
 
