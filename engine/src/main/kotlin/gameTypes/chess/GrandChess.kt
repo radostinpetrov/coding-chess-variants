@@ -8,6 +8,7 @@ import pieces.chess.*
 
 class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardWinConditions())) {
     override val board = Board2D(10, 10)
+    override val name = "Grand Chess"
 
     override fun initGame() {
         val player1 = players[0]

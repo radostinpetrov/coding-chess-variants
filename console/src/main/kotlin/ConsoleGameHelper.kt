@@ -1,7 +1,6 @@
 import boards.Board2D
 import coordinates.Coordinate2D
 import gameTypes.GameType2D
-import players.ConsolePlayer
 
 class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, val player2: ConsolePlayer) {
     var turn = 0

@@ -14,6 +14,8 @@ import rules.ForcedCaptureRule
 import winconditions.WinCondition2D
 
 class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winConditions = listOf(CheckersWinCondition())) {
+    override val name = "Checkers"
+
     class CheckersWinCondition() : WinCondition2D<AbstractChess> {
         override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
             for (p in game.players) {

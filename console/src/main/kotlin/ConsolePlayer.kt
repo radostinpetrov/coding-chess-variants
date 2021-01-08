@@ -1,7 +1,6 @@
-package players
-
 import moves.Move2D
 import gameTypes.GameType2D
+import players.Player
 
 // TODO fix this or something
 abstract class ConsolePlayer(val gameType: GameType2D, val player: Player) {

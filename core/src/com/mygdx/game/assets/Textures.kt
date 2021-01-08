@@ -66,7 +66,7 @@ class Textures(assets: AssetManager) {
         /* Antichess. */
         AntiChessWhitePawn::class to whitePawn, AntiChessWhitePawn::class to whitePawn, AntiChessKing::class to whiteKing,
 
-        /* Balbo's chess. */
+        /* Balbo's game. */
         BalbosGame.BalboWhitePawn::class to whitePawn,
 
         /* Checkers. */
@@ -92,7 +92,7 @@ class Textures(assets: AssetManager) {
         /* Antichess. */
         AntiChessBlackPawn::class to blackPawn, AntiChessKing::class to blackKing,
 
-        /* Balbo's Chess. */
+        /* Balbo's Game. */
         BalbosGame.BalboBlackPawn::class to blackPawn,
 
         /* Checkers. */
