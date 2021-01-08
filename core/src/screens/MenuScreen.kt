@@ -16,6 +16,9 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
 
+/**
+ * Displays the menu screen, where the game config is set by the user.
+ */
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
     val table = Table()
@@ -68,15 +71,13 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         playgroundButton to ChessPlayground()
     )
 
+    /**
+     * This is called when the class is created, before render.
+     * Initialises the buttons on the menu. Add button here for new variant.
+     */
     override fun show() {
-        onlineModeButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                isOnline = true
-                onlineModeButton.setColor(200f, 0f, 0f, 100f)
-                localModeButton.setColor(255f, 255f, 255f, 100f)
-            }
-        })
 
+        /* Local/Online play buttons. */
         localModeButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 isOnline = false
@@ -93,6 +94,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        /* Clock buttons. */
         noClockButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 clockList = null
@@ -133,6 +135,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        /* Chess variant buttons. */
         standardChessButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 selectChessType(standardChessButton)
@@ -199,6 +202,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        /* Start and leaderboard buttons. */
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToPreGameScreen(chessType, isOnline)
@@ -215,6 +219,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         localModeButton.setColor(200f, 0f, 0f, 100f)
         standardChessButton.setColor(200f, 0f, 0f, 100f)
 
+        /* Put the buttons in a table to display. */
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 0f)
@@ -264,6 +269,11 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         stage.act()
     }
 
+    /**
+     * Switches to pregame screen. Different for online and local play.
+     * Online goes to OnlineScreen.
+     * Local goes to PlayerScreen
+     */
     private fun switchToPreGameScreen(gameType: GameType2D, isOnline: Boolean) {
         if (!isOnline) {
             game.removeScreen<PlayerScreen>()
@@ -285,6 +295,10 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         dispose()
     }
 
+    /**
+     * Displays the selected chess variant button is selected.
+     * @param button the selected button
+     */
     private fun selectChessType(button: TextButton) {
         chessType = chessTypes[button]!!
         for ((b, t) in chessTypes) {

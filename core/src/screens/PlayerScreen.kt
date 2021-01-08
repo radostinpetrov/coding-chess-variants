@@ -17,7 +17,9 @@ import players.ComputerPlayer
 import players.FrontendPlayer
 import players.HumanPlayer
 
-
+/**
+ * Displays the Player select screen, where the human and computer users are set for local play.
+ */
 class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
@@ -40,6 +42,10 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
 
     val playerTypes = mutableListOf(PlayerType.HUMAN, PlayerType.HUMAN)
 
+    /**
+     * This is called when the class is created, before render.
+     * Initialises the buttons on the menu.
+     */
     override fun show() {
         humanPlayer1Button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -115,6 +121,9 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         stage.act()
     }
 
+    /**
+     * Initialises the players selected and switches to the gameScreen.
+     */
     private fun switchToGameScreen(gameType: GameType2D) {
         val clockFlag = clockList != null
         val gameScreen = GameScreen(game, gameType, clockFlag, false)
@@ -136,6 +145,12 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         game.setScreen<GameScreen>()
     }
 
+    /**
+     * Creates a Player instance given the PlayerType Enum.
+     * @param player enum representing human or computer
+     * @param gameScreen gives the gameScreen to the player instance
+     * @param colour the colour of the created player
+     */
     private fun createPlayer(player: PlayerType, gameScreen: GameScreen, colour: Color, colourName: String): FrontendPlayer {
         return when (player) {
             PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)

@@ -15,6 +15,9 @@ import players.NetworkEnemyPlayer
 import players.NetworkHumanPlayer
 import players.WebsocketClientManager
 
+/**
+ * Displays the Online waiting screen, where the player waits to be connected to another user.
+ */
 class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
@@ -34,13 +37,16 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     var humanPlayer: Int? = null
 
+    /**
+     * This is called when the class is created, before render.
+     * Initialises the waiting text.
+     */
     override fun show() {
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 150f)
         table.add(title).colspan(6).padBottom(20f).top()
         table.row()
-
         stage.addActor(table)
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
@@ -55,6 +61,9 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         }
     }
 
+    /**
+     * Switches to the game screen. Sets the colour of the players.
+     */
     private fun switchToGameScreen() {
         val clockFlag = clockList != null
         val gameScreen = GameScreen(game, gameType, clockFlag, true)
