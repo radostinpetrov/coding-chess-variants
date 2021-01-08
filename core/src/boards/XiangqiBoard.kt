@@ -10,6 +10,10 @@ import com.mygdx.game.assets.Textures
 import players.FrontendPlayer
 import players.Player
 
+/**
+ * Class to draw the board for the asian chess variants Xiangqi and Janggi.
+ * Extends GUIBoard.
+ */
 class XiangqiBoard(
     shapeRenderer: ShapeRenderer,
     board: Board2D,
@@ -28,6 +32,12 @@ class XiangqiBoard(
         shapeRenderer.rectLine(squareWidth * x1 + offset, squareWidth * y1 + offset, squareWidth * x2 + offset, squareWidth * y2 + offset, width)
     }
 
+    /**
+     * Draws the Xiangqi board.
+     * Since board is symmetrical it does not need to be flipped.
+     * @param srcX highlighted square x coord
+     * @param srcY highlighted square y coord
+     */
     override fun drawBoard(srcX: Int?, srcY: Int?, flipped: Boolean, isPromotionScreen: Boolean) {
         val lineWidth = 4f
         Gdx.gl.glClearColor(1f, 0.7f, 0.3f, 1f)

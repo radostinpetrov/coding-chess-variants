@@ -12,6 +12,10 @@ import moves.Move2D
 import players.FrontendPlayer
 import players.Player
 
+/**
+ * Class to draw the chess board for any typical western chess variant with black and white squares.
+ * Extends GUIBoard.
+ */
 class ChessBoard(
     shapeRenderer: ShapeRenderer,
     board: Board2D,
@@ -27,12 +31,12 @@ class ChessBoard(
 ) {
 
     /**
-     * Draws the chess board
+     * Draws the chess board. Not in bound squares on the board are coloured white.
      * @param srcX highlighted square x coord
      * @param srcY highlighted square y coord
-     *
-     * Called every render
-     * */
+     * @param flipped decides if the board should be drawn flipped. eg. for blacks turn.
+     * @param isPromotionScreen decides if the highlighted square should be drawn
+     */
     override fun drawBoard(srcX: Int?, srcY: Int?, flipped: Boolean, isPromotionScreen: Boolean) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
