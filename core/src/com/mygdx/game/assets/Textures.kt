@@ -11,6 +11,7 @@ import pieces.antichess.*
 import pieces.chess.*
 import pieces.janggi.*
 import pieces.xiangqi.*
+import pieces.janggi.Elephant
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 

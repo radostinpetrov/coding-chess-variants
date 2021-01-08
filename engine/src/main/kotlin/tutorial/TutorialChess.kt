@@ -4,13 +4,11 @@ import gameTypes.chess.AbstractChess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import rules.ForcedCaptureRule
-import winconditions.AntiChessWinConditions
 import pieces.chess.*
 import pieces.janggi.Elephant
 import regions.CoordinateRegion
 
-open class TutorialChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
+open class TutorialChess : AbstractChess(listOf(NoRepeatedMoveFromSamePieceRule()), listOf(TutorialWinCondition())) {
     private val OutOfBoundsRegion = CoordinateRegion(3, 3)
     override val board: Board2D = Board2D(7, 7, OutOfBoundsRegion)
     override val name = "Tutorial Chess"
@@ -30,10 +28,10 @@ open class TutorialChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(Ant
         board.addPiece(Coordinate2D(5, 0), Bishop(player1))
         board.addPiece(Coordinate2D(1, 6), Bishop(player2))
         board.addPiece(Coordinate2D(5, 6), Bishop(player2))
-        board.addPiece(Coordinate2D(2, 0), Elephant(player1))
-        board.addPiece(Coordinate2D(4, 0), Elephant(player1))
-        board.addPiece(Coordinate2D(2, 6), Elephant(player2))
-        board.addPiece(Coordinate2D(4, 6), Elephant(player2))
+        board.addPiece(Coordinate2D(2, 0), Alfil(player1))
+        board.addPiece(Coordinate2D(4, 0), Alfil(player1))
+        board.addPiece(Coordinate2D(2, 6), Alfil(player2))
+        board.addPiece(Coordinate2D(4, 6), Alfil(player2))
         board.addPiece(Coordinate2D(3, 0), King(player1))
         board.addPiece(Coordinate2D(3, 6), King(player2))
     }

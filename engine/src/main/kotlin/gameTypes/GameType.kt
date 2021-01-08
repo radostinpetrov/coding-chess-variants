@@ -32,6 +32,10 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     fun undoMove()
     fun inCheck(player: Player) : Boolean
 
+    fun getOpponentPlayers(player: Player): List<Player> {
+        return players.filter{p -> p != player}
+    }
+
     fun prevPlayer() {
         playerTurn--
         playerTurn += players.size

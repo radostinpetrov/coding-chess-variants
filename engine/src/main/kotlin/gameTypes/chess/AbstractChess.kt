@@ -230,4 +230,8 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
     private fun makeRemovePieceMove(move: RemovePieceMove) {
         board.removePiece(move.coordinate, move.piece)
     }
+
+    fun getOpponentPlayer(player: Player): Player {
+        return getOpponentPlayers(player)[0]
+    }
 }
