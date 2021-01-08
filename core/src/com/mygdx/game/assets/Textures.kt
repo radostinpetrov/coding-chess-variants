@@ -49,6 +49,7 @@ class Textures(assets: AssetManager) {
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
 
+
     /* --- Xiangqi and Janggi --- */
     /* White pieces. */
     val whiteAdvisor = assets[TextureAssets.WhiteAdvisor]

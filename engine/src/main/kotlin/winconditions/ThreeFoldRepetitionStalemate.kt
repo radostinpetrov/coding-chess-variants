@@ -42,7 +42,7 @@ class ThreeFoldRepetitionStalemate : WinCondition2D<AbstractChess> {
                     game.makeMove(undoneMoves[j])
                     game.nextPlayer()
                 }
-                return Outcome.Draw("Stalemate by Threefold Repetition")
+                return Outcome.Draw("by Threefold Repetition")
             }
 
             undoneMoves.add(move)
