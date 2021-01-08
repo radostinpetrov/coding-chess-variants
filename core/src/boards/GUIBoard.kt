@@ -20,12 +20,12 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
     private val possibleMoveColour = Color.FOREST
 
     fun draw(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
-        drawBoard(srcX, srcY, moves, flipped, isPromotionScreen)
+        drawBoard(srcX, srcY, flipped, isPromotionScreen)
         drawPieces(batch, flipped)
         drawDots(srcX, srcY, isPromotionScreen, moves, flipped)
     }
 
-    abstract fun drawBoard(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean)
+    abstract fun drawBoard(srcX: Int?, srcY: Int?, flipped: Boolean, isPromotionScreen: Boolean)
 
     private fun drawPieces(batch: Batch, flipped: Boolean) {
         batch.begin()

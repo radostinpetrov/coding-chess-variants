@@ -26,7 +26,14 @@ class ChessBoard(
     textures, playerMapping, font
 ) {
 
-    override fun drawBoard(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
+    /**
+     * Draws the chess board
+     * @param srcX highlighted square x coord
+     * @param srcY highlighted square y coord
+     *
+     * Called every render
+     * */
+    override fun drawBoard(srcX: Int?, srcY: Int?, flipped: Boolean, isPromotionScreen: Boolean) {
         Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val colour2: Color = Color.TAN
