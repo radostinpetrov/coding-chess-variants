@@ -49,6 +49,7 @@ class Textures(assets: AssetManager) {
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
 
+
     /* --- Xiangqi and Janggi --- */
     /* White pieces. */
     val whiteAdvisor = assets[TextureAssets.WhiteAdvisor]
@@ -147,7 +148,9 @@ class Textures(assets: AssetManager) {
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
     )
 
-    /* This method returns the texture associated to a piece, and null if it does not exist. */
+    /**
+     *  This method returns the texture associated to a piece, and null if it does not exist.
+     */
     fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites

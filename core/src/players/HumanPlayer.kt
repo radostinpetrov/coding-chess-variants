@@ -4,9 +4,16 @@ import com.badlogic.gdx.graphics.Color
 import moves.Move2D
 import screens.GameScreen
 
+/**
+ * Human player class that extends FrontendPlayer. Used to process turn with moves dictated by the controls.
+ */
 open class HumanPlayer(gameScreen: GameScreen, colour: Color, name: String) : FrontendPlayer(
     gameScreen, colour, name
 ) {
+    /**
+     * Tells the gameScreen a valid move to play.
+     * @param move HumanPlayer's chosen move.
+     */
     open fun makeMove(move: Move2D) {
         gameScreen.processTurn(move)
     }

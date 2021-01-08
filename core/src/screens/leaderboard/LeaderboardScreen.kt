@@ -13,6 +13,9 @@ import ktx.app.KtxScreen
 import org.json.JSONArray
 import screens.MenuScreen
 
+/**
+ * Displays the leaderboard screen of users and elo ranking.
+ */
 class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
     val table = Table()
@@ -24,12 +27,20 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
     val websocketClient = LeaderboardWebsocketClient(this)
     val title = Label("Leaderboard", skin)
 
+    /**
+     * This is called when the class is created before render.
+     * Initialises the leaderboard table.
+     */
     override fun show() {
+
+        /* Initialise the menuButton. */
         menuButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToMenuScreen()
             }
         })
+
+        /* Initialise the leader board. */
         table.width = 800f
         table.height = 800f
         table.setPosition(0f, 150f)
@@ -65,6 +76,10 @@ class LeaderboardScreen(val game: MyGdxGame) : KtxScreen {
         stage.act()
     }
 
+    /**
+     * Takes a JSONArray and populates the table with users and ranking.
+     * @param leaderboardArr the JSONArray of users and their elo.
+     */
     fun loadLeaderboard(leaderboardArr: JSONArray) {
         for (i in 0 until leaderboardArr.length()) {
             val entry = leaderboardArr.getJSONObject(i)

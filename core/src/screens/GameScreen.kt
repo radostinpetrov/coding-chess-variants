@@ -27,6 +27,9 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import players.*
 
+/**
+ * Displays the game screen during play. ie. the board pieces, clock, history and takes user input.
+ */
 class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag: Boolean, val isOnline: Boolean) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayer>
     private val textures = Textures(game.assets)
@@ -79,6 +82,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     var isPromotionScreen = false
     lateinit var promotableMoves: List<Move2D>
 
+    /**
+     * Maps the front end players to the players on the game engine
+     * @param inputFrontendPlayers a list of front end players created on the previous screen
+     */
     fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
         val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
@@ -96,77 +103,80 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         humanPlayerSet = tempHumanPlayerSet.toSet()
     }
 
+    /**
+     * Calls the chess engine to start the game
+     */
     fun startGame() {
         gameEngine.initGame()
     }
 
+    /**
+     * This is called when the class is created before render.
+     * Initialises the outcome message and playAgainButton.
+     */
     override fun show() {
+
+        /* Initialise the display size. */
         if (rows != columns) {
             windowWidth = (windowHeight * columns) / rows
         }
         Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
         game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
-
         shapeRenderer = ShapeRenderer()
 
+        /* Initialise the starting game logic. */
         currPlayer = gameEngine.getCurrentPlayer()
-
-
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
+        libToFrontendPlayer[currPlayer!!]!!.signalTurn()
 
+        /* Initialise the GUIBoard. */
         guiBoard = when (gameEngine) {
             is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
             else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font)
         }
 
-        libToFrontendPlayer[currPlayer!!]!!.signalTurn()
-
+        /* Initialise the forfeitButton. */
         stage = Stage()
         forfeitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (!isOnline) {
-                    switchToGameOverScreen(Outcome.Win(gameEngine.getNextPlayer(), "by forfeit"))
+                    //TODO conceded player wins
+                    processConcede(gameEngine.getCurrentPlayer())
                 } else {
                     //TODO add networking here
                 }
             }
         })
-
         forfeitButton.setPosition((windowWidth + panelWidth/2 - 30f), 10f)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
-
-
     }
 
+    /**
+     * Displays a transparent promotion screen when a piece has the option to promote.
+     */
     private fun showPromotionScreen(moves: List<Move2D>) {
+
+        /* Set the background to transparent. */
         Gdx.gl.glEnable(GL20.GL_BLEND)
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-
         shapeRenderer.color = Color(1f, 1f, 1f, 0.5f)
         shapeRenderer.rect(0f, 0f, windowWidth.toFloat(), windowHeight.toFloat())
         shapeRenderer.end()
-
         Gdx.gl.glDisable(GL20.GL_BLEND)
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-
+        /* Finds the position to display the promotion pieces. */
         val batch = game.batch
         batch.begin()
-
         val coordinateMap = mutableMapOf<Int, Move2D>()
-
         val xCoordinate = (rows - moves.size) / 2
         val yCoordinate = (columns - 1) / 2
-
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
-        shapeRenderer.end()
-
+        /* Iterate over the possible promotion pieces and displays them. */
         for ((i, m) in moves.withIndex()) {
             val p = m.displayPiecePromotedTo
 
@@ -183,6 +193,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
         batch.end()
 
+        /* Monitors users mouse input to select the promotion piece. */
         if (srcX != null && srcY != null) {
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
             if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
@@ -200,7 +211,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         game.setScreen<GameOverScreen>()
     }
 
-    // Function to be called when current player plays a turn
+    /**
+     * This is called when the current player plays a turn.
+     * @param nextMove the move the current plaer will make on the game engine
+     */
     fun processTurn(nextMove: Move2D) {
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
@@ -217,6 +231,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
     }
 
+    /**
+     * This is called when a player concedes.
+     * @param player the player who conceded
+     */
     fun processConcede(player: Player) {
         gameEngine.concede(player)
         Gdx.app.postRunnable {
@@ -224,9 +242,14 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
     }
 
+    /**
+     * Draws the display and detects user input.
+     */
     override fun render(delta: Float) {
         libToFrontendPlayer[currPlayer!!]!!.colour
         val nextPlayer = gameEngine.getNextPlayer()
+
+        /* Determins whether or not to flip the board orientation. */
         val flip = (libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
             nextPlayer
         )) ||
@@ -234,12 +257,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                     nextPlayer
                 ))
 
+        /* Draws the board and detects user input. */
         synchronized(this) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
             controls(!isPromotionScreen && flip)
         }
 
-        // TODO why does draw panel come after controls?
+        /* Draws the side bar. */
         drawPanel()
         drawHistoryBox()
 
@@ -248,6 +272,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             switchToGameOverScreen(outcome)
         }
 
+        /* Show the promotion screen */
         if (isPromotionScreen) {
             showPromotionScreen(promotableMoves)
         }
@@ -256,21 +281,25 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         stage.act()
     }
 
+    /**
+     * Detects the users mouse input.
+     */
     private fun controls(flipped: Boolean) {
         if (!humanPlayerSet.contains(currPlayer!!)) {
             return
         }
+
+        /* Workout the mouse coordinates. */
         val input = Gdx.input
         val graphics = Gdx.graphics
-
         var x = input.x
         var y = graphics.height - input.y
-
         if (flipped) {
             x = ((columns * squareWidth) - x).toInt()
             y = graphics.height - y
         }
 
+        /* Processes the user's clicks. Gets the piece at the coordinate. */
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null || isPromotionScreen) {
                 srcX = x
@@ -315,6 +344,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         dstY = null
     }
 
+    /**
+     * Finds the move in the valid move list corresponding to the users input.
+     * @param from the coordinate of the selected piece
+     * @param to the coordinate of the selected destination
+     * @param moves list of valid moves for the selected piece
+     */
     private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<Move2D>): Move2D? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
@@ -334,6 +369,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
         Coordinate2D(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
 
+    /**
+     * Draws the side bar.
+     */
     private fun drawPanel() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.LIGHT_GRAY
@@ -341,6 +379,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         shapeRenderer.end()
     }
 
+    /**
+     * Draws the clocks on the side bar.
+     * @param flipped determines which side the clocks are on. Different for white and black
+     */
     private fun drawClocks(flipped: Boolean): Boolean {
         val currTime = System.currentTimeMillis() / 1000L
         val nextPlayer = gameEngine.getNextPlayer()
@@ -357,6 +399,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             return false
         }
 
+        /* Initialise the clock time text. */
         val currStr = "${displayTimeCurr / 60}:${"%02d".format(displayTimeCurr % 60)}"
         val otherStr = "${displayTimeOther / 60}:${"%02d".format(displayTimeOther % 60)}"
 
@@ -371,11 +414,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             str2 = currStr
         }
 
+        /* Draw the clocks. */
         val batch = game.batch
         val font = game.font
-
         batch.begin()
-
         font.color = Color.BLACK
         font.data.setScale(2.0f)
         font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15 / 16, panelWidth.toFloat(), Align.center, false)
@@ -386,18 +428,22 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         return true
     }
 
+    /**
+     * Draws the history of moves on the side bar.
+     */
     private fun drawHistoryBox() {
+
+        /* Draw the history box. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.WHITE
         shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
         shapeRenderer.end()
 
-        var i = 0
         var history: List<Move2D> = gameEngine.moveLog.toList()
-        val len = gameEngine.moveLog.size
 
+        /* Get the last 40 moves from the history. */
+        val len = gameEngine.moveLog.size
         var offset = 0
-        batch.begin()
         if (len >= 40) {
             if (len % 2 == 0) {
                 history = history.subList(len - 40, len)
@@ -408,7 +454,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             }
         }
 
-        for (move in history) {
+        /* Iterate over the moves in the history and display them. */
+        batch.begin()
+        for ((i, move) in history.withIndex()) {
             val coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
@@ -419,7 +467,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 val str = " ${move.displayPieceMoved.getSymbol() + "-" + (coor.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
             }
-            i++
         }
         batch.end()
     }
