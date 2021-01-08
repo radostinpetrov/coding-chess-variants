@@ -10,7 +10,7 @@ import pieces.chess.*
 import pieces.janggi.Elephant
 import regions.CoordinateRegion
 
-open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
+open class TutorialChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
     private val OutOfBoundsRegion = CoordinateRegion(3, 3)
     override val board: Board2D = Board2D(7, 7, OutOfBoundsRegion)
     override val name = "Tutorial Chess"
