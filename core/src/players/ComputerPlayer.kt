@@ -14,6 +14,10 @@ class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color, nam
 //        Thread.sleep(100)
 //        gameScreen.processTurn(validMoves[(validMoves.indices).random()])
 
+        if (validMoves.isEmpty()) {
+            return
+        }
+
         val runnable = Runnable {
             Thread.sleep(delay)
             gameScreen.processTurn(validMoves[(validMoves.indices).random()])

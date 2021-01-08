@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.janggi.*
 import testPerft.PerftUtility
+import pieces.janggi.Elephant
 
 class JanggiTest {
     private var mockJanggi = spyk<Janggi>()

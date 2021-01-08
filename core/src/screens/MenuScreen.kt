@@ -15,6 +15,7 @@ import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
+import tutorial.TutorialChess
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
@@ -32,6 +33,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val balbosGameButton = TextButton("Balbo's Game", skin)
     val checkersGameButton = TextButton("Checkers", skin)
     val playgroundButton = TextButton("Playground", skin)
+    val tutorialButton = TextButton("Tutorial Chess", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -65,7 +67,8 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         miniChessButton to MiniChess(),
         balbosGameButton to BalbosGame(),
         checkersGameButton to Checkers(),
-        playgroundButton to ChessPlayground()
+//        playgroundButton to ChessPlayground(),
+        tutorialButton to TutorialChess()
     )
 
     override fun show() {
@@ -133,71 +136,13 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
-        standardChessButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                selectChessType(standardChessButton)
-            }
-        })
-
-        grandChessButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(grandChessButton)
-            }
-        })
-
-        capablancaChessButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(capablancaChessButton)
-            }
-        })
-
-        chess960Button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(chess960Button)
-            }
-        })
-
-        janggiButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(janggiButton)
-            }
-        })
-
-        xiangqiButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(xiangqiButton)
-            }
-        })
-
-        antiChessButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(antiChessButton)
-            }
-        })
-
-        miniChessButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(miniChessButton)
-            }
-        })
-
-        balbosGameButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(balbosGameButton)
-            }
-        })
-
-        checkersGameButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(checkersGameButton)
-            }
-        })
-
-        playgroundButton.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent?, actor: Actor?) {
-                selectChessType(playgroundButton)
-            }
-        })
+        for (chessButton in chessTypes.keys) {
+            chessButton.addListener(object : ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    selectChessType(chessButton)
+                }
+            })
+        }
 
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -235,24 +180,16 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.row()
         table.add(gameModeTitle).colspan(12).padBottom(20f)
         table.row()
-        table.add(standardChessButton).colspan(4).padBottom(20f)
-        table.add(grandChessButton).colspan(4).padBottom(20f)
-        table.add(capablancaChessButton).colspan(4).padBottom(20f)
+        for (chessButtons in chessTypes.keys.chunked(3)) {
+            val colspan = 12 / chessButtons.size
+            for (button in chessButtons) {
+                table.add(button).colspan(colspan).padBottom(20f)
+            }
+            table.row()
+        }
+        table.add(startButton).colspan(12).padTop(30f).padBottom(30f).center()
         table.row()
-        table.add(chess960Button).colspan(4).padBottom(20f)
-        table.add(janggiButton).colspan(4).padBottom(20f)
-        table.add(xiangqiButton).colspan(4).padBottom(20f)
-        table.row()
-        table.add(antiChessButton).colspan(4).padBottom(20f)
-        table.add(miniChessButton).colspan(4).padBottom(20f)
-        table.add(balbosGameButton).colspan(4).padBottom(20f)
-        table.row()
-        table.add(checkersGameButton).colspan(6).padBottom(40f)
-        table.add(playgroundButton).colspan(6).padBottom(40f)
-        table.row()
-        table.add(startButton).colspan(12).padBottom(30f).center()
-        table.row()
-        table.add(leaderboardButton).colspan(12).padTop(50f).padBottom(20f).center()
+        table.add(leaderboardButton).colspan(12).padBottom(20f).center()
         table.row()
         stage.addActor(table)
         table.setFillParent(true)

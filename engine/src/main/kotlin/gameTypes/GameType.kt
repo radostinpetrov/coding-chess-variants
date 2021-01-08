@@ -98,6 +98,13 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     fun inCheck(player: Player) : Boolean
 
     /**
+     * @return the opponent player for a given player.
+     */
+    fun getOpponentPlayers(player: Player): List<Player> {
+        return players.filter{p -> p != player}
+    }
+
+    /**
      * Decrements the turn
      */
     fun prevPlayer() {
