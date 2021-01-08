@@ -10,6 +10,9 @@ import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import screens.MenuScreen
 
+/**
+ * The front end game class.
+ */
 class MyGdxGame : KtxGame<KtxScreen>() {
 
     internal lateinit var batch: SpriteBatch
@@ -18,6 +21,10 @@ class MyGdxGame : KtxGame<KtxScreen>() {
 
     val assets by lazy { AssetManager() }
 
+    /**
+     * Creates the first screen, initialises batch, font, shaperenderer used to display text and images.
+     * Calls TextureAssets to load in textures of the pieces from the assets folder
+     */
     override fun create() {
         batch = SpriteBatch()
         font = BitmapFont()
