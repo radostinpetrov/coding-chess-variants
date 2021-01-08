@@ -22,8 +22,8 @@ interface NotationFormatter {
     fun coordinateToStr(c: Coordinate2D): String
 
     /**
-     *  Takes a Move2D and converts to a readable representation
-     *  @return String move
+     * Takes a Move2D and converts to a readable representation
+     * @return String move
      */
     fun moveToStr(move: Move2D): String
 }

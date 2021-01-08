@@ -27,8 +27,6 @@ class ChessNotationInput() : NotationFormatter {
         return Coordinate2D(c1, c2)
     }
 
-
-    //TODO: aa -> 27 etc.
     /**
      * Takes a Coordinate2D and converts it into standard chess notation. e.g Coordinate(0, 6) -> A1
      * @returns string coordinate.

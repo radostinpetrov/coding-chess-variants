@@ -10,7 +10,6 @@ import kotlin.reflect.KFunction1
 
 /**
  * FEN notation utility
- *
  * This class is able to decode a FEN string and return the piece placement and status of the game.
  */
 class FenUtility(
@@ -45,10 +44,6 @@ class FenUtility(
             throw IllegalArgumentException("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
         }
         activeColour = if (fields[1].single() == 'w') 0 else 1
-
-        // if (!fields[2].contains('Q') && !fields[2].contains('q') && !fields[2].contains('K') && !fields[2].contains('k') && !fields[2].contains('-')) {
-        //     throw IllegalArgumentException("Wrong argument for castling availability FEN.")
-        // }
 
         if (!"""(-|K?Q?k?q?)""".toRegex().matches(fields[2])) {
             throw IllegalArgumentException("Wrong argument for castling availability FEN.")
