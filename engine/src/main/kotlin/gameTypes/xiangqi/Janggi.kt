@@ -6,6 +6,7 @@ import gameTypes.chess.AbstractChess
 import winconditions.StandardWinConditions
 import rules.GeneralsRule
 import pieces.janggi.* // ktlint-disable no-wildcard-imports
+import pieces.janggi.Elephant
 
 class Janggi : AbstractChess(listOf(GeneralsRule()), listOf(StandardWinConditions())) {
     override val board = Board2D(10, 9)

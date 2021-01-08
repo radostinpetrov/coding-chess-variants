@@ -14,7 +14,17 @@ import pieces.Piece2D
 import pieces.Royal
 import players.Player
 
-abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = listOf(), var winConditions: List<WinCondition2D<AbstractChess>> = listOf(StandardWinConditions()), startPlayer: Int = 0) : GameType2D {
+/**
+ * Represents a standard n-player game
+ *
+ * @property rules the list of special rules (e.g. Castling, EnPassant)
+ * @property winConditions the list of conditions that will end the game
+ */
+abstract class AbstractChess(
+    val rules: List<SpecialRules2D<AbstractChess>> = listOf(),
+    var winConditions: List<WinCondition2D<AbstractChess>> = listOf(
+        StandardWinConditions()), startPlayer: Int = 0)
+    : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = startPlayer
     // This is set as the winner when either player concedes
@@ -229,5 +239,9 @@ abstract class AbstractChess(val rules: List<SpecialRules2D<AbstractChess>> = li
 
     private fun makeRemovePieceMove(move: RemovePieceMove) {
         board.removePiece(move.coordinate, move.piece)
+    }
+
+    fun getOpponentPlayer(player: Player): Player {
+        return getOpponentPlayers(player)[0]
     }
 }

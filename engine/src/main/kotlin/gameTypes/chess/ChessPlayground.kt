@@ -2,7 +2,6 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import moveGenerators.Direction
 import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player

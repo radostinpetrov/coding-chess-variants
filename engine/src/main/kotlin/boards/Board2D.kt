@@ -7,7 +7,17 @@ import regions.Region2D
 import pieces.Piece2D
 import players.Player
 
-class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Region2D? = null) : Board<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
+/**
+ * Implementation of the Board interface for a 2d square board.
+ * The board size is rows x cols and each coordinate can have upto one Piece2D.
+ *
+ * @property rows the number of rows
+ * @property cols the number of columns
+ * @property outOfBoundsRegion the region that is considered as out of bounds
+ */
+class Board2D(val rows: Int, val cols: Int,
+              private val outOfBoundsRegion: Region2D? = null)
+    : Board<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Map<Coordinate2D, Piece2D?> {
         val res = mutableMapOf<Coordinate2D, Piece2D?>()
@@ -80,6 +90,9 @@ class Board2D(val rows: Int, val cols: Int, private val outOfBoundsRegion: Regio
         board[coordinate.y][coordinate.x] = null
     }
 
+    /**
+     * Returns true if the given coordinate is valid on the board
+     */
     fun isInBounds(coordinate: Coordinate2D): Boolean {
         if (coordinate.x < 0 || coordinate.y < 0 || coordinate.x >= cols || coordinate.y >= rows) {
             return false
