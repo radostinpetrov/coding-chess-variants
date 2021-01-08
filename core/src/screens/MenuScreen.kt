@@ -191,13 +191,6 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
             table.row()
         }
-        table.add(startButton).colspan(12).padTop(30f).padBottom(30f).center()
-        table.row()
-        table.add(leaderboardButton).colspan(12).padBottom(20f).center()
-        table.row()
-        table.add(checkersGameButton).colspan(6).padBottom(40f)
-        table.add(playgroundButton).colspan(6).padBottom(40f)
-        table.row()
         table.add(startButton).colspan(12).padBottom(30f).center()
         table.row()
         table.add(leaderboardButton).colspan(12).padTop(50f).padBottom(20f).center()
