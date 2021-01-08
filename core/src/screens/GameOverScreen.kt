@@ -14,6 +14,9 @@ import ktx.app.KtxScreen
 import players.FrontendPlayer
 import players.Player
 
+/**
+ * Displays the game over screen when a player wins or stalemate and the game ends.
+ */
 class GameOverScreen(val game: MyGdxGame, val outcome: Outcome, val libToFrontEndPlayer: Map<Player, FrontendPlayer>) : KtxScreen {
     val stage = Stage()
     val table = Table()
@@ -21,7 +24,13 @@ class GameOverScreen(val game: MyGdxGame, val outcome: Outcome, val libToFrontEn
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val playAgainButton = TextButton("Play Again?", skin)
 
+    /**
+     * This is called when the class is created before render.
+     * Initialises the outcome message and playAgainButton.
+     */
     override fun show() {
+
+        /* Initialise the outcome message */
         val sb = StringBuilder()
 
         when (outcome) {
@@ -38,6 +47,7 @@ class GameOverScreen(val game: MyGdxGame, val outcome: Outcome, val libToFrontEn
 
         val title = Label(sb.toString(), skin)
 
+        /* Initialise the playAgainButton */
         playAgainButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToMenuScreen()
@@ -54,6 +64,7 @@ class GameOverScreen(val game: MyGdxGame, val outcome: Outcome, val libToFrontEn
         table.setFillParent(true)
         Gdx.input.inputProcessor = stage
     }
+
 
     private fun switchToMenuScreen() {
         game.removeScreen<MenuScreen>()
