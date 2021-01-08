@@ -9,5 +9,5 @@ data class Alfil(override val player: Player) : Piece2D {
         MoveGenerator2D.Leaper(2, 2)
     )
 
-    override fun getSymbol(): String = "E"
+    override fun getSymbol(): String = "A"
 }

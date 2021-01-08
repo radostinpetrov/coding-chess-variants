@@ -17,7 +17,7 @@ open class TutorialChess : AbstractChess(listOf(NoRepeatedMoveFromSamePieceRule(
     override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]
-        for (i in 0..7) {
+        for (i in 0..6) {
             board.addPiece(Coordinate2D(i, 1), BerlinWhitePawn(player1))
             board.addPiece(Coordinate2D(i, 5), BerlinBlackPawn(player2))
         }

@@ -2,12 +2,13 @@ package tutorial
 
 import moveGenerators.Direction.*
 import moveGenerators.MoveGenerator2D
+import pieces.Pawn
 import pieces.Piece2D
 import pieces.chess.*
 import players.Player
 import regions.RowRegion
 
-data class BerlinWhitePawn(override val player: Player) : Piece2D {
+data class BerlinWhitePawn(override val player: Player) : Piece2D, Pawn {
     override val moveGenerators = listOf(
         MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(listOf(NORTH_EAST, NORTH_WEST), 2), RowRegion(2)),
         MoveGenerator2D.AddPromotion(

@@ -15,6 +15,7 @@ import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
+import tutorial.TutorialChess
 
 class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val stage = Stage()
@@ -32,6 +33,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val balbosGameButton = TextButton("Balbo's Game", skin)
     val checkersGameButton = TextButton("Checkers", skin)
     val playgroundButton = TextButton("Playground", skin)
+    val tutorialButton = TextButton("Tutorial Chess", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -65,7 +67,8 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         miniChessButton to MiniChess(),
         balbosGameButton to BalbosGame(),
         checkersGameButton to Checkers(),
-        playgroundButton to ChessPlayground()
+        playgroundButton to ChessPlayground(),
+        tutorialButton to TutorialChess()
     )
 
     override fun show() {
@@ -199,6 +202,12 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
             }
         })
 
+        tutorialButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                selectChessType(tutorialButton)
+            }
+        })
+
         startButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 switchToPreGameScreen(chessType, isOnline)
@@ -247,8 +256,9 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         table.add(miniChessButton).colspan(4).padBottom(20f)
         table.add(balbosGameButton).colspan(4).padBottom(20f)
         table.row()
-        table.add(checkersGameButton).colspan(6).padBottom(40f)
-        table.add(playgroundButton).colspan(6).padBottom(40f)
+        table.add(checkersGameButton).colspan(6).padBottom(20f)
+        table.add(playgroundButton).colspan(6).padBottom(20f)
+        table.add(tutorialButton).colspan(6).padBottom(20f)
         table.row()
         table.add(startButton).colspan(12).padBottom(30f).center()
         table.row()

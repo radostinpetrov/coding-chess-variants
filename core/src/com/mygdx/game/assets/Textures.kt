@@ -12,6 +12,9 @@ import pieces.chess.*
 import pieces.janggi.*
 import pieces.xiangqi.*
 import pieces.janggi.Elephant
+import tutorial.Alfil
+import tutorial.BerlinBlackPawn
+import tutorial.BerlinWhitePawn
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 
@@ -69,9 +72,12 @@ class Textures(assets: AssetManager) {
     val redChecker = assets[TextureAssets.RedChecker]
     val whiteChecker = assets[TextureAssets.WhiteChecker]
 
+    /* Tutorial. */
+    val blackAlfil = assets[TextureAssets.BlackAlfil]
+    val whiteAlfil = assets[TextureAssets.WhiteAlfil]
+
     /* Playground. */
     val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
-
 
     /* Contains the mappings to the textures for white pieces. */
     val whites = mapOf<KClass<*>, Texture>(
@@ -99,9 +105,13 @@ class Textures(assets: AssetManager) {
         /* Checkers. */
         Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteKing,
 
+        /* Tutorial.*/
+        Alfil::class to whiteAlfil,
+        BerlinWhitePawn::class to whitePawn,
+
         /* Playground. */
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
-    )
+        )
 
     /* Contains the mappings to the textures for black pieces. */
     val blacks = mapOf(
@@ -128,6 +138,10 @@ class Textures(assets: AssetManager) {
 
         /* Checkers. */
         Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to blackKing,
+
+        /* Tutorial. */
+        Alfil::class to blackAlfil,
+        BerlinBlackPawn::class to blackPawn,
 
         /* Playground. */
         ChessPlayground.PlaygroundPiece::class to playgroundPiece
