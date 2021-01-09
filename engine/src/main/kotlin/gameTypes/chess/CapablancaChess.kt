@@ -2,10 +2,10 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import rules.CapablancaCastling
-import rules.Enpassant
 import endconditions.StandardEndConditions
 import pieces.chess.*
+import rules.CapablancaCastling
+import rules.Enpassant
 
 /**
  * Represents Capablanca Chess
