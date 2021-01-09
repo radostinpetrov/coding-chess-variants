@@ -44,8 +44,9 @@ abstract class AbstractChess(
     }
 
     override fun getOutcome(player: Player): Outcome? {
-        if (concededWinner != null) {
-            return Outcome.Win(player, "by enemy concede")
+        val curConcededWinner = concededWinner
+        if (curConcededWinner != null) {
+            return Outcome.Win(curConcededWinner, "by opponent concede")
         }
         val moves = getValidMoves(player)
         for (wc in winConditions) {
@@ -204,7 +205,7 @@ abstract class AbstractChess(
 
     override fun concede(player: Player) {
         // TODO discuss for a way to improve
-        concededWinner = players.filterNot { p -> p != player }[0]
+        concededWinner = getOpponentPlayer(player)
     }
 
     private fun makeSimpleMove(move: SimpleMove) {
