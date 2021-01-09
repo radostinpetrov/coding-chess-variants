@@ -13,6 +13,8 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
@@ -26,13 +28,12 @@ import kotlin.random.Random
 
 val jsonFormat = Json { encodeDefaults = true }
 
-val matchesMutex = Mutex()
-
 val matchMakingQueues: MutableMap<GameQueue, MutableList<PlayerWrapper>> = mutableMapOf()
 val matches: MutableMap<UUID, MatchWrapper> = mutableMapOf()
 val players: MutableMap<UUID, DefaultWebSocketServerSession> = mutableMapOf()
 
 lateinit var col: MongoCollection<Players>
+lateinit var appContext: Application
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -46,6 +47,7 @@ fun Application.module(testing: Boolean = false) {
     val mongoClient = KMongo.createClient("mongodb+srv://admin:BHI06RpWO2qFGpd3@chess-cluster-1.uzp54.mongodb.net/chess?retryWrites=true&w=majority")
     val database = mongoClient.getDatabase("chess")
     col = database.getCollection()
+    appContext = this
 
     install(io.ktor.websocket.WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
@@ -103,7 +105,7 @@ fun Application.module(testing: Boolean = false) {
                 println("onError ${closeReason.await()}")
                 e.printStackTrace()
             }
-            println("bonk")
+            println("onClose or onError")
             removeUser(uuid)
         }
     }
@@ -196,7 +198,7 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
         println("Missing move")
         return
     }
-    // Check if valid move
+
     val match = matches[uuid]
     if (match == null) {
         println("Error: Player is not in a match")
@@ -216,6 +218,7 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
 
     val validMoves = game.getValidMoves()
 
+    // Check if valid move
     if (msg.move < 0 || msg.move >= validMoves.size) {
         println("Error: Invalid move")
         return
@@ -223,15 +226,28 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
 
     game.playerMakeMove(validMoves[msg.move])
 
+    val opponentMatch = matches[match.opponentId]
+    if (opponentMatch == null) {
+        println("Error: Opponent player is not in a match")
+        return
+    }
+
     // Send move to opponent player
     @Serializable
     data class MakeMoveMessage(
         val type: String,
         val move: Int,
-        val opponentId: String
+        val opponentId: String,
+        val myTime: Long?,
+        val opponentTime: Long?
     )
 
-    val msgToSend = MakeMoveMessage("receiveMove", msg.move, opponentId.toString())
+    // Process timer logic
+    cancelAndUpdateTimer(uuid)
+
+    val msgToSend = MakeMoveMessage(
+        "receiveMove", msg.move, opponentId.toString(), match.myRemainingTime, opponentMatch.myRemainingTime
+    )
     val wsDest = players[opponentId]
     if (wsDest == null) {
         println("Found invalid UUID")
@@ -259,6 +275,63 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
         }
         matches.remove(uuid)
         matches.remove(opponentId)
+    } else {
+        // If game is not finished
+        launchTimer(opponentId)
+    }
+}
+
+suspend fun launchTimer(uuid: UUID) {
+    val match = matches[uuid] ?: return
+    val remainingTime = match.myRemainingTime ?: return
+    match.myTimerJob = appContext.launch {
+        match.stopWatch.reset()
+        match.stopWatch.start()
+
+        delay(remainingTime)
+        timeoutVictory(match.opponentId)
+    }
+}
+
+suspend fun cancelAndUpdateTimer(uuid: UUID) {
+    val match = matches[uuid] ?: return
+    val remainingTime = match.myRemainingTime ?: return
+    val myTimerJob = match.myTimerJob ?: return
+
+    if (myTimerJob.isActive) {
+        myTimerJob.cancel()
+    }
+
+    match.stopWatch.stop()
+    val newRemainingTime = remainingTime - match.stopWatch.time
+
+    if (newRemainingTime <= 0) {
+        timeoutVictory(match.opponentId)
+        return
+    }
+
+    match.myRemainingTime = newRemainingTime
+    match.myTimerJob = null
+    match.stopWatch.reset()
+}
+
+suspend fun timeoutVictory(winnerUuid: UUID) {
+    val match = matches[winnerUuid]
+    if (match != null) {
+        matches.remove(winnerUuid)
+        matches.remove(match.opponentId)
+
+        @Serializable
+        data class TimeoutVictoryMessage(val type: String = "timeoutVictory", val winnerIndex: Int)
+
+        players[winnerUuid]?.send(
+            jsonFormat.encodeToString(TimeoutVictoryMessage(winnerIndex = match.myPlayerIndex))
+        )
+        players[match.opponentId]?.send(
+            jsonFormat.encodeToString(TimeoutVictoryMessage(winnerIndex = match.myPlayerIndex))
+        )
+
+        updateElo(match.myUsername, 1.0, match.opponentUsername, 0.0)
     }
 }
 
@@ -315,7 +388,10 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
         val type: String,
         val player: Int,
         val opponentId: String,
+        val playerUsername: String,
         val opponentUsername: String,
+        val playerElo: Int,
+        val opponentElo: Int,
         val seed: Double
     )
 
@@ -339,9 +415,26 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
 
     game.initGame()
 
-    matches[pw1.uuid] = MatchWrapper(pw1.username, pw2.username, pw2.uuid, game, 0)
-    matches[pw2.uuid] = MatchWrapper(pw2.username, pw1.username, pw1.uuid, game, 1)
+    val initialRemainingTime = msg.clockOption?.toLongOrNull()?.times(1000L)
 
-    pw1.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 1, pw2.uuid.toString(), pw2.username, seed)))
-    pw2.ws.send(jsonFormat.encodeToString(StartGameMessage("startGame", 2, pw1.uuid.toString(), pw1.username, seed)))
+    val pw1Player = col.findOne(Players::username eq pw1.username)
+    val pw2Player = col.findOne(Players::username eq pw2.username)
+
+    if (pw1Player == null || pw2Player == null) {
+        println("Error: Missing player information")
+        return
+    }
+
+    matches[pw1.uuid] = MatchWrapper(pw1.username, pw2.username, pw2.uuid, game, 0, initialRemainingTime)
+    matches[pw2.uuid] = MatchWrapper(pw2.username, pw1.username, pw1.uuid, game, 1, initialRemainingTime)
+
+    pw1.ws.send(jsonFormat.encodeToString(StartGameMessage(
+        "startGame", 1, pw2.uuid.toString(), pw1.username, pw2.username, pw1Player.elo, pw2Player.elo, seed))
+    )
+    pw2.ws.send(jsonFormat.encodeToString(StartGameMessage(
+        "startGame", 2, pw1.uuid.toString(), pw2.username, pw1.username, pw2Player.elo, pw1Player.elo, seed))
+    )
+
+    // Start the timer
+    launchTimer(pw1.uuid)
 }
