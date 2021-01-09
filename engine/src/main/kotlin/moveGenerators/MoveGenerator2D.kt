@@ -15,10 +15,10 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     /**
      * Moves along a ray direction until they encounter another piece or the edge of the board
      *
-     * @property H horizontal direction
-     * @property V vertical direction
-     * @property D diagonal direction
-     * @property A anti-diagonal direction
+     * @property H true if it can move along horizontal direction
+     * @property V true if it can move along vertical direction
+     * @property D true if it can move along diagonal direction
+     * @property A true if it can move along anti-diagonal direction
      */
     class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
@@ -64,7 +64,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     /**
      * Performs single (repeated) steps in a particular board direction
      *
-     * @property directions available directions
+     * @property directions a list of available directions
      * @property step the number of steps
      * @property canCapture true if it can capture an enemy piece
      */
@@ -138,8 +138,8 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     /**
      * Can move along a ray direction, but must jump over another piece
      *
-     * @property HV horizontal and vertical direction
-     * @property D diagonal and anti-diagonal direction
+     * @property HV true if it can move along horizontal and vertical direction
+     * @property D true if it can move along diagonal and anti-diagonal direction
      * @property canJumpOverSamePiece true if it can jump over the same kind of piece
      */
     data class Hopper(val HV: Boolean = false, val D: Boolean = false, val canJumpOverSamePiece: Boolean) : MoveGenerator2D {
@@ -185,7 +185,9 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     }
 
     /**
-     * Move can only occur if it captures a piece
+     * A given move can only occur if it captures a piece
+     *
+     * @property moveGenerator the move to
      */
     data class CaptureOnly(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
@@ -196,7 +198,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     }
 
     /**
-     * Move can only occur if it does not capture a piece
+     * A given move can only occur if it does not capture a piece
      */
     data class NoCapture(val moveGenerator: MoveGenerator2D) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {
@@ -207,7 +209,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     }
 
     /**
-     * Move can only occur when the piece starts in a specific region
+     * A given move can only occur when the piece starts in a specific region
      *
      * @property region the region that the piece can start from
      */
@@ -220,7 +222,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     }
 
     /**
-     * Move can only occur if the destination is within a specific region
+     * A given move can only occur if the destination is within a specific region
      *
      * @property region the region that the piece can end in
      */
@@ -311,8 +313,7 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piec
     }
 
     /**
-     * Skip move
-     * A player may decide to pass if there is no safe or desirable move
+     * Skip move: a player may decide to pass if there is no safe or desirable move
      */
     object Skip : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove> {

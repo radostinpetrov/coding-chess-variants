@@ -8,6 +8,9 @@ import rules.GeneralsRule
 import pieces.janggi.* // ktlint-disable no-wildcard-imports
 import pieces.janggi.Elephant
 
+/**
+ * Represents Janggi (Korean Chess)
+ */
 class Janggi : AbstractChess(listOf(GeneralsRule()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 9)
     override val name = "Janggi"

@@ -13,10 +13,16 @@ import regions.RowRegion
 import rules.ForcedCaptureRule
 import endconditions.EndCondition2D
 
-class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winConditions = listOf(CheckersEndCondition())) {
+/**
+ * Represents a checker game
+ */
+class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), endConditions = listOf(CheckersEndCondition())) {
     override val name = "Checkers"
 
-    class CheckersEndCondition() : EndCondition2D<AbstractChess> {
+    /**
+     * Represents end conditions for checker game
+     */
+    class CheckersEndCondition : EndCondition2D<AbstractChess> {
         override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
             for (p in game.players) {
                 val pieces = game.board.getPieces(player)
@@ -31,7 +37,10 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
         }
     }
 
-    class CheckersCapture() : MoveGenerator2D {
+    /**
+     * Move generator for checker game
+     */
+    class CheckersCapture : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<Move2D> {
             val res = mutableListOf<Move2D>()
             MoveGenerator2D.Leaper(2, 2).generate(board, coordinate, piece, player).forEach {
@@ -46,7 +55,10 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
         }
     }
 
-    abstract class CheckerPawn(override val player: Player, val directions: List<Direction>, val promotionRow: Int) : Piece2D {
+    /**
+     * Represents a pawn in checker game
+     */
+    abstract class CheckerPawn(override val player: Player, private val directions: List<Direction>, private val promotionRow: Int) : Piece2D {
         override val moveGenerators: List<MoveGenerator2D>
             get() = listOf(
                 MoveGenerator2D.AddPromotion(
@@ -62,9 +74,19 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winCondition
         override fun getSymbol(): String = "C"
     }
 
+    /**
+     * Represents a white checker in checker game
+     */
     data class WhiteChecker(override val player: Player) : CheckerPawn(player, listOf(Direction.NORTH_EAST, Direction.NORTH_WEST), 7)
+
+    /**
+     * Represents a black checker in checker game
+     */
     data class BlackChecker(override val player: Player) : CheckerPawn(player, listOf(Direction.SOUTH_EAST, Direction.SOUTH_WEST), 0)
 
+    /**
+     * Represents a checker king in checker game (not a royal piece)
+     */
     data class CheckerKing(override val player: Player) : Piece2D {
         override val moveGenerators: List<MoveGenerator2D>
             get() = listOf(

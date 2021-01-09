@@ -11,7 +11,6 @@ import players.Player
 
 /**
  * Represents special rules that can occur under certain conditions
- * e.g. Castling, EnPassant
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.

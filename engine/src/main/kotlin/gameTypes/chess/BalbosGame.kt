@@ -13,9 +13,15 @@ import regions.CompositeRegion
 import regions.RowRegion
 import endconditions.StandardEndConditions
 
-class BalbosGame() : AbstractChess(listOf(), listOf(StandardEndConditions())) {
+/**
+ * Represents Balbo's game
+ */
+class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
     override val name = "Balbo's Game"
 
+    /**
+     * Represents a white pawn in Balbo's game
+     */
     data class BalboWhitePawn(override val player: Player) : Piece2D, Pawn {
         private val standardMoves = listOf(
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
@@ -67,6 +73,9 @@ class BalbosGame() : AbstractChess(listOf(), listOf(StandardEndConditions())) {
         }
     }
 
+    /**
+     * Represents a black pawn in Balbo's game
+     */
     data class BalboBlackPawn(override val player: Player) : Piece2D, Pawn {
         private val standardMoves = listOf(
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.SOUTH, 2), RowRegion(7)),
@@ -118,7 +127,10 @@ class BalbosGame() : AbstractChess(listOf(), listOf(StandardEndConditions())) {
         }
     }
 
-    private val OutOfBoundsRegion = CompositeRegion(
+    /**
+     * Represents a region that is considered invalid
+     */
+    private val outOfBoundsRegion = CompositeRegion(
         listOf(
             BoxRegion(Coordinate2D(0, 0), Coordinate2D(3, 0)),
             BoxRegion(Coordinate2D(0, 0), Coordinate2D(1, 2)),
@@ -138,7 +150,7 @@ class BalbosGame() : AbstractChess(listOf(), listOf(StandardEndConditions())) {
             BoxRegion(Coordinate2D(10, 0), Coordinate2D(10, 3)),
         )
     )
-    override val board: Board2D = Board2D(10, 11, OutOfBoundsRegion)
+    override val board: Board2D = Board2D(10, 11, outOfBoundsRegion)
 
     override fun initBoard() {
         val player1 = players[0]

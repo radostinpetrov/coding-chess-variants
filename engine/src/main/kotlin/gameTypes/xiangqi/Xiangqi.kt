@@ -7,6 +7,9 @@ import endconditions.StandardEndConditions
 import rules.GeneralsRule
 import pieces.xiangqi.* // ktlint-disable no-wildcard-imports
 
+/**
+ * Represents Xiangqi (Chinese Chess)
+ */
 class Xiangqi : AbstractChess(listOf(GeneralsRule()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 9)
     override val name = "Xiangqi"

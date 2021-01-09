@@ -17,11 +17,14 @@ import players.Player
  */
 interface MoveGenerator<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M : Move<B, MG, M, P, C>, P : Piece<B, MG, M, P, C>, C : Coordinate> {
     /**
+     * Takes in the current board, the piece to be moved and its coordinate, and
+     * the player who makes the move to return all possible game moves
+     * corresponding to the given type of movement.
+     *
      * @param board the current board
      * @param coordinate the coordinate of the piece to be moved
      * @param piece the piece to be moved
      * @param player the player who makes the move
-     *
      * @return a list of corresponding game moves.
      */
     fun generate(board: B, coordinate: C, piece: P, player: Player): List<M>

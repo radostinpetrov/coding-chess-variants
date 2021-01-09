@@ -9,6 +9,9 @@ import pieces.antichess.AntiChessKing
 import pieces.antichess.AntiChessWhitePawn
 import pieces.chess.*
 
+/**
+ * Represents Anti Chess
+ */
 open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Anti Chess"

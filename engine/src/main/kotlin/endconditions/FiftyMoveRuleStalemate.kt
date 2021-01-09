@@ -6,7 +6,7 @@ import pieces.Pawn
 import players.Player
 
 /**
- * Condition for stalemate by the 50-move rules
+ * Condition for stalemate by the 50-move rules.
  *
  * In the previous 50 moves by each side,
  * no pawn has moved and no capture has been made.

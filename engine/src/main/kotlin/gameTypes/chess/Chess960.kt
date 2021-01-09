@@ -7,6 +7,16 @@ import pieces.chess.*
 import rules.Chess960Castling
 import rules.Enpassant
 
+/**
+ * Represents Chess960 (Fischer random chess).
+ *
+ * Uses the same board and pieces as classical chess,
+ * but the starting position of the pieces on the players' home ranks is randomized,
+ * following two rules:
+ *
+ * 1. The bishop must be placed in opposite colour
+ * 2. The king must be placed between rooks
+ */
 class Chess960(override var seed: Double? = null) : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Chess960"
@@ -19,13 +29,8 @@ class Chess960(override var seed: Double? = null) : AbstractChess(listOf(Chess96
             board.addPiece(Coordinate2D(i, 6), StandardBlackPawn(player2))
         }
 
-        /**
-         * Non-pawns are placed randomly on the first rank following two rules
-         * 1. The bishop must be placed in opposite colour
-         * 2. The king must be placed between rooks
-         */
-
-        val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
+        val permutation = if (seed == null) getPossiblePermutations().random()
+        else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {
                 'R' -> {
@@ -53,8 +58,9 @@ class Chess960(override var seed: Double? = null) : AbstractChess(listOf(Chess96
     }
 
     /**
+     * Generates all possible permutations of positions of non-pawn pieces
+     * that satisfies the rules
      * @return all possible permutations of positions of non-pawn pieces
-     * that satisfies the rules listed above
      */
     fun getPossiblePermutations(): Set<String> {
         val pieces = listOf('R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R')

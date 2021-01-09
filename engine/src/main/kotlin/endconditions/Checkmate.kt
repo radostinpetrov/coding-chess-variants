@@ -5,8 +5,7 @@ import gameTypes.chess.AbstractChess
 import players.Player
 
 /**
- * Condition for checkmate
- *
+ * Condition for checkmate.
  * If the player on turn has no legal move but is not in check
  */
 class Checkmate : EndCondition2D<AbstractChess> {

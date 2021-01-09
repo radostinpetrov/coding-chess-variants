@@ -5,7 +5,7 @@ import gameTypes.chess.AbstractChess
 import players.Player
 
 /**
- * Condition for stalemate by three-fold-repetition
+ * Condition for stalemate by three-fold-repetition.
  *
  * In chess, the threefold repetition rule states that
  * a player may claim a draw if the same position occurs three times.

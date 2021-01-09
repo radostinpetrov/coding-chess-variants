@@ -4,6 +4,7 @@ import coordinates.Coordinate2D
 
 /**
  * Represents a region of a column on 2D coordinate
+ *
  * @property col the column number (x coordinate)
  */
 data class ColumnRegion(val col: Int) : Region2D {

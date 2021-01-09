@@ -2,6 +2,11 @@ package moveGenerators
 
 import coordinates.Coordinate2D
 
+/**
+ * A collection of constants representing directions
+ *
+ * @property coordinate the vector corresponding to each direction
+ */
 enum class Direction(val coordinate: Coordinate2D) {
     NORTH_WEST(Coordinate2D(-1, 1)) {
         override fun rotate(dx: Int, dy: Int): Coordinate2D {
