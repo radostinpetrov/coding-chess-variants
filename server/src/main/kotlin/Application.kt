@@ -96,6 +96,7 @@ fun Application.module(testing: Boolean = false) {
                         "matchmaking" -> matchmaking(this, uuid, msg)
                         "makeMove" -> makeMove(uuid, msg)
                         "getLeaderboard" -> getLeaderboard(this)
+                        "concede" -> concedeGame(uuid)
 //                        "finishGame" -> finishGame(this, uuid, msg)
                     }
                 }

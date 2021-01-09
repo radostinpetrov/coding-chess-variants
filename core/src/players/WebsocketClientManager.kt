@@ -77,6 +77,14 @@ class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var us
         )
     }
 
+    fun sendConcede() {
+        webSocketClient.send(
+            "{\n" +
+                    "    \"type\": \"concede\"\n" +
+                    "}"
+        )
+    }
+
     private fun sendMatchmakingRequest() {
         webSocketClient.send(
             "{\n" +

@@ -77,11 +77,13 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         val clockFlag = clockList != null
         val gameScreen = GameScreen(game, gameType, clockFlag, true)
         val players = mutableListOf<FrontendPlayer>()
+        val networkHumanPlayer: NetworkHumanPlayer
         when (humanPlayer) {
             1 -> {
-                players.add(NetworkHumanPlayer(
+                networkHumanPlayer = NetworkHumanPlayer(
                     gameScreen, websocketClientManager, Color.WHITE, "White", playerUsername, playerElo
-                ))
+                )
+                players.add(networkHumanPlayer)
                 val enemyPlayer = NetworkEnemyPlayer(
                     gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
                 )
@@ -94,9 +96,14 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
                 )
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                players.add(NetworkHumanPlayer(
+                networkHumanPlayer = NetworkHumanPlayer(
                     gameScreen, websocketClientManager, Color.BLACK, "Black", playerUsername, playerElo
-                ))
+                )
+                players.add(networkHumanPlayer)
+            }
+            else -> {
+                // This should not happen, print error
+                return
             }
         }
         if (clockFlag) {
@@ -105,6 +112,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         }
 
         gameScreen.initPlayers(players)
+        gameScreen.networkHumanPlayer = networkHumanPlayer
         game.removeScreen<GameScreen>()
         game.addScreen(gameScreen)
         dispose()

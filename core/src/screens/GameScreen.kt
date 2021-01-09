@@ -73,6 +73,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
+    var networkHumanPlayer: NetworkHumanPlayer? = null
+
     // TODO and this?
 //    var playerMappingInitialClock: MutableMap<Player, Int>? = null
 //    var playerMappingEndClock: Map<Player, Int>? = null
@@ -140,10 +142,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         forfeitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (!isOnline) {
-                    //TODO conceded player wins
                     processConcede(gameEngine.getCurrentPlayer())
                 } else {
-                    //TODO add networking here
+                    networkHumanPlayer!!.websocketClientManager.sendConcede()
+                    processConcede(networkHumanPlayer!!.libPlayer)
                 }
             }
         })
