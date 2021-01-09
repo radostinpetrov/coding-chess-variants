@@ -4,10 +4,10 @@ import coordinates.Coordinate2D
 import boards.Board2D
 import rules.Chess960Castling
 import rules.Enpassant
-import winconditions.StandardWinConditions
+import endconditions.StandardEndConditions
 import pieces.chess.*
 
-class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardWinConditions())) {
+class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Chess960"
 

@@ -1,3 +1,5 @@
+package endconditions
+
 import players.Player
 
 /**

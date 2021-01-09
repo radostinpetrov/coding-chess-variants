@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
 import pieces.janggi.General
+import endconditions.Outcome
 
 class StalemateTest {
     val mockStandardChess = spyk<StandardChess>()

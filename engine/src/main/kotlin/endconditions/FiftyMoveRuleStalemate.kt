@@ -1,6 +1,5 @@
-package winconditions
+package endconditions
 
-import Outcome
 import moves.Move2D
 import gameTypes.chess.AbstractChess
 import pieces.Pawn
@@ -12,7 +11,7 @@ import players.Player
  * In the previous 50 moves by each side,
  * no pawn has moved and no capture has been made.
  */
-class FiftyMoveRuleStalemate : WinCondition2D<AbstractChess> {
+class FiftyMoveRuleStalemate : EndCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         if (moves.size < 100) {
             return null

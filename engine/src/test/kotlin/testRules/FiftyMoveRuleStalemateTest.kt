@@ -3,7 +3,7 @@ package testRules
 import coordinates.Coordinate2D
 import moves.Move2D
 import gameTypes.chess.StandardChess
-import winconditions.FiftyMoveRuleStalemate
+import endconditions.FiftyMoveRuleStalemate
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -16,6 +16,7 @@ import pieces.janggi.BlueSoldier
 import pieces.janggi.RedSoldier
 import pieces.xiangqi.XiangqiBlueSoldier
 import pieces.xiangqi.XiangqiRedSoldier
+import endconditions.Outcome
 
 class FiftyMoveRuleStalemateTest {
     val mockStandardChess = spyk<StandardChess>()

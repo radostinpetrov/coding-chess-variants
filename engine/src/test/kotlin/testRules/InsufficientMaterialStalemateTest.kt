@@ -4,13 +4,14 @@ import coordinates.Coordinate2D
 import gameTypes.chess.CapablancaChess
 import gameTypes.chess.GrandChess
 import gameTypes.chess.StandardChess
-import winconditions.InsufficientMaterialStalemate
+import endconditions.InsufficientMaterialStalemate
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
+import endconditions.Outcome
 
 class InsufficientMaterialStalemateTest {
     val mockStandardChess = spyk<StandardChess>()

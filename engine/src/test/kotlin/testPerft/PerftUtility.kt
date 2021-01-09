@@ -2,7 +2,7 @@ package testPerft
 
 import gameTypes.chess.AbstractChess
 import org.junit.jupiter.api.Assertions
-import pieces.chess.King
+import endconditions.Outcome
 
 object PerftUtility {
     data class PerftData(var nodes: Int, var captures: Int, var checks: Int, var checkmates: Int) {

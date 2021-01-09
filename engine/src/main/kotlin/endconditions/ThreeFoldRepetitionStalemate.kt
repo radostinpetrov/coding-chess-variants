@@ -1,6 +1,5 @@
-package winconditions
+package endconditions
 
-import Outcome
 import moves.Move2D
 import gameTypes.chess.AbstractChess
 import players.Player
@@ -19,7 +18,7 @@ import players.Player
  *
  * The repeated positions need not occur in succession.
  */
-class ThreeFoldRepetitionStalemate : WinCondition2D<AbstractChess> {
+class ThreeFoldRepetitionStalemate : EndCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         // We use a pair of the player that has the move and
         // sorted list of valid moves to check if two positions are the same

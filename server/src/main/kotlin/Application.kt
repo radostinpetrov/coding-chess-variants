@@ -1,6 +1,6 @@
 package server
 
-import Outcome
+import endconditions.Outcome
 import com.mongodb.MongoWriteException
 import com.mongodb.client.MongoCollection
 import gameTypes.checkers.Checkers
@@ -11,7 +11,6 @@ import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.util.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.sync.Mutex
@@ -136,7 +135,7 @@ suspend fun concedeGame(uuid: UUID) {
     }
 }
 
-// fun finishGame(outcome: Outcome, game: GameType2D, winner: String, loser: String, msg: Message) {
+// fun finishGame(outcome: winconditions.Outcome, game: GameType2D, winner: String, loser: String, msg: Message) {
 //    val match = matches[uuid]
 //
 //    if (match == null) {

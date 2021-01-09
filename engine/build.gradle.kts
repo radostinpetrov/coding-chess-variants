@@ -2,6 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     id("jacoco")
+    id("org.jetbrains.dokka") version "1.4.20"
     id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 

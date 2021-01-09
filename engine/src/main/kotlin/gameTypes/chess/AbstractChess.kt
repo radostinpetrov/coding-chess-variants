@@ -1,6 +1,6 @@
 package gameTypes.chess
 
-import Outcome
+import endconditions.Outcome
 import coordinates.Coordinate2D
 import moves.Move2D
 import moves.Move2D.CompositeMove
@@ -8,8 +8,8 @@ import moves.Move2D.SimpleMove
 import moves.Move2D.SimpleMove.*
 import gameTypes.GameType2D
 import rules.SpecialRules2D
-import winconditions.StandardWinConditions
-import winconditions.WinCondition2D
+import endconditions.StandardEndConditions
+import endconditions.EndCondition2D
 import pieces.Piece2D
 import pieces.Royal
 import players.Player
@@ -22,8 +22,8 @@ import players.Player
  */
 abstract class AbstractChess(
     val rules: List<SpecialRules2D<AbstractChess>> = listOf(),
-    var winConditions: List<WinCondition2D<AbstractChess>> = listOf(
-        StandardWinConditions()), startPlayer: Int = 0)
+    var winConditions: List<EndCondition2D<AbstractChess>> = listOf(
+        StandardEndConditions()), startPlayer: Int = 0)
     : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = startPlayer

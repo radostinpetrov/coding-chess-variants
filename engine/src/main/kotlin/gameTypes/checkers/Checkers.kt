@@ -1,6 +1,6 @@
 package gameTypes.checkers
 
-import Outcome
+import endconditions.Outcome
 import boards.Board2D
 import coordinates.Coordinate2D
 import gameTypes.chess.AbstractChess
@@ -11,12 +11,12 @@ import pieces.Piece2D
 import players.Player
 import regions.RowRegion
 import rules.ForcedCaptureRule
-import winconditions.WinCondition2D
+import endconditions.EndCondition2D
 
-class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winConditions = listOf(CheckersWinCondition())) {
+class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), winConditions = listOf(CheckersEndCondition())) {
     override val name = "Checkers"
 
-    class CheckersWinCondition() : WinCondition2D<AbstractChess> {
+    class CheckersEndCondition() : EndCondition2D<AbstractChess> {
         override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
             for (p in game.players) {
                 val pieces = game.board.getPieces(player)

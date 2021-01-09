@@ -3,13 +3,13 @@ package gameTypes.chess
 import boards.Board2D
 import coordinates.Coordinate2D
 import rules.ForcedCaptureRule
-import winconditions.AntiChessWinConditions
+import endconditions.AntiChessEndConditions
 import pieces.antichess.AntiChessBlackPawn
 import pieces.antichess.AntiChessKing
 import pieces.antichess.AntiChessWhitePawn
 import pieces.chess.*
 
-open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessWinConditions())) {
+open class AntiChess : AbstractChess(listOf(ForcedCaptureRule()), listOf(AntiChessEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Anti Chess"
 

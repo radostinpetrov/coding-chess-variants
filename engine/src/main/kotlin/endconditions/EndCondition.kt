@@ -1,12 +1,11 @@
-package winconditions
+package endconditions
 
-import Outcome
 import boards.Board
 import coordinates.Coordinate
-import moves.Move
-import moves.Move2D
 import gameTypes.GameType
 import moveGenerators.MoveGenerator
+import moves.Move
+import moves.Move2D
 import pieces.Piece
 import players.Player
 
@@ -21,12 +20,12 @@ import players.Player
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  */
-interface WinCondition<G: GameType<B, MG, M, P, C>,
-        B : Board<B, MG, M, P, C>,
-        MG : MoveGenerator<B, MG, M, P, C>,
-        M: Move<B, MG, M, P, C>,
-        P: Piece<B, MG, M, P, C>,
-        C: Coordinate> {
+interface EndCondition<G : GameType<B, MG, M, P, C>,
+    B : Board<B, MG, M, P, C>,
+    MG : MoveGenerator<B, MG, M, P, C>,
+    M : Move<B, MG, M, P, C>,
+    P : Piece<B, MG, M, P, C>,
+    C : Coordinate> {
     /**
      * @return an outcome if the game should end if it satisfies the condition,
      * otherwise returns null.

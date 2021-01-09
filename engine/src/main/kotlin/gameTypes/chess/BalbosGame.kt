@@ -11,9 +11,9 @@ import players.Player
 import regions.BoxRegion
 import regions.CompositeRegion
 import regions.RowRegion
-import winconditions.StandardWinConditions
+import endconditions.StandardEndConditions
 
-class BalbosGame() : AbstractChess(listOf(), listOf(StandardWinConditions())) {
+class BalbosGame() : AbstractChess(listOf(), listOf(StandardEndConditions())) {
     override val name = "Balbo's Game"
 
     data class BalboWhitePawn(override val player: Player) : Piece2D, Pawn {

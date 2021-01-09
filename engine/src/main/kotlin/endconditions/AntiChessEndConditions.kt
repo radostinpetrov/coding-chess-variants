@@ -1,8 +1,7 @@
-package winconditions
+package endconditions
 
-import Outcome
-import moves.Move2D
 import gameTypes.chess.AbstractChess
+import moves.Move2D
 import players.Player
 
 /**
@@ -10,7 +9,7 @@ import players.Player
  *
  * Player lost all of their pieces or is stalemated.
  */
-class AntiChessWinConditions : WinCondition2D<AbstractChess> {
+class AntiChessEndConditions : EndCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         for (p in game.players) {
             val pieces = game.board.getPieces(p)

@@ -1,6 +1,5 @@
-package winconditions
+package endconditions
 
-import Outcome
 import moves.Move2D
 import gameTypes.chess.AbstractChess
 import players.Player
@@ -10,7 +9,7 @@ import players.Player
  *
  * If the player on turn has no legal move but is not in check
  */
-class Checkmate : WinCondition2D<AbstractChess> {
+class Checkmate : EndCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         if (moves.isEmpty() && game.inCheck(player)) {
             val players = game.players

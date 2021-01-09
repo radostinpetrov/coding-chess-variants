@@ -1,6 +1,6 @@
 package gameTypes
 
-import Outcome
+import endconditions.Outcome
 import boards.Board
 import coordinates.Coordinate
 import moves.Move

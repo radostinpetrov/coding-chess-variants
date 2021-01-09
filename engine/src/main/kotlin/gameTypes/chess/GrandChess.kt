@@ -3,10 +3,10 @@ package gameTypes.chess
 import coordinates.Coordinate2D
 import boards.Board2D
 import rules.Enpassant
-import winconditions.StandardWinConditions
+import endconditions.StandardEndConditions
 import pieces.chess.*
 
-class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardWinConditions())) {
+class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 10)
     override val name = "Grand Chess"
 
