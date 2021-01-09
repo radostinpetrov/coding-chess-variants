@@ -20,7 +20,7 @@ import players.HumanPlayer
 /**
  * Displays the Player select screen, where the human and computer users are set for local play.
  */
-class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
+class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Long>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 

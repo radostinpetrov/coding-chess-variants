@@ -113,7 +113,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * Initialises the outcome message and playAgainButton.
      */
     override fun show() {
-
         /* Initialise the display size. */
         if (rows != columns) {
             windowWidth = (windowHeight * columns) / rows
@@ -127,6 +126,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         startGame()
         moves = gameEngine.getValidMoves(currPlayer!!)
         libToFrontendPlayer[currPlayer!!]!!.signalTurn()
+
+        /* Initialize the clocks. */
+        if (clockFlag) {
+            libToFrontendPlayer[currPlayer]!!.stopwatch.start()
+        }
 
         /* Initialise the GUIBoard. */
         guiBoard = when (gameEngine) {
@@ -206,9 +210,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
     /**
      * This is called when the current player plays a turn.
-     * @param nextMove the move the current plaer will make on the game engine
+     * @param nextMove the move the current player will make on the game engine
      */
     fun processTurn(nextMove: Move2D) {
+        switchClocks()
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
             currPlayer = gameEngine.getCurrentPlayer()
@@ -232,6 +237,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             }
 
             libToFrontendPlayer[currPlayer]!!.signalTurn()
+        }
+    }
+
+    /**
+     * Swap running clock.
+     */
+    private fun switchClocks() {
+        frontendPlayers.forEach {
+            it.flipClock()
         }
     }
 
@@ -414,18 +428,12 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * @param flipped determines which side the clocks are on. Different for white and black
      */
     private fun drawClocks(flipped: Boolean): Boolean {
-        val currTime = System.currentTimeMillis() / 1000L
         val nextPlayer = gameEngine.getNextPlayer()
-        val otherPlayerTime = libToFrontendPlayer[nextPlayer]!!.initialClock
 
-        val playerTime = (currTime - initialTime - otherPlayerTime).toInt()
+        val displayTimeCurr = libToFrontendPlayer[currPlayer!!]!!.getRemainingTime()
+        val displayTimeOther = libToFrontendPlayer[nextPlayer]!!.getRemainingTime()
 
-        val displayTimeCurr = libToFrontendPlayer[currPlayer!!]!!.endClock!! - playerTime
-        val displayTimeOther = libToFrontendPlayer[nextPlayer]!!.endClock!! - otherPlayerTime
-
-        libToFrontendPlayer[currPlayer!!]!!.initialClock = playerTime
-
-        if (displayTimeCurr <= 0) {
+        if (displayTimeCurr <= 0 && !isOnline) {
             return false
         }
 

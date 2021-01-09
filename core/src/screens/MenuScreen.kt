@@ -49,7 +49,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val fiveClockButton = TextButton("5 + 0", skin)
     val tenClockButton = TextButton("10 + 0", skin)
     val fifteenClockButton = TextButton("15 + 0", skin)
-    var clockList: List<Int>? = null
+    var clockList: List<Long>? = null
 
     val leaderboardButton = TextButton("Leaderboard", skin)
 

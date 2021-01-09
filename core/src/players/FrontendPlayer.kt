@@ -1,6 +1,7 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
+import org.apache.commons.lang3.time.StopWatch
 import screens.GameScreen
 
 /**
@@ -12,8 +13,34 @@ abstract class FrontendPlayer(val gameScreen: GameScreen, val colour: Color, val
     val gameType = gameScreen.gameEngine
     // TODO any way to guarantee this to be initialized?
     lateinit var libPlayer : Player
-    var endClock: Int? = null
+    var endClock: Long? = null
     open fun signalTurn() {}
 
-    var initialClock = 0
+    var stopwatch = StopWatch()
+    var elapsedTime: Long = 0
+
+    fun getRemainingTime() : Long {
+        val remainingTime = (endClock!! * 1000L - elapsedTime - stopwatch.time) / 1000L
+        if (remainingTime < 0) {
+            return 0
+        }
+        return remainingTime
+    }
+
+    fun syncElapsedTime(remainingTime: Long?) {
+        if (remainingTime != null && endClock != null) {
+            elapsedTime = (endClock!! * 1000L) - remainingTime
+
+        }
+    }
+
+    fun flipClock() {
+        if (stopwatch.isStarted) {
+            stopwatch.stop()
+            elapsedTime += stopwatch.time
+            stopwatch.reset()
+        } else {
+            stopwatch.start()
+        }
+    }
 }

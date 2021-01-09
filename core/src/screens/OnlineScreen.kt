@@ -18,7 +18,7 @@ import players.WebsocketClientManager
 /**
  * Displays the Online waiting screen, where the player waits to be connected to another user.
  */
-class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType2D, val clockList: List<Int>?) : KtxScreen {
+class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType2D, val clockList: List<Long>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
@@ -78,6 +78,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         val gameScreen = GameScreen(game, gameType, clockFlag, true)
         websocketClientManager.gameScreen = gameScreen
         val players = mutableListOf<FrontendPlayer>()
+        val networkEnemyPlayer: NetworkEnemyPlayer
         val networkHumanPlayer: NetworkHumanPlayer
         when (humanPlayer) {
             1 -> {
@@ -85,18 +86,18 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
                     gameScreen, websocketClientManager, Color.WHITE, "White", playerUsername, playerElo
                 )
                 players.add(networkHumanPlayer)
-                val enemyPlayer = NetworkEnemyPlayer(
+                networkEnemyPlayer = NetworkEnemyPlayer(
                     gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
                 )
-                players.add(enemyPlayer)
-                websocketClientManager.networkEnemyPlayer = enemyPlayer
+                players.add(networkEnemyPlayer)
+                websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer(
+                networkEnemyPlayer = NetworkEnemyPlayer(
                     gameScreen, Color.WHITE, "White", opponentUsername, opponentElo
                 )
-                players.add(enemyPlayer)
-                websocketClientManager.networkEnemyPlayer = enemyPlayer
+                players.add(networkEnemyPlayer)
+
                 networkHumanPlayer = NetworkHumanPlayer(
                     gameScreen, websocketClientManager, Color.BLACK, "Black", playerUsername, playerElo
                 )
@@ -107,6 +108,10 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
                 return
             }
         }
+
+        websocketClientManager.networkHumanPlayer = networkHumanPlayer
+        websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
+
         if (clockFlag) {
             players[0].endClock = clockList!![0]
             players[1].endClock = clockList[1]

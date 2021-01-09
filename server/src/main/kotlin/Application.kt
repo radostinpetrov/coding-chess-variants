@@ -246,7 +246,7 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
     cancelAndUpdateTimer(uuid)
 
     val msgToSend = MakeMoveMessage(
-        "receiveMove", msg.move, opponentId.toString(), match.myRemainingTime, opponentMatch.myRemainingTime
+        "receiveMove", msg.move, opponentId.toString(), opponentMatch.myRemainingTime, match.myRemainingTime
     )
     val wsDest = players[opponentId]
     if (wsDest == null) {

@@ -13,10 +13,10 @@ project(":core") {
         implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-
         implementation("org.java-websocket:Java-WebSocket:1.5.1")
         implementation("org.slf4j:slf4j-nop:1.7.30")
         implementation("org.json:json:20200518")
+        implementation("org.apache.commons:commons-lang3:3.11")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
         testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
