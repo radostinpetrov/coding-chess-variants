@@ -60,9 +60,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     private val pieceWidth: Float = squareWidth * 0.85f
 
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
-    val forfeitButton = TextButton("Forfeit", skin)
-
-
+    private val forfeitButton = TextButton("Forfeit", skin)
+    private val forfeitButtonPosX = windowWidth + panelWidth - 90f
+    private val forfeitButtonPosY = 23f
 
     // TODO maybe don't need this?
     var currPlayer: Player? = null
@@ -147,7 +147,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 }
             }
         })
-        forfeitButton.setPosition((windowWidth + panelWidth/2 - 30f), 10f)
+        forfeitButton.setPosition(forfeitButtonPosX, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
     }
@@ -265,6 +265,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         /* Draws the side bar. */
         drawPanel()
         drawHistoryBox()
+        drawUsers()
 
         if (clockFlag && !drawClocks(flip)) {
             val outcome = Outcome.Win(nextPlayer, "by time")
@@ -467,6 +468,20 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
             }
         }
+        batch.end()
+    }
+
+    /**
+     * Draws the user names and elo of players.
+     */
+    private fun drawUsers() {
+        batch.begin()
+        //TODO add user1 user2
+        val user1 = "sei" + "/" + "elo"
+        val user2 = "poopi" + "/" + "elo"
+        font.setColor(Color.BLACK)
+        font.draw(batch, user1, windowWidth + 10f, windowHeight.toFloat() * 15 / 16 + 20f)
+        font.draw(batch, user2, windowWidth + 10f, windowHeight.toFloat() * 1 / 16 + 20f)
         batch.end()
     }
 }
