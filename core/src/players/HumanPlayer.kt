@@ -7,8 +7,9 @@ import screens.GameScreen
 /**
  * Human player class that extends FrontendPlayer. Used to process turn with moves dictated by the controls.
  */
-open class HumanPlayer(gameScreen: GameScreen, colour: Color, name: String) : FrontendPlayer(
-    gameScreen, colour, name
+open class HumanPlayer(gameScreen: GameScreen, colour: Color, name: String, username: String = "Human Player",
+                       elo: Int? = null) : FrontendPlayer(
+    gameScreen, colour, name, username, elo
 ) {
     /**
      * Tells the gameScreen a valid move to play.

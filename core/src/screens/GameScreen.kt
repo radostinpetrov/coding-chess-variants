@@ -73,6 +73,8 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
+    var networkHumanPlayer: NetworkHumanPlayer? = null
+
     // TODO and this?
 //    var playerMappingInitialClock: MutableMap<Player, Int>? = null
 //    var playerMappingEndClock: Map<Player, Int>? = null
@@ -140,10 +142,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         forfeitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (!isOnline) {
-                    //TODO conceded player wins
                     processConcede(gameEngine.getCurrentPlayer())
                 } else {
-                    //TODO add networking here
+                    networkHumanPlayer!!.websocketClientManager.sendConcede()
+                    processConcede(networkHumanPlayer!!.libPlayer)
                 }
             }
         })
@@ -242,6 +244,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     }
 
     /**
+     * This is called manually when a player runs out of time.
+     * @param player the player who won
+     */
+    fun processTimeoutWin(player: Player) {
+        val outcome = Outcome.Win(player, "by time")
+        Gdx.app.postRunnable {
+            switchToGameOverScreen(outcome)
+        }
+    }
+
+    /**
      * Draws the display and detects user input.
      */
     override fun render(delta: Float) {
@@ -265,11 +278,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         /* Draws the side bar. */
         drawPanel()
         drawHistoryBox()
-        drawUsers()
+        drawUsers(flip)
 
         if (clockFlag && !drawClocks(flip)) {
-            val outcome = Outcome.Win(nextPlayer, "by time")
-            switchToGameOverScreen(outcome)
+            if (!isOnline) {
+                processTimeoutWin(nextPlayer)
+            }
+            // Wait for network message to process timeout win if online mode
         }
 
         /* Show the promotion screen */
@@ -474,14 +489,27 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     /**
      * Draws the user names and elo of players.
      */
-    private fun drawUsers() {
+    private fun drawUsers(flipped: Boolean) {
         batch.begin()
         //TODO add user1 user2
-        val user1 = "sei" + "/" + "elo"
-        val user2 = "poopi" + "/" + "elo"
+        val user1: String
+        val user2: String
+
+        if (isOnline) {
+            user1 = "Username: ${frontendPlayers[0].username}, Elo: ${frontendPlayers[0].elo}"
+            user2 = "Username: ${frontendPlayers[1].username}, Elo: ${frontendPlayers[1].elo}"
+        } else {
+            user1 = "Name: ${frontendPlayers[0].username}"
+            user2 = "Name: ${frontendPlayers[1].username}"
+        }
         font.setColor(Color.BLACK)
-        font.draw(batch, user1, windowWidth + 10f, windowHeight.toFloat() * 15 / 16 + 20f)
-        font.draw(batch, user2, windowWidth + 10f, windowHeight.toFloat() * 1 / 16 + 20f)
+        if (flipped) {
+            font.draw(batch, user1, windowWidth + 10f, windowHeight.toFloat() * 15 / 16 + 20f)
+            font.draw(batch, user2, windowWidth + 10f, windowHeight.toFloat() * 1 / 16 + 20f)
+        } else {
+            font.draw(batch, user2, windowWidth + 10f, windowHeight.toFloat() * 15 / 16 + 20f)
+            font.draw(batch, user1, windowWidth + 10f, windowHeight.toFloat() * 1 / 16 + 20f)
+        }
         batch.end()
     }
 }

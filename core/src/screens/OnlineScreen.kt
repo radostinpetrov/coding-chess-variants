@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.mygdx.game.MyGdxGame
 import ktx.app.KtxScreen
 import gameTypes.GameType2D
+import org.json.JSONObject
 import players.FrontendPlayer
 import players.NetworkEnemyPlayer
 import players.NetworkHumanPlayer
@@ -27,15 +27,24 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
     val title = Label("Looking for Players...", skin)
 
     val websocketClientManager = WebsocketClientManager (
-        { m: Int, seed: Double ->
-            humanPlayer = m
-            gameType.seed = seed
+        { jsonMessage: JSONObject ->
+            humanPlayer = jsonMessage.getInt("player")
+            gameType.seed = jsonMessage.getDouble("seed")
+            playerUsername = jsonMessage.getString("playerUsername")
+            opponentUsername = jsonMessage.getString("opponentUsername")
+            playerElo = jsonMessage.getInt("playerElo")
+            opponentElo = jsonMessage.getInt("opponentElo")
+
         },
         username,
         gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
     )
 
     var humanPlayer: Int? = null
+    var playerUsername: String = ""
+    var opponentUsername: String = ""
+    var playerElo: Int? = null
+    var opponentElo: Int? = null
 
     /**
      * This is called when the class is created, before render.
@@ -67,19 +76,35 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
     private fun switchToGameScreen() {
         val clockFlag = clockList != null
         val gameScreen = GameScreen(game, gameType, clockFlag, true)
+        websocketClientManager.gameScreen = gameScreen
         val players = mutableListOf<FrontendPlayer>()
+        val networkHumanPlayer: NetworkHumanPlayer
         when (humanPlayer) {
             1 -> {
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.WHITE, "White"))
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.BLACK,"Black")
+                networkHumanPlayer = NetworkHumanPlayer(
+                    gameScreen, websocketClientManager, Color.WHITE, "White", playerUsername, playerElo
+                )
+                players.add(networkHumanPlayer)
+                val enemyPlayer = NetworkEnemyPlayer(
+                    gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
+                )
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
             }
             2 -> {
-                val enemyPlayer = NetworkEnemyPlayer(gameScreen, Color.WHITE, "White")
+                val enemyPlayer = NetworkEnemyPlayer(
+                    gameScreen, Color.WHITE, "White", opponentUsername, opponentElo
+                )
                 players.add(enemyPlayer)
                 websocketClientManager.networkEnemyPlayer = enemyPlayer
-                players.add(NetworkHumanPlayer(gameScreen, websocketClientManager, Color.BLACK, "Black"))
+                networkHumanPlayer = NetworkHumanPlayer(
+                    gameScreen, websocketClientManager, Color.BLACK, "Black", playerUsername, playerElo
+                )
+                players.add(networkHumanPlayer)
+            }
+            else -> {
+                // This should not happen, print error
+                return
             }
         }
         if (clockFlag) {
@@ -88,6 +113,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         }
 
         gameScreen.initPlayers(players)
+        gameScreen.networkHumanPlayer = networkHumanPlayer
         game.removeScreen<GameScreen>()
         game.addScreen(gameScreen)
         dispose()

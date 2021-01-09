@@ -4,12 +4,14 @@ import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
+import screens.GameScreen
 import java.net.URI
 
-class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
+class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
     lateinit var game: AbstractChess
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
+    lateinit var gameScreen: GameScreen
 
     val serverUri: URI = URI("ws://83.136.252.48:8080")
 
@@ -44,7 +46,7 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
                         // we need to do something with the screen here we pass in the change to game screen function
                         // but we need to pass in this class as well and set networkPlayer 1 and 2
                         enemyId = jsonMessage.getString("opponentId")
-                        startGameFunction(jsonMessage.getInt("player"), jsonMessage.getDouble("seed"))
+                        startGameFunction(jsonMessage)
                     }
                     "receiveMove" -> {
                         val move = jsonMessage.getInt("move")
@@ -52,6 +54,11 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
                     }
                     "opponentConcede" -> {
                         networkEnemyPlayer.concede()
+                    }
+                    "timeoutWin" -> {
+                        val winnerIndex = jsonMessage.getInt("winnerIndex")
+                        val winner = gameScreen.gameEngine.players[winnerIndex]
+                        gameScreen.processTimeoutWin(winner)
                     }
                 }
             }
@@ -74,6 +81,14 @@ class WebsocketClientManager(val startGameFunction: (Int, Double) -> Unit, var u
                 "    \"move\": $moveIndex,\n" +
                 "    \"opponentId\": \"$enemyId\"\n" +
                 "}"
+        )
+    }
+
+    fun sendConcede() {
+        webSocketClient.send(
+            "{\n" +
+                    "    \"type\": \"concede\"\n" +
+                    "}"
         )
     }
 
