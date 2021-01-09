@@ -59,6 +59,9 @@ abstract class AbstractChess(
         return null
     }
 
+    /**
+     * @throws Exception if a given player is invalid (in the players list)
+     */
     override fun getValidMoves(player: Player): List<Move2D> {
         if (!players.contains(player)) {
             throw Exception("Not a valid player")

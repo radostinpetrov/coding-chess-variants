@@ -72,6 +72,9 @@ class Board2D(val rows: Int, val cols: Int,
         return null
     }
 
+    /**
+     * @throws Exception if a given coordinate is invalid (not in bound)
+     */
     override fun addPiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {
             throw Exception("Coordinate not in bound")
@@ -79,6 +82,10 @@ class Board2D(val rows: Int, val cols: Int,
         board[coordinate.y][coordinate.x] = piece
     }
 
+    /**
+     * @throws ArrayIndexOutOfBoundsException if a given coordinate is invalid
+     * @throws Exception if a given piece not on the board
+     */
     override fun removePiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {
             throw ArrayIndexOutOfBoundsException()
