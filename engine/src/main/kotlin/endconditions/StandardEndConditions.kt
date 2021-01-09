@@ -5,13 +5,11 @@ import gameTypes.chess.AbstractChess
 import players.Player
 
 /**
- * Win conditions in standard chess
- *
- * @property endConditions consists of:
- * Checkmate
- * Stalemate by no legal moves
- * Stalemate by three-fold-repetition
- * Stalemate by the 50-move rules
+ * End conditions in standard chess, which consists of:
+ * Checkmate,
+ * Stalemate by no legal moves,
+ * Stalemate by three-fold-repetition,
+ * Stalemate by the 50-move rules,
  * Stalemate by insufficient material.
  */
 class StandardEndConditions : EndCondition2D<AbstractChess> {

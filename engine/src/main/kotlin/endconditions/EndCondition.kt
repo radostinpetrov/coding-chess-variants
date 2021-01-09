@@ -10,9 +10,8 @@ import pieces.Piece
 import players.Player
 
 /**
- * Represents win conditions of the game
- * Evaluated every turn to see if the game should end
- * e.g. Checkmate, Stalemate by no legal moves etc.
+ * Represents end conditions of the game.
+ * Evaluated every turn to see if the game should end.
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
@@ -26,8 +25,11 @@ interface EndCondition<G : GameType<B, MG, M, P, C>,
     M : Move<B, MG, M, P, C>,
     P : Piece<B, MG, M, P, C>,
     C : Coordinate> {
+
     /**
-     * @return an outcome if the game should end if it satisfies the condition,
+     * Evaluate the condition and return an outcome if the game should end.
+     *
+     * @return an outcome if the game should end (i.e. it satisfies the condition),
      * otherwise returns null.
      */
     fun evaluate(game: @UnsafeVariance G, player: Player, moves: List<Move2D>): Outcome?

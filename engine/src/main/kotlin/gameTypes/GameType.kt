@@ -9,7 +9,7 @@ import pieces.Piece
 import players.Player
 
 /**
- * Represents a game variant (e.g. Standard Chess, Capablanca Chess, Xiangqi).
+ * Represents a game variant.
  *
  * Controls the flow of a game and keeps track of all the moves in the move log,
  * which player has the current turn and the final result of the game.
@@ -47,30 +47,40 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     fun initBoard()
 
     /**
+     * Returns if the game is over or not
+     *
      * @return true if the game is over
      */
     fun isOver(): Boolean
 
     /**
-     * @return the outcome of the game for the given player,
+     * Returns the outcome of the game for the given player,
      * which can be either Win or Draw (null if the game is not over)
+     *
+     * @return the outcome of the game for the given player
      */
     fun getOutcome(player: Player): Outcome?
 
     /**
-     * @return the outcome of the game for the current player,
+     * Returns the outcome of the game for the current player,
      * which can be either Win or Draw (null if the game is not over)
+     *
+     * @return the outcome of the game for the current player
      */
     fun getOutcome(): Outcome? {
         return getOutcome(getCurrentPlayer())
     }
 
     /**
+     * Returns a list of all possible valid moves of the given player
+     *
      * @return a list of all possible valid moves of the given player
      */
     fun getValidMoves(player: Player): List<M>
 
     /**
+     * Returns a list of all possible valid moves of the current player
+     *
      * @return a list of all possible valid moves of the current player
      */
     fun getValidMoves(): List<M> {
@@ -94,12 +104,17 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     fun undoMove()
 
     /**
-     * @return true if the given player’s King is in check.
+     * Returns if the given player's Royal piece is is check or not,
+     * assuming that the Royal piece is present on the board.
+     *
+     * @return true if the given player’s Royal piece is in check.
      */
     fun inCheck(player: Player) : Boolean
 
     /**
-     * @return the opponent player for a given player.
+     * Returns a list of opponent players for a given player.
+     *
+     * @return a list of opponent players for a given player.
      */
     fun getOpponentPlayers(player: Player): List<Player> {
         return players.filter{p -> p != player}
@@ -123,6 +138,8 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     }
 
     /**
+     * Returns the current player
+     *
      * @return the current player
      */
     fun getCurrentPlayer(): Player {
@@ -130,6 +147,8 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     }
 
     /**
+     * Returns the next player without incrementing the turn.
+     *
      * @return the next player without incrementing the turn.
      */
     fun getNextPlayer(): Player {

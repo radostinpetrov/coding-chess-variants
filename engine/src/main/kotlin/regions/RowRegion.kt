@@ -4,6 +4,7 @@ import coordinates.Coordinate2D
 
 /**
  * Represents a region of a row on 2D coordinate
+ *
  * @property row the row number (y coordinate)
  */
 data class RowRegion(val row: Int) : Region2D {

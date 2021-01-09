@@ -7,6 +7,9 @@ import rules.Enpassant
 import endconditions.StandardEndConditions
 import pieces.chess.*
 
+/**
+ * Represents Capablanca Chess
+ */
 open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 10)
     override val name = "Capablanca Chess"

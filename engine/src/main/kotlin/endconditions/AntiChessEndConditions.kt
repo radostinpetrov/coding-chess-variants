@@ -5,9 +5,8 @@ import moves.Move2D
 import players.Player
 
 /**
- * Win conditions for anti chess
- *
- * Player lost all of their pieces or is stalemated.
+ * End conditions for anti chess.
+ * The objective of each player is to lose all of their pieces or be stalemated.
  */
 class AntiChessEndConditions : EndCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {

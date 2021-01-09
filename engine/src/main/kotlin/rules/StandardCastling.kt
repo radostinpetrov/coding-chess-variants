@@ -9,7 +9,7 @@ import pieces.chess.Rook
 import players.Player
 
 /**
- * Castling in standard chess
+ * Castling in standard chess.
  *
  * Moves the king two squares towards a rook on the player's first rank,
  * then moving the rook to the square that the king crossed.

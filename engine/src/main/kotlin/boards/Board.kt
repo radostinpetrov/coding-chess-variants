@@ -33,29 +33,37 @@ interface Board<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M
     fun removePiece(coordinate: C, piece: P)
 
     /**
+     * Returns a list of pairs of all pieces and the corresponding coordinate
+     * that the piece is placed on
+     *
      * @return a list of pairs representing which coordinate each piece is on
      */
     fun getPieces(): List<Pair<P, C>>
 
     /**
+     * Returns a list of pairs of all pieces that a given player owns
+     * and the corresponding coordinate that the piece is placed on
+     *
      * @return a list of pairs representing which coordinate each piece is on
      * for the given player
      */
     fun getPieces(player: Player): List<Pair<P, C>>
 
     /**
+     * Returns the piece placed on a given coordinate by reference
      * @return the piece placed on a given coordinate by reference
      */
     fun getPiece(coordinate: C): P?
 
     /**
+     * Returns the coordinate of a given piece by reference
      * @return the coordinate of a given piece by reference
      */
     fun getPieceCoordinate(piece: P): C?
 
     /**
-     * Reinitialise the board
-     * Assign null to all valid coordinate of the board
+     * Reinitialise the board by
+     * assigning null to all valid coordinate of the board
      */
     fun clearBoard()
 }

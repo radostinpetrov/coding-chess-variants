@@ -6,6 +6,9 @@ import rules.Enpassant
 import endconditions.StandardEndConditions
 import pieces.chess.*
 
+/**
+ * Represents Grand Chess
+ */
 class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 10)
     override val name = "Grand Chess"

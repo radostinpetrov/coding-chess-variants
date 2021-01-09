@@ -15,14 +15,15 @@ import pieces.Royal
 import players.Player
 
 /**
- * Represents a standard n-player game
+ * Represents a standard n-player game,
+ * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)
- * @property winConditions the list of conditions that will end the game
+ * @property endConditions the list of conditions that will end the game
  */
 abstract class AbstractChess(
     val rules: List<SpecialRules2D<AbstractChess>> = listOf(),
-    var winConditions: List<EndCondition2D<AbstractChess>> = listOf(
+    var endConditions: List<EndCondition2D<AbstractChess>> = listOf(
         StandardEndConditions()), startPlayer: Int = 0)
     : GameType2D {
     override val players: List<Player> = listOf(Player(), Player())
@@ -49,8 +50,8 @@ abstract class AbstractChess(
             return Outcome.Win(curConcededWinner, "by opponent concede")
         }
         val moves = getValidMoves(player)
-        for (wc in winConditions) {
-            val outcome = wc.evaluate(this, player, moves)
+        for (ec in endConditions) {
+            val outcome = ec.evaluate(this, player, moves)
             if (outcome != null) {
                 return outcome
             }

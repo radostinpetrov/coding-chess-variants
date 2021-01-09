@@ -4,8 +4,9 @@ import coordinates.Coordinate2D
 
 /**
  * Represents a box region on 2D coordinate
- * @property corner1
- * @property corner2
+ *
+ * @property corner1 one corner of the box
+ * @property corner2 the opposite corner of the box
  */
 data class BoxRegion(private val corner1: Coordinate2D, private val corner2: Coordinate2D) : Region2D {
     override fun isInRegion(coordinate: Coordinate2D): Boolean {

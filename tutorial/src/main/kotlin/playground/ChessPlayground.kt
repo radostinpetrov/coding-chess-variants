@@ -7,7 +7,7 @@ import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player
 
-class ChessPlayground : AbstractChess(winConditions = listOf()) {
+class ChessPlayground : AbstractChess(endConditions = listOf()) {
     class PlaygroundPiece(override val player: Player) : Piece2D {
         override val moveGenerators: List<MoveGenerator2D>
             get() = listOf(MoveGenerator2D.Slider(D = true, A = true))
