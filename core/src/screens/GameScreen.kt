@@ -67,21 +67,18 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     // TODO maybe don't need this?
     var currPlayer: Player? = null
 
-    // TODO put color in player?
-//    var playerColorMapping: Map<Player, Color>? = null
-
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
     lateinit var humanPlayerSet: Set<Player>
 
     var networkHumanPlayer: NetworkHumanPlayer? = null
 
     // TODO and this?
-//    var playerMappingInitialClock: MutableMap<Player, Int>? = null
-//    var playerMappingEndClock: Map<Player, Int>? = null
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
     lateinit var promotableMoves: List<Move2D>
+
+    var gameOverPopUp: GameOverPopUp? = null
 
     /**
      * Maps the front end players to the players on the game engine
@@ -149,6 +146,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 }
             }
         })
+
         forfeitButton.setPosition(forfeitButtonPosX, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
@@ -206,12 +204,6 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
     }
 
-    fun switchToGameOverScreen(outcome: Outcome) {
-        game.removeScreen<GameOverScreen>()
-        game.addScreen(GameOverScreen(game, outcome, libToFrontendPlayer))
-        game.setScreen<GameOverScreen>()
-    }
-
     /**
      * This is called when the current player plays a turn.
      * @param nextMove the move the current plaer will make on the game engine
@@ -224,7 +216,18 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             resetClicks()
             if (gameEngine.isOver()) {
                 Gdx.app.postRunnable {
-                    switchToGameOverScreen(gameEngine.getOutcome()!!)
+//                    switchToGameOverScreen(gameEngine.getOutcome()!!)
+                    gameOverPopUp = GameOverPopUp(
+                        game,
+                        stage,
+                        this,
+                        gameEngine.getOutcome()!!,
+                        shapeRenderer,
+                        windowWidth,
+                        windowHeight,
+                        libToFrontendPlayer
+                    )
+                    forfeitButton.remove()
                 }
             }
 
@@ -239,7 +242,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     fun processConcede(player: Player) {
         gameEngine.concede(player)
         Gdx.app.postRunnable {
-            switchToGameOverScreen(gameEngine.getOutcome()!!)
+//            switchToGameOverScreen(gameEngine.getOutcome()!!)
+            gameOverPopUp = GameOverPopUp(game, stage, this, gameEngine.getOutcome()!!, shapeRenderer, windowWidth, windowHeight, libToFrontendPlayer)
+            forfeitButton.remove()
         }
     }
 
@@ -250,7 +255,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     fun processTimeoutWin(player: Player) {
         val outcome = Outcome.Win(player, "by time")
         Gdx.app.postRunnable {
-            switchToGameOverScreen(outcome)
+//            switchToGameOverScreen(outcome)
+            gameOverPopUp = GameOverPopUp(game, stage, this, outcome, shapeRenderer, windowWidth, windowHeight, libToFrontendPlayer)
+            forfeitButton.remove()
         }
     }
 
@@ -261,7 +268,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         libToFrontendPlayer[currPlayer!!]!!.colour
         val nextPlayer = gameEngine.getNextPlayer()
 
-        /* Determins whether or not to flip the board orientation. */
+        /* Determines whether or not to flip the board orientation. */
         val flip = (libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
             nextPlayer
         )) ||
@@ -269,27 +276,35 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                     nextPlayer
                 ))
 
-        /* Draws the board and detects user input. */
-        synchronized(this) {
+        if (gameOverPopUp != null) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-            controls(!isPromotionScreen && flip)
-        }
+            drawPanel()
+            drawHistoryBox()
+            drawUsers(flip)
+            gameOverPopUp!!.show()
 
-        /* Draws the side bar. */
-        drawPanel()
-        drawHistoryBox()
-        drawUsers(flip)
-
-        if (clockFlag && !drawClocks(flip)) {
-            if (!isOnline) {
-                processTimeoutWin(nextPlayer)
+        } else {
+            /* Draws the board and detects user input. */
+            synchronized(this) {
+                guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
+                    controls(!isPromotionScreen && flip)
             }
-            // Wait for network message to process timeout win if online mode
-        }
 
-        /* Show the promotion screen */
-        if (isPromotionScreen) {
-            showPromotionScreen(promotableMoves)
+            /* Draws the side bar. */
+            drawPanel()
+            drawHistoryBox()
+            drawUsers(flip)
+            if (clockFlag && !drawClocks(flip)) {
+                if (!isOnline) {
+                    processTimeoutWin(nextPlayer)
+                }
+                // Wait for network message to process timeout win if online mode
+            }
+
+            /* Show the promotion screen */
+            if (isPromotionScreen) {
+                showPromotionScreen(promotableMoves)
+            }
         }
 
         stage.draw()

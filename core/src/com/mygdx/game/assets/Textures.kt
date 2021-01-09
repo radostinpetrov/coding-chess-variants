@@ -1,20 +1,20 @@
 package com.mygdx.game.assets
 
+import Alfil
+import BerlinBlackPawn
+import BerlinWhitePawn
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
 import gameTypes.chess.BalbosGame
-import playground.ChessPlayground
 import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
 import pieces.janggi.*
 import pieces.xiangqi.*
 import pieces.janggi.Elephant
-import Alfil
-import BerlinBlackPawn
-import BerlinWhitePawn
+import playground.ChessPlayground
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 

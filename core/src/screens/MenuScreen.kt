@@ -1,5 +1,6 @@
 package screens
 
+import TutorialChess
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -15,7 +16,6 @@ import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
-import TutorialChess
 
 /**
  * Displays the menu screen, where the game config is set by the user.
