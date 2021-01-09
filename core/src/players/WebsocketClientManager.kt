@@ -4,12 +4,14 @@ import gameTypes.chess.AbstractChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
+import screens.GameScreen
 import java.net.URI
 
 class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
     lateinit var game: AbstractChess
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
+    lateinit var gameScreen: GameScreen
 
     val serverUri: URI = URI("ws://83.136.252.48:8080")
 
@@ -52,6 +54,11 @@ class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var us
                     }
                     "opponentConcede" -> {
                         networkEnemyPlayer.concede()
+                    }
+                    "timeoutWin" -> {
+                        val winnerIndex = jsonMessage.getInt("winnerIndex")
+                        val winner = gameScreen.gameEngine.players[winnerIndex]
+                        gameScreen.processTimeoutWin(winner)
                     }
                 }
             }

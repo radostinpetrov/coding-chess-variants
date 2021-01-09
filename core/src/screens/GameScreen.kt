@@ -244,6 +244,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     }
 
     /**
+     * This is called manually when a player runs out of time.
+     * @param player the player who won
+     */
+    fun processTimeoutWin(player: Player) {
+        val outcome = Outcome.Win(player, "by time")
+        Gdx.app.postRunnable {
+            switchToGameOverScreen(outcome)
+        }
+    }
+
+    /**
      * Draws the display and detects user input.
      */
     override fun render(delta: Float) {
@@ -270,8 +281,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         drawUsers(flip)
 
         if (clockFlag && !drawClocks(flip)) {
-            val outcome = Outcome.Win(nextPlayer, "by time")
-            switchToGameOverScreen(outcome)
+            if (!isOnline) {
+                processTimeoutWin(nextPlayer)
+            }
+            // Wait for network message to process timeout win if online mode
         }
 
         /* Show the promotion screen */

@@ -15,7 +15,6 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import org.litote.kmongo.*
@@ -323,13 +322,13 @@ suspend fun timeoutVictory(winnerUuid: UUID) {
         matches.remove(match.opponentId)
 
         @Serializable
-        data class TimeoutVictoryMessage(val type: String = "timeoutVictory", val winnerIndex: Int)
+        data class TimeoutWinMessage(val type: String = "timeoutWin", val winnerIndex: Int)
 
         players[winnerUuid]?.send(
-            jsonFormat.encodeToString(TimeoutVictoryMessage(winnerIndex = match.myPlayerIndex))
+            jsonFormat.encodeToString(TimeoutWinMessage(winnerIndex = match.myPlayerIndex))
         )
         players[match.opponentId]?.send(
-            jsonFormat.encodeToString(TimeoutVictoryMessage(winnerIndex = match.myPlayerIndex))
+            jsonFormat.encodeToString(TimeoutWinMessage(winnerIndex = match.myPlayerIndex))
         )
 
         updateElo(match.myUsername, 1.0, match.opponentUsername, 0.0)

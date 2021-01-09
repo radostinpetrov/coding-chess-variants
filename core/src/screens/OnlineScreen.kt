@@ -76,6 +76,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
     private fun switchToGameScreen() {
         val clockFlag = clockList != null
         val gameScreen = GameScreen(game, gameType, clockFlag, true)
+        websocketClientManager.gameScreen = gameScreen
         val players = mutableListOf<FrontendPlayer>()
         val networkHumanPlayer: NetworkHumanPlayer
         when (humanPlayer) {
