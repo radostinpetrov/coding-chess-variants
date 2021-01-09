@@ -9,6 +9,13 @@ import pieces.chess.WhitePawn
 import players.Player
 import kotlin.math.abs
 
+/**
+ * En Passant in standard chess
+ *
+ * Special pawn capture that can only occur immediately after a pawn makes
+ * a move of two squares from its starting square,
+ * and it could have been captured by an enemy pawn had it advanced only one square
+ */
 class Enpassant : SpecialRules2D<AbstractChess> {
     override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
         val board = game.board

@@ -5,6 +5,9 @@ import moves.Move2D
 import gameTypes.chess.AbstractChess
 import players.Player
 
+/**
+ * Condition for stalemate by insufficient material
+ */
 class InsufficientMaterialStalemate : WinCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
 
@@ -22,16 +25,16 @@ class InsufficientMaterialStalemate : WinCondition2D<AbstractChess> {
 
         // checking for bishops to be on the same colour
         if (draw && piecesBySymbol.filter { it == "B" }.size > 1) {
-            var x_parity = -1
-            var y_parity = -1
+            var xParity = -1
+            var yParity = -1
             for (piece in pieces) {
                 if (piece.first.getSymbol() == "B") {
-                    if (x_parity == -1 && y_parity == -1) {
-                        x_parity = piece.second.x % 2
-                        y_parity = piece.second.y % 2
+                    if (xParity == -1 && yParity == -1) {
+                        xParity = piece.second.x % 2
+                        yParity = piece.second.y % 2
                     } else {
-                        draw = (x_parity == y_parity && piece.second.x % 2 == piece.second.y % 2) ||
-                            (x_parity != y_parity && piece.second.x % 2 != piece.second.y % 2)
+                        draw = (xParity == yParity && piece.second.x % 2 == piece.second.y % 2) ||
+                            (xParity != yParity && piece.second.x % 2 != piece.second.y % 2)
                     }
                 }
             }

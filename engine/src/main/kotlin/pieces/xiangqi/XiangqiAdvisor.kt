@@ -6,6 +6,9 @@ import regions.CoordinateRegion
 import pieces.Piece2D
 import players.Player
 
+/**
+ * Represents an advisor in Xiangqi
+ */
 data class XiangqiAdvisor(override val player: Player) : Piece2D {
     override val moveGenerators =
         listOf(

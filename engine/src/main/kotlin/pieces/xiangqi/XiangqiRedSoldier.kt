@@ -5,5 +5,8 @@ import moveGenerators.Direction
 import regions.BoxRegion
 import players.Player
 
+/**
+ * Represents a red soldier in Xiangqi
+ */
 data class XiangqiRedSoldier(override val player: Player) :
-    XiangqiSoldier(player, Direction.NORTH, BoxRegion(Coordinate2D(0, 5), Coordinate2D(9, 9)))
+    XiangqiSoldier(player, Direction.NORTH, SpecialRegion.blueSideRiver)

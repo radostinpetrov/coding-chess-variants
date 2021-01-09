@@ -5,7 +5,9 @@ import moves.Move2D
 import gameTypes.chess.AbstractChess
 import players.Player
 
-/***
+/**
+ * Condition for stalemate by three-fold-repetition
+ *
  * In chess, the threefold repetition rule states that
  * a player may claim a draw if the same position occurs three times.
  *
@@ -15,7 +17,8 @@ import players.Player
  * the remaining castling rights are the same
  * and the possibility to capture en passant is the same.
  *
- * The repeated positions need not occur in succession. ***/
+ * The repeated positions need not occur in succession.
+ */
 class ThreeFoldRepetitionStalemate : WinCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         // We use a pair of the player that has the move and
@@ -42,7 +45,7 @@ class ThreeFoldRepetitionStalemate : WinCondition2D<AbstractChess> {
                     game.makeMove(undoneMoves[j])
                     game.nextPlayer()
                 }
-                return Outcome.Draw("Stalemate by Threefold Repetition")
+                return Outcome.Draw("by Threefold Repetition")
             }
 
             undoneMoves.add(move)

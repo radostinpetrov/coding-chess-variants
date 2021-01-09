@@ -8,4 +8,4 @@ import pieces.Piece2D
 import players.Player
 
 data class XiangqiRedElephant(override val player: Player) :
-    XiangqiElephant(player, BoxRegion(Coordinate2D(0, 0), Coordinate2D(8, 4)))
+    XiangqiElephant(player, SpecialRegion.redBeforeRiver)

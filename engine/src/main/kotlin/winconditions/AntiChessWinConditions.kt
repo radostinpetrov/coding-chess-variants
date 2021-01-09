@@ -5,6 +5,11 @@ import moves.Move2D
 import gameTypes.chess.AbstractChess
 import players.Player
 
+/**
+ * Win conditions for anti chess
+ *
+ * Player lost all of their pieces or is stalemated.
+ */
 class AntiChessWinConditions : WinCondition2D<AbstractChess> {
     override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
         for (p in game.players) {

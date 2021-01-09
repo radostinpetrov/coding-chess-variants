@@ -14,6 +14,7 @@ import players.Player
  * Controls the flow of a game and keeps track of all the moves in the move log,
  * which player has the current turn and the final result of the game.
  *
+ * @param B the type of a board.
  * @param MG the type of a move generator.
  * @param M the type of a move.
  * @param P the type of a piece.

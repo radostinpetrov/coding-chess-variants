@@ -11,9 +11,11 @@ import pieces.Piece
 import players.Player
 
 /**
- * Represents conditions evaluated every turn to see if the game should end
+ * Represents win conditions of the game
+ * Evaluated every turn to see if the game should end
  * e.g. Checkmate, Stalemate by no legal moves etc.
  *
+ * @param B the type of a board.
  * @param MG the type of a move generator.
  * @param M the type of a move.
  * @param P the type of a piece.

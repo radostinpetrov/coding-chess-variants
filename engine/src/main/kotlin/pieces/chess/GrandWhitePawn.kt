@@ -6,6 +6,9 @@ import regions.CompositeRegion
 import regions.RowRegion
 import players.Player
 
+/**
+ * Represents a white pawn in grand chess
+ */
 class GrandWhitePawn(override val player: Player) : WhitePawn(player, 2, RowRegion(9), listOf(Queen(player), Bishop(player), Knight(player), Rook(player), Marshal(player), Cardinal(player))) {
     private val forcedPromotionRegion = RowRegion(9)
     private val optionalPromotionRegion = CompositeRegion(listOf(RowRegion(8), RowRegion(7)))
@@ -19,8 +22,4 @@ class GrandWhitePawn(override val player: Player) : WhitePawn(player, 2, RowRegi
         MoveGenerator2D.AddPromotion(moveList, forcedPromotionRegion, pawnPromotions, true),
         MoveGenerator2D.AddPromotion(moveList, optionalPromotionRegion, pawnPromotions, false),
     )
-
-    override fun getSymbol(): String {
-        return "P"
-    }
 }
