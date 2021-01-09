@@ -1,7 +1,8 @@
-package gameTypes.chess
+package playground
 
 import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.chess.AbstractChess
 import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player

@@ -1,5 +1,3 @@
-package tutorial
-
 import boards.Board2D
 import coordinates.Coordinate2D
 import gameTypes.chess.AbstractChess
@@ -9,7 +7,8 @@ import endconditions.Checkmate
 import endconditions.NoLegalMovesStalemate
 import endconditions.ThreeFoldRepetitionStalemate
 
-open class TutorialChess : AbstractChess(listOf(NoRepeatedMoveFromSamePieceRule()), listOf(Checkmate(), TutorialEndCondition(), ThreeFoldRepetitionStalemate(), NoLegalMovesStalemate())) {
+open class TutorialChess : AbstractChess(listOf(NoRepeatedMoveFromSamePieceRule()), listOf(Checkmate(),
+    TutorialEndCondition(), ThreeFoldRepetitionStalemate(), NoLegalMovesStalemate())) {
     private val outOfBoundsRegion = CoordinateRegion(3, 3)
     override val board: Board2D = Board2D(7, 7, outOfBoundsRegion)
     override val name = "Tutorial Chess"

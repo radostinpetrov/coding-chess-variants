@@ -1,13 +1,13 @@
 package gameTypes.chess
 
-import coordinates.Coordinate2D
 import boards.Board2D
-import rules.Chess960Castling
-import rules.Enpassant
+import coordinates.Coordinate2D
 import endconditions.StandardEndConditions
 import pieces.chess.*
+import rules.Chess960Castling
+import rules.Enpassant
 
-class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
+class Chess960(override var seed: Double? = null) : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Chess960"
 
@@ -24,7 +24,7 @@ class Chess960 : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(S
          * 1. The bishop must be placed in opposite colour
          * 2. The king must be placed between rooks
          */
-        seed = 8.0/960.0
+
         val permutation = if (seed == null) getPossiblePermutations().random() else getPossiblePermutations().toList()[(seed!! * getPossiblePermutations().size).toInt()]
         for ((i, c) in permutation.withIndex()) {
             when (c) {

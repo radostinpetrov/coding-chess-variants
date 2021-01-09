@@ -1,5 +1,3 @@
-package tutorial
-
 import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
 import players.Player

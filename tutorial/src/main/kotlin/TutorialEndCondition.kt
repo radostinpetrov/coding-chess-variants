@@ -1,5 +1,3 @@
-package tutorial
-
 import endconditions.Outcome
 import gameTypes.chess.AbstractChess
 import moves.Move2D

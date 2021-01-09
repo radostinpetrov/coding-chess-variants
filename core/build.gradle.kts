@@ -9,6 +9,7 @@ val ktxVersion: String by project
 project(":core") {
     dependencies {
         implementation(project(":engine"))
+        implementation(project(":tutorial"))
         implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
         implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
         implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

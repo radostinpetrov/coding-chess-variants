@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
 import gameTypes.chess.BalbosGame
-import gameTypes.chess.ChessPlayground
+import playground.ChessPlayground
 import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
 import pieces.janggi.*
 import pieces.xiangqi.*
 import pieces.janggi.Elephant
-import tutorial.Alfil
-import tutorial.BerlinBlackPawn
-import tutorial.BerlinWhitePawn
+import Alfil
+import BerlinBlackPawn
+import BerlinWhitePawn
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 

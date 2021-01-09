@@ -1,5 +1,3 @@
-package tutorial
-
 import gameTypes.chess.AbstractChess
 import moves.Move2D
 import players.Player

@@ -106,6 +106,6 @@ class StalemateTest {
         }
 
         val outcome = janggi.getOutcome(player2)
-        assertEquals(Outcome.Draw("Stalemate by Threefold Repetition"), outcome)
+        assertEquals(Outcome.Draw("by Threefold Repetition"), outcome)
     }
 }

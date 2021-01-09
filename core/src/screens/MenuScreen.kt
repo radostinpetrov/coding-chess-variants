@@ -15,7 +15,7 @@ import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import screens.leaderboard.LeaderboardScreen
-import tutorial.TutorialChess
+import TutorialChess
 
 /**
  * Displays the menu screen, where the game config is set by the user.
