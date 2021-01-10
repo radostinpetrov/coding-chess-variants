@@ -12,6 +12,7 @@ import regions.BoxRegion
 import regions.CompositeRegion
 import regions.RowRegion
 import endconditions.StandardEndConditions
+import utils.FenUtility
 
 /**
  * Represents Balbo's game
@@ -153,38 +154,42 @@ class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
     override val board: Board2D = Board2D(10, 11, outOfBoundsRegion)
 
     override fun initBoard() {
-        val player1 = players[0]
-        val player2 = players[1]
-        board.addPiece(Coordinate2D(4, 0), King(player1))
-        board.addPiece(Coordinate2D(5, 0), Bishop(player1))
-        board.addPiece(Coordinate2D(6, 0), Queen(player1))
-        board.addPiece(Coordinate2D(3, 1), Rook(player1))
-        board.addPiece(Coordinate2D(4, 1), Knight(player1))
-        board.addPiece(Coordinate2D(5, 1), Bishop(player1))
-        board.addPiece(Coordinate2D(6, 1), Knight(player1))
-        board.addPiece(Coordinate2D(7, 1), Rook(player1))
-        board.addPiece(Coordinate2D(2, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(3, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(4, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(5, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(6, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(7, 2), BalboWhitePawn(player1))
-        board.addPiece(Coordinate2D(8, 2), BalboWhitePawn(player1))
+        val fen = FenUtility("4kbq4/3rnbnr3/2ppppppp2/11/11/11/11/2PPPPPPP2/3RNBNR3/4KBQ4")
+        fen.extendFenPiecesCaseSensitive('p', ::BalboWhitePawn, ::BalboBlackPawn)
+        fen.initBoardWithFEN(board, players[0], players[1])
 
-        board.addPiece(Coordinate2D(4, 9), King(player2))
-        board.addPiece(Coordinate2D(5, 9), Bishop(player2))
-        board.addPiece(Coordinate2D(6, 9), Queen(player2))
-        board.addPiece(Coordinate2D(3, 8), Rook(player2))
-        board.addPiece(Coordinate2D(4, 8), Knight(player2))
-        board.addPiece(Coordinate2D(5, 8), Bishop(player2))
-        board.addPiece(Coordinate2D(6, 8), Knight(player2))
-        board.addPiece(Coordinate2D(7, 8), Rook(player2))
-        board.addPiece(Coordinate2D(2, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(3, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(4, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(5, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(6, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(7, 7), BalboBlackPawn(player2))
-        board.addPiece(Coordinate2D(8, 7), BalboBlackPawn(player2))
+        // val player1 = players[0]
+        // val player2 = players[1]
+        // board.addPiece(Coordinate2D(4, 0), King(player1))
+        // board.addPiece(Coordinate2D(5, 0), Bishop(player1))
+        // board.addPiece(Coordinate2D(6, 0), Queen(player1))
+        // board.addPiece(Coordinate2D(3, 1), Rook(player1))
+        // board.addPiece(Coordinate2D(4, 1), Knight(player1))
+        // board.addPiece(Coordinate2D(5, 1), Bishop(player1))
+        // board.addPiece(Coordinate2D(6, 1), Knight(player1))
+        // board.addPiece(Coordinate2D(7, 1), Rook(player1))
+        // board.addPiece(Coordinate2D(2, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(3, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(4, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(5, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(6, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(7, 2), BalboWhitePawn(player1))
+        // board.addPiece(Coordinate2D(8, 2), BalboWhitePawn(player1))
+        //
+        // board.addPiece(Coordinate2D(4, 9), King(player2))
+        // board.addPiece(Coordinate2D(5, 9), Bishop(player2))
+        // board.addPiece(Coordinate2D(6, 9), Queen(player2))
+        // board.addPiece(Coordinate2D(3, 8), Rook(player2))
+        // board.addPiece(Coordinate2D(4, 8), Knight(player2))
+        // board.addPiece(Coordinate2D(5, 8), Bishop(player2))
+        // board.addPiece(Coordinate2D(6, 8), Knight(player2))
+        // board.addPiece(Coordinate2D(7, 8), Rook(player2))
+        // board.addPiece(Coordinate2D(2, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(3, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(4, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(5, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(6, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(7, 7), BalboBlackPawn(player2))
+        // board.addPiece(Coordinate2D(8, 7), BalboBlackPawn(player2))
     }
 }

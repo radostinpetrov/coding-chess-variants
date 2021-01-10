@@ -2,6 +2,16 @@ package utils
 
 import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.checkers.Checkers
+import gameTypes.chess.AntiChess
+import gameTypes.chess.BalbosGame
+import gameTypes.chess.CapablancaChess
+import gameTypes.chess.Chess960
+import gameTypes.chess.GrandChess
+import gameTypes.chess.MiniChess
+import gameTypes.chess.StandardChess
+import gameTypes.xiangqi.Janggi
+import gameTypes.xiangqi.Xiangqi
 import pieces.Piece2D
 import pieces.chess.*
 import players.Player
@@ -22,38 +32,59 @@ class FenUtility(
 ) {
     private val fields: List<String> = string.split(" ")
     private val piecePlacement: String
-    val activeColour: Int
-    private val castling: String
+    var activeColour: Int = 0
+    private var castling: String = "KQkq"
 
     val p1CanCastleLeft: Boolean
+        get() = castling.contains('Q')
     val p1CanCastleRight: Boolean
+        get() = castling.contains('K')
     val p2CanCastleLeft: Boolean
+        get() = castling.contains('q')
     val p2CanCastleRight: Boolean
+        get() = castling.contains('k')
+
+    private val mappedPieces: MutableMap<Char, KFunction1<Player, Piece2D>> = mutableMapOf(
+        'r' to ::Rook,
+        'R' to ::Rook,
+        'n' to ::Knight,
+        'N' to ::Knight,
+        'b' to ::Bishop,
+        'B' to ::Bishop,
+        'q' to ::Queen,
+        'Q' to ::Queen,
+        'k' to ::King,
+        'K' to ::King,
+    )
 
     /**
      * Checks the FEN string to see if it is valid.
-     * @throws IllegalArgumentException if the string is invalid.
+     * @throws IllegalArgumentException the string is invalid.
      */
     init {
-        if (fields.size != 3) {
-            throw IllegalArgumentException("Wrong number of fields in FEN. Expected: 3 Actual: ${fields.size}")
+
+        if (fields.isEmpty()) {
+            throw IllegalArgumentException("No params given to FEN.")
         }
         piecePlacement = fields[0]
 
-        if (fields[1].single() != 'b' && fields[1].single() != 'w') {
-            throw IllegalArgumentException("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
+        if (fields.size >= 2) {
+            if (fields[1].single() != 'b' && fields[1].single() != 'w') {
+                throw IllegalArgumentException("Wrong argument for active colour in FEN. Expected: 'b' or 'w' Actual: ${fields[1]}")
+            }
+            activeColour = if (fields[1].single() == 'w') 0 else 1
         }
-        activeColour = if (fields[1].single() == 'w') 0 else 1
 
-        if (!"""(-|K?Q?k?q?)""".toRegex().matches(fields[2])) {
-            throw IllegalArgumentException("Wrong argument for castling availability FEN.")
+        if (fields.size == 3) {
+            if ( !"""(-|K?Q?k?q?)""".toRegex().matches(fields[2])) {
+                throw IllegalArgumentException("Wrong argument for castling availability FEN.")
+            }
+            castling = fields[2]
         }
-        castling = fields[2]
 
-        p1CanCastleLeft = castling.contains("Q")
-        p1CanCastleRight = castling.contains("K")
-        p2CanCastleLeft = castling.contains("q")
-        p2CanCastleRight = castling.contains("k")
+        if (fields.size > 3) {
+            throw IllegalArgumentException("Too many params given to FEN.")
+        }
     }
 
     /**
@@ -83,24 +114,52 @@ class FenUtility(
                         throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                     }
                 } else {
-                    val piece = when (char) {
-                        'p', 'P' -> if (char.isUpperCase()) WhitePawn(player1, whiteStartingRow, whitePromotionRow, whitePawnPromotions) else BlackPawn(player2, blackStartingRow, blackPromotionRow, blackPawnPromotions)
-                        'r', 'R' -> if (char.isUpperCase()) Rook(player1) else Rook(player2)
-                        'n', 'N' -> if (char.isUpperCase()) Knight(player1) else Knight(player2)
-                        'b', 'B' -> if (char.isUpperCase()) Bishop(player1) else Bishop(player2)
-                        'q', 'Q' -> if (char.isUpperCase()) Queen(player1) else Queen(player2)
-                        'k', 'K' -> if (char.isUpperCase()) King(player1) else King(player2)
-                        else -> null
+                    val pieceConstructor = mappedPieces[char]
+                    val player = if (char.isUpperCase()) player1 else player2
+
+                    var piece: Piece2D
+                    if (pieceConstructor != null) {
+                        piece = pieceConstructor.invoke(player)
+                    } else {
+                        if (char == 'P') {
+                            piece = WhitePawn(player1, whiteStartingRow, whitePromotionRow, whitePawnPromotions)
+                        } else if (char == 'p') {
+                            piece = BlackPawn(player2, blackStartingRow, blackPromotionRow, blackPawnPromotions)
+                        } else {
+                            throw IllegalArgumentException("Char: $char is not in FEN mappedPieces")
+                        }
                     }
+
                     if (x >= board.cols) {
                         throw IllegalArgumentException("Wrong number of columns in piece placement FEN. Expected: ${board.cols} Actual: ${x + 1}")
                     } else {
-                        board.addPiece(Coordinate2D(x, y), piece!!)
+                        board.addPiece(Coordinate2D(x, y), piece)
                         x += 1
                     }
                 }
             }
             y -= 1
         }
+    }
+
+    /**
+     * Adds new mapping from char to piece.
+     * @param char the char to change mapping
+     * @param piece the piece to add to mapping
+     */
+    fun extendFenPieces(char: Char, piece: KFunction1<Player, Piece2D>) {
+        mappedPieces[char.toLowerCase()] = piece
+        mappedPieces[char.toUpperCase()] = piece
+    }
+
+    /**
+     * Adds new mapping from char to piece case sensitive.
+     * @param char the char to change mapping
+     * @param whitePiece the first piece to add to mapping
+     * @param blackPiece the second piece to add to mapping
+     */
+    fun extendFenPiecesCaseSensitive(char: Char, whitePiece: KFunction1<Player, Piece2D>, blackPiece: KFunction1<Player, Piece2D>) {
+        mappedPieces[char.toLowerCase()] = blackPiece
+        mappedPieces[char.toUpperCase()] = whitePiece
     }
 }

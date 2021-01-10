@@ -30,7 +30,7 @@ class ConsoleGameHelper(val gameType: GameType2D, val player1: ConsolePlayer, va
         val boardState = board.getBoardState()
 
         for (i in (board.rows - 1) downTo 0) {
-            print("$i ")
+            print("${i + 1} ")
             for (j in 0 until board.cols) {
                 val coordinate = Coordinate2D(j, i)
                 if (!board.isInBounds(coordinate)) {

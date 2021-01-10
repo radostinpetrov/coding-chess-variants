@@ -6,6 +6,7 @@ import gameTypes.chess.AbstractChess
 import endconditions.StandardEndConditions
 import rules.GeneralsRule
 import pieces.xiangqi.* // ktlint-disable no-wildcard-imports
+import utils.FenUtility
 
 /**
  * Represents Xiangqi (Chinese Chess)
@@ -15,33 +16,14 @@ class Xiangqi : AbstractChess(listOf(GeneralsRule()), listOf(StandardEndConditio
     override val name = "Xiangqi"
 
     override fun initBoard() {
-        val player1 = players[0]
-        val player2 = players[1]
-        for (i in 0..4) {
-            board.addPiece(Coordinate2D(2 * i, 3), XiangqiRedSoldier(player1))
-            board.addPiece(Coordinate2D(2 * i, 6), XiangqiBlueSoldier(player2))
-        }
-        board.addPiece(Coordinate2D(0, 0), XiangqiChariot(player1))
-        board.addPiece(Coordinate2D(8, 0), XiangqiChariot(player1))
-        board.addPiece(Coordinate2D(0, 9), XiangqiChariot(player2))
-        board.addPiece(Coordinate2D(8, 9), XiangqiChariot(player2))
-        board.addPiece(Coordinate2D(1, 2), XiangqiCannon(player1))
-        board.addPiece(Coordinate2D(7, 2), XiangqiCannon(player1))
-        board.addPiece(Coordinate2D(1, 7), XiangqiCannon(player2))
-        board.addPiece(Coordinate2D(7, 7), XiangqiCannon(player2))
-        board.addPiece(Coordinate2D(1, 0), XiangqiHorse(player1))
-        board.addPiece(Coordinate2D(7, 0), XiangqiHorse(player1))
-        board.addPiece(Coordinate2D(1, 9), XiangqiHorse(player2))
-        board.addPiece(Coordinate2D(7, 9), XiangqiHorse(player2))
-        board.addPiece(Coordinate2D(2, 0), XiangqiRedElephant(player1))
-        board.addPiece(Coordinate2D(6, 0), XiangqiRedElephant(player1))
-        board.addPiece(Coordinate2D(2, 9), XiangqiBlueElephant(player2))
-        board.addPiece(Coordinate2D(6, 9), XiangqiBlueElephant(player2))
-        board.addPiece(Coordinate2D(3, 0), XiangqiAdvisor(player1))
-        board.addPiece(Coordinate2D(5, 0), XiangqiAdvisor(player1))
-        board.addPiece(Coordinate2D(3, 9), XiangqiAdvisor(player2))
-        board.addPiece(Coordinate2D(5, 9), XiangqiAdvisor(player2))
-        board.addPiece(Coordinate2D(4, 0), XiangqiGeneral(player1))
-        board.addPiece(Coordinate2D(4, 9), XiangqiGeneral(player2))
+        val fen = FenUtility("jheagaehj/9/1c5c1/s1s1s1s1s/9/9/S1S1S1S1S/1C5C1/9/JHEAGAEHJ")
+        fen.extendFenPieces('j', ::XiangqiChariot)
+        fen.extendFenPieces('c', ::XiangqiCannon)
+        fen.extendFenPieces('h', ::XiangqiHorse)
+        fen.extendFenPieces('a', ::XiangqiAdvisor)
+        fen.extendFenPieces('g', ::XiangqiGeneral)
+        fen.extendFenPiecesCaseSensitive('e', ::XiangqiRedElephant, ::XiangqiBlueElephant)
+        fen.extendFenPiecesCaseSensitive('s', ::XiangqiRedSoldier, ::XiangqiBlueSoldier)
+        fen.initBoardWithFEN(board, players[0], players[1])
     }
 }
