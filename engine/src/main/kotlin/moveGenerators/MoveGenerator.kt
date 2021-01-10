@@ -11,7 +11,6 @@ import players.Player
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
- * @param M the type of a move.
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  */
@@ -27,5 +26,5 @@ interface MoveGenerator<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>,
      * @param player the player who makes the move
      * @return a list of corresponding game moves.
      */
-    fun generate(board: B, coordinate: C, piece: P, player: Player): List<M>
+    fun generate(board: B, coordinate: C, piece: P, player: Player): List<Move<B, MG, P, C>>
 }

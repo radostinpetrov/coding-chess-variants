@@ -2,7 +2,6 @@ package pieces
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import moves.Move
 import moveGenerators.MoveGenerator2D
 
 /**

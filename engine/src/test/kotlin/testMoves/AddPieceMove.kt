@@ -3,7 +3,7 @@ package testMoves
 import coordinates.Coordinate2D
 import gameTypes.chess.StandardChess
 import io.mockk.spyk
-import moves.Move
+import moves.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import pieces.chess.Knight
@@ -18,7 +18,7 @@ class AddPieceMove {
     @Test
     fun addPieceMoveFieldsTest() {
         val knightPiece = Knight(player1)
-        val addPieceMove = Move.SimpleMove.AddPieceMove(player1, knightPiece, Coordinate2D(3,3))
+        val addPieceMove = AddPieceMove2D(player1, knightPiece, Coordinate2D(3,3))
 
         assertTrue(addPieceMove.displayFrom == Coordinate2D(3, 3))
         assertTrue(addPieceMove.displayTo == Coordinate2D(3, 3))

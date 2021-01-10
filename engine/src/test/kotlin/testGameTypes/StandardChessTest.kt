@@ -2,7 +2,7 @@ package testGameTypes
 
 import coordinates.Coordinate2D
 import utils.FenUtility
-import moves.Move.SimpleMove.BasicMove
+import moves.BasicMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import org.junit.jupiter.api.Assertions
@@ -80,7 +80,7 @@ class StandardChessTest {
     @Test
     fun fromCoordinateIsEmptyAfterMove() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val move = BasicMove(
+        val move = BasicMove2D(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )
@@ -91,7 +91,7 @@ class StandardChessTest {
     @Test
     fun toCoordinateIsNewPiece() {
         board.addPiece(Coordinate2D(0, 0), StandardWhitePawn(player1))
-        val move = BasicMove(
+        val move = BasicMove2D(
             Coordinate2D(0, 0),
             Coordinate2D(1, 0), StandardWhitePawn(player1), player1
         )

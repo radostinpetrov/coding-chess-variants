@@ -1,7 +1,6 @@
 package boards
 
 import coordinates.Coordinate2D
-import moves.Move
 import moveGenerators.MoveGenerator2D
 import regions.Region2D
 import pieces.Piece2D

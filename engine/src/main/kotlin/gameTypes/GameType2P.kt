@@ -5,6 +5,7 @@ import coordinates.Coordinate
 import endconditions.Outcome
 import moveGenerators.MoveGenerator
 import moves.Move
+import moves.Move2D
 import pieces.Piece
 import players.Player
 
@@ -17,12 +18,11 @@ import players.Player
  */
 
 
-abstract class GameType2P<B : Board<B, MG, M, P, C>,
-        MG : MoveGenerator<B, MG, M, P, C>,
-        M: Move<B, MG, M, P, C>,
-        P: Piece<B, MG, M, P, C>,
+abstract class GameType2P<B : Board<B, MG, P, C>,
+        MG : MoveGenerator<B, MG, P, C>,
+        P: Piece<B, MG, P, C>,
         C: Coordinate>
-    : GameType<B, MG, M, P, C> {
+    : GameType<B, MG, P, C> {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = 0
     // This is set as the winner when either player concedes
@@ -30,7 +30,7 @@ abstract class GameType2P<B : Board<B, MG, M, P, C>,
 
     override var seed: Double? = null
 
-    override val moveLog: MutableList<M> = mutableListOf()
+    override val moveLog: MutableList<Move<B, MG, P, C>> = mutableListOf()
 
     override fun isOver(): Boolean {
         return getOutcome(getCurrentPlayer()) != null
@@ -56,8 +56,8 @@ abstract class GameType2P<B : Board<B, MG, M, P, C>,
         return null
     }
 
-    protected fun getValidMoveForPiece(pair: Pair<P, C>): List<M> {
-        val possibleMoves = mutableListOf<M>()
+    protected fun getValidMoveForPiece(pair: Pair<P, C>): List<Move<B, MG, P, C>> {
+        val possibleMoves = mutableListOf<Move<B, MG, P, C>>()
         // validate possible moves
 
         val piece = pair.first

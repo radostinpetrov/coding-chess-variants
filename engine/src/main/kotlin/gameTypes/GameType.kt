@@ -4,8 +4,9 @@ import endconditions.Outcome
 import boards.Board
 import coordinates.Coordinate
 import endconditions.EndCondition
-import moves.Move
+import moves.Move2D
 import moveGenerators.MoveGenerator
+import moves.Move
 import pieces.Piece
 import players.Player
 import rules.SpecialRules
@@ -18,7 +19,6 @@ import rules.SpecialRules
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
- * @param M the type of a move.
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  *
@@ -29,15 +29,15 @@ import rules.SpecialRules
  * @property seed the random seed
  * @property moveLog the list of all moves played
  */
-interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
+interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: Piece<B, MG, P, C>, C: Coordinate> {
     val board: B
     val players: List<Player>
     val name: String
     var playerTurn: Int
     var seed: Double?
-    val moveLog: MutableList<M>
-    val rules: List<SpecialRules<GameType<B, MG, M, P, C>, B, MG, M, P, C>>
-    val endConditions: List<EndCondition<GameType<B, MG, M, P, C>, B, MG, M, P, C>>
+    val moveLog: MutableList<Move<B, MG, P, C>>
+    val rules: List<SpecialRules<GameType<B, MG, P, C>, B, MG, P, C>>
+    val endConditions: List<EndCondition<GameType<B, MG, P, C>, B, MG,  P, C>>
 
 
     /**
@@ -81,14 +81,14 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
      *
      * @return a list of all possible valid moves of the given player
      */
-    fun getValidMoves(player: Player): List<M>
+    fun getValidMoves(player: Player): List<Move<B, MG, P, C>>
 
     /**
      * Returns a list of all possible valid moves of the current player
      *
      * @return a list of all possible valid moves of the current player
      */
-    fun getValidMoves(): List<M> {
+    fun getValidMoves(): List<Move<B, MG, P, C>> {
         return getValidMoves(getCurrentPlayer())
     }
 
@@ -96,7 +96,7 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
      * Makes the given move on the current board and
      * add the move to the move log.
      */
-    fun makeMove(move: M)
+    fun makeMove(move: Move<B, MG, P, C>)
 
     /**
      * Sets the concedeWinner to opponent (a player that is not current player)
@@ -163,7 +163,7 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     /**
      * Makes a given move and increments the turn
      */
-    fun playerMakeMove(move: M) {
+    fun playerMakeMove(move: Move<B, MG, P, C>) {
 
         // TODO discuss if we should keep this first check
 //        val validMoves = getValidMoves(getCurrentPlayer())

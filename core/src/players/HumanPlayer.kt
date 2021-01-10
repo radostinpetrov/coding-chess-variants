@@ -1,7 +1,7 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
-import moves.Move
+import moves.Move2D
 import screens.GameScreen
 
 /**
@@ -15,7 +15,7 @@ open class HumanPlayer(gameScreen: GameScreen, colour: Color, name: String, user
      * Tells the gameScreen a valid move to play.
      * @param move HumanPlayer's chosen move.
      */
-    open fun makeMove(move: Move) {
+    open fun makeMove(move: Move2D) {
         gameScreen.processTurn(move)
     }
 }

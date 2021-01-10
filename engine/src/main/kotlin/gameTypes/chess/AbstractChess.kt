@@ -2,16 +2,14 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import moves.Move
-import moves.Move.CompositeMove
-import moves.Move.SimpleMove
-import moves.Move.SimpleMove.*
+import moves.Move2D
 import gameTypes.GameType2D
 import rules.SpecialRules2D
 import endconditions.StandardEndConditions
 import endconditions.EndCondition2D
 import gameTypes.GameType2P
 import moveGenerators.MoveGenerator2D
+import moves.*
 import pieces.Piece2D
 import pieces.Royal
 import players.Player
@@ -28,14 +26,14 @@ abstract class AbstractChess(
     override val endConditions: List<EndCondition2D<AbstractChess>> = listOf(StandardEndConditions()),
     startPlayer: Int = 0):
     GameType2D,
-    GameType2P<Board2D, MoveGenerator2D, Move, Piece2D, Coordinate2D>() {
+    GameType2P<Board2D, MoveGenerator2D, Piece2D, Coordinate2D>() {
 
     override var playerTurn: Int = startPlayer
 
     /**
      * @throws Exception if a given player is invalid (in the players list)
      */
-    override fun getValidMoves(player: Player): List<Move> {
+    override fun getValidMoves(player: Player): List<Move2D> {
         if (!players.contains(player)) {
             throw Exception("Not a valid player")
         }
@@ -44,9 +42,9 @@ abstract class AbstractChess(
         return moves
     }
 
-    private fun getPossibleMoves(player: Player): List<Move> {
+    private fun getPossibleMoves(player: Player): List<Move2D> {
         val pieces = board.getPieces(player)
-        val possibleMoves = mutableListOf<Move>()
+        val possibleMoves = mutableListOf<Move2D>()
         for (piece in pieces) {
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
@@ -56,18 +54,18 @@ abstract class AbstractChess(
         return possibleMoves
     }
 
-    private fun filterForCheck(player: Player, possibleMoves: List<Move>): List<Move> {
-        val res = mutableListOf<Move>()
+    private fun filterForCheck(player: Player, possibleMoves: List<Move2D>): List<Move2D> {
+        val res = mutableListOf<Move2D>()
         for (move in possibleMoves) {
             when (move) {
-                is SimpleMove -> {
+                is SimpleMove2D -> {
                     makeMove(move)
                     if (!move.checkForCheck || !inCheck(player)) {
                         res.add(move)
                     }
                     undoMove()
                 }
-                is CompositeMove -> {
+                is CompositeMove2D -> {
                     var valid = true
                     for (m in move.moves) {
                         makeMove(m)
@@ -99,12 +97,12 @@ abstract class AbstractChess(
 
         for (m in moves) {
             when (m) {
-                is BasicMove, is CompositeMove -> {
-                    if (m.displayTo.x == coordinate.x && m.displayTo.y == coordinate.y) {
+                is BasicMove2D, is CompositeMove2D -> {
+                    if (m.displayTo!!.x == coordinate.x && m.displayTo!!.y == coordinate.y) {
                         return true
                     }
                 }
-                is AddPieceMove, is RemovePieceMove -> {
+                is AddPieceMove2D, is RemovePieceMove2D -> {
                     return false
                 }
             }
@@ -120,18 +118,18 @@ abstract class AbstractChess(
         undoMoveHelper(moveLog.removeAt(moveLog.size - 1))
     }
 
-    private fun undoMoveHelper(move: Move) {
+    private fun undoMoveHelper(move: Move2D) {
         when (move) {
-            is BasicMove -> {
+            is BasicMove2D -> {
                 undoBasicMove(move)
             }
-            is AddPieceMove -> {
+            is AddPieceMove2D -> {
                 board.removePiece(move.coordinate, move.piece)
             }
-            is RemovePieceMove -> {
+            is RemovePieceMove2D -> {
                 board.addPiece(move.coordinate, move.piece)
             }
-            is CompositeMove -> {
+            is CompositeMove2D -> {
                 for (m in move.moves.reversed()) {
                     undoMoveHelper(m)
                 }
@@ -139,7 +137,7 @@ abstract class AbstractChess(
         }
     }
 
-    private fun undoBasicMove(move: BasicMove) {
+    private fun undoBasicMove(move: BasicMove2D) {
         if (move.piecePromotedTo != null) {
             board.removePiece(move.to, move.piecePromotedTo)
         } else {
@@ -152,12 +150,12 @@ abstract class AbstractChess(
         board.addPiece(move.from, move.pieceMoved)
     }
 
-    override fun makeMove(move: Move) {
+    override fun makeMove(move: Move2D) {
         when (move) {
-            is SimpleMove -> {
+            is SimpleMove2D -> {
                 makeSimpleMove(move)
             }
-            is CompositeMove -> {
+            is CompositeMove2D -> {
                 for (m in move.moves) {
                     makeSimpleMove(m)
                 }
@@ -166,21 +164,21 @@ abstract class AbstractChess(
         moveLog.add(move)
     }
 
-    private fun makeSimpleMove(move: SimpleMove) {
+    private fun makeSimpleMove(move: SimpleMove2D) {
         when (move) {
-            is BasicMove -> {
+            is BasicMove2D -> {
                 makeBasicMove(move)
             }
-            is AddPieceMove -> {
+            is AddPieceMove2D -> {
                 makeAddPieceMove(move)
             }
-            is RemovePieceMove -> {
+            is RemovePieceMove2D -> {
                 makeRemovePieceMove(move)
             }
         }
     }
 
-    private fun makeBasicMove(move: BasicMove) {
+    private fun makeBasicMove(move: BasicMove2D) {
         board.removePiece(move.from, move.pieceMoved)
         if (move.pieceCaptured != null) {
             board.removePiece(board.getPieceCoordinate(move.pieceCaptured)!!, move.pieceCaptured)
@@ -192,11 +190,11 @@ abstract class AbstractChess(
         }
     }
 
-    private fun makeAddPieceMove(move: AddPieceMove) {
+    private fun makeAddPieceMove(move: AddPieceMove2D) {
         board.addPiece(move.coordinate, move.piece)
     }
 
-    private fun makeRemovePieceMove(move: RemovePieceMove) {
+    private fun makeRemovePieceMove(move: RemovePieceMove2D) {
         board.removePiece(move.coordinate, move.piece)
     }
 }

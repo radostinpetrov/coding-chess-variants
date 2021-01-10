@@ -2,7 +2,6 @@ package pieces
 
 import boards.Board
 import coordinates.Coordinate
-import moves.Move
 import moveGenerators.MoveGenerator
 import players.Player
 
@@ -11,7 +10,6 @@ import players.Player
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
- * @param M the type of a move.
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  *

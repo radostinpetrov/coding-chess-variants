@@ -1,7 +1,7 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
-import moves.Move
+import moves.Move2D
 import screens.GameScreen
 
 /**
@@ -15,7 +15,7 @@ class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color, nam
      * Tells the gameScreen a random valid move to play.
      */
     override fun signalTurn() {
-        val validMoves: List<Move> = gameType.getValidMoves(libPlayer)
+        val validMoves: List<Move2D> = gameType.getValidMoves(libPlayer)
 //        println("Computer is thinking...")
 //        // TODO FIX COMPUTER PLAYER LAG SITUATION
 //        Thread.sleep(100)

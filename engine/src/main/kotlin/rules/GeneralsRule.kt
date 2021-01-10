@@ -1,7 +1,7 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move
+import moves.Move2D
 import gameTypes.chess.AbstractChess
 import pieces.Royal
 import players.Player
@@ -15,11 +15,11 @@ import kotlin.math.min
  * without any intervening pieces.
  */
 class GeneralsRule : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move>) {
+    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
         moves.retainAll { !generalsFaceEachOther(game, it) }
     }
 
-    private fun generalsFaceEachOther(game: AbstractChess, move: Move): Boolean {
+    private fun generalsFaceEachOther(game: AbstractChess, move: Move2D): Boolean {
         game.makeMove(move)
         val generalCoordinates = game.board.getPieces().filter { it.first is Royal }
         if (generalCoordinates.size < 2) {
