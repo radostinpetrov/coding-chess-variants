@@ -5,6 +5,8 @@ import gameTypes.checkers.Checkers
 import gameTypes.chess.*
 import gameTypes.chess3d.AbstractChess3D
 import gameTypes.chess3d.RaumschachChess
+import gameTypes.hex.AbstractChessHex
+import gameTypes.hex.HexagonalChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import moveGenerators.MoveGenerator
@@ -23,7 +25,8 @@ object Chess {
         8 to Xiangqi(),
         9 to Janggi(),
         10 to Checkers(),
-        11 to RaumschachChess()
+        11 to RaumschachChess(),
+        12 to HexagonalChess()
     )
 
     @JvmStatic
@@ -79,6 +82,21 @@ object Chess {
                 HumanConsolePlayer3D(chess, chess.players[1])
             } else {
                 ComputerConsolePlayer3D(10, chess, chess.players[1])
+            }
+
+            val game = ConsoleGameHelper(chess, player1, player2)
+            game.start()
+        } else if (chess is AbstractChessHex) {
+            val player1 = if (selection <= 2) {
+                HumanConsolePlayerHex(chess, chess.players[0])
+            } else {
+                ComputerConsolePlayerHex(10, chess, chess.players[0])
+            }
+
+            val player2 = if (selection % 2 == 1) {
+                HumanConsolePlayerHex(chess, chess.players[1])
+            } else {
+                ComputerConsolePlayerHex(10, chess, chess.players[1])
             }
 
             val game = ConsoleGameHelper(chess, player1, player2)
