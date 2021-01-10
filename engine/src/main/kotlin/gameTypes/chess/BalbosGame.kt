@@ -21,7 +21,8 @@ class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
     override val name = "Balbo's Game"
 
     abstract class BalboPawn(override val player: Player, private val standardMoves: List<MoveGenerator2D>, private val promotionRegion: List<BoxRegion>, private val restrictedRegion: List<BoxRegion>) : Piece2D, Pawn {
-        override val moveGenerators: List<MoveGenerator2D> = listOf(
+        override val moveGenerators: List<MoveGenerator2D>
+            get() = listOf(
             MoveGenerator2D.AddPromotion(
                 standardMoves,
                 CompositeRegion(promotionRegion),
@@ -44,9 +45,7 @@ class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
         }
     }
 
-    /**
-     * Represents a white pawn in Balbo's game
-     */
+
     companion object BalbosWhitePawnRegions {
         val balbosWhitePawnStandardMoves = listOf(
             MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
@@ -86,112 +85,16 @@ class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
         )
 
     }
+
+    /**
+     * Represents a white pawn in Balbo's game
+     */
     data class BalboWhitePawn(override val player: Player) : BalboPawn(player, balbosWhitePawnStandardMoves, balbosWhitePawnRegion1, balbosWhitePawnRegion2)
-    // data class BalboWhitePawn(override val player: Player) : Piece2D, Pawn {
-    //     private val standardMoves = listOf(
-    //         MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.NORTH, 2), RowRegion(2)),
-    //         MoveGenerator2D.Stepper(Direction.NORTH, 1),
-    //         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_EAST, 1, true)),
-    //         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.NORTH_WEST, 1, true))
-    //     )
-    //
-    //     override val moveGenerators: List<MoveGenerator2D> = listOf(
-    //         MoveGenerator2D.AddPromotion(
-    //             standardMoves,
-    //             CompositeRegion(
-    //                 listOf(
-    //                     BoxRegion(Coordinate2D(4, 9), Coordinate2D(6, 9)),
-    //                     BoxRegion(Coordinate2D(3, 8), Coordinate2D(3, 8)),
-    //                     BoxRegion(Coordinate2D(7, 8), Coordinate2D(7, 8)),
-    //                     BoxRegion(Coordinate2D(2, 7), Coordinate2D(2, 7)),
-    //                     BoxRegion(Coordinate2D(8, 7), Coordinate2D(8, 7))
-    //                 )
-    //             ),
-    //             listOf(Bishop(player), Knight(player)),
-    //             true
-    //         ),
-    //         MoveGenerator2D.RestrictedDestination(
-    //             MoveGenerator2D.AddPromotion(
-    //                 standardMoves,
-    //                 CompositeRegion(
-    //                     listOf(
-    //                         BoxRegion(Coordinate2D(4, 9), Coordinate2D(6, 9)),
-    //                         BoxRegion(Coordinate2D(3, 8), Coordinate2D(3, 8)),
-    //                         BoxRegion(Coordinate2D(7, 8), Coordinate2D(7, 8)),
-    //                     )
-    //                 ),
-    //                 listOf(Queen(player), Rook(player)),
-    //                 true
-    //             ),
-    //             CompositeRegion(
-    //                 listOf(
-    //                     BoxRegion(Coordinate2D(4, 9), Coordinate2D(6, 9)),
-    //                     BoxRegion(Coordinate2D(3, 8), Coordinate2D(3, 8)),
-    //                     BoxRegion(Coordinate2D(7, 8), Coordinate2D(7, 8)),
-    //                 )
-    //             )
-    //         )
-    //     )
-    //
-    //     override fun getSymbol(): String {
-    //         return "P"
-    //     }
-    // }
 
     /**
      * Represents a black pawn in Balbo's game
      */
     data class BalboBlackPawn(override val player: Player) : BalboPawn(player, balbosBlackPawnStandardMoves, balbosBlackPawnRegion1, balbosBlackPawnRegion2)
-    // data class BalboBlackPawn(override val player: Player) : Piece2D, Pawn {
-    //     private val standardMoves = listOf(
-    //         MoveGenerator2D.Restricted(MoveGenerator2D.Stepper(Direction.SOUTH, 2), RowRegion(7)),
-    //         MoveGenerator2D.Stepper(Direction.SOUTH, 1),
-    //         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.SOUTH_EAST, 1, true)),
-    //         MoveGenerator2D.CaptureOnly(MoveGenerator2D.Stepper(Direction.SOUTH_WEST, 1, true))
-    //     )
-    //
-    //     override val moveGenerators: List<MoveGenerator2D> = listOf(
-    //         MoveGenerator2D.AddPromotion(
-    //             standardMoves,
-    //             CompositeRegion(
-    //                 listOf(
-    //                     BoxRegion(Coordinate2D(4, 0), Coordinate2D(6, 0)),
-    //                     BoxRegion(Coordinate2D(3, 1), Coordinate2D(3, 1)),
-    //                     BoxRegion(Coordinate2D(7, 1), Coordinate2D(7, 1)),
-    //                     BoxRegion(Coordinate2D(2, 2), Coordinate2D(2, 2)),
-    //                     BoxRegion(Coordinate2D(8, 2), Coordinate2D(8, 2))
-    //                 )
-    //             ),
-    //             listOf(Bishop(player), Knight(player)),
-    //             true
-    //         ),
-    //         MoveGenerator2D.RestrictedDestination(
-    //             MoveGenerator2D.AddPromotion(
-    //                 standardMoves,
-    //                 CompositeRegion(
-    //                     listOf(
-    //                         BoxRegion(Coordinate2D(4, 0), Coordinate2D(6, 0)),
-    //                         BoxRegion(Coordinate2D(3, 1), Coordinate2D(3, 1)),
-    //                         BoxRegion(Coordinate2D(7, 1), Coordinate2D(7, 1)),
-    //                     )
-    //                 ),
-    //                 listOf(Queen(player), Rook(player)),
-    //                 true
-    //             ),
-    //             CompositeRegion(
-    //                 listOf(
-    //                     BoxRegion(Coordinate2D(4, 0), Coordinate2D(6, 0)),
-    //                     BoxRegion(Coordinate2D(3, 1), Coordinate2D(3, 1)),
-    //                     BoxRegion(Coordinate2D(7, 1), Coordinate2D(7, 1)),
-    //                 )
-    //             )
-    //         )
-    //     )
-    //
-    //     override fun getSymbol(): String {
-    //         return "P"
-    //     }
-    // }
 
     /**
      * Represents a region that is considered invalid
@@ -222,39 +125,5 @@ class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
         val fen = FenUtility("4kbq4/3rnbnr3/2ppppppp2/11/11/11/11/2PPPPPPP2/3RNBNR3/4KBQ4")
         fen.extendFenPiecesCaseSensitive('p', ::BalboWhitePawn, ::BalboBlackPawn)
         fen.initBoardWithFEN(board, players[0], players[1])
-
-        // val player1 = players[0]
-        // val player2 = players[1]
-        // board.addPiece(Coordinate2D(4, 0), King(player1))
-        // board.addPiece(Coordinate2D(5, 0), Bishop(player1))
-        // board.addPiece(Coordinate2D(6, 0), Queen(player1))
-        // board.addPiece(Coordinate2D(3, 1), Rook(player1))
-        // board.addPiece(Coordinate2D(4, 1), Knight(player1))
-        // board.addPiece(Coordinate2D(5, 1), Bishop(player1))
-        // board.addPiece(Coordinate2D(6, 1), Knight(player1))
-        // board.addPiece(Coordinate2D(7, 1), Rook(player1))
-        // board.addPiece(Coordinate2D(2, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(3, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(4, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(5, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(6, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(7, 2), BalboWhitePawn(player1))
-        // board.addPiece(Coordinate2D(8, 2), BalboWhitePawn(player1))
-        //
-        // board.addPiece(Coordinate2D(4, 9), King(player2))
-        // board.addPiece(Coordinate2D(5, 9), Bishop(player2))
-        // board.addPiece(Coordinate2D(6, 9), Queen(player2))
-        // board.addPiece(Coordinate2D(3, 8), Rook(player2))
-        // board.addPiece(Coordinate2D(4, 8), Knight(player2))
-        // board.addPiece(Coordinate2D(5, 8), Bishop(player2))
-        // board.addPiece(Coordinate2D(6, 8), Knight(player2))
-        // board.addPiece(Coordinate2D(7, 8), Rook(player2))
-        // board.addPiece(Coordinate2D(2, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(3, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(4, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(5, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(6, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(7, 7), BalboBlackPawn(player2))
-        // board.addPiece(Coordinate2D(8, 7), BalboBlackPawn(player2))
     }
 }
