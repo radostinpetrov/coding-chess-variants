@@ -2,7 +2,7 @@ package testRules
 
 import coordinates.Coordinate2D
 import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move2D.SimpleMove.*
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -41,10 +41,11 @@ class CastlingTest {
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove = Move2D.CompositeMove(
             moves = listOf(
+                RemovePieceMove(player = player1, piece = Rook(player1), coordinate = Coordinate2D(7, 0)),
                 BasicMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
                 BasicMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
-            ),
+                AddPieceMove(player = player1, piece = Rook(player1), coordinate = Coordinate2D(5, 0)),
+                ),
             player = player1
         )
         assertTrue(moves.contains(castleMove))
@@ -72,10 +73,11 @@ class CastlingTest {
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove = Move2D.CompositeMove(
             moves = listOf(
+                RemovePieceMove(player = player1, piece = Rook(player1), coordinate = Coordinate2D(0, 0)),
                 BasicMove(from = Coordinate2D(4, 0), to = Coordinate2D(3, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
                 BasicMove(from = Coordinate2D(3, 0), to = Coordinate2D(2, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove(from = Coordinate2D(0, 0), to = Coordinate2D(3, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
-            ),
+                AddPieceMove(player = player1, piece = Rook(player1), coordinate = Coordinate2D(3, 0)),
+                ),
             player = player1
         )
         assertTrue(moves.contains(castleMove))
