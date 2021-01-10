@@ -3,7 +3,6 @@ package rules
 import boards.Board
 import coordinates.Coordinate
 import moves.Move
-import moves.Move2D
 import gameTypes.GameType
 import moveGenerators.MoveGenerator
 import pieces.Piece
@@ -30,5 +29,5 @@ interface SpecialRules<out G: GameType<B, MG, M, P, C>,
      *
      * @return the possible moves generated as a result of the special rule
      */
-    fun getPossibleMoves(game: @UnsafeVariance G, player: Player, moves: MutableList<Move2D>)
+    fun getPossibleMoves(game: @UnsafeVariance G, player: Player, moves: MutableList<M>)
 }
