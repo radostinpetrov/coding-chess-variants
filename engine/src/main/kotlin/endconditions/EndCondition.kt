@@ -18,7 +18,7 @@ import players.Player
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  */
-interface EndCondition<G : GameType<B, MG, M, P, C>,
+interface EndCondition<out G : GameType<B, MG, M, P, C>,
     B : Board<B, MG, M, P, C>,
     MG : MoveGenerator<B, MG, M, P, C>,
     M : Move<B, MG, M, P, C>,

@@ -1,7 +1,9 @@
 package gameTypes.chess
 
+import boards.Board2D
 import endconditions.Outcome
 import coordinates.Coordinate2D
+import endconditions.EndCondition
 import moves.Move2D
 import moves.Move2D.CompositeMove
 import moves.Move2D.SimpleMove
@@ -10,6 +12,11 @@ import gameTypes.GameType2D
 import rules.SpecialRules2D
 import endconditions.StandardEndConditions
 import endconditions.EndCondition2D
+import gameTypes.GameType
+import gameTypes.GameType2P
+import moveGenerators.MoveGenerator2D
+import moves.Move
+import pieces.Piece
 import pieces.Piece2D
 import pieces.Royal
 import players.Player
@@ -22,42 +29,13 @@ import players.Player
  * @property endConditions the list of conditions that will end the game
  */
 abstract class AbstractChess(
-    val rules: List<SpecialRules2D<AbstractChess>> = listOf(),
-    var endConditions: List<EndCondition2D<AbstractChess>> = listOf(
-        StandardEndConditions()), startPlayer: Int = 0)
-    : GameType2D {
-    override val players: List<Player> = listOf(Player(), Player())
+    override val rules: List<SpecialRules2D<AbstractChess>> = listOf(),
+    override val endConditions: List<EndCondition2D<AbstractChess>> = listOf(StandardEndConditions()),
+    startPlayer: Int = 0):
+    GameType2D,
+    GameType2P<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D>() {
+
     override var playerTurn: Int = startPlayer
-    // This is set as the winner when either player concedes
-    private var concededWinner: Player? = null
-
-    override var seed: Double? = null
-
-    override val moveLog: MutableList<Move2D> = mutableListOf()
-
-    override fun isOver(): Boolean {
-        return getOutcome(getCurrentPlayer()) != null
-    }
-
-    override fun initGame() {
-        board.clearBoard()
-        initBoard()
-    }
-
-    override fun getOutcome(player: Player): Outcome? {
-        val curConcededWinner = concededWinner
-        if (curConcededWinner != null) {
-            return Outcome.Win(curConcededWinner, "by opponent concede")
-        }
-        val moves = getValidMoves(player)
-        for (ec in endConditions) {
-            val outcome = ec.evaluate(this, player, moves)
-            if (outcome != null) {
-                return outcome
-            }
-        }
-        return null
-    }
 
     /**
      * @throws Exception if a given player is invalid (in the players list)
@@ -179,20 +157,6 @@ abstract class AbstractChess(
         board.addPiece(move.from, move.pieceMoved)
     }
 
-    private fun getValidMoveForPiece(pair: Pair<Piece2D, Coordinate2D>): List<Move2D> {
-        val possibleMoves = mutableListOf<Move2D>()
-        // validate possible moves
-
-        val piece = pair.first
-        val coordinate = pair.second
-
-        for (move in piece.moveGenerators) {
-            possibleMoves.addAll(move.generate(board, coordinate, piece, getCurrentPlayer()))
-        }
-
-        return possibleMoves
-    }
-
     override fun makeMove(move: Move2D) {
         when (move) {
             is SimpleMove -> {
@@ -205,11 +169,6 @@ abstract class AbstractChess(
             }
         }
         moveLog.add(move)
-    }
-
-    override fun concede(player: Player) {
-        // TODO discuss for a way to improve
-        concededWinner = getOpponentPlayer(player)
     }
 
     private fun makeSimpleMove(move: SimpleMove) {
@@ -244,9 +203,5 @@ abstract class AbstractChess(
 
     private fun makeRemovePieceMove(move: RemovePieceMove) {
         board.removePiece(move.coordinate, move.piece)
-    }
-
-    fun getOpponentPlayer(player: Player): Player {
-        return getOpponentPlayers(player)[0]
     }
 }

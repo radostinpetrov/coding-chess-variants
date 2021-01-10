@@ -3,10 +3,12 @@ package gameTypes
 import endconditions.Outcome
 import boards.Board
 import coordinates.Coordinate
+import endconditions.EndCondition
 import moves.Move
 import moveGenerators.MoveGenerator
 import pieces.Piece
 import players.Player
+import rules.SpecialRules
 
 /**
  * Represents a game variant.
@@ -34,6 +36,9 @@ interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>
     var playerTurn: Int
     var seed: Double?
     val moveLog: MutableList<M>
+    val rules: List<SpecialRules<GameType<B, MG, M, P, C>, B, MG, M, P, C>>
+    val endConditions: List<EndCondition<GameType<B, MG, M, P, C>, B, MG, M, P, C>>
+
 
     /**
      * Initialises the game by clearing and initialising the board
