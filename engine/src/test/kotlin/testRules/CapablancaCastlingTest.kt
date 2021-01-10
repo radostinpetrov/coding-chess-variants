@@ -44,6 +44,11 @@ class CapablancaCastlingTest {
         val castleMove =
             CompositeMove2D(
                 moves = listOf(
+                    RemovePieceMove2D(
+                        player = player1,
+                        piece = Rook(player = player1),
+                        coordinate = Coordinate2D(9, 0)
+                    ),
                     BasicMove2D(
                         from = Coordinate2D(5, 0),
                         to = Coordinate2D(6, 0),
@@ -71,15 +76,11 @@ class CapablancaCastlingTest {
                         piecePromotedTo = null,
                         checkForCheck = true
                     ),
-                    BasicMove2D(
-                        from = Coordinate2D(9, 0),
-                        to = Coordinate2D(7, 0),
-                        pieceMoved = Rook(player = player1),
+                    AddPieceMove2D(
                         player = player1,
-                        pieceCaptured = null,
-                        piecePromotedTo = null,
-                        checkForCheck = true
-                    )
+                        piece = Rook(player = player1),
+                        coordinate = Coordinate2D(7, 0)
+                    ),
                 ),
                 player = player1
             )
@@ -112,6 +113,11 @@ class CapablancaCastlingTest {
         val castleMove =
             CompositeMove2D(
                 moves = listOf(
+                    RemovePieceMove2D(
+                        player = player1,
+                        piece = Rook(player = player1),
+                        coordinate = Coordinate2D(0, 0)
+                    ),
                     BasicMove2D(
                         from = Coordinate2D(5, 0),
                         to = Coordinate2D(4, 0),
@@ -138,15 +144,11 @@ class CapablancaCastlingTest {
                         piecePromotedTo = null,
                         checkForCheck = true
                     ),
-                    BasicMove2D(
-                        from = Coordinate2D(0, 0),
-                        to = Coordinate2D(3, 0),
-                        pieceMoved = Rook(player = player1),
+                    AddPieceMove2D(
                         player = player1,
-                        pieceCaptured = null,
-                        piecePromotedTo = null,
-                        checkForCheck = true
-                    )
+                        piece = Rook(player = player1),
+                        coordinate = Coordinate2D(3, 0)
+                    ),
                 ),
                 player = player1
             )

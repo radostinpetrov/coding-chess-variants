@@ -40,9 +40,10 @@ class CastlingTest {
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove = CompositeMove2D(
             moves = listOf(
+                RemovePieceMove2D(player = player1, piece = Rook(player1), coordinate = Coordinate2D(7, 0)),
                 BasicMove2D(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
                 BasicMove2D(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove2D(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
+                AddPieceMove2D(player = player1, piece = Rook(player1), coordinate = Coordinate2D(5, 0)),
             ),
             player = player1
         )
@@ -71,9 +72,10 @@ class CastlingTest {
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove = CompositeMove2D(
             moves = listOf(
+                RemovePieceMove2D(player = player1, piece = Rook(player1), coordinate = Coordinate2D(0, 0)),
                 BasicMove2D(from = Coordinate2D(4, 0), to = Coordinate2D(3, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
                 BasicMove2D(from = Coordinate2D(3, 0), to = Coordinate2D(2, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove2D(from = Coordinate2D(0, 0), to = Coordinate2D(3, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
+                AddPieceMove2D(player = player1, piece = Rook(player1), coordinate = Coordinate2D(3, 0)),
             ),
             player = player1
         )
