@@ -3,12 +3,12 @@ package testGameTypes
 import coordinates.Coordinate2D
 import gameTypes.chess.Chess960
 import io.mockk.MockKAnnotations
-import io.mockk.spyk
-import org.junit.jupiter.api.Assertions
+import moves.Move2D
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.chess.*
+import players.Player
 
 class Chess960Test {
     private var mockChess960 = Chess960(0.0)
@@ -120,5 +120,115 @@ class Chess960Test {
         val initPieces = mockChess960.board.getPieces()
         assertTrue(initPieces.containsAll(initPiecesTest))
         assertEquals(initPieces.size, initPiecesTest.size)
+    }
+
+    @Test
+    fun castlingLeftTest() {
+        val chess = Chess960(180.0 / 960)
+        chess.initBoard()
+        val initMoves: List<Move2D.SimpleMove.BasicMove> = listOf(
+            Move2D.SimpleMove.BasicMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(0, 6), Coordinate2D(0, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(5, 0), Coordinate2D(4, 1), Bishop(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(1, 6), Coordinate2D(1, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(6, 0), Coordinate2D(5, 2), Knight(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(2, 6), Coordinate2D(2, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+        )
+
+        for (move in initMoves) {
+            chess.makeMove(move)
+        }
+
+        val moves = chess.getValidMoves(chess.players[0])
+        val castleMove = Move2D.CompositeMove(
+            moves = listOf(
+                Move2D.SimpleMove.RemovePieceMove(
+                    player = chess.players[0],
+                    piece = Rook(chess.players[0]),
+                    coordinate = Coordinate2D(7, 0)
+                ),
+                Move2D.SimpleMove.BasicMove(
+                    from = Coordinate2D(4, 0),
+                    to = Coordinate2D(5, 0),
+                    pieceMoved = King(player = chess.players[0]),
+                    player = chess.players[0],
+                    pieceCaptured = null,
+                    piecePromotedTo = null,
+                    checkForCheck = true
+                ),
+                Move2D.SimpleMove.BasicMove(
+                    from = Coordinate2D(5, 0),
+                    to = Coordinate2D(6, 0),
+                    pieceMoved = King(player = chess.players[0]),
+                    player = chess.players[0],
+                    pieceCaptured = null,
+                    piecePromotedTo = null,
+                    checkForCheck = true
+                ),
+                Move2D.SimpleMove.AddPieceMove(
+                    player = chess.players[0],
+                    piece = Rook(chess.players[0]),
+                    coordinate = Coordinate2D(5, 0)
+            )
+            ),
+            player = chess.players[0]
+        )
+        assertTrue(moves.contains(castleMove))
+    }
+
+    @Test
+    fun castlingRightTest() {
+        val chess = Chess960(180.0 / 960)
+        chess.initBoard()
+        val initMoves: List<Move2D.SimpleMove.BasicMove> = listOf(
+            Move2D.SimpleMove.BasicMove(Coordinate2D(3, 1), Coordinate2D(3, 3), StandardWhitePawn(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(0, 6), Coordinate2D(0, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(3, 0), Coordinate2D(3, 2), Queen(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(1, 6), Coordinate2D(1, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(2, 0), Coordinate2D(3, 1), Bishop(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(2, 6), Coordinate2D(2, 5), StandardBlackPawn(chess.players[1]), chess.players[1]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(1, 0), Coordinate2D(2, 2), Knight(chess.players[0]), chess.players[0]),
+            Move2D.SimpleMove.BasicMove(Coordinate2D(3, 6), Coordinate2D(3, 5), StandardBlackPawn(chess.players[1]), chess.players[1])
+        )
+
+        for (move in initMoves) {
+            chess.makeMove(move)
+        }
+
+        val moves = chess.getValidMoves(chess.players[0])
+        val castleMove = Move2D.CompositeMove(
+            moves = listOf(
+                Move2D.SimpleMove.RemovePieceMove(
+                    player = chess.players[0],
+                    piece = Rook(chess.players[0]),
+                    coordinate = Coordinate2D(0, 0)
+                ),
+                Move2D.SimpleMove.BasicMove(
+                    from = Coordinate2D(4, 0),
+                    to = Coordinate2D(3, 0),
+                    pieceMoved = King(player = chess.players[0]),
+                    player = chess.players[0],
+                    pieceCaptured = null,
+                    piecePromotedTo = null,
+                    checkForCheck = true
+                ),
+                Move2D.SimpleMove.BasicMove(
+                    from = Coordinate2D(3, 0),
+                    to = Coordinate2D(2, 0),
+                    pieceMoved = King(player = chess.players[0]),
+                    player = chess.players[0],
+                    pieceCaptured = null,
+                    piecePromotedTo = null,
+                    checkForCheck = true
+                ),
+                Move2D.SimpleMove.AddPieceMove(
+                    player = chess.players[0],
+                    piece = Rook(chess.players[0]),
+                    coordinate = Coordinate2D(3, 0)
+                )
+            ),
+            player = chess.players[0]
+        )
+        assertTrue(moves.contains(castleMove))
     }
 }
