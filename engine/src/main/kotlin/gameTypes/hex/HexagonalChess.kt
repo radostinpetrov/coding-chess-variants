@@ -12,8 +12,8 @@ import rules.Enpassant
  * Represents Capablanca Chess
  */
 open class HexagonalChess : AbstractChessHex() {
-    override val board = BoardHex(8, 10)
-    override val name = "Capablanca Chess"
+    override val board = BoardHex(6, 11)
+    override val name = "Hexagonal Chess"
 
     override fun initBoard() {
         val player1 = players[0]
@@ -49,11 +49,11 @@ open class HexagonalChess : AbstractChessHex() {
         board.addPiece(Coordinate2D(3, 18), Knight(player2))
         board.addPiece(Coordinate2D(7, 18), Knight(player2))
         board.addPiece(Coordinate2D(5, 0), Bishop(player1))
-        board.addPiece(Coordinate2D(5, 1), Bishop(player1))
         board.addPiece(Coordinate2D(5, 2), Bishop(player1))
+        board.addPiece(Coordinate2D(5, 4), Bishop(player1))
         board.addPiece(Coordinate2D(5, 20), Bishop(player2))
-        board.addPiece(Coordinate2D(5, 19), Bishop(player2))
         board.addPiece(Coordinate2D(5, 18), Bishop(player2))
+        board.addPiece(Coordinate2D(5, 16), Bishop(player2))
         board.addPiece(Coordinate2D(6, 1), King(player1))
         board.addPiece(Coordinate2D(6, 19), King(player2))
         board.addPiece(Coordinate2D(4, 1), Queen(player1))

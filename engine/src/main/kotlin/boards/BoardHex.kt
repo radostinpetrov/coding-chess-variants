@@ -23,7 +23,7 @@ class BoardHex(val verticalLength: Int, val maximumWidth: Int,
         assert(maximumWidth % 2 == 1)
     }
 
-    val rows = verticalLength + maximumWidth - 1
+    val rows = verticalLength * 2 - 1 + maximumWidth - 1
     val cols = maximumWidth
     private var board: Array<Array<PieceHex?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Map<Coordinate2D, PieceHex?> {
@@ -110,7 +110,7 @@ class BoardHex(val verticalLength: Int, val maximumWidth: Int,
     fun isInBounds(coordinate: Coordinate2D): Boolean {
         val x = coordinate.x
         val y = coordinate.y
-        if (x < 0 || y < 0 || x >= rows || y >= cols) {
+        if (x < 0 || y < 0 || x >= cols || y >= rows) {
             return false
         }
 
@@ -119,7 +119,7 @@ class BoardHex(val verticalLength: Int, val maximumWidth: Int,
         if (x + y < deadHeight
             || (cols - x) + y < deadHeight
             || x + (rows - y) < deadHeight
-            || (cols - x) + (rows - y) < deadHeight) {
+            || (cols - x) + (rows - y) <= deadHeight) {
             return false
         }
 
