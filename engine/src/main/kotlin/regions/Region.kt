@@ -7,7 +7,7 @@ import coordinates.Coordinate
  *
  * @param C the type of a coordinate.
  */
-interface Region<C: Coordinate> {
+interface Region<C : Coordinate> {
     /**
      * Returns if the coordinate is within the region specified
      *

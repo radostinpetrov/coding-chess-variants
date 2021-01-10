@@ -1,9 +1,14 @@
-import moves.Move2D
-import gameTypes.GameType2D
+import boards.Board
+import coordinates.Coordinate
+import gameTypes.GameType
+import moveGenerators.MoveGenerator
+import moves.Move
+import pieces.Piece
 import players.Player
 
-// TODO fix this or something
-abstract class ConsolePlayer(val gameType: GameType2D, val player: Player) {
+interface ConsolePlayer<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P : Piece<B, MG, P, C>, C : Coordinate> {
+    val gameType: GameType<B, MG, P, C>
+    val player: Player
     fun playTurn() {
         val moves = gameType.getValidMoves(player)
         if (moves.isEmpty()) {
@@ -12,5 +17,5 @@ abstract class ConsolePlayer(val gameType: GameType2D, val player: Player) {
         gameType.playerMakeMove(getTurn(moves))
     }
 
-    abstract fun getTurn(choiceOfMoves: List<Move2D>): Move2D
+    fun getTurn(choiceOfMoves: List<Move<B, MG, P, C>>): Move<B, MG, P, C>
 }

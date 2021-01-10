@@ -1,22 +1,22 @@
-import boards.Board2D
-import coordinates.Coordinate2D
+import boards.Board3D
+import coordinates.Coordinate3D
 import gameTypes.GameType
-import moveGenerators.MoveGenerator2D
+import moveGenerators.MoveGenerator3D
 import moves.*
-import pieces.Piece2D
+import pieces.Piece3D
 import players.Player
-import utils.notationFormatter.ChessNotationInput
+import utils.notationFormatter.ChessNotationInput3D
 import utils.notationFormatter.NotationFormatter
 
-class HumanConsolePlayer2D(
-    override val gameType: GameType<Board2D, MoveGenerator2D, Piece2D, Coordinate2D>,
-    override val player: Player,
-    val notationFormatter: NotationFormatter = ChessNotationInput(),
-) : ConsolePlayer2D {
+class HumanConsolePlayer3D(
+    override val gameType: GameType<Board3D, MoveGenerator3D, Piece3D, Coordinate3D>,
+    override val player: Player
+) : ConsolePlayer3D {
+    val notationFormatter = ChessNotationInput3D()
 
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-    override fun getTurn(choiceOfMoves: List<Move2D>): Move2D {
-        var possibleMoves: List<Move2D> = mutableListOf()
+    override fun getTurn(choiceOfMoves: List<Move3D>): Move3D {
+        var possibleMoves: List<Move3D> = mutableListOf()
         var input: String?
         while (possibleMoves.isEmpty()) {
             print("Enter the coordinate of the piece to move: ")
@@ -32,8 +32,8 @@ class HumanConsolePlayer2D(
             }
             possibleMoves = choiceOfMoves.filter {
                 when (it) {
-                    is SimpleMove2D -> it.displayFrom == coordinate
-                    is CompositeMove2D -> {
+                    is SimpleMove3D -> it.displayFrom == coordinate
+                    is CompositeMove3D -> {
                         true
                     }
                 }
