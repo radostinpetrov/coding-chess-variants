@@ -45,33 +45,12 @@ abstract class AbstractCastling<C: AbstractChess> (
         val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
 
         for (move in currentPlayerMoves) {
-            when (move) {
-                is BasicMove -> {
-                    if (move.pieceMoved is King) {
-                        return false
-                    }
-                    rooks.removeAll { it.first === move.pieceMoved }
-                }
-                is CompositeMove -> {
-                    for (basicMove in move.moves) {
-                        if (basicMove is BasicMove) {
-                            if (basicMove.pieceMoved is King) {
-                                return false
-                            }
-                            rooks.removeAll { it.first === basicMove.pieceMoved }
-                        }
-                    }
-                }
-                else -> {
-                    continue
-                }
+            if (move.displayPieceMoved is King) {
+                return false
             }
-
+            rooks.removeAll { it.first === move.displayPieceMoved }
         }
-        if (rooks.isEmpty()) {
-            return false
-        }
-        return true
+        return rooks.isNotEmpty()
     }
 
     private fun getKing(game: C, player: Player): Pair<Piece2D, Coordinate2D> {
@@ -88,64 +67,54 @@ abstract class AbstractCastling<C: AbstractChess> (
 
         val rooks : List<Pair<Piece2D, Coordinate2D>> = board.getPieces(player)
             .filter { p -> p.first.player == player && p.first is Rook }
-//        var leftRook : Pair<Piece2D, Coordinate2D>? = null
-//        var rightRook : Pair<Piece2D, Coordinate2D>? = null
-//        for (rook in rooks) {
-//            if (kingCoordinate.x < rook.second.x) {
-//                rightRook = rook
-//            } else {
-//                leftRook = rook
-//            }
-//        }
-//
-//        if (leftRook != null) {
-//            val lo = Math.min(castleWidth - 1, kingCoordinate.x)
-//            val hi = Math.max(castleWidth - 1, kingCoordinate.x)
-//            val rookPiece = leftRook.first
-//
-//            for (x in lo until hi) {
-//                val piece = board.getPiece(Coordinate2D(x, kingCoordinate.y))
-//                if (piece != null && piece != rookPiece && piece != kingPiece) {
-//                    leftRook = null
-//                    break
-//                }
-//            }
-//        }
-//
-//        if (rightRook != null) {
-//            val rookPiece = rightRook.first
-//            for (x in kingCoordinate.x + 1 until board.cols - 1) {
-//                val piece = board.getPiece(Coordinate2D(x, kingCoordinate.y))
-//                if (piece != null && piece != rookPiece && piece != kingPiece) {
-//                    rightRook = null
-//                    break
-//                }
-//            }
-//        }
-//
-//        return Pair(leftRook?.second, rightRook?.second)
 
         var leftRook: Coordinate2D? = null
         var rightRook: Coordinate2D? = null
-
         for (rook in rooks) {
-            if (rook.second.x == 0) {
-                leftRook = rook.second
-            }
-            if (rook.second.x == board.cols - 1) {
-                rightRook = rook.second
+            val rookCoordinate = rook.second
+            if (rookCoordinate.x < kingCoordinate.x) {
+                leftRook = rookCoordinate
+            } else {
+                rightRook = rookCoordinate
             }
         }
-        for (i in 1..castleWidth) {
-            val toCheckCoordLeft = Coordinate2D(kingCoordinate.x - i, kingCoordinate.y)
-            if (board.getPiece(toCheckCoordLeft) != null) {
+
+        if (leftRook != null) {
+            val rookPiece = board.getPiece(leftRook)
+            val lo = minOf(castleWidth - 1, kingCoordinate.x)
+            val hi = maxOf(castleWidth - 1, kingCoordinate.x)
+            for (x in lo until hi) {
+                val piece = board.getPiece(Coordinate2D(x, kingCoordinate.y))
+                if (piece != null && piece != rookPiece && piece != kingPiece) {
+                    leftRook = null
+                    break
+                }
+            }
+
+            val leftRookFinalDest = board.getPiece(Coordinate2D(castleWidth, kingCoordinate.y))
+            if (leftRookFinalDest != null && leftRook != null &&
+                leftRookFinalDest != kingPiece && leftRookFinalDest != rookPiece) {
                 leftRook = null
             }
-            val toCheckCoordRight = Coordinate2D(kingCoordinate.x + i, kingCoordinate.y)
-            if (i != castleWidth && board.getPiece(toCheckCoordRight) != null) {
+        }
+
+        if (rightRook != null) {
+            val rookPiece = board.getPiece(rightRook)
+            for (x in kingCoordinate.x + 1 until board.cols - 1) {
+                val piece = board.getPiece(Coordinate2D(x, kingCoordinate.y))
+                if (piece != null && piece != rookPiece && piece != kingPiece) {
+                    rightRook = null
+                    break
+                }
+            }
+
+            val rightRookFinalDest = board.getPiece(Coordinate2D(5, kingCoordinate.y))
+            if (rightRookFinalDest != null && rightRook != null &&
+                rightRookFinalDest != kingPiece && rightRookFinalDest != rookPiece) {
                 rightRook = null
             }
         }
+
         return Pair(leftRook, rightRook)
     }
 
@@ -163,10 +132,21 @@ abstract class AbstractCastling<C: AbstractChess> (
 
             val y = kingCoordinate.y
             var currCoordinate = kingCoordinate
-            val finalKingX = if (dir == CastlingDirection.LEFT) castleWidth - 1 else board.cols - castleWidth + 1
-            val finalRookX = if (dir == CastlingDirection.LEFT) castleWidth else board.cols - castleWidth
+            val finalKingX: Int
+            val finalRookX: Int
+            if (dir == CastlingDirection.LEFT) {
+                finalKingX = castleWidth - 1
+                finalRookX = castleWidth
+            } else {
+                finalKingX = board.cols - (castleWidth - 1)
+                finalRookX = board.cols - castleWidth
+            }
 
-            val range = if (kingCoordinate.x < finalKingX) kingCoordinate.x + 1 until finalKingX else kingCoordinate.x - 1 downTo finalKingX
+            val range = if (kingCoordinate.x < finalKingX) {
+                kingCoordinate.x + 1 until finalKingX + 1
+            } else {
+                kingCoordinate.x - 1 downTo finalKingX
+            }
 
             for (x in range) {
                 val nextCoordinate = Coordinate2D(x, y)
