@@ -150,7 +150,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             }
         })
 
-        forfeitButton.setPosition(windowWidth.toFloat() + panelWidth.toFloat() + 90f, forfeitButtonPosY)
+        forfeitButton.setPosition(windowWidth.toFloat() + panelWidth.toFloat() - 90f, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
     }
