@@ -2,9 +2,7 @@ package gameTypes.chess3d
 
 import boards.Board3D
 import coordinates.Coordinate3D
-import pieces.chess3d.Rook3D
-import pieces.chess3d.StandardBlackPawn3D
-import pieces.chess3d.StandardWhitePawn3D
+import pieces.chess3d.*
 
 class RaumschachChess : AbstractChess3D() {
     override val board = Board3D(5, 5, 5)
@@ -28,5 +26,21 @@ class RaumschachChess : AbstractChess3D() {
         board.addPiece(Coordinate3D(4, 0, 0), Rook3D(player1))
         board.addPiece(Coordinate3D(0, 4, 4), Rook3D(player2))
         board.addPiece(Coordinate3D(4, 4, 4), Rook3D(player2))
+        board.addPiece(Coordinate3D(1, 0, 0), Knight3D(player1))
+        board.addPiece(Coordinate3D(3, 0, 0), Knight3D(player1))
+        board.addPiece(Coordinate3D(1, 4, 4), Knight3D(player2))
+        board.addPiece(Coordinate3D(3, 4, 4), Knight3D(player2))
+        board.addPiece(Coordinate3D(1, 0, 1), Unicorn3D(player1))
+        board.addPiece(Coordinate3D(4, 0, 1), Unicorn3D(player1))
+        board.addPiece(Coordinate3D(1, 4, 3), Unicorn3D(player2))
+        board.addPiece(Coordinate3D(4, 4, 3), Unicorn3D(player2))
+        board.addPiece(Coordinate3D(0, 0, 1), Bishop3D(player1))
+        board.addPiece(Coordinate3D(3, 0, 1), Bishop3D(player1))
+        board.addPiece(Coordinate3D(0, 4, 3), Bishop3D(player2))
+        board.addPiece(Coordinate3D(3, 4, 3), Bishop3D(player2))
+        board.addPiece(Coordinate3D(2, 0, 1), Queen3D(player1))
+        board.addPiece(Coordinate3D(2, 4, 3), Queen3D(player2))
+        board.addPiece(Coordinate3D(2, 0, 0), King3D(player1))
+        board.addPiece(Coordinate3D(2, 4, 4), King3D(player2))
     }
 }

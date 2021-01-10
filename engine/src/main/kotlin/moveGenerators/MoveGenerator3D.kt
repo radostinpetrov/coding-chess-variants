@@ -14,12 +14,11 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
     /**
      * Moves along a ray direction until they encounter another piece or the edge of the board
      *
-     * @property H true if it can move along horizontal direction
-     * @property V true if it can move along vertical direction
-     * @property D true if it can move along diagonal direction
-     * @property A true if it can move along anti-diagonal direction
+     * @property X true if it can move along X axis
+     * @property Y true if it can move along Y axis
+     * @property Z true if it can move along Z axis
      */
-    class Slider3D(val X: Boolean = false, val Y: Boolean = false, val Z: Boolean = false, val A: Boolean = false) : MoveGenerator3D {
+    class Slider3D(val X: Boolean = false, val Y: Boolean = false, val Z: Boolean = false, val D2D: Boolean = false, val AD2D: Boolean = false, val D: Boolean = false, val D3D: Boolean = false) : MoveGenerator3D {
         override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
             val result = mutableListOf<BasicMove3D>()
             if (X) {
@@ -34,6 +33,35 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
                 result.addAll(helper(board, coordinate, piece, 0, 0, 1, player))
                 result.addAll(helper(board, coordinate, piece, 0, 0, -1, player))
             }
+            if (D2D) {
+                result.addAll(helper(board, coordinate, piece, 1, 1, 0, player))
+                result.addAll(helper(board, coordinate, piece, -1, -1, 0, player))
+            }
+            if (AD2D) {
+                result.addAll(helper(board, coordinate, piece, 1, -1, 0, player))
+                result.addAll(helper(board, coordinate, piece, -1, 1, 0, player))
+            }
+            if (D) {
+                result.addAll(helper(board, coordinate, piece, 1, 0, 1, player))
+                result.addAll(helper(board, coordinate, piece, -1, 0, -1, player))
+                result.addAll(helper(board, coordinate, piece, -1, 0, 1, player))
+                result.addAll(helper(board, coordinate, piece, 1, 0, -1, player))
+                result.addAll(helper(board, coordinate, piece, 0, 1, 1, player))
+                result.addAll(helper(board, coordinate, piece, 0, -1, -1, player))
+                result.addAll(helper(board, coordinate, piece, 0, -1, 1, player))
+                result.addAll(helper(board, coordinate, piece, 0, 1, -1, player))
+            }
+            if (D3D) {
+                result.addAll(helper(board, coordinate, piece, 1, 1, 1, player))
+                result.addAll(helper(board, coordinate, piece, 1, 1, -1, player))
+                result.addAll(helper(board, coordinate, piece, -1, 1, 1, player))
+                result.addAll(helper(board, coordinate, piece, -1, 1, -1, player))
+                result.addAll(helper(board, coordinate, piece, 1, -1, 1, player))
+                result.addAll(helper(board, coordinate, piece, 1, -1, -1, player))
+                result.addAll(helper(board, coordinate, piece, -1, -1, 1, player))
+                result.addAll(helper(board, coordinate, piece, -1, -1, -1, player))
+            }
+
             return result
         }
 
@@ -90,39 +118,37 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
         }
     }
 
-//    /**
-//     * Performs single steps to specified target squares
-//     * Takes in a step-vector, which is then mirrored to give a total of
-//     * up to 8 target coordinates
-//     *
-//     * @property dx x component of the step-vector
-//     * @property dy y component of the step-vector
-//     */
-//    data class Leaper3D(val dx: Int, val dy: Int, val dz: Int) : MoveGenerator3D {
-//        override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
-//            val result = mutableListOf<BasicMove3D>()
-//            val destCoordinates = listOf(
-//                Coordinate3D(coordinate.x + dx, coordinate.y + dy),
-//                Coordinate3D(coordinate.x + dx, coordinate.y - dy),
-//                Coordinate3D(coordinate.x - dx, coordinate.y + dy),
-//                Coordinate3D(coordinate.x - dx, coordinate.y - dy),
-//                Coordinate3D(coordinate.x + dy, coordinate.y + dx),
-//                Coordinate3D(coordinate.x + dy, coordinate.y - dx),
-//                Coordinate3D(coordinate.x - dy, coordinate.y + dx),
-//                Coordinate3D(coordinate.x - dy, coordinate.y - dx),
-//            ).distinct()
-//
-//            for (destCoordinate in destCoordinates) {
-//                if (board.isInBounds(destCoordinate)) {
-//                    val destPiece = board.getPiece(destCoordinate)
-//                    if (destPiece == null || piece.player != destPiece.player) {
-//                        result.add(BasicMove3D(coordinate, destCoordinate, piece, player, destPiece))
-//                    }
-//                }
-//            }
-//            return result
-//        }
-//    }
+    /**
+     * Performs single steps to specified target squares
+     * Takes in a step-vector, which is then mirrored to give a total of
+     * up to 8 target coordinates
+     *
+     * @property dx x component of the step-vector
+     * @property dy y component of the step-vector
+     */
+    data class Leaper3D(val dx: Int, val dy: Int, val dz: Int) : MoveGenerator3D {
+        override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
+            val result = mutableListOf<BasicMove3D>()
+            val destCoordinates: MutableSet<Coordinate3D> = mutableSetOf()
+            for (i in listOf(dx, -dx)) {
+                for (j in listOf(dy, -dy)) {
+                    for (k in listOf(dz, -dz)) {
+                        destCoordinates.add(Coordinate3D(dx, dy, dz) + coordinate)
+                    }
+                }
+            }
+
+            for (destCoordinate in destCoordinates) {
+                if (board.isInBounds(destCoordinate)) {
+                    val destPiece = board.getPiece(destCoordinate)
+                    if (destPiece == null || piece.player != destPiece.player) {
+                        result.add(BasicMove3D(coordinate, destCoordinate, piece, player, destPiece))
+                    }
+                }
+            }
+            return result
+        }
+    }
 //
 //    /**
 //     * Can move along a ray direction, but must jump over another piece

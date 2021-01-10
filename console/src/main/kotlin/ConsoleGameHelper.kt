@@ -73,6 +73,7 @@ class ConsoleGameHelper(val gameType: Game, val player1: ConsolePlayer<*, *, *, 
         val boardState = board.getBoardState()
 
         for (i in 0 until board.dims) {
+            print("--- BOARD ${('A'.toInt() + i).toChar()} ---\n")
             for (j in (board.rows - 1) downTo 0) {
                 print("${j + 1} ")
                 for (k in 0 until board.cols) {
