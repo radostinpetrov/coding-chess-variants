@@ -2,7 +2,7 @@ package rules
 
 import coordinates.Coordinate2D
 import moves.*
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import pieces.chess.BlackPawn
 import pieces.chess.WhitePawn
 import players.Player
@@ -15,8 +15,8 @@ import kotlin.math.abs
  * a move of two squares from its starting square,
  * and it could have been captured by an enemy pawn had it advanced only one square
  */
-class Enpassant : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
+class Enpassant : SpecialRules2D<AbstractChess2D> {
+    override fun getPossibleMoves(game: AbstractChess2D, player: Player, moves: MutableList<Move2D>) {
         val board = game.board
         val moveLog = game.moveLog
         val res = mutableListOf<Move2D>()

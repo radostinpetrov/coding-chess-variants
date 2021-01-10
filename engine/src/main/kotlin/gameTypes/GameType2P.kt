@@ -5,7 +5,6 @@ import coordinates.Coordinate
 import endconditions.Outcome
 import moveGenerators.MoveGenerator
 import moves.Move
-import moves.Move2D
 import pieces.Piece
 import players.Player
 

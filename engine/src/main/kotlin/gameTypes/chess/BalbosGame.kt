@@ -17,7 +17,7 @@ import utils.FenUtility
 /**
  * Represents Balbo's game
  */
-class BalbosGame : AbstractChess(listOf(), listOf(StandardEndConditions())) {
+class BalbosGame : AbstractChess2D(listOf(), listOf(StandardEndConditions())) {
     override val name = "Balbo's Game"
 
     /**

@@ -1,6 +1,6 @@
 package testPerft
 
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import org.junit.jupiter.api.Assertions
 import endconditions.Outcome
 
@@ -12,15 +12,9 @@ object PerftUtility {
             checks += other.checks
             checkmates += other.checkmates
         }
-
-        override fun equals(other: Any?): Boolean {
-            val otherData = other as PerftData
-
-            return ((otherData.nodes == nodes) and (otherData.captures == captures) && otherData.checks == checks && otherData.checkmates == checkmates)
-        }
     }
 
-    fun perft(depth: Int, game: AbstractChess, checkForCheckmate: Boolean = true): PerftData {
+    fun perft(depth: Int, game: AbstractChess2D, checkForCheckmate: Boolean = true): PerftData {
         if (depth == 0) {
             return PerftData(1, 0, 0, 0)
         }
@@ -61,12 +55,12 @@ object PerftUtility {
         return data
     }
 
-    fun test(game: AbstractChess, depth: Int, expectedData: PerftData) {
+    fun test(game: AbstractChess2D, depth: Int, expectedData: PerftData) {
         game.initGame()
         Assertions.assertEquals(expectedData, perft(depth, game))
     }
 
-    fun testSimple(game: AbstractChess, depth: Int, expectedNodes: Int) {
+    fun testSimple(game: AbstractChess2D, depth: Int, expectedNodes: Int) {
         game.initGame()
         Assertions.assertEquals(expectedNodes, perft(depth, game, false).nodes)
     }

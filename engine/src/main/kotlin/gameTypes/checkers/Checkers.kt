@@ -3,7 +3,7 @@ package gameTypes.checkers
 import endconditions.Outcome
 import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import moveGenerators.Direction
 import moveGenerators.MoveGenerator2D
 import moves.*
@@ -16,14 +16,14 @@ import endconditions.EndCondition2D
 /**
  * Represents a checker game
  */
-class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), endConditions = listOf(CheckersEndCondition())) {
+class Checkers : AbstractChess2D(rules = listOf(ForcedCaptureRule()), endConditions = listOf(CheckersEndCondition())) {
     override val name = "Checkers"
 
     /**
      * Represents end conditions for checker game
      */
-    class CheckersEndCondition : EndCondition2D<AbstractChess> {
-        override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+    class CheckersEndCondition : EndCondition2D<AbstractChess2D> {
+        override fun evaluate(game: AbstractChess2D, player: Player, moves: List<Move2D>): Outcome? {
             for (p in game.players) {
                 val pieces = game.board.getPieces(player)
                 if (pieces.isEmpty()) {

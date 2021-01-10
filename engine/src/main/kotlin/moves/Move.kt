@@ -8,7 +8,6 @@ import players.Player
 
 sealed class Move<B : Board<B, MG, P, C>,
         MG : MoveGenerator<B, MG, P, C>,
-
         P : Piece<B, MG, P, C>,
         C : Coordinate>
     (open val player: Player) {

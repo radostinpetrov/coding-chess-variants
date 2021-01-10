@@ -1,14 +1,14 @@
 package endconditions
 
 import moves.Move2D
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import players.Player
 
 /**
  * Condition for stalemate by insufficient material
  */
-class InsufficientMaterialStalemate : EndCondition2D<AbstractChess> {
-    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+class InsufficientMaterialStalemate : EndCondition2D<AbstractChess2D> {
+    override fun evaluate(game: AbstractChess2D, player: Player, moves: List<Move2D>): Outcome? {
 
         val board = game.board
         val pieces = board.getPieces()

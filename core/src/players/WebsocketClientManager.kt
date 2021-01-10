@@ -1,6 +1,6 @@
 package players
 
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
@@ -8,7 +8,7 @@ import screens.GameScreen
 import java.net.URI
 
 class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
-    lateinit var game: AbstractChess
+    lateinit var game: AbstractChess2D
     lateinit var networkHumanPlayer: NetworkHumanPlayer
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
     lateinit var gameScreen: GameScreen

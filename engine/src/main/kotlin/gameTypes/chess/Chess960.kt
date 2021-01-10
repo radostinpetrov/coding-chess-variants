@@ -17,7 +17,7 @@ import rules.Enpassant
  * 1. The bishop must be placed in opposite colour
  * 2. The king must be placed between rooks
  */
-class Chess960(override var seed: Double? = null) : AbstractChess(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
+class Chess960(override var seed: Double? = null) : AbstractChess2D(listOf(Chess960Castling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 8)
     override val name = "Chess960"
 

@@ -1,8 +1,7 @@
 package gameTypes.xiangqi
 
 import boards.Board2D
-import coordinates.Coordinate2D
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import endconditions.StandardEndConditions
 import rules.GeneralsRule
 import pieces.xiangqi.* // ktlint-disable no-wildcard-imports
@@ -11,7 +10,7 @@ import utils.FenUtility
 /**
  * Represents Xiangqi (Chinese Chess)
  */
-class Xiangqi : AbstractChess(listOf(GeneralsRule()), listOf(StandardEndConditions())) {
+class Xiangqi : AbstractChess2D(listOf(GeneralsRule()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 9)
     override val name = "Xiangqi"
 
