@@ -10,10 +10,20 @@ import pieces.chess.King
 import pieces.chess.Rook
 import players.Player
 
+/**
+ * Represents the direction the castling may happen
+ * LEFT represents queenside castling (castling with the queenside/left rook)
+ * RIGHT represents kingside castling (castling with the kingside/right rook)
+ */
 enum class CastlingDirection {
     LEFT, RIGHT
 }
 
+/**
+ * General Castling Logic
+ *
+ * @property castleWidth the length of castle (typically half of board size - 1)
+ */
 abstract class AbstractCastling<C: AbstractChess> (
     private val castleWidth: Int,
     private val p1CanCastleLeft: Boolean = true,
@@ -38,11 +48,31 @@ abstract class AbstractCastling<C: AbstractChess> (
         }
     }
 
+    /**
+     * Helper functions
+     */
+
+    private fun getKing(game: C, player: Player): Pair<Piece2D, Coordinate2D> {
+        return game.board.getPieces(player)
+            .find { p -> p.first.player == player && p.first is King }!!
+    }
+
+    private fun getRooks(game: C, player: Player): MutableList<Pair<Piece2D, Coordinate2D>> {
+        return game.board.getPieces(player)
+            .filter { p -> p.first.player == player && p.first is Rook }
+            .toMutableList()
+    }
+
+    /**
+     * Checks if king or rooks have previously moved
+     *
+     * @return false if king has moved or both rooks have moved,
+     * hence castling is not possible
+     */
     private fun canCastle(game: C, player: Player) : Boolean {
-        val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
-        val rooks = (board.getPieces(player).filter { p -> p.first.player == player && p.first is Rook }.toMutableList())
+        val rooks = getRooks(game, player)
 
         for (move in currentPlayerMoves) {
             if (move.displayPieceMoved is King) {
@@ -53,21 +83,21 @@ abstract class AbstractCastling<C: AbstractChess> (
         return rooks.isNotEmpty()
     }
 
-    private fun getKing(game: C, player: Player): Pair<Piece2D, Coordinate2D> {
-        return game.board.getPieces(player).find {
-                p -> p.first.player == player && p.first is King }!!
-    }
-
-    open fun checkRooks(game: C, player: Player): Pair<Coordinate2D?, Coordinate2D?> {
+    /**
+     * Checks if there are no pieces between the king and rooks and
+     * returns a pair of coordinates of left and right rooks available for castling
+     * (set to null if the rook is not available)
+     *
+     * @return a pair of coordinates of left and right rooks
+     */
+    private fun checkRooks(game: C, player: Player): Pair<Coordinate2D?, Coordinate2D?> {
         val board = game.board
 
         val king = getKing(game, player)
         val kingPiece = king.first
         val kingCoordinate = king.second
 
-        val rooks : List<Pair<Piece2D, Coordinate2D>> = board.getPieces(player)
-            .filter { p -> p.first.player == player && p.first is Rook }
-
+        val rooks = getRooks(game, player)
         var leftRook: Coordinate2D? = null
         var rightRook: Coordinate2D? = null
         for (rook in rooks) {
@@ -79,6 +109,7 @@ abstract class AbstractCastling<C: AbstractChess> (
             }
         }
 
+        // Check Left Castling
         if (leftRook != null) {
             val rookPiece = board.getPiece(leftRook)
             val lo = minOf(castleWidth - 1, kingCoordinate.x)
@@ -98,6 +129,7 @@ abstract class AbstractCastling<C: AbstractChess> (
             }
         }
 
+        // Check Right Castling
         if (rightRook != null) {
             val rookPiece = board.getPiece(rightRook)
             for (x in kingCoordinate.x + 1 until board.cols - 1) {
@@ -118,6 +150,10 @@ abstract class AbstractCastling<C: AbstractChess> (
         return Pair(leftRook, rightRook)
     }
 
+    /**
+     * Generates an appropriate moves to carry out castling and add to moves.
+     * Assumes that it satisfies the pre-conditions for castling.
+     */
     private fun castle(game: C, player: Player, moves: MutableList<Move2D>, rookCoordinate: Coordinate2D?, dir: CastlingDirection) {
         val board = game.board
         val king = getKing(game, player)
