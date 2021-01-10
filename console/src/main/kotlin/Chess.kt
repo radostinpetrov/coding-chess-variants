@@ -1,8 +1,14 @@
-import gameTypes.GameType2D
+import boards.Board
+import coordinates.Coordinate
+import gameTypes.AbstractChess
 import gameTypes.checkers.Checkers
 import gameTypes.chess.*
+import gameTypes.chess3d.AbstractChess3D
+import gameTypes.chess3d.RaumschachChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
+import moveGenerators.MoveGenerator
+import pieces.Piece
 import utils.notationFormatter.ChessNotationInput
 
 object Chess {
@@ -16,7 +22,8 @@ object Chess {
         7 to AntiChess(),
         8 to Xiangqi(),
         9 to Janggi(),
-        10 to Checkers()
+        10 to Checkers(),
+        11 to RaumschachChess()
     )
 
     @JvmStatic
@@ -33,7 +40,7 @@ object Chess {
             input = readLine()
         }
 
-        val chess: GameType2D = mappedVariants[input.toInt()]!!
+        val chess = mappedVariants[input.toInt()]!!
 
         println("Select players:")
         println("1: Human vs Human")
@@ -46,20 +53,40 @@ object Chess {
             input = readLine()
         }
         val selection = input.toInt()
+        if (chess is AbstractChess2D) {
+            val player1 = if (selection <= 2) {
+                HumanConsolePlayer2D(chess, chess.players[0])
+            } else {
+                ComputerConsolePlayer2D(10, chess, chess.players[1])
+            }
 
-        val player1 = if (selection <= 2) {
-            HumanConsolePlayer(ChessNotationInput(), chess, chess.players[0])
+            val player2 = if (selection % 2 == 1) {
+                HumanConsolePlayer2D(chess, chess.players[1])
+            } else {
+                ComputerConsolePlayer2D(10, chess, chess.players[1])
+            }
+
+            val game = ConsoleGameHelper(chess, player1, player2)
+            game.start()
+        } else if (chess is AbstractChess3D) {
+            val player1 = if (selection <= 2) {
+                HumanConsolePlayer3D( chess, chess.players[0])
+            } else {
+                ComputerConsolePlayer3D(10, chess, chess.players[1])
+            }
+
+            val player2 = if (selection % 2 == 1) {
+                HumanConsolePlayer3D(chess, chess.players[1])
+            } else {
+                ComputerConsolePlayer3D(10, chess, chess.players[1])
+            }
+
+            val game = ConsoleGameHelper(chess, player1, player2)
+            game.start()
         } else {
-            ComputerConsolePlayer(10, chess, chess.players[1])
+            throw Exception("Doomed")
         }
-
-        val player2 = if (selection % 2 == 1) {
-            HumanConsolePlayer(ChessNotationInput(), chess, chess.players[1])
-        } else {
-            ComputerConsolePlayer(10, chess, chess.players[1])
-        }
-
-        val game = ConsoleGameHelper(chess, player1, player2)
-        game.start()
     }
 }
+
+typealias Game = AbstractChess<out Board<*, out MoveGenerator<*, *, *, *>, out Piece<*, *, *, *>, out Coordinate>, out MoveGenerator<out Board<*, *, *, *>, *, out Piece<*, *, *, *>, out Coordinate>, out Piece<out Board<*, *, *, *>, out MoveGenerator<*, *, *, *>, *, out Coordinate>, out Coordinate>

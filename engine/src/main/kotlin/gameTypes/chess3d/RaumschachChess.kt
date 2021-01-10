@@ -8,7 +8,7 @@ import pieces.chess3d.StandardWhitePawn3D
 
 class RaumschachChess : AbstractChess3D() {
     override val board = Board3D(5, 5, 5)
-    override val name = "Standard Chess"
+    override val name = "Raumschach Chess"
     override fun initBoard() {
         val player1 = players[0]
         val player2 = players[1]

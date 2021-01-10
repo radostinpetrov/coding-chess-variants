@@ -2,13 +2,13 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.GameType2D
-import rules.SpecialRules2D
-import endconditions.StandardEndConditions
 import endconditions.EndCondition2D
+import endconditions.StandardEndConditions
 import gameTypes.AbstractChess
+import gameTypes.GameType2D
 import moveGenerators.MoveGenerator2D
 import pieces.Piece2D
+import rules.SpecialRules2D
 
 /**
  * Represents a standard n-player game,
@@ -20,7 +20,7 @@ import pieces.Piece2D
 abstract class AbstractChess2D(
     rules: List<SpecialRules2D<AbstractChess2D>> = listOf(),
     endConditions: List<EndCondition2D<AbstractChess2D>> = listOf(StandardEndConditions()),
-    startPlayer: Int = 0):
+    startPlayer: Int = 0
+) :
     GameType2D,
     AbstractChess<Board2D, MoveGenerator2D, Piece2D, Coordinate2D>(rules, endConditions, startPlayer)
-
