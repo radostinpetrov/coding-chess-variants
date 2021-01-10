@@ -1,6 +1,6 @@
 package endconditions
 
-import moves.Move2D
+import moves.Move
 import gameTypes.chess.AbstractChess
 import players.Player
 
@@ -19,20 +19,20 @@ import players.Player
  * The repeated positions need not occur in succession.
  */
 class ThreeFoldRepetitionStalemate : EndCondition2D<AbstractChess> {
-    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move>): Outcome? {
         // We use a pair of the player that has the move and
         // sorted list of valid moves to check if two positions are the same
-        val positionCounter: HashMap<Pair<Player, List<Move2D>>, Int> = HashMap()
-        val undoneMoves: MutableList<Move2D> = mutableListOf()
+        val positionCounter: HashMap<Pair<Player, List<Move>>, Int> = HashMap()
+        val undoneMoves: MutableList<Move> = mutableListOf()
         for (i in game.moveLog.indices.reversed()) {
             val move = game.moveLog[i]
 
-            if (move is Move2D.CompositeMove || move.displayPieceCaptured != null) {
+            if (move is Move.CompositeMove || move.displayPieceCaptured != null) {
                 break
             }
 
             val currentPlayer: Player = game.getCurrentPlayer()
-            val validMoves: MutableList<Move2D> = mutableListOf()
+            val validMoves: MutableList<Move> = mutableListOf()
 
             game.players.map { validMoves.addAll(game.getValidMoves(it)) }
 

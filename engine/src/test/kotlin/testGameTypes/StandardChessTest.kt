@@ -2,7 +2,7 @@ package testGameTypes
 
 import coordinates.Coordinate2D
 import utils.FenUtility
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import org.junit.jupiter.api.Assertions

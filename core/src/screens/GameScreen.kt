@@ -2,7 +2,7 @@ package screens
 
 import endconditions.Outcome
 import coordinates.Coordinate2D
-import moves.Move2D
+import moves.Move
 import boards.ChessBoard
 import boards.GUIBoard
 import boards.XiangqiBoard
@@ -36,7 +36,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     private var windowWidth: Int = 800
 
     private lateinit var shapeRenderer: ShapeRenderer
-    private lateinit var moves: List<Move2D>
+    private lateinit var moves: List<Move>
 
     private var panelWidth: Int = 300
 
@@ -76,7 +76,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
-    lateinit var promotableMoves: List<Move2D>
+    lateinit var promotableMoves: List<Move>
 
     var gameOverPopUp: GameOverPopUp? = null
 
@@ -159,7 +159,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     /**
      * Displays a transparent promotion screen when a piece has the option to promote.
      */
-    private fun showPromotionScreen(moves: List<Move2D>) {
+    private fun showPromotionScreen(moves: List<Move>) {
 
         /* Set the background to transparent. */
         Gdx.gl.glEnable(GL20.GL_BLEND)
@@ -173,7 +173,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         /* Finds the position to display the promotion pieces. */
         val batch = game.batch
         batch.begin()
-        val coordinateMap = mutableMapOf<Int, Move2D>()
+        val coordinateMap = mutableMapOf<Int, Move>()
         val xCoordinate = (rows - moves.size) / 2
         val yCoordinate = (columns - 1) / 2
         val x = xCoordinate * squareWidth
@@ -212,7 +212,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * This is called when the current player plays a turn.
      * @param nextMove the move the current player will make on the game engine
      */
-    fun processTurn(nextMove: Move2D) {
+    fun processTurn(nextMove: Move) {
         switchClocks()
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
@@ -394,7 +394,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * @param to the coordinate of the selected destination
      * @param moves list of valid moves for the selected piece
      */
-    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<Move2D>): Move2D? {
+    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<Move>): Move? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
             return null
@@ -477,7 +477,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
         shapeRenderer.end()
 
-        var history: List<Move2D> = gameEngine.moveLog.toList()
+        var history: List<Move> = gameEngine.moveLog.toList()
 
         /* Get the last 40 moves from the history. */
         val len = gameEngine.moveLog.size

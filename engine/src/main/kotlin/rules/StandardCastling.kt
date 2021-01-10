@@ -1,8 +1,8 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.StandardChess
 import pieces.chess.King
 import pieces.chess.Rook
@@ -23,7 +23,7 @@ import players.Player
  *  6. The king does not end up in check. (True of any legal move.)
  */
 class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight: Boolean = true, val p2CanCastleLeft: Boolean = true, val p2CanCastleRight: Boolean = true) : SpecialRules2D<StandardChess> {
-    override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<Move2D>) {
+    override fun getPossibleMoves(game: StandardChess, player: Player, moves: MutableList<Move>) {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
@@ -40,7 +40,7 @@ class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight
                     }
                     rooks.removeAll { it.first === move.pieceMoved }
                 }
-                is Move2D.CompositeMove -> {
+                is Move.CompositeMove -> {
                     for (basicMove in move.moves) {
                         if (basicMove is BasicMove) {
                             if (basicMove.pieceMoved is King) {
@@ -56,7 +56,7 @@ class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight
             }
         }
 
-        val res = mutableListOf<Move2D>()
+        val res = mutableListOf<Move>()
         val king = board.getPieces(player).find { p -> p.first.player == player && p.first is King } ?: return
         val kingPiece = king.first
         val kingCoordinate = king.second
@@ -86,7 +86,7 @@ class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight
         if (playerCanCastleLeft && leftRook != null) {
             val rook = board.getPiece(leftRook)
             res.add(
-                Move2D.CompositeMove(
+                Move.CompositeMove(
                     listOf(
                         BasicMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),
@@ -108,7 +108,7 @@ class StandardCastling(val p1CanCastleLeft: Boolean = true, val p1CanCastleRight
         if (playerCanCastleRight && rightRook != null) {
             val rook = board.getPiece(rightRook)
             res.add(
-                Move2D.CompositeMove(
+                Move.CompositeMove(
                     listOf(
                         BasicMove(
                             Coordinate2D(kingCoordinate.x, kingCoordinate.y),

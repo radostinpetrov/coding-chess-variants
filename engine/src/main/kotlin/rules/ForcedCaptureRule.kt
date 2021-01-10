@@ -1,7 +1,7 @@
 package rules
 
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.AbstractChess
 import players.Player
 
@@ -10,8 +10,8 @@ import players.Player
  * Makes capturing compulsory.
  */
 class ForcedCaptureRule : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
-        val pred = { it: Move2D -> it is BasicMove && it.pieceCaptured != null }
+    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move>) {
+        val pred = { it: Move -> it is BasicMove && it.pieceCaptured != null }
         if (moves.any(pred)) {
             moves.retainAll(pred)
         }

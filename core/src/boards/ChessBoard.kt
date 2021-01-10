@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import coordinates.Coordinate2D
-import moves.Move2D
 import players.FrontendPlayer
 import players.Player
 

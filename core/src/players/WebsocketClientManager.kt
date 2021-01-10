@@ -13,7 +13,7 @@ class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var us
     lateinit var networkEnemyPlayer: NetworkEnemyPlayer
     lateinit var gameScreen: GameScreen
 
-    val serverUri: URI = URI("ws://83.136.252.48:8080")
+    val serverUri: URI = URI("ws://0.0.0.0:8080")
 
     private lateinit var webSocketClient: WebSocketClient
 

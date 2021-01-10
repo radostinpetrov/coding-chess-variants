@@ -1,6 +1,6 @@
 package endconditions
 
-import moves.Move2D
+import moves.Move
 import gameTypes.chess.AbstractChess
 import players.Player
 
@@ -14,7 +14,7 @@ import players.Player
  */
 class StandardEndConditions : EndCondition2D<AbstractChess> {
     private val endConditions: List<EndCondition2D<AbstractChess>> = listOf(Checkmate(), NoLegalMovesStalemate(), ThreeFoldRepetitionStalemate(), InsufficientMaterialStalemate(), FiftyMoveRuleStalemate())
-    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move>): Outcome? {
         for (wc in endConditions) {
             val outcome = wc.evaluate(game, player, moves)
             if (outcome != null) {

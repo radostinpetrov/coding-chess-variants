@@ -1,7 +1,7 @@
 package utils.notationFormatter
 
 import coordinates.Coordinate2D
-import moves.Move2D
+import moves.Move
 
 /**
  * Interface for a notation formatter to be used by front end console implementations.
@@ -25,5 +25,5 @@ interface NotationFormatter {
      * Takes a Move2D and converts to a readable representation
      * @return String move
      */
-    fun moveToStr(move: Move2D): String
+    fun moveToStr(move: Move): String
 }

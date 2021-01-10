@@ -1,9 +1,9 @@
 package utils.notationFormatter
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.CompositeMove
-import moves.Move2D.SimpleMove.*
+import moves.Move
+import moves.Move.CompositeMove
+import moves.Move.SimpleMove.*
 
 /**
  * ChessNotationInput
@@ -41,7 +41,7 @@ class ChessNotationInput() : NotationFormatter {
      * Takes a Move2D and converts it to a readable chess notation.
      * @return the string representing the move.
      */
-    override fun moveToStr(move: Move2D): String {
+    override fun moveToStr(move: Move): String {
         val sb = StringBuilder()
 
         when (move) {

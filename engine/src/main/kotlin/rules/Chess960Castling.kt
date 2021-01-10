@@ -1,9 +1,9 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.CompositeMove
-import moves.Move2D.SimpleMove.*
+import moves.Move
+import moves.Move.CompositeMove
+import moves.Move.SimpleMove.*
 import gameTypes.chess.Chess960
 import pieces.Piece2D
 import pieces.chess.King
@@ -14,7 +14,7 @@ import players.Player
  * Castling in chess 960
  */
 class Chess960Castling : SpecialRules2D<Chess960> {
-    override fun getPossibleMoves(game: Chess960, player: Player, moves: MutableList<Move2D>) {
+    override fun getPossibleMoves(game: Chess960, player: Player, moves: MutableList<Move>) {
         val board = game.board
         val moveLog = game.moveLog
         val currentPlayerMoves = moveLog.filter { x -> x.player == player }
@@ -58,7 +58,7 @@ class Chess960Castling : SpecialRules2D<Chess960> {
             }
         }
 
-        val res = mutableListOf<Move2D>()
+        val res = mutableListOf<Move>()
 
         //left castling
         val hi: Int
@@ -92,7 +92,7 @@ class Chess960Castling : SpecialRules2D<Chess960> {
         if (leftRook != null) {
             val rook = leftRook.first
 
-            val castleList = mutableListOf<Move2D.SimpleMove>()
+            val castleList = mutableListOf<Move.SimpleMove>()
             castleList.add(
                 RemovePieceMove(
                     player,
@@ -146,7 +146,7 @@ class Chess960Castling : SpecialRules2D<Chess960> {
         if (rightRook != null) {
             val rook = rightRook.first
 
-            val castleList = mutableListOf<Move2D.SimpleMove>()
+            val castleList = mutableListOf<Move.SimpleMove>()
 
             castleList.add(
                 RemovePieceMove(

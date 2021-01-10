@@ -1,6 +1,6 @@
 package endconditions
 
-import moves.Move2D
+import moves.Move
 import gameTypes.chess.AbstractChess
 import pieces.Pawn
 import players.Player
@@ -12,7 +12,7 @@ import players.Player
  * no pawn has moved and no capture has been made.
  */
 class FiftyMoveRuleStalemate : EndCondition2D<AbstractChess> {
-    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+    override fun evaluate(game: AbstractChess, player: Player, moves: List<Move>): Outcome? {
         if (moves.size < 100) {
             return null
         }

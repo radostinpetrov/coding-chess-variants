@@ -1,7 +1,7 @@
 package testRules
 
 import coordinates.Coordinate2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.StandardChess
 import gameTypes.xiangqi.Janggi
 import io.mockk.MockKAnnotations

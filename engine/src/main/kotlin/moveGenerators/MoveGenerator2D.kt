@@ -2,8 +2,8 @@ package moveGenerators
 
 import boards.Board2D
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import pieces.Piece2D
 import players.Player
 import regions.Region2D
@@ -11,7 +11,7 @@ import regions.Region2D
 /**
  * Implementation of the Move Generator interface for a 2d square board.
  */
-interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D> {
+interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move, Piece2D, Coordinate2D> {
     /**
      * Moves along a ray direction until they encounter another piece or the edge of the board
      *

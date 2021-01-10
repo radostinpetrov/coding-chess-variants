@@ -1,6 +1,6 @@
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import utils.notationFormatter.ChessNotationInput
@@ -55,7 +55,7 @@ class testChessNotationInput {
     @Test
     fun testCompositeMoveToStr() {
         val player1 = Player()
-        val compositeMove = Move2D.CompositeMove(
+        val compositeMove = Move.CompositeMove(
             moves = listOf(
                 BasicMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
                 BasicMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),

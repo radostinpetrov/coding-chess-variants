@@ -1,22 +1,17 @@
 package gameTypes.chess
 
 import boards.Board2D
-import endconditions.Outcome
 import coordinates.Coordinate2D
-import endconditions.EndCondition
-import moves.Move2D
-import moves.Move2D.CompositeMove
-import moves.Move2D.SimpleMove
-import moves.Move2D.SimpleMove.*
+import moves.Move
+import moves.Move.CompositeMove
+import moves.Move.SimpleMove
+import moves.Move.SimpleMove.*
 import gameTypes.GameType2D
 import rules.SpecialRules2D
 import endconditions.StandardEndConditions
 import endconditions.EndCondition2D
-import gameTypes.GameType
 import gameTypes.GameType2P
 import moveGenerators.MoveGenerator2D
-import moves.Move
-import pieces.Piece
 import pieces.Piece2D
 import pieces.Royal
 import players.Player
@@ -33,14 +28,14 @@ abstract class AbstractChess(
     override val endConditions: List<EndCondition2D<AbstractChess>> = listOf(StandardEndConditions()),
     startPlayer: Int = 0):
     GameType2D,
-    GameType2P<Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D>() {
+    GameType2P<Board2D, MoveGenerator2D, Move, Piece2D, Coordinate2D>() {
 
     override var playerTurn: Int = startPlayer
 
     /**
      * @throws Exception if a given player is invalid (in the players list)
      */
-    override fun getValidMoves(player: Player): List<Move2D> {
+    override fun getValidMoves(player: Player): List<Move> {
         if (!players.contains(player)) {
             throw Exception("Not a valid player")
         }
@@ -49,9 +44,9 @@ abstract class AbstractChess(
         return moves
     }
 
-    private fun getPossibleMoves(player: Player): List<Move2D> {
+    private fun getPossibleMoves(player: Player): List<Move> {
         val pieces = board.getPieces(player)
-        val possibleMoves = mutableListOf<Move2D>()
+        val possibleMoves = mutableListOf<Move>()
         for (piece in pieces) {
             possibleMoves.addAll(getValidMoveForPiece(piece))
         }
@@ -61,8 +56,8 @@ abstract class AbstractChess(
         return possibleMoves
     }
 
-    private fun filterForCheck(player: Player, possibleMoves: List<Move2D>): List<Move2D> {
-        val res = mutableListOf<Move2D>()
+    private fun filterForCheck(player: Player, possibleMoves: List<Move>): List<Move> {
+        val res = mutableListOf<Move>()
         for (move in possibleMoves) {
             when (move) {
                 is SimpleMove -> {
@@ -125,7 +120,7 @@ abstract class AbstractChess(
         undoMoveHelper(moveLog.removeAt(moveLog.size - 1))
     }
 
-    private fun undoMoveHelper(move: Move2D) {
+    private fun undoMoveHelper(move: Move) {
         when (move) {
             is BasicMove -> {
                 undoBasicMove(move)
@@ -157,7 +152,7 @@ abstract class AbstractChess(
         board.addPiece(move.from, move.pieceMoved)
     }
 
-    override fun makeMove(move: Move2D) {
+    override fun makeMove(move: Move) {
         when (move) {
             is SimpleMove -> {
                 makeSimpleMove(move)

@@ -1,8 +1,8 @@
 package testRules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -43,7 +43,7 @@ class CapablancaCastlingTest {
 
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove =
-            Move2D.CompositeMove(
+            Move.CompositeMove(
                 moves = listOf(
                     BasicMove(
                         from = Coordinate2D(5, 0),
@@ -111,7 +111,7 @@ class CapablancaCastlingTest {
 
         val moves = mockStandardChess.getValidMoves(player1)
         val castleMove =
-            Move2D.CompositeMove(
+            Move.CompositeMove(
                 moves = listOf(
                     BasicMove(
                         from = Coordinate2D(5, 0),

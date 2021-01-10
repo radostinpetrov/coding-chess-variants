@@ -1,6 +1,6 @@
 package testPieces
 
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk

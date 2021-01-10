@@ -1,8 +1,8 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.Move
+import moves.Move.SimpleMove.BasicMove
 import gameTypes.chess.AbstractChess
 import pieces.chess.BlackPawn
 import pieces.chess.WhitePawn
@@ -17,10 +17,10 @@ import kotlin.math.abs
  * and it could have been captured by an enemy pawn had it advanced only one square
  */
 class Enpassant : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
+    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move>) {
         val board = game.board
         val moveLog = game.moveLog
-        val res = mutableListOf<Move2D>()
+        val res = mutableListOf<Move>()
         val prevMove = if (game.getCurrentPlayer() == player) {
             if (moveLog.isEmpty()) {
                 return
@@ -43,7 +43,7 @@ class Enpassant : SpecialRules2D<AbstractChess> {
                 continue
             }
             res.add(
-                Move2D.CompositeMove(
+                Move.CompositeMove(
                     listOf(
                         BasicMove(
                             Coordinate2D(pawn.second.x, pawn.second.y),

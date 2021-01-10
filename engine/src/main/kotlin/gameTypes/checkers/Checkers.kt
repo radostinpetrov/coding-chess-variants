@@ -6,7 +6,7 @@ import coordinates.Coordinate2D
 import gameTypes.chess.AbstractChess
 import moveGenerators.Direction
 import moveGenerators.MoveGenerator2D
-import moves.Move2D
+import moves.Move
 import pieces.Piece2D
 import players.Player
 import regions.RowRegion
@@ -23,7 +23,7 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), endCondition
      * Represents end conditions for checker game
      */
     class CheckersEndCondition : EndCondition2D<AbstractChess> {
-        override fun evaluate(game: AbstractChess, player: Player, moves: List<Move2D>): Outcome? {
+        override fun evaluate(game: AbstractChess, player: Player, moves: List<Move>): Outcome? {
             for (p in game.players) {
                 val pieces = game.board.getPieces(player)
                 if (pieces.isEmpty()) {
@@ -41,14 +41,14 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), endCondition
      * Move generator for checker game
      */
     class CheckersCapture : MoveGenerator2D {
-        override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<Move2D> {
-            val res = mutableListOf<Move2D>()
+        override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<Move> {
+            val res = mutableListOf<Move>()
             MoveGenerator2D.Leaper(2, 2).generate(board, coordinate, piece, player).forEach {
                 val captureCoordinate = (it.from + it.to) / 2
                 val pieceCaptured = board.getPiece(captureCoordinate)
                 val pieceDestination = board.getPiece(it.to)
                 if (pieceCaptured != null && pieceDestination == null && pieceCaptured.player != player) {
-                    res.add(Move2D.SimpleMove.BasicMove(it.from, it.to, it.pieceMoved, player, pieceCaptured, captureCoordinate))
+                    res.add(Move.SimpleMove.BasicMove(it.from, it.to, it.pieceMoved, player, pieceCaptured, captureCoordinate))
                 }
             }
             return res
@@ -111,9 +111,9 @@ class Checkers : AbstractChess(rules = listOf(ForcedCaptureRule()), endCondition
         }
     }
 
-    override fun playerMakeMove(move: Move2D) {
+    override fun playerMakeMove(move: Move) {
         makeMove(move)
-        if (!(move is Move2D.SimpleMove.BasicMove && move.pieceCaptured != null && getValidMoves().any { it is Move2D.SimpleMove.BasicMove && it.pieceCaptured != null })) {
+        if (!(move is Move.SimpleMove.BasicMove && move.pieceCaptured != null && getValidMoves().any { it is Move.SimpleMove.BasicMove && it.pieceCaptured != null })) {
             nextPlayer()
         }
     }

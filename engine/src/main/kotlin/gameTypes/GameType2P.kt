@@ -2,14 +2,11 @@ package gameTypes
 
 import boards.Board
 import coordinates.Coordinate
-import endconditions.EndCondition
 import endconditions.Outcome
-import moves.Move2D.SimpleMove.*
 import moveGenerators.MoveGenerator
-import moves.Move
+import moves.OldMove
 import pieces.Piece
 import players.Player
-import rules.SpecialRules
 
 /**
  * Represents a standard n-player game,
@@ -22,7 +19,7 @@ import rules.SpecialRules
 
 abstract class GameType2P<B : Board<B, MG, M, P, C>,
         MG : MoveGenerator<B, MG, M, P, C>,
-        M: Move<B, MG, M, P, C>,
+        M: OldMove<B, MG, M, P, C>,
         P: Piece<B, MG, M, P, C>,
         C: Coordinate>
     : GameType<B, MG, M, P, C> {

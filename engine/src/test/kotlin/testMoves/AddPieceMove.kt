@@ -3,13 +3,10 @@ package testMoves
 import coordinates.Coordinate2D
 import gameTypes.chess.StandardChess
 import io.mockk.spyk
-import moves.Move2D
-import org.junit.jupiter.api.Assertions.assertEquals
+import moves.Move
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import pieces.chess.Knight
-import pieces.chess.Queen
-import pieces.chess.StandardWhitePawn
 
 class AddPieceMove {
     val mockStandardChess = spyk<StandardChess>()
@@ -21,7 +18,7 @@ class AddPieceMove {
     @Test
     fun addPieceMoveFieldsTest() {
         val knightPiece = Knight(player1)
-        val addPieceMove = Move2D.SimpleMove.AddPieceMove(player1, knightPiece, Coordinate2D(3,3))
+        val addPieceMove = Move.SimpleMove.AddPieceMove(player1, knightPiece, Coordinate2D(3,3))
 
         assertTrue(addPieceMove.displayFrom == Coordinate2D(3, 3))
         assertTrue(addPieceMove.displayTo == Coordinate2D(3, 3))

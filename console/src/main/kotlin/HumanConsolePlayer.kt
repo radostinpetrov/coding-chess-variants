@@ -1,12 +1,12 @@
-import moves.Move2D
+import moves.Move
 import gameTypes.GameType2D
 import utils.notationFormatter.NotationFormatter
 import players.Player
 
 class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: GameType2D, player: Player) : ConsolePlayer(gameType, player) {
     fun isInteger(s: String?) = s?.toIntOrNull()?.let { true } ?: false
-    override fun getTurn(choiceOfMoves: List<Move2D>): Move2D {
-        var possibleMoves: List<Move2D> = mutableListOf()
+    override fun getTurn(choiceOfMoves: List<Move>): Move {
+        var possibleMoves: List<Move> = mutableListOf()
         var input: String?
         while (possibleMoves.isEmpty()) {
             print("Enter the coordinate of the piece to move: ")
@@ -22,8 +22,8 @@ class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: Gam
             }
             possibleMoves = choiceOfMoves.filter {
                 when (it) {
-                    is Move2D.SimpleMove -> it.displayFrom == coordinate
-                    is Move2D.CompositeMove -> {
+                    is Move.SimpleMove -> it.displayFrom == coordinate
+                    is Move.CompositeMove -> {
                         true
                     }
                 }

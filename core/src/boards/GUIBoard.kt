@@ -1,7 +1,7 @@
 package boards
 
 import coordinates.Coordinate2D
-import moves.Move2D
+import moves.Move
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -30,7 +30,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
      * @param flipped decides if the board should be drawn flipped. eg. for blacks turn.
      * @param isPromotionScreen decides if the highlighted square should be drawn
      */
-    fun draw(srcX: Int?, srcY: Int?, moves: List<Move2D>, flipped: Boolean, isPromotionScreen: Boolean) {
+    fun draw(srcX: Int?, srcY: Int?, moves: List<Move>, flipped: Boolean, isPromotionScreen: Boolean) {
         drawBoard(srcX, srcY, flipped, isPromotionScreen)
         drawPieces(batch, flipped)
         drawDots(srcX, srcY, isPromotionScreen, moves, flipped)
@@ -75,7 +75,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
      * @param moves list of possible moves the selected piece can make.
      * @param isPromotionScreen does not draw on promotion screen.
      */
-    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<Move2D>, flipped: Boolean) {
+    private fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<Move>, flipped: Boolean) {
         if (srcX == null || srcY == null || isPromotionScreen) {
             return
         }
