@@ -1,10 +1,9 @@
 package gameTypes
 
-import endconditions.Outcome
 import boards.Board
 import coordinates.Coordinate
 import endconditions.EndCondition
-import moves.Move2D
+import endconditions.Outcome
 import moveGenerators.MoveGenerator
 import moves.Move
 import pieces.Piece
@@ -29,7 +28,7 @@ import rules.SpecialRules
  * @property seed the random seed
  * @property moveLog the list of all moves played
  */
-interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: Piece<B, MG, P, C>, C: Coordinate> {
+interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P : Piece<B, MG, P, C>, C : Coordinate> {
     val board: B
     val players: List<Player>
     val name: String
@@ -37,8 +36,7 @@ interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: P
     var seed: Double?
     val moveLog: MutableList<Move<B, MG, P, C>>
     val rules: List<SpecialRules<GameType<B, MG, P, C>, B, MG, P, C>>
-    val endConditions: List<EndCondition<GameType<B, MG, P, C>, B, MG,  P, C>>
-
+    val endConditions: List<EndCondition<GameType<B, MG, P, C>, B, MG, P, C>>
 
     /**
      * Initialises the game by clearing and initialising the board
@@ -114,7 +112,7 @@ interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: P
      *
      * @return true if the given player’s Royal piece is in check.
      */
-    fun inCheck(player: Player) : Boolean
+    fun inCheck(player: Player): Boolean
 
     /**
      * Returns a list of opponent players for a given player.
@@ -122,7 +120,7 @@ interface GameType<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: P
      * @return a list of opponent players for a given player.
      */
     fun getOpponentPlayers(player: Player): List<Player> {
-        return players.filter{p -> p != player}
+        return players.filter { p -> p != player }
     }
 
     /**
