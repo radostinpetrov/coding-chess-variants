@@ -5,7 +5,6 @@ import coordinates.Coordinate
 import gameTypes.GameType
 import moveGenerators.MoveGenerator
 import moves.Move
-import moves.Move2D
 import pieces.Piece
 import players.Player
 
@@ -32,5 +31,5 @@ interface EndCondition<G : GameType<B, MG, M, P, C>,
      * @return an outcome if the game should end (i.e. it satisfies the condition),
      * otherwise returns null.
      */
-    fun evaluate(game: @UnsafeVariance G, player: Player, moves: List<Move2D>): Outcome?
+    fun evaluate(game: @UnsafeVariance G, player: Player, moves: List<M>): Outcome?
 }
