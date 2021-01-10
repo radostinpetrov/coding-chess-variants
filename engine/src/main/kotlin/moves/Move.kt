@@ -19,10 +19,10 @@ import players.Player
 
 // ONLY USES PIECE AND COORDINATE -> ROOM FOR REDUCING GENERICS?
 
-sealed class Move<B : Board<B, MG, M, P, C>,
-        MG : MoveGenerator<B, MG, M, P, C>,
-        M : Move<B, MG, M, P, C>,
-        P : Piece<B, MG, M, P, C>,
+sealed class Move<B : Board<B, MG, P, C>,
+        MG : MoveGenerator<B, MG, P, C>,
+        
+        P : Piece<B, MG, P, C>,
         C : Coordinate>
     (open val player: Player) {
     
@@ -32,27 +32,27 @@ sealed class Move<B : Board<B, MG, M, P, C>,
     abstract var displayPieceCaptured: P?
     abstract var displayPieceMoved: P
 
-    sealed class SimpleMove<B : Board<B, MG, M, P, C>,
-            MG : MoveGenerator<B, MG, M, P, C>,
-            M : Move<B, MG, M, P, C>,
-            P : Piece<B, MG, M, P, C>,
+    sealed class SimpleMove<B : Board<B, MG, P, C>,
+            MG : MoveGenerator<B, MG, P, C>,
+            
+            P : Piece<B, MG, P, C>,
             C : Coordinate>
-        (override val player: Player): Move<B, MG, M, P, C>(player) {
+        (override val player: Player): Move<B, MG, P, C>(player) {
         open val checkForCheck: Boolean = true
 
         /**
          * Basic Move
          */
-        data class BasicMove<B : Board<B, MG, M, P, C>,
-                MG : MoveGenerator<B, MG, M, P, C>,
-                M : Move<B, MG, M, P, C>,
-                P : Piece<B, MG, M, P, C>,
+        data class BasicMove<B : Board<B, MG, P, C>,
+                MG : MoveGenerator<B, MG, P, C>,
+                
+                P : Piece<B, MG, P, C>,
                 C : Coordinate>
             (val from: C, val to: C, val pieceMoved: P, override val player: Player, val pieceCaptured: P? = null, val pieceCapturedCoordinate: C = to, val piecePromotedTo: P? = null, override val checkForCheck: Boolean = true)
-            : SimpleMove<B, MG, M, P, C>(player) {
+            : SimpleMove<B, MG, P, C>(player) {
             override val displayFrom: C
                 get() = from
-            override var displayTo: C = to
+            override var displayTo: C? = to
             override var displayPiecePromotedTo = piecePromotedTo
             override var displayPieceCaptured = pieceCaptured
             override var displayPieceMoved = pieceMoved
@@ -64,14 +64,14 @@ sealed class Move<B : Board<B, MG, M, P, C>,
          * @param piece the piece to be added
          * @param coordinate the coordinate for the piece to be added to
          */
-        data class AddPieceMove<B : Board<B, MG, M, P, C>,
-                MG : MoveGenerator<B, MG, M, P, C>,
-                M : Move<B, MG, M, P, C>,
-                P : Piece<B, MG, M, P, C>,
+        data class AddPieceMove<B : Board<B, MG, P, C>,
+                MG : MoveGenerator<B, MG, P, C>,
+                
+                P : Piece<B, MG, P, C>,
                 C : Coordinate>
-            (override val player: Player, val piece: P, val coordinate: C): SimpleMove<B, MG, M, P, C>(player) {
+            (override val player: Player, val piece: P, val coordinate: C): SimpleMove<B, MG, P, C>(player) {
             override val displayFrom = coordinate
-            override var displayTo = coordinate
+            override var displayTo: C? = coordinate
             override var displayPiecePromotedTo: P? = null
             override var displayPieceCaptured: P? = null
             override var displayPieceMoved = piece
@@ -83,11 +83,11 @@ sealed class Move<B : Board<B, MG, M, P, C>,
          * @param piece the piece to be removed
          * @param coordinate the coordinate for the piece to be removed from
          */
-        data class RemovePieceMove<B : Board<B, MG, M, P, C>,
-                MG : MoveGenerator<B, MG, M, P, C>,
-                M : Move<B, MG, M, P, C>,
-                P : Piece<B, MG, M, P, C>,
-                C : Coordinate>(override val player: Player, val piece: P, val coordinate: C): SimpleMove<B, MG, M, P, C>(player) {
+        data class RemovePieceMove<B : Board<B, MG, P, C>,
+                MG : MoveGenerator<B, MG, P, C>,
+                
+                P : Piece<B, MG, P, C>,
+                C : Coordinate>(override val player: Player, val piece: P, val coordinate: C): SimpleMove<B, MG, P, C>(player) {
             // TODO wtf to do here?
             override val displayFrom: C? = null
             override var displayTo: C? = null
@@ -100,11 +100,11 @@ sealed class Move<B : Board<B, MG, M, P, C>,
     /**
      * A wrapper around a list of simple moves to represent composite moves
      */
-    data class CompositeMove<B : Board<B, MG, M, P, C>,
-            MG : MoveGenerator<B, MG, M, P, C>,
-            M : Move<B, MG, M, P, C>,
-            P : Piece<B, MG, M, P, C>,
-            C : Coordinate>(val moves: List<SimpleMove<B, MG, M, P, C>>, override val player: Player) : Move<B, MG, M, P, C>(player) {
+    data class CompositeMove<B : Board<B, MG, P, C>,
+            MG : MoveGenerator<B, MG, P, C>,
+            
+            P : Piece<B, MG, P, C>,
+            C : Coordinate>(val moves: List<SimpleMove<B, MG, P, C>>, override val player: Player) : Move<B, MG, P, C>(player) {
         override var displayFrom: C? = null
         override var displayTo: C? = null
         override var displayPiecePromotedTo: P? = null
@@ -112,7 +112,7 @@ sealed class Move<B : Board<B, MG, M, P, C>,
         override lateinit var displayPieceMoved: P
 
         init {
-            val moves = moves.filterIsInstance<SimpleMove.BasicMove<B, MG, M, P, C>>()
+            val moves = moves.filterIsInstance<SimpleMove.BasicMove<B, MG, P, C>>()
             if (moves.isNotEmpty()) {
                 displayFrom = moves.first().from
 

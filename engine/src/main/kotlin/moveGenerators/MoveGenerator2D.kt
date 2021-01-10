@@ -11,7 +11,7 @@ import regions.Region2D
 /**
  * Implementation of the Move Generator interface for a 2d square board.
  */
-interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Move, Piece2D, Coordinate2D> {
+interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Piece2D, Coordinate2D> {
     /**
      * Moves along a ray direction until they encounter another piece or the edge of the board
      *

@@ -4,7 +4,7 @@ import endconditions.Outcome
 import boards.Board
 import coordinates.Coordinate
 import endconditions.EndCondition
-import moves.OldMove
+import moves.Move
 import moveGenerators.MoveGenerator
 import pieces.Piece
 import players.Player
@@ -29,7 +29,7 @@ import rules.SpecialRules
  * @property seed the random seed
  * @property moveLog the list of all moves played
  */
-interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: OldMove<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
+interface GameType<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
     val board: B
     val players: List<Player>
     val name: String

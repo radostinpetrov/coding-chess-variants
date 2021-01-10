@@ -4,7 +4,7 @@ import boards.Board
 import coordinates.Coordinate
 import gameTypes.GameType
 import moveGenerators.MoveGenerator
-import moves.OldMove
+import moves.Move
 import pieces.Piece
 import players.Player
 
@@ -21,7 +21,7 @@ import players.Player
 interface EndCondition<out G : GameType<B, MG, M, P, C>,
     B : Board<B, MG, M, P, C>,
     MG : MoveGenerator<B, MG, M, P, C>,
-    M : OldMove<B, MG, M, P, C>,
+    M : Move<B, MG, M, P, C>,
     P : Piece<B, MG, M, P, C>,
     C : Coordinate> {
 

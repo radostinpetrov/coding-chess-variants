@@ -17,7 +17,7 @@ import players.Player
  */
 class Board2D(val rows: Int, val cols: Int,
               private val outOfBoundsRegion: Region2D? = null)
-    : Board<Board2D, MoveGenerator2D, Move, Piece2D, Coordinate2D> {
+    : Board<Board2D, MoveGenerator2D, Piece2D, Coordinate2D> {
     private var board: Array<Array<Piece2D?>> = Array(rows) { Array(cols) { null } }
     override fun getBoardState(): Map<Coordinate2D, Piece2D?> {
         val res = mutableMapOf<Coordinate2D, Piece2D?>()

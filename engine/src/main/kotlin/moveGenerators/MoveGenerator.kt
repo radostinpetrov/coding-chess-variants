@@ -2,7 +2,7 @@ package moveGenerators
 
 import boards.Board
 import coordinates.Coordinate
-import moves.OldMove
+import moves.Move
 import pieces.Piece
 import players.Player
 
@@ -15,7 +15,7 @@ import players.Player
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  */
-interface MoveGenerator<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M : OldMove<B, MG, M, P, C>, P : Piece<B, MG, M, P, C>, C : Coordinate> {
+interface MoveGenerator<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P : Piece<B, MG, P, C>, C : Coordinate> {
     /**
      * Takes in the current board, the piece to be moved and its coordinate, and
      * the player who makes the move to return all possible game moves
