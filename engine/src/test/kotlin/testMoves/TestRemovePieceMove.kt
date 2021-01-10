@@ -3,7 +3,7 @@ package testMoves
 import coordinates.Coordinate2D
 import gameTypes.chess.StandardChess
 import io.mockk.spyk
-import moves.Move2D
+import moves.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import pieces.chess.Bishop
@@ -21,9 +21,9 @@ class TestRemovePieceMove {
     fun removePieceMoveLeavesSquareEmpty() {
         mockStandardChess.initGame()
 
-        Move2D.SimpleMove.BasicMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1)
-        Move2D.SimpleMove.BasicMove(Coordinate2D(3, 6), Coordinate2D(3, 4), StandardBlackPawn(player2), player2)
-        Move2D.SimpleMove.RemovePieceMove(player1, StandardWhitePawn(player2), Coordinate2D(3, 4))
+        BasicMove2D(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1)
+        BasicMove2D(Coordinate2D(3, 6), Coordinate2D(3, 4), StandardBlackPawn(player2), player2)
+        RemovePieceMove2D(player1, StandardWhitePawn(player2), Coordinate2D(3, 4))
         assertTrue(board.getPiece(Coordinate2D(3, 4)) == null)
     }
 
@@ -31,7 +31,7 @@ class TestRemovePieceMove {
     fun removePieceMoveFieldsTest() {
         val bishopPiece = Bishop(player1)
         board.addPiece(Coordinate2D(4, 4), bishopPiece)
-        val removePieceMove = Move2D.SimpleMove.RemovePieceMove(player2, bishopPiece, Coordinate2D(34, 4))
+        val removePieceMove = RemovePieceMove2D(player2, bishopPiece, Coordinate2D(34, 4))
 
         assertTrue(removePieceMove.displayFrom == Coordinate2D(-1, -1))
         assertTrue(removePieceMove.displayTo == Coordinate2D(-1, -1))

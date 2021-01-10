@@ -1,6 +1,5 @@
 package gameTypes.chess
 
-import coordinates.Coordinate2D
 import boards.Board2D
 import rules.Enpassant
 import endconditions.StandardEndConditions
@@ -10,7 +9,7 @@ import utils.FenUtility
 /**
  * Represents Grand Chess
  */
-class GrandChess : AbstractChess(listOf(Enpassant()), listOf(StandardEndConditions())) {
+class GrandChess : AbstractChess2D(listOf(Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(10, 10)
     override val name = "Grand Chess"
 

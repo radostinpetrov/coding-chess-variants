@@ -10,4 +10,4 @@ import pieces.Piece2D
 /**
  * Implementation of the SpecialRule interface for a 2d square board.
  */
-interface SpecialRules2D<out G : GameType2D> : SpecialRules<G, Board2D, MoveGenerator2D, Move2D, Piece2D, Coordinate2D>
+interface SpecialRules2D<out G : GameType2D> : SpecialRules<G, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>

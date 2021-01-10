@@ -1,8 +1,8 @@
 package rules
 
+import moves.Move
 import boards.Board
 import coordinates.Coordinate
-import moves.Move
 import moves.Move2D
 import gameTypes.GameType
 import moveGenerators.MoveGenerator
@@ -14,15 +14,13 @@ import players.Player
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
- * @param M the type of a move.
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  */
-interface SpecialRules<out G: GameType<B, MG, M, P, C>,
-        B : Board<B, MG, M, P, C>,
-        MG : MoveGenerator<B, MG, M, P, C>,
-        M: Move<B, MG, M, P, C>,
-        P: Piece<B, MG, M, P, C>,
+interface SpecialRules<out G: GameType<B, MG, P, C>,
+        B : Board<B, MG, P, C>,
+        MG : MoveGenerator<B, MG, P, C>,
+        P: Piece<B, MG, P, C>,
         C: Coordinate> {
     /**
      * Modifies the given moves by either adding moves which satisfy a special condition,
@@ -30,5 +28,5 @@ interface SpecialRules<out G: GameType<B, MG, M, P, C>,
      *
      * @return the possible moves generated as a result of the special rule
      */
-    fun getPossibleMoves(game: @UnsafeVariance G, player: Player, moves: MutableList<Move2D>)
+    fun getPossibleMoves(game: @UnsafeVariance G, player: Player, moves: MutableList<Move<B, MG, P, C>>)
 }

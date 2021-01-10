@@ -1,4 +1,4 @@
-import moves.Move2D
+import moves.*
 import gameTypes.GameType2D
 import utils.notationFormatter.NotationFormatter
 import players.Player
@@ -22,8 +22,8 @@ class HumanConsolePlayer(val notationFormatter: NotationFormatter, gameType: Gam
             }
             possibleMoves = choiceOfMoves.filter {
                 when (it) {
-                    is Move2D.SimpleMove -> it.displayFrom == coordinate
-                    is Move2D.CompositeMove -> {
+                    is SimpleMove2D -> it.displayFrom == coordinate
+                    is CompositeMove2D -> {
                         true
                     }
                 }

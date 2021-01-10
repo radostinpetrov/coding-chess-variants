@@ -1,7 +1,6 @@
 package gameTypes.chess
 
 import boards.Board2D
-import coordinates.Coordinate2D
 import endconditions.StandardEndConditions
 import pieces.chess.*
 import utils.FenUtility
@@ -11,7 +10,7 @@ import rules.Enpassant
 /**
  * Represents Capablanca Chess
  */
-open class CapablancaChess : AbstractChess(listOf(CapablancaCastling(), Enpassant()), listOf(StandardEndConditions())) {
+open class CapablancaChess : AbstractChess2D(listOf(CapablancaCastling(), Enpassant()), listOf(StandardEndConditions())) {
     override val board = Board2D(8, 10)
     override val name = "Capablanca Chess"
 

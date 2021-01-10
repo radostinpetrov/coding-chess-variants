@@ -1,6 +1,6 @@
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.BasicMove2D
+import moves.CompositeMove2D
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
 import utils.notationFormatter.ChessNotationInput
@@ -43,7 +43,7 @@ class testChessNotationInput {
     @Test
     fun testBasicMoveToStr() {
         val player1 = Player()
-        val basicMove = BasicMove(
+        val basicMove = BasicMove2D(
             Coordinate2D(4, 1),
             Coordinate2D(4, 2),
             StandardWhitePawn(player1),
@@ -55,11 +55,11 @@ class testChessNotationInput {
     @Test
     fun testCompositeMoveToStr() {
         val player1 = Player()
-        val compositeMove = Move2D.CompositeMove(
+        val compositeMove = CompositeMove2D(
             moves = listOf(
-                BasicMove(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
-                BasicMove(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
+                BasicMove2D(from = Coordinate2D(4, 0), to = Coordinate2D(5, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicMove2D(from = Coordinate2D(5, 0), to = Coordinate2D(6, 0), pieceMoved = King(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true),
+                BasicMove2D(from = Coordinate2D(7, 0), to = Coordinate2D(5, 0), pieceMoved = Rook(player = player1), player = player1, pieceCaptured = null, piecePromotedTo = null, checkForCheck = true)
             ),
             player = player1
         )

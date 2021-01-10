@@ -1,9 +1,7 @@
 package utils.notationFormatter
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.CompositeMove
-import moves.Move2D.SimpleMove.*
+import moves.*
 
 /**
  * ChessNotationInput
@@ -45,16 +43,16 @@ class ChessNotationInput() : NotationFormatter {
         val sb = StringBuilder()
 
         when (move) {
-            is BasicMove -> {
+            is BasicMove2D -> {
                 sb.append(basicMoveToStr(move))
             }
-            is AddPieceMove -> {
+            is AddPieceMove2D -> {
                 sb.append("${move.piece.getSymbol()} is placed on the board at ${coordinateToStr(move.coordinate)}")
             }
-            is RemovePieceMove -> {
+            is RemovePieceMove2D -> {
                 sb.append("${move.piece.getSymbol()} is removed from the board at ${coordinateToStr(move.coordinate)}")
             }
-            is CompositeMove -> {
+            is CompositeMove2D -> {
                 val moves = move.moves
                 for ((i, m) in moves.withIndex()) {
                     sb.append(moveToStr(m))
@@ -74,7 +72,7 @@ class ChessNotationInput() : NotationFormatter {
      * Used as a helper function for moveToStr().
      * @return the string representing the move.
      */
-    private fun basicMoveToStr(move: BasicMove): String {
+    private fun basicMoveToStr(move: BasicMove2D): String {
         val sb = StringBuilder()
         sb.append("${move.pieceMoved.getSymbol()} moves from ${coordinateToStr(move.from)} to ${coordinateToStr(move.to)}")
 

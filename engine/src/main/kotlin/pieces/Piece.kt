@@ -2,7 +2,6 @@ package pieces
 
 import boards.Board
 import coordinates.Coordinate
-import moves.Move
 import moveGenerators.MoveGenerator
 import players.Player
 
@@ -11,14 +10,13 @@ import players.Player
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.
- * @param M the type of a move.
  * @param P the type of a piece.
  * @param C the type of a coordinate.
  *
  * @property moveGenerators that corresponds to the piece
  * @property player the player that owns the piece
  */
-interface Piece<B : Board<B, MG, M, P, C>, MG : MoveGenerator<B, MG, M, P, C>, M: Move<B, MG, M, P, C>, P: Piece<B, MG, M, P, C>, C: Coordinate> {
+interface Piece<B : Board<B, MG, P, C>, MG : MoveGenerator<B, MG, P, C>, P: Piece<B, MG, P, C>, C: Coordinate> {
     val moveGenerators: List<MG>
     val player: Player
 

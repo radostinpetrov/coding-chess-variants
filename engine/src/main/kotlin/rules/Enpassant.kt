@@ -1,9 +1,8 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
-import gameTypes.chess.AbstractChess
+import moves.*
+import gameTypes.chess.AbstractChess2D
 import pieces.chess.BlackPawn
 import pieces.chess.WhitePawn
 import players.Player
@@ -16,8 +15,8 @@ import kotlin.math.abs
  * a move of two squares from its starting square,
  * and it could have been captured by an enemy pawn had it advanced only one square
  */
-class Enpassant : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
+class Enpassant : SpecialRules2D<AbstractChess2D> {
+    override fun getPossibleMoves(game: AbstractChess2D, player: Player, moves: MutableList<Move2D>) {
         val board = game.board
         val moveLog = game.moveLog
         val res = mutableListOf<Move2D>()
@@ -33,7 +32,7 @@ class Enpassant : SpecialRules2D<AbstractChess> {
             moveLog[moveLog.size - 2]
         }
 
-        if (!(prevMove is BasicMove && ((prevMove.pieceMoved is WhitePawn || prevMove.pieceMoved is BlackPawn) && abs(prevMove.from.y - prevMove.to.y) == 2))) {
+        if (!(prevMove is BasicMove2D && ((prevMove.pieceMoved is WhitePawn || prevMove.pieceMoved is BlackPawn) && abs(prevMove.from.y - prevMove.to.y) == 2))) {
             return
         }
         val pawns = board.getPieces(player).filter { p -> (p.first is WhitePawn || p.first is BlackPawn) && (p.second.y == prevMove.to.y) && (abs(p.second.x - prevMove.to.x) == 1) }
@@ -43,13 +42,13 @@ class Enpassant : SpecialRules2D<AbstractChess> {
                 continue
             }
             res.add(
-                Move2D.CompositeMove(
+                CompositeMove2D(
                     listOf(
-                        BasicMove(
+                        BasicMove2D(
                             Coordinate2D(pawn.second.x, pawn.second.y),
                             Coordinate2D(prevMove.to.x, prevMove.to.y), pawn.first, player, prevMove.pieceMoved, checkForCheck = false
                         ),
-                        BasicMove(
+                        BasicMove2D(
                             Coordinate2D(prevMove.to.x, prevMove.to.y),
                             Coordinate2D(prevMove.to.x, prevMove.to.y + dy), pawn.first, player
                         )

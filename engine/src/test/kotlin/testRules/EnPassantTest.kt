@@ -1,8 +1,7 @@
 package testRules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.SimpleMove.BasicMove
+import moves.*
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -26,20 +25,20 @@ class EnPassantTest {
     fun simplePawnEnPassant() {
         mockStandardChess.initGame()
 
-        val enPassantMove: List<BasicMove> = listOf(
-            BasicMove(
+        val enPassantMove: List<BasicMove2D> = listOf(
+            BasicMove2D(
                 Coordinate2D(4, 4), Coordinate2D(3, 4), StandardWhitePawn(player1), player1, board.getPiece(
                     Coordinate2D(3, 4)
                 )),
-            BasicMove(Coordinate2D(3, 4), Coordinate2D(3, 5), StandardWhitePawn(player1), player1)
+            BasicMove2D(Coordinate2D(3, 4), Coordinate2D(3, 5), StandardWhitePawn(player1), player1)
         )
 
         val initMoves: List<Move2D> = listOf(
-            BasicMove(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1),
-            BasicMove(Coordinate2D(3, 6), Coordinate2D(3, 4), StandardBlackPawn(player2), player2),
-            BasicMove(Coordinate2D(4, 3), Coordinate2D(4, 4), StandardWhitePawn(player1), player1),
-            BasicMove(Coordinate2D(1, 6), Coordinate2D(1, 4), StandardBlackPawn(player2), player2),
-            Move2D.CompositeMove(enPassantMove, player1)
+            BasicMove2D(Coordinate2D(4, 1), Coordinate2D(4, 3), StandardWhitePawn(player1), player1),
+            BasicMove2D(Coordinate2D(3, 6), Coordinate2D(3, 4), StandardBlackPawn(player2), player2),
+            BasicMove2D(Coordinate2D(4, 3), Coordinate2D(4, 4), StandardWhitePawn(player1), player1),
+            BasicMove2D(Coordinate2D(1, 6), Coordinate2D(1, 4), StandardBlackPawn(player2), player2),
+            CompositeMove2D(enPassantMove, player1)
         )
 
         for (move in initMoves) {

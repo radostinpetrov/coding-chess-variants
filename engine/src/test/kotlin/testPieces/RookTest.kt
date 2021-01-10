@@ -1,6 +1,6 @@
 package testPieces
 
-import moves.Move2D.SimpleMove.BasicMove
+import moves.BasicMove2D
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -19,7 +19,7 @@ class RookTest {
     fun checkRookMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val rookMoves = moves.filter { it is BasicMove && it.pieceMoved is Rook }
+        val rookMoves = moves.filter { it is BasicMove2D && it.pieceMoved is Rook }
         Assertions.assertTrue(rookMoves.isEmpty())
     }
 }

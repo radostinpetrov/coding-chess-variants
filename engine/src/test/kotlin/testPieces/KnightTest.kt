@@ -1,6 +1,6 @@
 package testPieces
 
-import moves.Move2D.SimpleMove.BasicMove
+import moves.*
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -19,8 +19,8 @@ class KnightTest {
     fun checkKnightMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val firstKnight = (moves.first { it is BasicMove && it.pieceMoved is Knight } as BasicMove).pieceMoved
-        val firstKnightMoves = moves.filter { it is BasicMove && it.pieceMoved === firstKnight }
+        val firstKnight = (moves.first { it is BasicMove2D && it.pieceMoved is Knight } as BasicMove2D).pieceMoved
+        val firstKnightMoves = moves.filter { it is BasicMove2D && it.pieceMoved === firstKnight }
         Assertions.assertTrue(firstKnightMoves.size == 2)
     }
 }

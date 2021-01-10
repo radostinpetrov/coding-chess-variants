@@ -2,7 +2,7 @@ package rules
 
 import coordinates.Coordinate2D
 import moves.Move2D
-import gameTypes.chess.AbstractChess
+import gameTypes.chess.AbstractChess2D
 import pieces.Royal
 import players.Player
 import kotlin.math.max
@@ -14,12 +14,12 @@ import kotlin.math.min
  * The two generals cannot face each other along the same line
  * without any intervening pieces.
  */
-class GeneralsRule : SpecialRules2D<AbstractChess> {
-    override fun getPossibleMoves(game: AbstractChess, player: Player, moves: MutableList<Move2D>) {
+class GeneralsRule : SpecialRules2D<AbstractChess2D> {
+    override fun getPossibleMoves(game: AbstractChess2D, player: Player, moves: MutableList<Move2D>) {
         moves.retainAll { !generalsFaceEachOther(game, it) }
     }
 
-    private fun generalsFaceEachOther(game: AbstractChess, move: Move2D): Boolean {
+    private fun generalsFaceEachOther(game: AbstractChess2D, move: Move2D): Boolean {
         game.makeMove(move)
         val generalCoordinates = game.board.getPieces().filter { it.first is Royal }
         if (generalCoordinates.size < 2) {

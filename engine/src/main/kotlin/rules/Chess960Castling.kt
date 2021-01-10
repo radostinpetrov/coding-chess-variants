@@ -1,9 +1,7 @@
 package rules
 
 import coordinates.Coordinate2D
-import moves.Move2D
-import moves.Move2D.CompositeMove
-import moves.Move2D.SimpleMove.*
+import moves.*
 import gameTypes.chess.Chess960
 import pieces.Piece2D
 import pieces.chess.King
@@ -22,15 +20,15 @@ class Chess960Castling : SpecialRules2D<Chess960> {
 
         for (move in currentPlayerMoves) {
             when (move) {
-                is BasicMove -> {
+                is BasicMove2D -> {
                     if (move.pieceMoved is King) {
                         return
                     }
                     rooks.removeAll { it.first === move.pieceMoved }
                 }
-                is CompositeMove -> {
+                is CompositeMove2D -> {
                     for (basicMove in move.moves) {
-                        if (basicMove is BasicMove) {
+                        if (basicMove is BasicMove2D) {
                             if (basicMove.pieceMoved is King) {
                                 return
                             }
@@ -92,9 +90,9 @@ class Chess960Castling : SpecialRules2D<Chess960> {
         if (leftRook != null) {
             val rook = leftRook.first
 
-            val castleList = mutableListOf<Move2D.SimpleMove>()
+            val castleList = mutableListOf<SimpleMove2D>()
             castleList.add(
-                RemovePieceMove(
+                RemovePieceMove2D(
                     player,
                     rook,
                     leftRook.second
@@ -105,7 +103,7 @@ class Chess960Castling : SpecialRules2D<Chess960> {
             for (i in range) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
                 castleList.add(
-                    BasicMove(
+                    BasicMove2D(
                         prevKingCoordinate,
                         newCoordinate, kingPiece, player)
                 )
@@ -113,14 +111,14 @@ class Chess960Castling : SpecialRules2D<Chess960> {
             }
 
             castleList.add(
-                AddPieceMove(
+                AddPieceMove2D(
                     player,
                     rook,
                     Coordinate2D(3, kingCoordinate.y)
                 )
             )
 
-            val move = CompositeMove(castleList, player)
+            val move = CompositeMove2D(castleList, player)
             move.displayFrom = kingCoordinate
             move.displayTo = Coordinate2D(2, kingCoordinate.y)
 
@@ -146,10 +144,10 @@ class Chess960Castling : SpecialRules2D<Chess960> {
         if (rightRook != null) {
             val rook = rightRook.first
 
-            val castleList = mutableListOf<Move2D.SimpleMove>()
+            val castleList = mutableListOf<SimpleMove2D>()
 
             castleList.add(
-                RemovePieceMove(
+                RemovePieceMove2D(
                     player,
                     rook,
                     rightRook.second
@@ -160,7 +158,7 @@ class Chess960Castling : SpecialRules2D<Chess960> {
             for (i in (kingCoordinate.x + 1) .. 6) {
                 val newCoordinate = Coordinate2D(i, prevKingCoordinate.y)
                 castleList.add(
-                    BasicMove(
+                    BasicMove2D(
                         prevKingCoordinate,
                         newCoordinate, kingPiece, player
                     )
@@ -169,14 +167,14 @@ class Chess960Castling : SpecialRules2D<Chess960> {
             }
 
             castleList.add(
-                AddPieceMove(
+                AddPieceMove2D(
                     player,
                     rook,
                     Coordinate2D(5, kingCoordinate.y)
                 )
             )
 
-            val move = CompositeMove(castleList, player)
+            val move = CompositeMove2D(castleList, player)
             move.displayFrom = kingCoordinate
             move.displayTo = Coordinate2D(6, kingCoordinate.y)
 

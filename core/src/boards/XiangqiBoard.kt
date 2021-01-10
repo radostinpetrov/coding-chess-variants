@@ -1,6 +1,5 @@
 package boards
 
-import moves.Move2D
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20

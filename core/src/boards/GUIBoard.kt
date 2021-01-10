@@ -89,7 +89,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
             .map { m -> m.displayTo }
 
         if (flipped) {
-            toCoordinates = toCoordinates.map { c -> Coordinate2D(columns - c.x - 1, rows - c.y - 1) }
+            toCoordinates = toCoordinates.map { c -> Coordinate2D(columns - c!!.x - 1, rows - c.y - 1) }
         }
 
         /* Draw toCoordinates dots for a selected piece. */
@@ -97,7 +97,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
         for (c in toCoordinates) {
-            shapeRenderer.circle(squareWidth * c.x + position, squareWidth * c.y + position, possibleMoveCircleRadius)
+            shapeRenderer.circle(squareWidth * c!!.x + position, squareWidth * c.y + position, possibleMoveCircleRadius)
         }
 
         shapeRenderer.end()

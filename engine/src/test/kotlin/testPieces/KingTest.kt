@@ -1,6 +1,6 @@
 package testPieces
 
-import moves.Move2D.SimpleMove.BasicMove
+import moves.*
 import gameTypes.chess.StandardChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
@@ -19,7 +19,7 @@ class KingTest {
     fun checkKingMoves() {
         mockStandardChess.initGame()
         val moves = mockStandardChess.getValidMoves(mockStandardChess.players[0])
-        val kingMoves = moves.filter { it is BasicMove && it.pieceMoved is King }
+        val kingMoves = moves.filter { it is BasicMove2D && it.pieceMoved is King }
         Assertions.assertTrue(kingMoves.isEmpty())
     }
 }
