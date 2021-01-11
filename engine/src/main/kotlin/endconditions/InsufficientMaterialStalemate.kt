@@ -40,7 +40,7 @@ class InsufficientMaterialStalemate : EndCondition2D<AbstractChess2D> {
         }
 
         if (kingKnightOrCardinalVsSoleKing || draw) {
-            return Outcome.Draw("Stalemate by Insufficient Material")
+            return Outcome.Draw("by Insufficient Material")
         }
 
         return null
