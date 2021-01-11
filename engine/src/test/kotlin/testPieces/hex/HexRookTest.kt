@@ -17,21 +17,18 @@ class HexRookTest {
     fun setUp() = MockKAnnotations.init(this)
 
     @Test
-    fun checkRookMoves() {
+    fun checkQueenMoves() {
         mockHexagonalChess.initGame()
 
-        val rook = mockHexagonalChess.board.getPiece(Coordinate2D(4, 1))
+        val rook = mockHexagonalChess.board.getPiece(Coordinate2D(2,3))
         Assertions.assertNotNull(rook)
 
         val firstRookMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === rook }
 
         val expectedMoves = listOf(
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(4, 3), rook!!, player, pieceCapturedCoordinate = Coordinate2D(4,3)),
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(4, 5), rook, player, pieceCapturedCoordinate = Coordinate2D(4,5)),
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(3, 4), rook, player, pieceCapturedCoordinate = Coordinate2D(3,4)),
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(2,7), rook, player, pieceCapturedCoordinate = Coordinate2D(2,7)),
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(1, 10), rook, player, pieceCapturedCoordinate = Coordinate2D(1, 10)),
-            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(0, 13), rook, player, pieceCapturedCoordinate = Coordinate2D(0,13))
+            BasicMoveHex(Coordinate2D(2,3), Coordinate2D(3,4), rook!!, player, pieceCapturedCoordinate = Coordinate2D(3,4)),
+            BasicMoveHex(Coordinate2D(2,3), Coordinate2D(4, 5), rook, player, pieceCapturedCoordinate = Coordinate2D(4,5)),
+            BasicMoveHex(Coordinate2D(2,3), Coordinate2D(5, 6), rook, player, pieceCapturedCoordinate = Coordinate2D(5,6))
         )
 
         Assertions.assertEquals(expectedMoves, firstRookMoves)

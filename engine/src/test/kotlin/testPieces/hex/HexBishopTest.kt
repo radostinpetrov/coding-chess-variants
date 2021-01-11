@@ -23,13 +23,13 @@ class HexBishopTest {
         val bishop = mockHexagonalChess.board.getPiece(Coordinate2D(5, 4))
         Assertions.assertNotNull(bishop)
 
-        val firstRookMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === bishop }
+        val firstBishopMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === bishop }
 
         val expectedMoves = listOf(
             BasicMoveHex(Coordinate2D(5, 4), Coordinate2D(7, 4), bishop!!, player, pieceCapturedCoordinate = Coordinate2D(7,4)),
             BasicMoveHex(Coordinate2D(5, 4), Coordinate2D(3,4), bishop, player, pieceCapturedCoordinate = Coordinate2D(3,4))
         )
 
-        Assertions.assertEquals(expectedMoves, firstRookMoves)
+        Assertions.assertEquals(expectedMoves, firstBishopMoves)
     }
 }

@@ -23,13 +23,13 @@ class HexKingTest {
         val king = mockHexagonalChess.board.getPiece(Coordinate2D(6, 1))
         Assertions.assertNotNull(king)
 
-        val firstRookMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === king }
+        val firstKingMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === king }
 
         val expectedMoves = listOf(
             BasicMoveHex(Coordinate2D(6, 1), Coordinate2D(6, 3), king!!, player, pieceCapturedCoordinate = Coordinate2D(6,3)),
             BasicMoveHex(Coordinate2D(6, 1), Coordinate2D(7, 4), king, player, pieceCapturedCoordinate = Coordinate2D(7,4))
         )
 
-        Assertions.assertEquals(expectedMoves, firstRookMoves)
+        Assertions.assertEquals(expectedMoves, firstKingMoves)
     }
 }

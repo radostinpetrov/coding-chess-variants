@@ -23,7 +23,7 @@ class HexKnightTest {
         val knight = mockHexagonalChess.board.getPiece(Coordinate2D(3, 2))
         Assertions.assertNotNull(knight)
 
-        val firstRookMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === knight }
+        val firstKnightMoves = mockHexagonalChess.getValidMoves().filter { it is BasicMoveHex && it.pieceMoved === knight }
 
         val expectedMoves = listOf(
             BasicMoveHex(Coordinate2D(3, 2), Coordinate2D(2, 7), knight!!, player, pieceCapturedCoordinate = Coordinate2D(2,7)),
@@ -32,6 +32,6 @@ class HexKnightTest {
             BasicMoveHex(Coordinate2D(3, 2), Coordinate2D(6, 3), knight, player, pieceCapturedCoordinate = Coordinate2D(6,3))
         )
 
-        Assertions.assertEquals(expectedMoves, firstRookMoves)
+        Assertions.assertEquals(expectedMoves, firstKnightMoves)
     }
 }
