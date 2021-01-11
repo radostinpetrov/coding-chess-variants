@@ -2,6 +2,7 @@ package gameTypes.chess
 
 import boards.Board2D
 import coordinates.Coordinate2D
+import endconditions.StandardEndConditions
 import moveGenerators.Direction
 import moveGenerators.MoveGenerator2D
 import pieces.Pawn
@@ -11,7 +12,6 @@ import players.Player
 import regions.BoxRegion
 import regions.CompositeRegion
 import regions.RowRegion
-import endconditions.StandardEndConditions
 import utils.FenUtility
 
 /**
@@ -23,28 +23,27 @@ class BalbosGame : AbstractChess2D(listOf(), listOf(StandardEndConditions())) {
     abstract class BalboPawn(override val player: Player, private val standardMoves: List<MoveGenerator2D>, private val promotionRegion: List<BoxRegion>, private val restrictedRegion: List<BoxRegion>) : Piece2D, Pawn {
         override val moveGenerators: List<MoveGenerator2D>
             get() = listOf(
-            MoveGenerator2D.AddPromotion(
-                standardMoves,
-                CompositeRegion(promotionRegion),
-                listOf(Bishop(player), Knight(player)),
-                true
-            ),
-            MoveGenerator2D.RestrictedDestination(
                 MoveGenerator2D.AddPromotion(
                     standardMoves,
-                    CompositeRegion(restrictedRegion),
-                    listOf(Queen(player), Rook(player)),
+                    CompositeRegion(promotionRegion),
+                    listOf(Bishop(player), Knight(player)),
                     true
                 ),
-                CompositeRegion(restrictedRegion)
+                MoveGenerator2D.RestrictedDestination(
+                    MoveGenerator2D.AddPromotion(
+                        standardMoves,
+                        CompositeRegion(restrictedRegion),
+                        listOf(Queen(player), Rook(player)),
+                        true
+                    ),
+                    CompositeRegion(restrictedRegion)
+                )
             )
-        )
 
         override fun getSymbol(): String {
             return "P"
         }
     }
-
 
     companion object BalbosWhitePawnRegions {
         val balbosWhitePawnStandardMoves = listOf(
@@ -83,7 +82,6 @@ class BalbosGame : AbstractChess2D(listOf(), listOf(StandardEndConditions())) {
             BoxRegion(Coordinate2D(3, 1), Coordinate2D(3, 1)),
             BoxRegion(Coordinate2D(7, 1), Coordinate2D(7, 1)),
         )
-
     }
 
     /**

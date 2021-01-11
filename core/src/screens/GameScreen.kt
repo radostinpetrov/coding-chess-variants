@@ -1,8 +1,5 @@
 package screens
 
-import endconditions.Outcome
-import coordinates.Coordinate2D
-import moves.Move2D
 import boards.ChessBoard
 import boards.GUIBoard
 import boards.XiangqiBoard
@@ -20,10 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
+import coordinates.Coordinate2D
+import endconditions.Outcome
 import gameTypes.GameType2D
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
+import moves.Move2D
 import players.*
 
 /**
@@ -287,7 +287,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         Gdx.app.postRunnable {
 //            switchToGameOverScreen(outcome)
 
-            gameOverPopUp = GameOverPopUp(game, stage, this, outcome, shapeRenderer, windowWidth, windowHeight,  libToFrontendPlayer[outcome.winner]!!.name)
+            gameOverPopUp = GameOverPopUp(game, stage, this, outcome, shapeRenderer, windowWidth, windowHeight, libToFrontendPlayer[outcome.winner]!!.name)
             forfeitButton.remove()
         }
     }
@@ -300,12 +300,16 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         val nextPlayer = gameEngine.getNextPlayer()
 
         /* Determines whether or not to flip the board orientation. */
-        val flip = (libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
-            nextPlayer
-        )) ||
-                (libToFrontendPlayer[currPlayer]!!.colour == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(
+        val flip = (
+            libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
+                nextPlayer
+            )
+            ) ||
+            (
+                libToFrontendPlayer[currPlayer]!!.colour == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(
                     nextPlayer
-                ))
+                )
+                )
 
         if (gameOverPopUp != null) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
@@ -313,12 +317,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             drawHistoryBox()
             drawUsers(flip)
             gameOverPopUp!!.show()
-
         } else {
             /* Draws the board and detects user input. */
             synchronized(this) {
                 guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-                    controls(!isPromotionScreen && flip)
+                controls(!isPromotionScreen && flip)
             }
 
             /* Draws the side bar. */
@@ -515,7 +518,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             val coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
-                val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() +  (coor.y + 1)}"
+                val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
                 font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * i))
             } else {
                 font.setColor(Color.BLACK)
@@ -531,7 +534,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      */
     private fun drawUsers(flipped: Boolean) {
         batch.begin()
-        //TODO add user1 user2
+        // TODO add user1 user2
         val user1: String
         val user2: String
 
