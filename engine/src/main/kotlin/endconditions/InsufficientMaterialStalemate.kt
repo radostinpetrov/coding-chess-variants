@@ -20,7 +20,7 @@ class InsufficientMaterialStalemate : EndCondition2D<AbstractChess2D> {
 
         var draw: Boolean
         draw = piecesBySymbol.filter { it == "K" }.size == 2
-        draw = draw && piecesBySymbol.filter { it == "B" }.size == pieces.size - 2
+        draw = draw && piecesBySymbol.size == piecesBySymbol.filter { it == "B" }.size + piecesBySymbol.filter { it == "K" }.size
 
         // checking for bishops to be on the same colour
         if (draw && piecesBySymbol.filter { it == "B" }.size > 1) {
