@@ -8,12 +8,13 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
 import gameTypes.chess.BalbosGame
-import pieces.Piece2D
+import pieces.Piece
 import pieces.antichess.*
 import pieces.chess.*
+import pieces.hex.*
 import pieces.janggi.*
-import pieces.xiangqi.*
 import pieces.janggi.Elephant
+import pieces.xiangqi.*
 import playground.ChessPlayground
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
@@ -39,7 +40,6 @@ class Textures(assets: AssetManager) {
     val blackQueen = assets[TextureAssets.BlackQueen]
     val blackKing = assets[TextureAssets.BlackKing]
 
-
     /* --- Grand chess and Capablanca chess --- */
     /* White pieces. */
     val whiteCardinal = assets[TextureAssets.WhiteCardinal]
@@ -48,7 +48,6 @@ class Textures(assets: AssetManager) {
     /* Black pieces. */
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
-
 
     /* --- Xiangqi and Janggi --- */
     /* White pieces. */
@@ -111,8 +110,17 @@ class Textures(assets: AssetManager) {
         BerlinWhitePawn::class to whitePawn,
 
         /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece
-        )
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
+
+        /* Hex. */
+        HexBishop::class to whiteBishop,
+        HexWhitePawn::class to whitePawn,
+        HexKing::class to whiteKing,
+        HexKnight::class to whiteKnight,
+        HexQueen::class to whiteQueen,
+        HexRook::class to whiteRook,
+
+    )
 
     /* Contains the mappings to the textures for black pieces. */
     val blacks = mapOf(
@@ -145,13 +153,22 @@ class Textures(assets: AssetManager) {
         BerlinBlackPawn::class to blackPawn,
 
         /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
+
+        /* Hex. */
+        HexBishop::class to blackBishop,
+        HexBlackPawn::class to blackPawn,
+        HexKing::class to blackKing,
+        HexKnight::class to blackKnight,
+        HexQueen::class to blackQueen,
+        HexRook::class to blackRook,
+
     )
 
     /**
      *  This method returns the texture associated to a piece, and null if it does not exist.
      */
-    fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
+    fun getTextureFromPiece(piece: Piece<*, *, *, *>, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites
             Color.BLACK -> blacks

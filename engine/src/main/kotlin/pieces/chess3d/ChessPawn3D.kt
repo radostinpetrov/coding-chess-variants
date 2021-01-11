@@ -8,13 +8,11 @@ import players.Player
 import regions.Region3D
 
 /**
- * Represents a pawn in standard chess
+ * Represents a Pawn in 3D chess
  *
  * @param player the player who owns the pawn
- * @param direction the direction that the pawn is facing
- *        (determines the direction that pawn moves to)
- * @param startingRow the row that the pawn starts from
- *        (used for double step move)
+ * @param direction the direction that the pawn can move to without capturing
+ * @param captureOnlyDir the direction that the pawn can move to by capturing
  * @param promotionRegion the region that the promotion can occur
  * @param pawnPromotions the pieces that the pawn can be promoted to
  */

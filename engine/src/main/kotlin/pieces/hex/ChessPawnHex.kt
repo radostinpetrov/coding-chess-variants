@@ -3,10 +3,8 @@ package pieces.hex
 import moveGenerators.DirectionHex
 import moveGenerators.MoveGeneratorHex
 import pieces.Pawn
-import pieces.Piece2D
 import players.Player
 import regions.Region2D
-import regions.RowRegion
 
 /**
  * Represents a pawn in standard chess
@@ -24,7 +22,7 @@ abstract class ChessPawnHex(override val player: Player,
                             private val startingRegion: Region2D,
                             private val promotionRegion: Region2D,
                             private val pawnPromotions: List<PieceHex> =
-                                listOf(Queen(player), Bishop(player), Knight(player), Rook(player)))
+                                listOf(HexQueen(player), HexBishop(player), HexKnight(player), HexRook(player)))
     : Pawn, PieceHex {
 
     private val captureOnlyDir = if (direction == DirectionHex.DOWN)

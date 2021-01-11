@@ -2,7 +2,7 @@ package coordinates
 
 /**
  * Coordinate on a 3D board representing
- * the x,y,z offset from the bottom left of the board
+ * the x,y,z offset from the bottom left corner of the board
  *
  * @property x the x offset from the bottom left of the board
  * @property y the y offset from the bottom left of the board

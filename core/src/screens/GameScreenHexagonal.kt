@@ -1,8 +1,6 @@
 package screens
 
-import boards.ChessBoard
-import boards.GUIBoard
-import boards.XiangqiBoard
+import boards.HexBoard
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
@@ -19,24 +17,31 @@ import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
 import coordinates.Coordinate2D
 import endconditions.Outcome
-import gameTypes.GameType2D
-import gameTypes.xiangqi.Janggi
-import gameTypes.xiangqi.Xiangqi
+import gameTypes.hex.HexagonalChess
 import ktx.app.KtxScreen
-import moves.Move2D
-import players.*
+import moves.MoveHex
+import players.FrontendPlayerHex
+import players.HumanPlayerHex
+import players.NetworkHumanPlayerHex
+import players.Player
+import kotlin.math.pow
 
 /**
  * Displays the game screen during play. ie. the board pieces, clock, history and takes user input.
  */
-class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag: Boolean, val isOnline: Boolean) : KtxScreen {
-    private lateinit var frontendPlayers: List<FrontendPlayer>
+class GameScreenHexagonal(
+    val game: MyGdxGame,
+    val gameEngine: HexagonalChess,
+    val clockFlag: Boolean,
+    val isOnline: Boolean
+) : KtxScreen {
+    private lateinit var frontendPlayers: List<FrontendPlayerHex>
     private val textures = Textures(game.assets)
-    private val windowHeight: Int = 800
+    private var windowHeight: Int = 800
     private var windowWidth: Int = 800
 
     private lateinit var shapeRenderer: ShapeRenderer
-    private lateinit var moves: List<Move2D>
+    private lateinit var moves: List<MoveHex>
 
     private var panelWidth: Int = 300
 
@@ -54,9 +59,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
     private lateinit var stage: Stage
 
-    lateinit var guiBoard: GUIBoard
+    lateinit var guiBoard: HexBoard
 
-    private var squareWidth: Float = (windowHeight / rows).toFloat()
+    private var squareWidth: Float = (windowHeight.toFloat() / 8.5).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
 
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
@@ -66,29 +71,31 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     // TODO maybe don't need this?
     var currPlayer: Player? = null
 
-    lateinit var libToFrontendPlayer: Map<Player, FrontendPlayer>
+    lateinit var libToFrontendPlayer: Map<Player, FrontendPlayerHex>
     lateinit var humanPlayerSet: Set<Player>
 
-    var networkHumanPlayer: NetworkHumanPlayer? = null
+    var networkHumanPlayer: NetworkHumanPlayerHex? = null
 
     // TODO and this?
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
-    lateinit var promotableMoves: List<Move2D>
+    lateinit var promotableMoves: List<MoveHex>
 
     var gameOverPopUp: GameOverPopUp? = null
+
+    lateinit var hexPositionToCoordHex: MutableMap<List<Pair<Float, Float>>, Coordinate2D>
 
     /**
      * Maps the front end players to the players on the game engine
      * @param inputFrontendPlayers a list of front end players created on the previous screen
      */
-    fun initPlayers(inputFrontendPlayers: List<FrontendPlayer>) {
-        val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayer> = mutableMapOf()
+    fun initPlayers(inputFrontendPlayers: List<FrontendPlayerHex>) {
+        val tempLibToFrontendPlayer: MutableMap<Player, FrontendPlayerHex> = mutableMapOf()
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
 
         gameEngine.players.indices.forEach { i ->
-            if (inputFrontendPlayers[i] is HumanPlayer) {
+            if (inputFrontendPlayers[i] is HumanPlayerHex) {
                 tempHumanPlayerSet.add(gameEngine.players[i])
             }
             inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
@@ -113,9 +120,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      */
     override fun show() {
         /* Initialise the display size. */
-        if (rows != columns) {
-            windowWidth = (windowHeight * columns) / rows
-        }
+        // if (rows != columns) {
+        //     windowWidth = (windowHeight * columns) / rows
+        // }
+        val rootThree = (3).toFloat().pow((1.0 / 2.0).toFloat())
+        windowHeight = (11.0 * rootThree * (squareWidth / 2.0)).toInt()
         Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
         game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
         shapeRenderer = ShapeRenderer()
@@ -132,10 +141,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         }
 
         /* Initialise the GUIBoard. */
-        guiBoard = when (gameEngine) {
-            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
-            else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font)
-        }
+        guiBoard = HexBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font, this)
 
         /* Initialise the forfeitButton. */
         stage = Stage()
@@ -153,12 +159,42 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         forfeitButton.setPosition(windowWidth.toFloat() + panelWidth.toFloat() - 90f, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
+
+        /* Initialise hexPositionToCoordHex. */
+        hexPositionToCoordHex = mutableMapOf()
+        for (i in 0 until board.rows) {
+            for (j in 0 until board.cols) {
+                if (board.isInBounds(Coordinate2D(j, i))) {
+                    val hexagonRadius = squareWidth / 2
+                    val ddx = hexagonRadius + hexagonRadius / 2
+                    val ddy = (hexagonRadius * rootThree) / 2
+                    val offsetx = hexagonRadius
+                    val offsety = (rootThree * hexagonRadius) / 2.0
+                    val x = offsetx + j * ddx
+                    val y = (offsety + i * ddy).toFloat()
+                    val ax: Float = x + hexagonRadius
+                    val ay: Float = y.toFloat()
+                    val bx: Float = x + hexagonRadius / 2
+                    val by: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
+                    val cx: Float = x - (hexagonRadius / 2)
+                    val cy: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
+                    val dx: Float = x - hexagonRadius
+                    val dy: Float = y.toFloat()
+                    val ex: Float = x - (hexagonRadius / 2)
+                    val ey: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
+                    val fx: Float = x + hexagonRadius / 2
+                    val fy: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
+                    val key = listOf(Pair(ax, ay), Pair(bx, by), Pair(cx, cy), Pair(dx, dy), Pair(ex, ey), Pair(fx, fy))
+                    hexPositionToCoordHex[key] = Coordinate2D(j, i)
+                }
+            }
+        }
     }
 
     /**
      * Displays a transparent promotion screen when a piece has the option to promote.
      */
-    private fun showPromotionScreen(moves: List<Move2D>) {
+    private fun showPromotionScreen(moves: List<MoveHex>) {
 
         /* Set the background to transparent. */
         Gdx.gl.glEnable(GL20.GL_BLEND)
@@ -172,18 +208,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         /* Finds the position to display the promotion pieces. */
         val batch = game.batch
         batch.begin()
-        val coordinateMap = mutableMapOf<Int, Move2D>()
-        val xCoordinate = (columns - moves.size) / 2
-        val yCoordinate = (rows - 1) / 2
+        val coordinateMap = mutableMapOf<Int, MoveHex>()
+        val xCoordinate = ((columns) - moves.size) / 2
+        val yCoordinate = ((rows / 2) - 1) / 2
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
         /* Iterate over the possible promotion pieces and displays them. */
-        moves.forEach {
-            if (it.displayPiecePromotedTo == null) {
-                it.displayPiecePromotedTo = it.displayPieceMoved
-            }
-        }
         for ((i, m) in moves.withIndex()) {
             val p = m.displayPiecePromotedTo
 
@@ -202,10 +233,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
         /* Monitors users mouse input to select the promotion piece. */
         if (srcX != null && srcY != null) {
-            val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
+            val coordinate = Coordinate2D(srcX!! / squareWidth.toInt(), srcY!! / squareWidth.toInt())
             if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
                 if (coordinateMap[coordinate.x] != null) {
-                    (libToFrontendPlayer[currPlayer!!] as HumanPlayer).makeMove(coordinateMap[coordinate.x]!!)
+                    (libToFrontendPlayer[currPlayer!!] as HumanPlayerHex).makeMove(coordinateMap[coordinate.x]!!)
                 }
                 isPromotionScreen = false
             }
@@ -216,7 +247,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * This is called when the current player plays a turn.
      * @param nextMove the move the current player will make on the game engine
      */
-    fun processTurn(nextMove: Move2D) {
+    fun processTurn(nextMove: MoveHex) {
         switchClocks()
         synchronized(this) {
             gameEngine.playerMakeMove(nextMove)
@@ -273,7 +304,16 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             } else {
                 null
             }
-            gameOverPopUp = GameOverPopUp(game, stage, this, gameEngine.getOutcome()!!, shapeRenderer, windowWidth, windowHeight, winnerName)
+            gameOverPopUp = GameOverPopUp(
+                game,
+                stage,
+                this,
+                gameEngine.getOutcome()!!,
+                shapeRenderer,
+                windowWidth,
+                windowHeight,
+                winnerName
+            )
             forfeitButton.remove()
         }
     }
@@ -287,7 +327,16 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         Gdx.app.postRunnable {
 //            switchToGameOverScreen(outcome)
 
-            gameOverPopUp = GameOverPopUp(game, stage, this, outcome, shapeRenderer, windowWidth, windowHeight, libToFrontendPlayer[outcome.winner]!!.name)
+            gameOverPopUp = GameOverPopUp(
+                game,
+                stage,
+                this,
+                outcome,
+                shapeRenderer,
+                windowWidth,
+                windowHeight,
+                libToFrontendPlayer[outcome.winner]!!.name
+            )
             forfeitButton.remove()
         }
     }
@@ -363,6 +412,10 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             y = graphics.height - y
         }
 
+        var coordinateFrom: Coordinate2D? = null
+        if (srcX != null && srcY != null) {
+            coordinateFrom = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
+        }
         /* Processes the user's clicks. Gets the piece at the coordinate. */
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null || isPromotionScreen) {
@@ -370,18 +423,19 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
                 srcY = y
             } else if (srcX != null && dstX == null &&
                 moves.any { m ->
-                    m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) &&
+                    m.displayFrom == coordinateFrom &&
                         m.displayTo == getPieceCoordinateFromMousePosition(x, y)
                 }
             ) {
                 dstX = x
                 dstY = y
+                val coordinateTo = getPieceCoordinateFromMousePosition(x, y)
                 // TODO fix this -> either via changing fe player to be composition or otherwise
                 val signalPlayer = libToFrontendPlayer[currPlayer!!]
-                if (signalPlayer is HumanPlayer) {
+                if (signalPlayer is HumanPlayerHex) {
                     val nextMove = getMove(
-                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                        coordinateFrom!!,
+                        coordinateTo,
                         moves
                     )
                     if (nextMove != null) {
@@ -414,13 +468,13 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
      * @param to the coordinate of the selected destination
      * @param moves list of valid moves for the selected piece
      */
-    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<Move2D>): Move2D? {
+    private fun getMove(from: Coordinate2D, to: Coordinate2D, moves: List<MoveHex>): MoveHex? {
         val playerMoves = moves.filter { m -> m.displayFrom == from && m.displayTo == to }
         if (playerMoves.isEmpty()) {
             return null
         }
 
-        if (playerMoves.any { m -> m.displayPiecePromotedTo != null }) {
+        if (playerMoves.all { m -> m.displayPiecePromotedTo != null }) {
             isPromotionScreen = true
             promotableMoves = playerMoves
             resetClicks()
@@ -430,8 +484,32 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         return playerMoves[0]
     }
 
-    private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
-        Coordinate2D(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
+    fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int): Coordinate2D {
+        // println("$srcX, $srcY")
+        for (h in hexPositionToCoordHex) {
+            if (inside(Pair(srcX.toFloat(), srcY.toFloat()), h.key)) {
+                return h.value
+            }
+        }
+        return Coordinate2D(-1, -1)
+    }
+
+    private fun inside(p: Pair<Float, Float>, polygon: List<Pair<Float, Float>>): Boolean {
+        var intersections = 0
+        var prev: Pair<Float, Float> = polygon[polygon.size - 1]
+        for (next in polygon) {
+            if (prev.second <= p.second && p.second < next.second || prev.second >= p.second && p.second > next.second) {
+                val dy: Float = next.second - prev.second
+                val dx: Float = next.first - prev.first
+                val x: Float = (p.second - prev.second) / dy * dx + prev.first
+                if (x > p.first) {
+                    intersections++
+                }
+            }
+            prev = next
+        }
+        return intersections % 2 == 1
+    }
 
     /**
      * Draws the side bar.
@@ -478,8 +556,24 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         batch.begin()
         font.color = Color.BLACK
         font.data.setScale(2.0f)
-        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15 / 16, panelWidth.toFloat(), Align.center, false)
-        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1 / 16, panelWidth.toFloat(), Align.center, false)
+        font.draw(
+            batch,
+            str2,
+            windowWidth.toFloat(),
+            windowHeight.toFloat() * 15 / 16,
+            panelWidth.toFloat(),
+            Align.center,
+            false
+        )
+        font.draw(
+            batch,
+            str1,
+            windowWidth.toFloat(),
+            windowHeight.toFloat() * 1 / 16,
+            panelWidth.toFloat(),
+            Align.center,
+            false
+        )
         font.data.setScale(1.0f)
         batch.end()
 
@@ -494,10 +588,15 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         /* Draw the history box. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.WHITE
-        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
+        shapeRenderer.rect(
+            windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12,
+            0f + windowHeight.toFloat() * 1 / 8,
+            panelWidth.toFloat() * 10 / 12,
+            windowHeight.toFloat() * 6 / 8
+        )
         shapeRenderer.end()
 
-        var history: List<Move2D> = gameEngine.moveLog.toList()
+        var history: List<MoveHex> = gameEngine.moveLog.toList()
 
         /* Get the last 40 moves from the history. */
         val len = gameEngine.moveLog.size
@@ -519,11 +618,21 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
                 val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * i))
+                font.draw(
+                    batch,
+                    str,
+                    windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12,
+                    windowHeight.toFloat() * 7 / 8 - 10 - (15 * i)
+                )
             } else {
                 font.setColor(Color.BLACK)
                 val str = " ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
+                font.draw(
+                    batch,
+                    str,
+                    windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12,
+                    windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1))
+                )
             }
         }
         batch.end()

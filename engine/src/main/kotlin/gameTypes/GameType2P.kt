@@ -9,19 +9,14 @@ import pieces.Piece
 import players.Player
 
 /**
- * Represents a standard 2-player game,
- * which contains no special rules and standard end conditions.
- *
- * @property rules the list of special rules (e.g. Castling, EnPassant)
- * @property endConditions the list of conditions that will end the game
+ * Represents a 2 player game,
  */
 
-
 abstract class GameType2P<B : Board<B, MG, P, C>,
-        MG : MoveGenerator<B, MG, P, C>,
-        P: Piece<B, MG, P, C>,
-        C: Coordinate>
-    : GameType<B, MG, P, C> {
+    MG : MoveGenerator<B, MG, P, C>,
+    P : Piece<B, MG, P, C>,
+    C : Coordinate> :
+    GameType<B, MG, P, C> {
     override val players: List<Player> = listOf(Player(), Player())
     override var playerTurn: Int = 0
     // This is set as the winner when either player concedes

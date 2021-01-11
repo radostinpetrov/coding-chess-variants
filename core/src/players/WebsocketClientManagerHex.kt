@@ -1,17 +1,17 @@
 package players
 
-import gameTypes.chess.AbstractChess2D
+import gameTypes.hex.HexagonalChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
-import screens.GameScreen
+import screens.GameScreenHexagonal
 import java.net.URI
 
-class WebsocketClientManager(val startGameFunction: (JSONObject) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
-    lateinit var game: AbstractChess2D
-    lateinit var networkHumanPlayer: NetworkHumanPlayer
-    lateinit var networkEnemyPlayer: NetworkEnemyPlayer
-    lateinit var gameScreen: GameScreen
+class WebsocketClientManagerHex(val startGameFunction: (JSONObject) -> Unit, var username: String, val gameName: String?, val clockOption: String) {
+    lateinit var game: HexagonalChess
+    lateinit var networkHumanPlayer: NetworkHumanPlayerHex
+    lateinit var networkEnemyPlayer: NetworkEnemyPlayerHex
+    lateinit var gameScreen: GameScreenHexagonal
 
     val serverUri: URI = URI("ws://83.136.252.48:8080")
 

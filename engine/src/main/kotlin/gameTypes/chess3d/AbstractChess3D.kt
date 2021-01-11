@@ -11,11 +11,12 @@ import pieces.Piece3D
 import rules.SpecialRules3D
 
 /**
- * Represents a standard 2-player game on a 3D board,
+ * Represents a standard 2-player 3D chess game,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)
  * @property endConditions the list of conditions that will end the game
+ * @property startPlayer the player who goes first
  */
 abstract class AbstractChess3D(
     rules: List<SpecialRules3D<AbstractChess3D>> = listOf(),

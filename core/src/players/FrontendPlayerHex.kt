@@ -2,14 +2,14 @@ package players
 
 import com.badlogic.gdx.graphics.Color
 import org.apache.commons.lang3.time.StopWatch
-import screens.GameScreen
+import screens.GameScreenHexagonal
 
 /**
  * Abstract class that is used to represent a player. Extend this class to make your own type of
  * player. eg. Computer player, Human player (using the mouse as input commands).
  */
-abstract class FrontendPlayer(
-    val gameScreen: GameScreen,
+abstract class FrontendPlayerHex(
+    val gameScreen: GameScreenHexagonal,
     val colour: Color,
     val name: String,
     val username: String,

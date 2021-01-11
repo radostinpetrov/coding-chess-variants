@@ -9,12 +9,13 @@ import players.Player
 /**
  * Represents a rook in standard chess
  */
-data class Rook(override val player: Player) : PieceHex {
+data class HexQueen(override val player: Player) : PieceHex {
     override val moveGenerators = listOf(
-        MoveGeneratorHex.Slider(listOf(UP, UP_RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, UP_LEFT))
+        MoveGeneratorHex.Slider(listOf(UP, UP_RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, UP_LEFT,UP_UP_RIGHT, DOWN_DOWN_RIGHT,
+            RIGHT, DOWN_DOWN_LEFT, UP_UP_LEFT, LEFT))
     )
 
     override fun getSymbol(): String {
-        return "R"
+        return "Q"
     }
 }

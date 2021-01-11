@@ -9,7 +9,7 @@ import players.Player
 /**
  * Represents a rook in standard chess
  */
-data class Bishop(override val player: Player) : PieceHex {
+data class HexBishop(override val player: Player) : PieceHex {
     override val moveGenerators = listOf(
         MoveGeneratorHex.Slider(listOf(UP_UP_RIGHT, DOWN_DOWN_RIGHT, RIGHT, DOWN_DOWN_LEFT, UP_UP_LEFT, LEFT))
     )

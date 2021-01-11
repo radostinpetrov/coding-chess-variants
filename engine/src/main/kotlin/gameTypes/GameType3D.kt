@@ -6,6 +6,6 @@ import moveGenerators.MoveGenerator3D
 import pieces.Piece3D
 
 /**
- * Implementation of the GameType interface for a standard 3D square board.
+ * Implementation of the GameType interface for a standard 3d square board.
  */
 interface GameType3D : GameType<Board3D, MoveGenerator3D, Piece3D, Coordinate3D>

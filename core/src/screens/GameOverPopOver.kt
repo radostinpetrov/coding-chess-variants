@@ -1,6 +1,5 @@
 package screens
 
-import endconditions.Outcome
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
@@ -14,13 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
-import players.FrontendPlayer
-import players.Player
+import endconditions.Outcome
 
 /**
  * Displays the game over screen when a player wins or stalemate and the game ends.
  */
-class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, val outcome: Outcome, val shapeRenderer: ShapeRenderer, val windowWidth: Int, val windowHeight: Int, val libToFrontEndPlayer: Map<Player, FrontendPlayer>) {
+class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, val outcome: Outcome, val shapeRenderer: ShapeRenderer, val windowWidth: Int, val windowHeight: Int, val winnerName: String?) {
     val table = Table()
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val playAgainButton = TextButton("Play Again?", skin)
@@ -36,7 +34,7 @@ class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, v
 
         when (outcome) {
             is Outcome.Win -> {
-                val colourString = libToFrontEndPlayer[outcome.winner]!!.name
+                val colourString = winnerName
                 sb.append("$colourString wins ")
             }
             is Outcome.Draw -> {
@@ -69,10 +67,9 @@ class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, v
         shapeRenderer.end()
         Gdx.gl.glDisable(GL20.GL_BLEND)
 
-        title.setPosition(windowWidth.toFloat()/2 - title.width/2, windowHeight.toFloat() * 2/3)
-        playAgainButton.setPosition(windowWidth.toFloat()/2 - playAgainButton.width/2, windowWidth.toFloat() * 1/2)
+        title.setPosition(windowWidth.toFloat() / 2 - title.width / 2, windowHeight.toFloat() * 2 / 3)
+        playAgainButton.setPosition(windowWidth.toFloat() / 2 - playAgainButton.width / 2, windowWidth.toFloat() * 1 / 2)
     }
-
 
     private fun switchToMenuScreen() {
         game.removeScreen<MenuScreen>()

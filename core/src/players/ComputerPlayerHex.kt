@@ -1,14 +1,14 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
-import moves.Move2D
-import screens.GameScreen
+import moves.MoveHex
+import screens.GameScreenHexagonal
 
 /**
  * Computer player class that extends FrontendPlayer. It chooses a random a move to make from the valid
  * moves list.
  */
-class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color, name: String) : FrontendPlayer(
+class ComputerPlayerHex(gameScreen: GameScreenHexagonal, val delay: Long, colour: Color, name: String) : FrontendPlayerHex(
     gameScreen, colour, name, "Computer Player"
 ) {
 
@@ -16,7 +16,7 @@ class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color, nam
      * Tells the gameScreen a random valid move to play.
      */
     override fun signalTurn() {
-        val validMoves: List<Move2D> = gameType.getValidMoves(libPlayer)
+        val validMoves: List<MoveHex> = gameType.getValidMoves(libPlayer)
 //        println("Computer is thinking...")
 //        // TODO FIX COMPUTER PLAYER LAG SITUATION
 //        Thread.sleep(100)

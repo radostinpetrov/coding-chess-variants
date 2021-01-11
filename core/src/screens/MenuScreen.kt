@@ -9,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
-import gameTypes.GameType2D
+import gameTypes.GameType
 import gameTypes.checkers.Checkers
 import gameTypes.chess.*
+import gameTypes.hex.HexagonalChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
@@ -37,6 +38,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val checkersGameButton = TextButton("Checkers", skin)
     val playgroundButton = TextButton("Playground", skin)
     val tutorialButton = TextButton("Tutorial Chess", skin)
+    val hexagonalChessButton = TextButton("Hexagonal Chess", skin)
     val title = Label("Welcome to Chess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
@@ -58,7 +60,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
 
     val startButton = TextButton("Start", skin)
 
-    var chessType: GameType2D = StandardChess()
+    var chessType: GameType<*, *, *, *> = StandardChess()
     val chessTypes = mapOf(
         standardChessButton to StandardChess(),
         grandChessButton to GrandChess(),
@@ -71,7 +73,8 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         balbosGameButton to BalbosGame(),
         checkersGameButton to Checkers(),
 //        playgroundButton to ChessPlayground(),
-        tutorialButton to TutorialChess()
+        tutorialButton to TutorialChess(),
+        hexagonalChessButton to HexagonalChess()
     )
 
     /**
@@ -210,7 +213,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
      * Online goes to OnlineScreen.
      * Local goes to PlayerScreen
      */
-    private fun switchToPreGameScreen(gameType: GameType2D, isOnline: Boolean) {
+    private fun switchToPreGameScreen(gameType: GameType<*, *, *, *>, isOnline: Boolean) {
         if (!isOnline) {
             game.removeScreen<PlayerScreen>()
             game.addScreen(PlayerScreen(game, gameType, clockList))

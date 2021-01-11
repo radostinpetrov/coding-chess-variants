@@ -5,8 +5,7 @@ import moves.Move3D
 import players.Player
 
 /**
- * Condition for checkmate.
- * If the player on turn has no legal move but is not in check
+ * Condition for a 3D chess variant with only checkmate and no legal move stalemate.
  */
 class EndConditions3DChess : EndCondition3D<AbstractChess3D> {
     override fun evaluate(game: AbstractChess3D, player: Player, moves: List<Move3D>): Outcome? {
