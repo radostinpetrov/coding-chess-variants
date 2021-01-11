@@ -500,7 +500,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         var history: List<Move2D> = gameEngine.moveLog.toList()
 
         /* Get the last 40 moves from the history. */
-        val len = gameEngine.moveLog.size
+        val len = history.size
         var offset = 0
         if (len >= 40) {
             if (len % 2 == 0) {
