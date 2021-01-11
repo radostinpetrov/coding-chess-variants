@@ -1,13 +1,11 @@
 package pieces.hex
 
 import coordinates.Coordinate2D
-import moveGenerators.MoveGenerator2D
 import moveGenerators.MoveGeneratorHex
-import pieces.Piece2D
 import players.Player
 
 /**
- * Represents a kinght in standard chess
+ * Represents a knight in hexagonal chess
  */
 data class HexKnight(override val player: Player) : PieceHex {
     override val moveGenerators = listOf(MoveGeneratorHex.Leaper(listOf(

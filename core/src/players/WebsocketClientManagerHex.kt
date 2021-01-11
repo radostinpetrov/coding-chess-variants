@@ -52,8 +52,10 @@ class WebsocketClientManagerHex(val startGameFunction: (JSONObject) -> Unit, var
                         val move = jsonMessage.getInt("move")
                         networkEnemyPlayer.makeMove(move)
 
-                        networkHumanPlayer.syncElapsedTime(jsonMessage.getLong("myTime"))
-                        networkEnemyPlayer.syncElapsedTime(jsonMessage.getLong("opponentTime"))
+                        if (!jsonMessage.isNull("myTime") && !jsonMessage.isNull("opponentTime")) {
+                            networkHumanPlayer.syncElapsedTime(jsonMessage.getLong("myTime"))
+                            networkEnemyPlayer.syncElapsedTime(jsonMessage.getLong("opponentTime"))
+                        }
                     }
                     "opponentConcede" -> {
                         networkEnemyPlayer.concede()

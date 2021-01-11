@@ -7,7 +7,7 @@ import players.Player
 import regions.Region2D
 
 /**
- * Represents a pawn in standard chess
+ * Represents a pawn in hexagonal chess
  *
  * @param player the player who owns the pawn
  * @param direction the direction that the pawn is facing

@@ -5,6 +5,7 @@ import com.mongodb.MongoWriteException
 import com.mongodb.client.MongoCollection
 import gameTypes.checkers.Checkers
 import gameTypes.chess.*
+import gameTypes.hex.HexagonalChess
 import gameTypes.xiangqi.*
 import io.ktor.application.*
 import io.ktor.http.*
@@ -28,7 +29,7 @@ import kotlin.random.Random
 val jsonFormat = Json { encodeDefaults = true }
 
 val matchMakingQueues: MutableMap<GameQueue, MutableList<PlayerWrapper>> = mutableMapOf()
-val matches: MutableMap<UUID, MatchWrapper> = mutableMapOf()
+val matches: MutableMap<UUID, MatchWrapper<*,*,*,*,*>> = mutableMapOf()
 val players: MutableMap<UUID, DefaultWebSocketServerSession> = mutableMapOf()
 
 lateinit var col: MongoCollection<Players>
@@ -209,22 +210,7 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
 
     val game = match.game
 
-    if (game.playerTurn != match.myPlayerIndex) {
-        println("Error: Not this player's turn")
-        return
-    }
-
-    val myPlayer = game.getCurrentPlayer()
-
-    val validMoves = game.getValidMoves()
-
-    // Check if valid move
-    if (msg.move < 0 || msg.move >= validMoves.size) {
-        println("Error: Invalid move")
-        return
-    }
-
-    game.playerMakeMove(validMoves[msg.move])
+    match.makeValidMove(msg.move)
 
     val opponentMatch = matches[match.opponentId]
     if (opponentMatch == null) {
@@ -255,6 +241,8 @@ suspend fun makeMove(uuid: UUID, msg: Message) {
     }
 
     wsDest.send(jsonFormat.encodeToString(msgToSend))
+
+    val myPlayer = game.getCurrentPlayer()
 
     // Check if game is finished
     val outcome = game.getOutcome()
@@ -405,6 +393,8 @@ suspend fun matchmaking(ws: DefaultWebSocketServerSession, uuid: UUID, msg: Mess
         "AntiChess" -> AntiChess()
         "MiniChess" -> MiniChess()
         "Checkers" -> Checkers()
+        "HexagonalChess" -> HexagonalChess()
+        "BalbosGame" -> BalbosGame()
         else -> null
     }
 

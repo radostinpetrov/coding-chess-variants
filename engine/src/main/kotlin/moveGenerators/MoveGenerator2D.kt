@@ -21,28 +21,31 @@ interface MoveGenerator2D : MoveGenerator<Board2D, MoveGenerator2D, Piece2D, Coo
      */
     class Slider(val H: Boolean = false, val V: Boolean = false, val D: Boolean = false, val A: Boolean = false) : MoveGenerator2D {
         override fun generate(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, player: Player): List<BasicMove2D> {
-            val result = mutableListOf<BasicMove2D>()
+            val directions = mutableListOf<Direction>()
             if (H) {
-                result.addAll(helper(board, coordinate, piece, 1, 0, player))
-                result.addAll(helper(board, coordinate, piece, -1, 0, player))
+                directions.addAll(listOf(Direction.EAST, Direction.WEST))
             }
             if (V) {
-                result.addAll(helper(board, coordinate, piece, 0, 1, player))
-                result.addAll(helper(board, coordinate, piece, 0, -1, player))
+                directions.addAll(listOf(Direction.NORTH, Direction.SOUTH))
             }
             if (D) {
-                result.addAll(helper(board, coordinate, piece, 1, 1, player))
-                result.addAll(helper(board, coordinate, piece, -1, -1, player))
+                directions.addAll(listOf(Direction.NORTH_WEST, Direction.SOUTH_EAST))
             }
             if (A) {
-                result.addAll(helper(board, coordinate, piece, 1, -1, player))
-                result.addAll(helper(board, coordinate, piece, -1, 1, player))
+                directions.addAll(listOf(Direction.NORTH_EAST, Direction.SOUTH_WEST))
+            }
+
+            val result = mutableListOf<BasicMove2D>()
+            directions.map{
+                result.addAll(helper(board, coordinate, piece, it, player))
             }
             return result
         }
 
-        private fun helper(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, dx: Int, dy: Int, player: Player): List<BasicMove2D> {
+        private fun helper(board: Board2D, coordinate: Coordinate2D, piece: Piece2D, direction: Direction, player: Player): List<BasicMove2D> {
             val result = mutableListOf<BasicMove2D>()
+            val dx = direction.coordinate.x
+            val dy = direction.coordinate.y
             var nextCoordinate = Coordinate2D(coordinate.x + dx, coordinate.y + dy)
             while (board.isInBounds(nextCoordinate)) {
                 val destPiece = board.getPiece(nextCoordinate)

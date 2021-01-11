@@ -5,6 +5,9 @@ import players.Player
 import regions.CompositeRegion
 import regions.CoordinateRegion
 
+/**
+ * Represents a black pawn in hexagonal chess
+ */
 data class HexBlackPawn(override val player: Player) :
     ChessPawnHex(player, DirectionHex.DOWN, startingRegion, promotionRegion) {
     companion object {
