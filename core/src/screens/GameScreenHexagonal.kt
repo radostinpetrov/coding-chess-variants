@@ -1,12 +1,6 @@
 package screens
 
-import endconditions.Outcome
-import coordinates.Coordinate2D
-import moves.Move2D
-import boards.ChessBoard
-import boards.GUIBoard
 import boards.HexBoard
-import boards.XiangqiBoard
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
@@ -21,19 +15,27 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.assets.Textures
-import gameTypes.GameType2D
+import coordinates.Coordinate2D
+import endconditions.Outcome
 import gameTypes.hex.HexagonalChess
-import gameTypes.xiangqi.Janggi
-import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import moves.MoveHex
-import players.*
+import players.FrontendPlayerHex
+import players.HumanPlayer
+import players.HumanPlayerHex
+import players.NetworkHumanPlayerHex
+import players.Player
 import kotlin.math.pow
 
 /**
  * Displays the game screen during play. ie. the board pieces, clock, history and takes user input.
  */
-class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, val clockFlag: Boolean, val isOnline: Boolean) : KtxScreen {
+class GameScreenHexagonal(
+    val game: MyGdxGame,
+    val gameEngine: HexagonalChess,
+    val clockFlag: Boolean,
+    val isOnline: Boolean
+) : KtxScreen {
     private lateinit var frontendPlayers: List<FrontendPlayerHex>
     private val textures = Textures(game.assets)
     private var windowHeight: Int = 800
@@ -83,6 +85,8 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
 
     var gameOverPopUp: GameOverPopUp? = null
 
+    lateinit var hexPositionToCoordHex: MutableMap<List<Pair<Float, Float>>, Coordinate2D>
+
     /**
      * Maps the front end players to the players on the game engine
      * @param inputFrontendPlayers a list of front end players created on the previous screen
@@ -92,7 +96,7 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         val tempHumanPlayerSet: MutableSet<Player> = mutableSetOf()
 
         gameEngine.players.indices.forEach { i ->
-            if (inputFrontendPlayers[i] is HumanPlayer) {
+            if (inputFrontendPlayers[i] is HumanPlayerHex) {
                 tempHumanPlayerSet.add(gameEngine.players[i])
             }
             inputFrontendPlayers[i].libPlayer = gameEngine.players[i]
@@ -122,7 +126,7 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         // }
         val rootThree = (3).toFloat().pow((1.0 / 2.0).toFloat())
         windowHeight = (11.0 * rootThree * (squareWidth / 2.0)).toInt()
-        Gdx.graphics.setWindowedMode(windowWidth + panelWidth,  windowHeight)
+        Gdx.graphics.setWindowedMode(windowWidth + panelWidth, windowHeight)
         game.batch.projectionMatrix.setToOrtho2D(0f, 0f, windowWidth.toFloat() + panelWidth, windowHeight.toFloat())
         shapeRenderer = ShapeRenderer()
 
@@ -138,7 +142,7 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         }
 
         /* Initialise the GUIBoard. */
-        guiBoard = HexBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font)
+        guiBoard = HexBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font, this)
 
         /* Initialise the forfeitButton. */
         stage = Stage()
@@ -156,6 +160,38 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         forfeitButton.setPosition(windowWidth.toFloat() + panelWidth.toFloat() - 90f, forfeitButtonPosY)
         stage.addActor(forfeitButton)
         Gdx.input.inputProcessor = stage
+
+        /* Initialise hexPositionToCoordHex. */
+        hexPositionToCoordHex = mutableMapOf()
+        for (i in 0 until board.rows) {
+            for (j in 0 until board.cols) {
+                if (board.isInBounds(Coordinate2D(j, i))) {
+                    val hexagonRadius = squareWidth/2
+                    val ddx = hexagonRadius + hexagonRadius / 2
+                    val ddy = (hexagonRadius * rootThree) / 2
+                    val offsetx = hexagonRadius
+                    val offsety = (rootThree * hexagonRadius )/ 2.0
+                    val x = offsetx + j * ddx
+                    val y = (offsety + i * ddy).toFloat()
+                    val ax: Float = x + hexagonRadius
+                    val ay: Float = y.toFloat()
+                    val bx: Float = x + hexagonRadius/2
+                    val by: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
+                    val cx: Float = x - ( hexagonRadius/2)
+                    val cy: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
+                    val dx: Float = x - hexagonRadius
+                    val dy: Float = y.toFloat()
+                    val ex: Float = x - (hexagonRadius/2)
+                    val ey: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
+                    val fx: Float = x + hexagonRadius/2
+                    val fy: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
+                    val key = listOf(Pair(ax, ay), Pair(bx, by), Pair(cx, cy), Pair(dx, dy), Pair(ex, ey), Pair(fx, fy))
+                    hexPositionToCoordHex[key] = Coordinate2D(j, i)
+
+
+                }
+            }
+        }
     }
 
     /**
@@ -201,7 +237,7 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         /* Monitors users mouse input to select the promotion piece. */
         if (srcX != null && srcY != null) {
             val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
-            if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
+            if (coordinate!!.y == yCoordinate && coordinateMap[coordinate.x] != null) {
                 if (coordinateMap[coordinate.x] != null) {
                     (libToFrontendPlayer[currPlayer!!] as HumanPlayerHex).makeMove(coordinateMap[coordinate.x]!!)
                 }
@@ -271,7 +307,16 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
             } else {
                 null
             }
-            gameOverPopUp = GameOverPopUp(game, stage, this, gameEngine.getOutcome()!!, shapeRenderer, windowWidth, windowHeight, winnerName)
+            gameOverPopUp = GameOverPopUp(
+                game,
+                stage,
+                this,
+                gameEngine.getOutcome()!!,
+                shapeRenderer,
+                windowWidth,
+                windowHeight,
+                winnerName
+            )
             forfeitButton.remove()
         }
     }
@@ -285,7 +330,16 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         Gdx.app.postRunnable {
 //            switchToGameOverScreen(outcome)
 
-            gameOverPopUp = GameOverPopUp(game, stage, this, outcome, shapeRenderer, windowWidth, windowHeight, libToFrontendPlayer[outcome.winner]!!.name)
+            gameOverPopUp = GameOverPopUp(
+                game,
+                stage,
+                this,
+                outcome,
+                shapeRenderer,
+                windowWidth,
+                windowHeight,
+                libToFrontendPlayer[outcome.winner]!!.name
+            )
             forfeitButton.remove()
         }
     }
@@ -375,8 +429,8 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
                 val signalPlayer = libToFrontendPlayer[currPlayer!!]
                 if (signalPlayer is HumanPlayerHex) {
                     val nextMove = getMove(
-                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!),
-                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!),
+                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!)!!,
+                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!)!!,
                         moves
                     )
                     if (nextMove != null) {
@@ -425,8 +479,34 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         return playerMoves[0]
     }
 
-    private fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int) =
-        Coordinate2D(srcX / squareWidth.toInt(), srcY / squareWidth.toInt())
+
+
+    fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int): Coordinate2D {
+        println("$srcX, $srcY")
+        for (h in hexPositionToCoordHex) {
+            if (inside(Pair(srcX.toFloat(), srcY.toFloat()), h.key)) {
+                return h.value
+            }
+        }
+        return Coordinate2D(-1, -1)
+    }
+
+    private fun inside(p: Pair<Float, Float>, polygon: List<Pair<Float, Float>>): Boolean {
+        var intersections = 0
+        var prev: Pair<Float, Float> = polygon[polygon.size - 1]
+        for (next in polygon) {
+            if (prev.second <= p.second && p.second < next.second || prev.second >= p.second && p.second > next.second) {
+                val dy: Float = next.second - prev.second
+                val dx: Float = next.first - prev.first
+                val x: Float = (p.second - prev.second) / dy * dx + prev.first
+                if (x > p.first) {
+                    intersections++
+                }
+            }
+            prev = next
+        }
+        return intersections % 2 == 1
+    }
 
     /**
      * Draws the side bar.
@@ -473,8 +553,24 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         batch.begin()
         font.color = Color.BLACK
         font.data.setScale(2.0f)
-        font.draw(batch, str2, windowWidth.toFloat(), windowHeight.toFloat() * 15 / 16, panelWidth.toFloat(), Align.center, false)
-        font.draw(batch, str1, windowWidth.toFloat(), windowHeight.toFloat() * 1 / 16, panelWidth.toFloat(), Align.center, false)
+        font.draw(
+            batch,
+            str2,
+            windowWidth.toFloat(),
+            windowHeight.toFloat() * 15 / 16,
+            panelWidth.toFloat(),
+            Align.center,
+            false
+        )
+        font.draw(
+            batch,
+            str1,
+            windowWidth.toFloat(),
+            windowHeight.toFloat() * 1 / 16,
+            panelWidth.toFloat(),
+            Align.center,
+            false
+        )
         font.data.setScale(1.0f)
         batch.end()
 
@@ -489,7 +585,12 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
         /* Draw the history box. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         shapeRenderer.color = Color.WHITE
-        shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
+        shapeRenderer.rect(
+            windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12,
+            0f + windowHeight.toFloat() * 1 / 8,
+            panelWidth.toFloat() * 10 / 12,
+            windowHeight.toFloat() * 6 / 8
+        )
         shapeRenderer.end()
 
         var history: List<MoveHex> = gameEngine.moveLog.toList()
@@ -514,11 +615,21 @@ class GameScreenHexagonal(val game: MyGdxGame, val gameEngine: HexagonalChess, v
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
                 val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() +  (coor.y + 1)}"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * i))
+                font.draw(
+                    batch,
+                    str,
+                    windowWidth.toFloat() + panelWidth.toFloat() * 2 / 12,
+                    windowHeight.toFloat() * 7 / 8 - 10 - (15 * i)
+                )
             } else {
                 font.setColor(Color.BLACK)
                 val str = " ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
-                font.draw(batch, str, windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12, windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1)))
+                font.draw(
+                    batch,
+                    str,
+                    windowWidth.toFloat() + panelWidth.toFloat() * 7 / 12,
+                    windowHeight.toFloat() * 7 / 8 - 10 - (15 * (i - 1))
+                )
             }
         }
         batch.end()

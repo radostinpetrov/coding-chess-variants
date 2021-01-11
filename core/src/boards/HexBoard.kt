@@ -16,6 +16,7 @@ import coordinates.Coordinate2D
 import moves.MoveHex
 import players.FrontendPlayerHex
 import players.Player
+import screens.GameScreenHexagonal
 import kotlin.math.pow
 
 class HexBoard(
@@ -26,6 +27,7 @@ class HexBoard(
     val textures: Textures,
     val libToFrontEndPlayer: Map<Player, FrontendPlayerHex>,
     val font: BitmapFont,
+    val gameScreenHexagonal: GameScreenHexagonal
 )  {
 
     val hexagonRadius = squareWidth/2
@@ -56,15 +58,19 @@ class HexBoard(
 
         val pix = Pixmap(1, 1, Pixmap.Format.RGBA8888)
 
-        if (colour == 0) {
-            pix.setColor(Color.TAN) // DE is red, AD is green and BE is blue.
-
-        } else if (colour == 1) {
-            pix.setColor(Color.BROWN) // DE is red, AD is green and BE is blue.
-
-        } else {
-            pix.setColor(Color.ORANGE) // DE is red, AD is green and BE is blue.
-
+        when (colour) {
+            0 -> {
+                pix.setColor(Color.TAN)
+            }
+            1 -> {
+                pix.setColor(Color.BROWN)
+            }
+            2 -> {
+                pix.setColor(Color.ORANGE)
+            }
+            else -> {
+                pix.setColor(Color.FOREST)
+            }
         }
         pix.fill()
         val textureSolid = Texture(pix)
@@ -82,9 +88,17 @@ class HexBoard(
         for (i in 0 until board.rows) {
             for (j in 0 until board.cols) {
                 if (board.isInBounds(Coordinate2D(j, i))) {
+                    var colour = i % 3
 
-                    val poly = PolygonSprite(getPolyRegion(offsetx + j * dx, (offsety + i * dy).toFloat(), i % 3))
+                    if (!isPromotionScreen) {
+                        if (srcX != null && srcY != null) {
+                            if (gameScreenHexagonal.getPieceCoordinateFromMousePosition(srcX, srcY) == Coordinate2D(j, i)) {
+                                colour = 3
+                            }
+                        }
+                    }
 
+                    val poly = PolygonSprite(getPolyRegion(offsetx + j * dx, (offsety + i * dy).toFloat(), colour))
                     poly.draw(polyBatch)
 
                 }
