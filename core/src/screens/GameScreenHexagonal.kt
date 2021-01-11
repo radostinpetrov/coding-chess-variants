@@ -250,6 +250,9 @@ class GameScreenHexagonal(
     fun processTurn(nextMove: MoveHex) {
         switchClocks()
         synchronized(this) {
+            if (gameEngine.isOver()) {
+                return
+            }
             gameEngine.playerMakeMove(nextMove)
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)
@@ -599,7 +602,7 @@ class GameScreenHexagonal(
         var history: List<MoveHex> = gameEngine.moveLog.toList()
 
         /* Get the last 40 moves from the history. */
-        val len = gameEngine.moveLog.size
+        val len = history.size
         var offset = 0
         if (len >= 40) {
             if (len % 2 == 0) {

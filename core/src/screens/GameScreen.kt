@@ -219,6 +219,9 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
     fun processTurn(nextMove: Move2D) {
         switchClocks()
         synchronized(this) {
+            if (gameEngine.isOver()) {
+                return
+            }
             gameEngine.playerMakeMove(nextMove)
             currPlayer = gameEngine.getCurrentPlayer()
             moves = gameEngine.getValidMoves(currPlayer!!)
