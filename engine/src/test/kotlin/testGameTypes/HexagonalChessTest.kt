@@ -1,21 +1,27 @@
 package testGameTypes
 
+import boards.BoardHex
 import coordinates.Coordinate2D
+import gameTypes.hex.GameTypeHex
 import gameTypes.hex.HexagonalChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGeneratorHex
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import pieces.hex.*
+import testPerft.PerftUtility
 
-class HexagonalChessTest() {
+class HexagonalChessTest {
     private var mockHexagonalChess = spyk<HexagonalChess>()
 
     private val board = mockHexagonalChess.board
 
     val player1 = mockHexagonalChess.players[0]
     val player2 = mockHexagonalChess.players[1]
+
+    val perft = PerftUtility<GameTypeHex, BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -78,5 +84,20 @@ class HexagonalChessTest() {
         val initPieces = board.getPieces()
         Assertions.assertTrue(initPieces.containsAll(initPiecesTest))
         Assertions.assertEquals(initPieces.size, initPiecesTest.size)
+    }
+
+    @Test
+    fun testHexagonalInitialPositionsWithDepth1() {
+        perft.testSimple(HexagonalChess(), 1, 32)
+    }
+
+    @Test
+    fun testHexagonalInitialPositionsWithDepth2() {
+        perft.testSimple(HexagonalChess(), 2, 1012)
+    }
+
+    @Test
+    fun testHexagonalInitialPositionsWithDepth3() {
+        perft.testSimple(HexagonalChess(), 3, 29697)
     }
 }

@@ -1,14 +1,19 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.GameType2D
 import gameTypes.chess.BalbosGame
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.Piece2D
 import pieces.chess.*
+import testPerft.PerftUtility
 
 class BalbosGameTest {
     private var mockBalbosGame = spyk<BalbosGame>()
@@ -17,6 +22,8 @@ class BalbosGameTest {
 
     val player1 = mockBalbosGame.players[0]
     val player2 = mockBalbosGame.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -67,4 +74,19 @@ class BalbosGameTest {
         assertTrue(initPieces.containsAll(initPiecesList))
         assertEquals(initPieces.size, initPiecesList.size)
     }
+
+    @Test
+    fun testPerftInitialPositionsWithDepth1() {
+        perft.testSimple(BalbosGame(), 1, 18)
+    }
+
+    @Test
+    fun testPerftInitialPositionsWithDepth2() {
+        perft.testSimple(BalbosGame(), 2, 324)
+    }
+
+//    @Test
+//    fun testPerftInitialPositionsWithDepth3() {
+//        perft.testSimple(BalbosGame(), 3, 6305)
+//    }
 }

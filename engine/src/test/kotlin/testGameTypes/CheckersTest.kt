@@ -1,14 +1,17 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.GameType2D
 import gameTypes.checkers.Checkers
 import io.mockk.MockKAnnotations
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import pieces.chess.*
-import testPerft.PerftUtility.testSimple
+import pieces.Piece2D
+import testPerft.PerftUtility
 
 class CheckersTest {
     val mockCheckers = Checkers()
@@ -17,6 +20,8 @@ class CheckersTest {
 
     val player1 = mockCheckers.players[0]
     val player2 = mockCheckers.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -60,32 +65,32 @@ class CheckersTest {
 
     @Test
     fun testCheckersInitialPositionsWithDepth1() {
-        testSimple(Checkers(), 1, 7)
+        perft.testSimple(Checkers(), 1, 7)
     }
 
     @Test
     fun testCheckersInitialPositionsWithDepth2() {
-        testSimple(Checkers(), 2, 49)
+        perft.testSimple(Checkers(), 2, 49)
     }
 
     @Test
     fun testCheckersInitialPositionsWithDepth3() {
-        testSimple(Checkers(), 3, 302)
+        perft.testSimple(Checkers(), 3, 302)
     }
 
     @Test
     fun testCheckersInitialPositionsWithDepth4() {
-        testSimple(Checkers(), 4, 1469)
+        perft.testSimple(Checkers(), 4, 1469)
     }
 
 //
 //    @Test
 //    fun testCheckersInitialPositionsWithDepth5() {
-//        testSimple(Checkers(), 5, 7361)
+//        perft.testSimple(Checkers(), 5, 7361)
 //    }
 //
 //    @Test
 //    fun testCheckersInitialPositionsWithDepth6() {
-//        testSimple(Checkers(), 6, 36768)
+//        perft.testSimple(Checkers(), 6, 36768)
 //    }
 }
