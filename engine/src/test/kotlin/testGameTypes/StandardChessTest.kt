@@ -116,15 +116,15 @@ class StandardChessTest {
         perft.test(StandardChess(), 2, PerftUtility.PerftData(400, 0, 0, 0))
     }
 
-    @Test
-    fun testStandardChessInitialPositionsWithDepth3() {
-        perft.test(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
-    }
-
-    @Test
-    fun testStandardChessInitialPositionsWithDepth4() {
-        perft.test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
-    }
+//    @Test
+//    fun testStandardChessInitialPositionsWithDepth3() {
+//        perft.test(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
+//    }
+//
+//    @Test
+//    fun testStandardChessInitialPositionsWithDepth4() {
+//        perft.test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
+//    }
 
     @Test
     fun testStandardChessInGamePosition1WithDepth1() {
