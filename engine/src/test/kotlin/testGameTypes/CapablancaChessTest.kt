@@ -1,12 +1,16 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.GameType2D
 import gameTypes.chess.CapablancaChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.Piece2D
 import pieces.chess.*
 import testPerft.PerftUtility
 
@@ -17,6 +21,8 @@ class CapablancaChessTest {
 
     val player1 = mockCapablancaChess.players[0]
     val player2 = mockCapablancaChess.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -84,21 +90,21 @@ class CapablancaChessTest {
 
     @Test
     fun testCapablancaChessInitialPositionsWithDepth1() {
-        PerftUtility.testSimple(CapablancaChess(), 1, 28)
+        perft.testSimple(CapablancaChess(), 1, 28)
     }
 
     @Test
     fun testCapablancaChessInitialPositionsWithDepth2() {
-        PerftUtility.testSimple(CapablancaChess(), 2, 784)
+        perft.testSimple(CapablancaChess(), 2, 784)
     }
 
 //    @Test
 //    fun testCapablancaChessInitialPositionsWithDepth3() {
-//        PerftUtility.testSimple(CapablancaChess(), 3, 25228)
+//        perft.testSimple(CapablancaChess(), 3, 25228)
 //    }
 
 //    @Test
 //    fun testCapablancaChessInitialPositionsWithDepth4() {
-//        PerftUtility.testSimple(CapablancaChess(), 4, 805128)
+//        perft.testSimple(CapablancaChess(), 4, 805128)
 //    }
 }

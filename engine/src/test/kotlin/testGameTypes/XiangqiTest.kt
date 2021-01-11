@@ -1,13 +1,16 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.xiangqi.Janggi
+import gameTypes.GameType2D
 import gameTypes.xiangqi.Xiangqi
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.Piece2D
 import pieces.xiangqi.*
 import testPerft.PerftUtility
 
@@ -18,6 +21,8 @@ class XiangqiTest {
 
     val player1 = mockXiangqi.players[0]
     val player2 = mockXiangqi.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -75,21 +80,21 @@ class XiangqiTest {
 
     @Test
     fun testXiangqiInitialPositionsWithDepth1() {
-        PerftUtility.testSimple(Xiangqi(), 1, 44)
+        perft.testSimple(Xiangqi(), 1, 44)
     }
 
     @Test
     fun testXiangqiInitialPositionsWithDepth2() {
-        PerftUtility.testSimple(Xiangqi(), 2, 1920)
+        perft.testSimple(Xiangqi(), 2, 1920)
     }
 
 //    @Test
 //    fun testXiangqiInitialPositionsWithDepth3() {
-//        PerftUtility.testSimple(Xiangqi(), 3, 79666)
+//        perft.testSimple(Xiangqi(), 3, 79666)
 //    }
 //
 //    @Test
 //    fun testXiangqiInitialPositionsWithDepth4() {
-//        PerftUtility.testSimple(Xiangqi(), 4, 3920240)
+//        perft.testSimple(Xiangqi(), 4, 3920240)
 //    }
 }

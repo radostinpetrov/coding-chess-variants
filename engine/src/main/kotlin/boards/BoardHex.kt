@@ -8,15 +8,17 @@ import players.Player
 import kotlin.math.absoluteValue
 
 /**
- * Implementation of the Board interface for a 2d square board.
+ * Implementation of the Board interface for a 2d hexagonal board.
  * The board size is rows x cols and each coordinate can have upto one PieceHex.
  *
  * @property verticalLength the number of rows (i.e. number of max width rows)
- * @property maximumWidth the number of columns (i.e. the width)
+ * @property maximumWidth the number of columns (i.e. the max width)
  * @property outOfBoundsRegion the region that is considered as out of bounds
  */
-class BoardHex(val verticalLength: Int, val maximumWidth: Int,
-               private val outOfBoundsRegion: Region2D? = null)
+class BoardHex(
+    private val verticalLength: Int,
+    private val maximumWidth: Int,
+    private val outOfBoundsRegion: Region2D? = null)
     : Board<BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D> {
 
     init {
@@ -91,7 +93,7 @@ class BoardHex(val verticalLength: Int, val maximumWidth: Int,
 
     /**
      * @throws ArrayIndexOutOfBoundsException if a given coordinate is invalid
-     * @throws Exception if a given piece not on the board
+     * @throws Exception if a given piece not on the given coordinate
      */
     override fun removePiece(coordinate: Coordinate2D, piece: PieceHex) {
         if (!isInBounds(coordinate)) {

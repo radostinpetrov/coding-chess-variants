@@ -7,6 +7,6 @@ import moveGenerators.MoveGeneratorHex
 import pieces.hex.PieceHex
 
 /**
- * Implementation of the GameType interface for a standard 2d square board.
+ * Implementation of the GameType interface for a 2d hexagonal board.
  */
 interface GameTypeHex : GameType<BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D>

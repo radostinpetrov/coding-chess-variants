@@ -11,7 +11,7 @@ import pieces.Piece3D
 import rules.SpecialRules3D
 
 /**
- * Represents a standard n-player 3D chess game,
+ * Represents a standard 2-player 3D chess game,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)

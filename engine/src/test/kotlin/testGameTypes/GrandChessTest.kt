@@ -1,13 +1,16 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
-import gameTypes.chess.CapablancaChess
+import gameTypes.GameType2D
 import gameTypes.chess.GrandChess
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.Piece2D
 import pieces.chess.*
 import testPerft.PerftUtility
 
@@ -18,6 +21,8 @@ class GrandChessTest {
 
     val player1 = mockGrandChess.players[0]
     val player2 = mockGrandChess.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -85,21 +90,21 @@ class GrandChessTest {
 
     @Test
     fun testGrandChessInitialPositionsWithDepth1() {
-        PerftUtility.testSimple(GrandChess(), 1, 65)
+        perft.testSimple(GrandChess(), 1, 65)
     }
 
     @Test
     fun testGrandChessInitialPositionsWithDepth2() {
-        PerftUtility.testSimple(GrandChess(), 2, 4225)
+        perft.testSimple(GrandChess(), 2, 4225)
     }
 
 //    @Test
 //    fun testGrandChessInitialPositionsWithDepth3() {
-//        PerftUtility.testSimple(GrandChess(), 3, 259514)
+//        perft.testSimple(GrandChess(), 3, 259514)
 //    }
 //
 //    @Test
 //    fun testGrandChessInitialPositionsWithDepth4() {
-//        PerftUtility.testSimple(GrandChess(), 4, 15921643)
+//        perft.testSimple(GrandChess(), 4, 15921643)
 //    }
 }

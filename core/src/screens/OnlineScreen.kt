@@ -33,31 +33,43 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     val title = Label("Looking for Players...", skin)
 
-    val websocketClientManager = WebsocketClientManager(
-        { jsonMessage: JSONObject ->
-            humanPlayer = jsonMessage.getInt("player")
-            gameType.seed = jsonMessage.getDouble("seed")
-            playerUsername = jsonMessage.getString("playerUsername")
-            opponentUsername = jsonMessage.getString("opponentUsername")
-            playerElo = jsonMessage.getInt("playerElo")
-            opponentElo = jsonMessage.getInt("opponentElo")
-        },
-        username,
-        gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
-    )
+    lateinit var websocketClientManager: WebsocketClientManager
 
-    val websocketClientManagerHex = WebsocketClientManagerHex(
-        { jsonMessage: JSONObject ->
-            humanPlayer = jsonMessage.getInt("player")
-            gameType.seed = jsonMessage.getDouble("seed")
-            playerUsername = jsonMessage.getString("playerUsername")
-            opponentUsername = jsonMessage.getString("opponentUsername")
-            playerElo = jsonMessage.getInt("playerElo")
-            opponentElo = jsonMessage.getInt("opponentElo")
-        },
-        username,
-        gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
-    )
+    lateinit var websocketClientManagerHex: WebsocketClientManagerHex
+
+    init {
+        when (gameType) {
+            is HexagonalChess -> {
+                websocketClientManagerHex = WebsocketClientManagerHex(
+                    { jsonMessage: JSONObject ->
+                        humanPlayer = jsonMessage.getInt("player")
+                        gameType.seed = jsonMessage.getDouble("seed")
+                        playerUsername = jsonMessage.getString("playerUsername")
+                        opponentUsername = jsonMessage.getString("opponentUsername")
+                        playerElo = jsonMessage.getInt("playerElo")
+                        opponentElo = jsonMessage.getInt("opponentElo")
+                    },
+                    username,
+                    gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
+                )
+            }
+            is AbstractChess2D -> {
+                websocketClientManager = WebsocketClientManager(
+                    { jsonMessage: JSONObject ->
+                        humanPlayer = jsonMessage.getInt("player")
+                        gameType.seed = jsonMessage.getDouble("seed")
+                        playerUsername = jsonMessage.getString("playerUsername")
+                        opponentUsername = jsonMessage.getString("opponentUsername")
+                        playerElo = jsonMessage.getInt("playerElo")
+                        opponentElo = jsonMessage.getInt("opponentElo")
+                    },
+                    username,
+                    gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
+                )
+            }
+
+        }
+    }
 
     var humanPlayer: Int? = null
     var playerUsername: String = ""

@@ -22,6 +22,5 @@ class PawnTest {
         val firstPawn = (moves.first { it is BasicMove2D && it.pieceMoved is WhitePawn } as BasicMove2D).pieceMoved
         val firstPawnMoves = moves.filter { it is BasicMove2D && it.pieceMoved === firstPawn }
         Assertions.assertTrue(firstPawnMoves.size == 2)
-        mockStandardChess.makeMove(firstPawnMoves[0])
     }
 }

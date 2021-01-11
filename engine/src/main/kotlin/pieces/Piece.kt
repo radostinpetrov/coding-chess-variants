@@ -6,7 +6,7 @@ import moveGenerators.MoveGenerator
 import players.Player
 
 /**
- * Represents chess board
+ * Represents a piece
  *
  * @param B the type of a board.
  * @param MG the type of a move generator.

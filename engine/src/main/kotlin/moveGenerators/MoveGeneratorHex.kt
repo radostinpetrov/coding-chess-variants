@@ -8,16 +8,42 @@ import players.Player
 import regions.Region2D
 
 /**
- * Implementation of the Move Generator interface for a 2d square board.
+ * Implementation of the Move Generator interface for a 2d hexagonal board.
  */
 interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D> {
     /**
      * Moves along a ray direction until they encounter another piece or the edge of the board
      *
-     * @property directions list of directions that the piece can move along
+     * @property orthogonal a move wherein a line piece exits one hex and
+     * enters another by crossing a common border. Orthogonal moves are never color-bound.
+     * @property diagonal a move wherein a line piece exits one hex and
+     * enters another by following the line which connects their nearest corners.
+     * Diagonal moves are always color-bound.
      */
-    class Slider(private val directions: List<DirectionHex>) : MoveGeneratorHex {
+    class Slider(private val orthogonal: Boolean = false, private val diagonal: Boolean = false) : MoveGeneratorHex {
         override fun generate(board: BoardHex, coordinate: Coordinate2D, piece: PieceHex, player: Player): List<BasicMoveHex> {
+            val directions = mutableListOf<DirectionHex>()
+            if (orthogonal) {
+                directions.addAll(listOf(
+                    DirectionHex.UP,
+                    DirectionHex.UP_RIGHT,
+                    DirectionHex.DOWN_RIGHT,
+                    DirectionHex.DOWN,
+                    DirectionHex.DOWN_LEFT,
+                    DirectionHex.UP_LEFT
+                ))
+            }
+            if (diagonal) {
+                directions.addAll(listOf(
+                    DirectionHex.UP_UP_RIGHT,
+                    DirectionHex.DOWN_DOWN_RIGHT,
+                    DirectionHex.RIGHT,
+                    DirectionHex.DOWN_DOWN_LEFT,
+                    DirectionHex.UP_UP_LEFT,
+                    DirectionHex.LEFT
+                ))
+            }
+
             val result = mutableListOf<BasicMoveHex>()
             directions.map{
                 result.addAll(helper(board, coordinate, piece, it, player))
@@ -112,8 +138,6 @@ interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex,
 
     /**
      * A given move can only occur if it captures a piece
-     *
-     * @property moveGenerator the move to
      */
     data class CaptureOnly(val moveGenerator: MoveGeneratorHex) : MoveGeneratorHex {
         override fun generate(board: BoardHex, coordinate: Coordinate2D, piece: PieceHex, player: Player): List<BasicMoveHex> {
@@ -237,15 +261,4 @@ interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex,
             return moves
         }
     }
-
-//    /**
-//     * Skip move: a player may decide to pass if there is no safe or desirable move
-//     */
-//    object Skip : MoveGeneratorHex {
-//        override fun generate(board: BoardHex, coordinate: Coordinate2D, piece: PieceHex, player: Player): List<BasicMoveHex> {
-//            return listOf(
-//                BasicMoveHex(coordinate, coordinate, piece, player, null )
-//            )
-//        }
-//    }
 }

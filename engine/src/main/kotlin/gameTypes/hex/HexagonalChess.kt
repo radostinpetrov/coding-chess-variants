@@ -4,7 +4,7 @@ import coordinates.Coordinate2D
 import pieces.hex.*
 
 /**
- * Represents Capablanca Chess
+ * Represents Hexagonal Chess
  */
 open class HexagonalChess : AbstractChessHex() {
     override val board = BoardHex(6, 11)

@@ -1,15 +1,19 @@
 package testGameTypes
 
+import boards.Board2D
 import coordinates.Coordinate2D
+import gameTypes.GameType2D
 import gameTypes.xiangqi.Janggi
 import io.mockk.MockKAnnotations
 import io.mockk.spyk
+import moveGenerators.MoveGenerator2D
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import pieces.Piece2D
 import pieces.janggi.*
-import testPerft.PerftUtility
 import pieces.janggi.Elephant
+import testPerft.PerftUtility
 
 class JanggiTest {
     private var mockJanggi = spyk<Janggi>()
@@ -18,6 +22,8 @@ class JanggiTest {
 
     val player1 = mockJanggi.players[0]
     val player2 = mockJanggi.players[1]
+
+    val perft = PerftUtility<GameType2D, Board2D, MoveGenerator2D, Piece2D, Coordinate2D>()
 
     @BeforeEach
     fun setUp() = MockKAnnotations.init(this)
@@ -76,21 +82,21 @@ class JanggiTest {
 
     @Test
     fun testJanggiInitialPositionsWithDepth1() {
-        PerftUtility.testSimple(Janggi(), 1, 32)
+        perft.testSimple(Janggi(), 1, 32)
     }
 
     @Test
     fun testJanggiInitialPositionsWithDepth2() {
-        PerftUtility.testSimple(Janggi(), 2, 1012)
+        perft.testSimple(Janggi(), 2, 1012)
     }
 
 //    @Test
 //    fun testJanggiInitialPositionsWithDepth3() {
-//        PerftUtility.testSimple(Janggi(), 3, 29697)
+//        perft.testSimple(Janggi(), 3, 29697)
 //    }
 //
 //    @Test
 //    fun testJanggiInitialPositionsWithDepth4() {
-//        PerftUtility.testSimple(Janggi(), 4, 15921643)
+//        perft.testSimple(Janggi(), 4, 15921643)
 //    }
 }

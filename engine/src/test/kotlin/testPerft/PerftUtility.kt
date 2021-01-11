@@ -1,10 +1,19 @@
 package testPerft
 
-import gameTypes.chess.AbstractChess2D
+import boards.Board
+import coordinates.Coordinate
 import org.junit.jupiter.api.Assertions
 import endconditions.Outcome
+import gameTypes.GameType
+import moveGenerators.MoveGenerator
+import pieces.Piece
 
-object PerftUtility {
+class PerftUtility<G : GameType<B, MG, P, C>,
+        B : Board<B, MG, P, C>,
+        MG : MoveGenerator<B, MG, P, C>,
+        P : Piece<B, MG, P, C>,
+        C : Coordinate>
+{
     data class PerftData(var nodes: Int, var captures: Int, var checks: Int, var checkmates: Int) {
         fun plus(other: PerftData) {
             nodes += other.nodes
@@ -14,7 +23,7 @@ object PerftUtility {
         }
     }
 
-    fun perft(depth: Int, game: AbstractChess2D, checkForCheckmate: Boolean = true): PerftData {
+    fun perft(depth: Int, game: G, checkForCheckmate: Boolean = true): PerftData {
         if (depth == 0) {
             return PerftData(1, 0, 0, 0)
         }
@@ -55,12 +64,12 @@ object PerftUtility {
         return data
     }
 
-    fun test(game: AbstractChess2D, depth: Int, expectedData: PerftData) {
+    fun test(game: G, depth: Int, expectedData: PerftData) {
         game.initGame()
         Assertions.assertEquals(expectedData, perft(depth, game))
     }
 
-    fun testSimple(game: AbstractChess2D, depth: Int, expectedNodes: Int) {
+    fun testSimple(game: G, depth: Int, expectedNodes: Int) {
         game.initGame()
         Assertions.assertEquals(expectedNodes, perft(depth, game, false).nodes)
     }

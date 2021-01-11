@@ -1,9 +1,6 @@
 package pieces.hex
 
-import moveGenerators.DirectionHex.*
-import moveGenerators.MoveGenerator2D
 import moveGenerators.MoveGeneratorHex
-import pieces.Piece2D
 import players.Player
 
 /**
@@ -11,7 +8,7 @@ import players.Player
  */
 data class HexRook(override val player: Player) : PieceHex {
     override val moveGenerators = listOf(
-        MoveGeneratorHex.Slider(listOf(UP, UP_RIGHT, DOWN_RIGHT, DOWN, DOWN_LEFT, UP_LEFT))
+        MoveGeneratorHex.Slider(orthogonal = true)
     )
 
     override fun getSymbol(): String {

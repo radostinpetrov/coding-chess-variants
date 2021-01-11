@@ -10,7 +10,6 @@ import players.Player
 
 /**
  * Represents a 2 player game,
- *
  */
 
 abstract class GameType2P<B : Board<B, MG, P, C>,
