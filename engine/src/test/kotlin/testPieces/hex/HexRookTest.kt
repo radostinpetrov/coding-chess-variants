@@ -28,10 +28,10 @@ class HexRookTest {
         val expectedMoves = listOf(
             BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(4, 3), rook!!, player, pieceCapturedCoordinate = Coordinate2D(4,3)),
             BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(4, 5), rook, player, pieceCapturedCoordinate = Coordinate2D(4,5)),
-                    BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(3, 4), rook, player, pieceCapturedCoordinate = Coordinate2D(3,4)),
-        BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(2,7), rook, player, pieceCapturedCoordinate = Coordinate2D(2,7)),
-        BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(1, 10), rook, player, pieceCapturedCoordinate = Coordinate2D(1, 10)),
-        BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(0, 13), rook, player, pieceCapturedCoordinate = Coordinate2D(0,13))
+            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(3, 4), rook, player, pieceCapturedCoordinate = Coordinate2D(3,4)),
+            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(2,7), rook, player, pieceCapturedCoordinate = Coordinate2D(2,7)),
+            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(1, 10), rook, player, pieceCapturedCoordinate = Coordinate2D(1, 10)),
+            BasicMoveHex(Coordinate2D(4, 1), Coordinate2D(0, 13), rook, player, pieceCapturedCoordinate = Coordinate2D(0,13))
         )
 
         Assertions.assertEquals(expectedMoves, firstRookMoves)
