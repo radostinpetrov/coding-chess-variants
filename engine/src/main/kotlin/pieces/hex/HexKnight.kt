@@ -9,7 +9,7 @@ import players.Player
 /**
  * Represents a kinght in standard chess
  */
-data class Knight(override val player: Player) : PieceHex {
+data class HexKnight(override val player: Player) : PieceHex {
     override val moveGenerators = listOf(MoveGeneratorHex.Leaper(listOf(
         Coordinate2D(1,5),
         Coordinate2D(-1,5),

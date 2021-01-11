@@ -11,16 +11,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
+import gameTypes.GameType
 import gameTypes.GameType2D
+import gameTypes.chess.AbstractChess2D
+import gameTypes.hex.HexagonalChess
 import ktx.app.KtxScreen
 import players.ComputerPlayer
+import players.ComputerPlayerHex
 import players.FrontendPlayer
+import players.FrontendPlayerHex
 import players.HumanPlayer
+import players.HumanPlayerHex
 
 /**
  * Displays the Player select screen, where the human and computer users are set for local play.
  */
-class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList: List<Long>?) : KtxScreen {
+class PlayerScreen(val game: MyGdxGame, val gameType: GameType<*, *, *, *>, val clockList: List<Long>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
@@ -124,25 +130,46 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
     /**
      * Initialises the players selected and switches to the gameScreen.
      */
-    private fun switchToGameScreen(gameType: GameType2D) {
+    private fun switchToGameScreen(gameType: GameType<*,*,*,*>) {
         val clockFlag = clockList != null
-        val gameScreen = GameScreen(game, gameType, clockFlag, false)
 
-        game.removeScreen<GameScreen>()
-        val players = mutableListOf<FrontendPlayer>()
-        players.add(createPlayer(playerTypes[0], gameScreen, Color.WHITE, "White"))
-        players.add(createPlayer(playerTypes[1], gameScreen, Color.BLACK, "Black"))
 
-        if (clockFlag) {
-            players[0].endClock = clockList!![0]
-            players[1].endClock = clockList[1]
+        if (gameType is HexagonalChess) {
+            val gameScreen = GameScreenHexagonal(game, gameType, clockFlag, false)
+            game.removeScreen<GameScreenHexagonal>()
+            val players = mutableListOf<FrontendPlayerHex>()
+            players.add(createPlayerHex(playerTypes[0], gameScreen, Color.WHITE, "White"))
+            players.add(createPlayerHex(playerTypes[1], gameScreen, Color.BLACK, "Black"))
+
+            if (clockFlag) {
+                players[0].endClock = clockList!![0]
+                players[1].endClock = clockList[1]
+            }
+
+            gameScreen.initPlayers(players)
+
+            game.addScreen(gameScreen)
+            dispose()
+            game.setScreen<GameScreenHexagonal>()
+        } else if (gameType is AbstractChess2D) {
+            val gameScreen = GameScreen(game, gameType, clockFlag, false)
+            game.removeScreen<GameScreen>()
+            val players = mutableListOf<FrontendPlayer>()
+            players.add(createPlayer(playerTypes[0], gameScreen, Color.WHITE, "White"))
+            players.add(createPlayer(playerTypes[1], gameScreen, Color.BLACK, "Black"))
+
+            if (clockFlag) {
+                players[0].endClock = clockList!![0]
+                players[1].endClock = clockList[1]
+            }
+
+            gameScreen.initPlayers(players)
+
+            game.addScreen(gameScreen)
+            dispose()
+            game.setScreen<GameScreen>()
         }
 
-        gameScreen.initPlayers(players)
-
-        game.addScreen(gameScreen)
-        dispose()
-        game.setScreen<GameScreen>()
     }
 
     /**
@@ -155,6 +182,13 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType2D, val clockList:
         return when (player) {
             PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)
             PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour, colourName)
+        }
+    }
+
+    private fun createPlayerHex(player: PlayerType, gameScreen: GameScreenHexagonal, colour: Color, colourName: String): FrontendPlayerHex {
+        return when (player) {
+            PlayerType.HUMAN -> HumanPlayerHex(gameScreen, colour, colourName)
+            PlayerType.COMPUTER -> ComputerPlayerHex(gameScreen, 200, colour, colourName)
         }
     }
 

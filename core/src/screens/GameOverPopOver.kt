@@ -20,7 +20,7 @@ import players.Player
 /**
  * Displays the game over screen when a player wins or stalemate and the game ends.
  */
-class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, val outcome: Outcome, val shapeRenderer: ShapeRenderer, val windowWidth: Int, val windowHeight: Int, val libToFrontEndPlayer: Map<Player, FrontendPlayer>) {
+class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, val outcome: Outcome, val shapeRenderer: ShapeRenderer, val windowWidth: Int, val windowHeight: Int, val winnerName: String?) {
     val table = Table()
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
     val playAgainButton = TextButton("Play Again?", skin)
@@ -36,7 +36,7 @@ class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, v
 
         when (outcome) {
             is Outcome.Win -> {
-                val colourString = libToFrontEndPlayer[outcome.winner]!!.name
+                val colourString = winnerName
                 sb.append("$colourString wins ")
             }
             is Outcome.Draw -> {

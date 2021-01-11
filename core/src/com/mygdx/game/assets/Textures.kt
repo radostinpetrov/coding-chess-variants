@@ -7,7 +7,9 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
+import pieces.hex.*
 import gameTypes.chess.BalbosGame
+import pieces.Piece
 import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
@@ -111,8 +113,19 @@ class Textures(assets: AssetManager) {
         BerlinWhitePawn::class to whitePawn,
 
         /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece
-        )
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
+
+        /* Hex. */
+        HexBishop::class to whiteBishop,
+        HexWhitePawn::class to whitePawn,
+        HexKing::class to whiteKing,
+        HexKnight::class to whiteKnight,
+        HexQueen::class to whiteQueen,
+        HexRook::class to whiteRook,
+
+    )
+
+
 
     /* Contains the mappings to the textures for black pieces. */
     val blacks = mapOf(
@@ -145,13 +158,22 @@ class Textures(assets: AssetManager) {
         BerlinBlackPawn::class to blackPawn,
 
         /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece
+        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
+
+        /* Hex. */
+        HexBishop::class to blackBishop,
+        HexBlackPawn::class to blackPawn,
+        HexKing::class to blackKing,
+        HexKnight::class to blackKnight,
+        HexQueen::class to blackQueen,
+        HexRook::class to blackRook,
+
     )
 
     /**
      *  This method returns the texture associated to a piece, and null if it does not exist.
      */
-    fun getTextureFromPiece(piece: Piece2D, playerColour: Color): Texture? {
+    fun getTextureFromPiece(piece: Piece<*, *, *, *>, playerColour: Color): Texture? {
         val col = when (playerColour) {
             Color.WHITE -> whites
             Color.BLACK -> blacks

@@ -7,18 +7,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.mygdx.game.MyGdxGame
+import gameTypes.GameType
 import ktx.app.KtxScreen
 import gameTypes.GameType2D
+import gameTypes.chess.AbstractChess2D
+import gameTypes.hex.HexagonalChess
 import org.json.JSONObject
 import players.FrontendPlayer
+import players.FrontendPlayerHex
 import players.NetworkEnemyPlayer
+import players.NetworkEnemyPlayerHex
 import players.NetworkHumanPlayer
+import players.NetworkHumanPlayerHex
 import players.WebsocketClientManager
+import players.WebsocketClientManagerHex
+import java.lang.Exception
 
 /**
  * Displays the Online waiting screen, where the player waits to be connected to another user.
  */
-class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType2D, val clockList: List<Long>?) : KtxScreen {
+class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType<*, *, *, *>, val clockList: List<Long>?) : KtxScreen {
     val stage = Stage()
     val table = Table()
 
@@ -39,6 +47,22 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         username,
         gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
     )
+
+    val websocketClientManagerHex = WebsocketClientManagerHex (
+        { jsonMessage: JSONObject ->
+            humanPlayer = jsonMessage.getInt("player")
+            gameType.seed = jsonMessage.getDouble("seed")
+            playerUsername = jsonMessage.getString("playerUsername")
+            opponentUsername = jsonMessage.getString("opponentUsername")
+            playerElo = jsonMessage.getInt("playerElo")
+            opponentElo = jsonMessage.getInt("opponentElo")
+
+        },
+        username,
+        gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
+    )
+
+
 
     var humanPlayer: Int? = null
     var playerUsername: String = ""
@@ -75,53 +99,109 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
      */
     private fun switchToGameScreen() {
         val clockFlag = clockList != null
-        val gameScreen = GameScreen(game, gameType, clockFlag, true)
-        websocketClientManager.gameScreen = gameScreen
-        val players = mutableListOf<FrontendPlayer>()
-        val networkEnemyPlayer: NetworkEnemyPlayer
-        val networkHumanPlayer: NetworkHumanPlayer
-        when (humanPlayer) {
-            1 -> {
-                networkHumanPlayer = NetworkHumanPlayer(
-                    gameScreen, websocketClientManager, Color.WHITE, "White", playerUsername, playerElo
-                )
-                players.add(networkHumanPlayer)
-                networkEnemyPlayer = NetworkEnemyPlayer(
-                    gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
-                )
-                players.add(networkEnemyPlayer)
-                websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
-            }
-            2 -> {
-                networkEnemyPlayer = NetworkEnemyPlayer(
-                    gameScreen, Color.WHITE, "White", opponentUsername, opponentElo
-                )
-                players.add(networkEnemyPlayer)
+        if (gameType is HexagonalChess) {
+            val gameScreenHex = GameScreenHexagonal(game, gameType, clockFlag, true)
+            websocketClientManagerHex.gameScreen = gameScreenHex
+            val players = mutableListOf<FrontendPlayerHex>()
+            val networkEnemyPlayer: NetworkEnemyPlayerHex
+            val networkHumanPlayer: NetworkHumanPlayerHex
+            when (humanPlayer) {
+                1 -> {
+                    networkHumanPlayer = NetworkHumanPlayerHex(
+                        gameScreenHex, websocketClientManagerHex, Color.WHITE, "White", playerUsername, playerElo
+                    )
+                    players.add(networkHumanPlayer)
+                    networkEnemyPlayer = NetworkEnemyPlayerHex(
+                        gameScreenHex, Color.BLACK,"Black", opponentUsername, opponentElo
+                    )
+                    players.add(networkEnemyPlayer)
+                    websocketClientManagerHex.networkEnemyPlayer = networkEnemyPlayer
+                }
+                2 -> {
+                    networkEnemyPlayer = NetworkEnemyPlayerHex(
+                        gameScreenHex, Color.WHITE, "White", opponentUsername, opponentElo
+                    )
+                    players.add(networkEnemyPlayer)
 
-                networkHumanPlayer = NetworkHumanPlayer(
-                    gameScreen, websocketClientManager, Color.BLACK, "Black", playerUsername, playerElo
-                )
-                players.add(networkHumanPlayer)
+                    networkHumanPlayer = NetworkHumanPlayerHex(
+                        gameScreenHex, websocketClientManagerHex, Color.BLACK, "Black", playerUsername, playerElo
+                    )
+                    players.add(networkHumanPlayer)
+                }
+                else -> {
+                    // This should not happen, print error
+                    return
+                }
             }
-            else -> {
-                // This should not happen, print error
-                return
+
+            websocketClientManagerHex.networkHumanPlayer = networkHumanPlayer
+            websocketClientManagerHex.networkEnemyPlayer = networkEnemyPlayer
+
+            if (clockFlag) {
+                players[0].endClock = clockList!![0]
+                players[1].endClock = clockList[1]
             }
+
+            gameScreenHex.initPlayers(players)
+            gameScreenHex.networkHumanPlayer = networkHumanPlayer
+            game.removeScreen<GameScreenHexagonal>()
+            game.addScreen(gameScreenHex)
+            dispose()
+            game.setScreen<GameScreenHexagonal>()
+        } else if ( gameType is AbstractChess2D) {
+            val gameScreen = GameScreen(game, gameType, clockFlag, true)
+            websocketClientManager.gameScreen = gameScreen
+            val players = mutableListOf<FrontendPlayer>()
+            val networkEnemyPlayer: NetworkEnemyPlayer
+            val networkHumanPlayer: NetworkHumanPlayer
+            when (humanPlayer) {
+                1 -> {
+                    networkHumanPlayer = NetworkHumanPlayer(
+                        gameScreen, websocketClientManager, Color.WHITE, "White", playerUsername, playerElo
+                    )
+                    players.add(networkHumanPlayer)
+                    networkEnemyPlayer = NetworkEnemyPlayer(
+                        gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
+                    )
+                    players.add(networkEnemyPlayer)
+                    websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
+                }
+                2 -> {
+                    networkEnemyPlayer = NetworkEnemyPlayer(
+                        gameScreen, Color.WHITE, "White", opponentUsername, opponentElo
+                    )
+                    players.add(networkEnemyPlayer)
+
+                    networkHumanPlayer = NetworkHumanPlayer(
+                        gameScreen, websocketClientManager, Color.BLACK, "Black", playerUsername, playerElo
+                    )
+                    players.add(networkHumanPlayer)
+                }
+                else -> {
+                    // This should not happen, print error
+                    return
+                }
+            }
+
+            websocketClientManager.networkHumanPlayer = networkHumanPlayer
+            websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
+
+            if (clockFlag) {
+                players[0].endClock = clockList!![0]
+                players[1].endClock = clockList[1]
+            }
+
+            gameScreen.initPlayers(players)
+            gameScreen.networkHumanPlayer = networkHumanPlayer
+            game.removeScreen<GameScreen>()
+            game.addScreen(gameScreen)
+            dispose()
+            game.setScreen<GameScreen>()
+        } else {
+            throw Exception("Unsupported game type")
         }
 
-        websocketClientManager.networkHumanPlayer = networkHumanPlayer
-        websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
 
-        if (clockFlag) {
-            players[0].endClock = clockList!![0]
-            players[1].endClock = clockList[1]
-        }
 
-        gameScreen.initPlayers(players)
-        gameScreen.networkHumanPlayer = networkHumanPlayer
-        game.removeScreen<GameScreen>()
-        game.addScreen(gameScreen)
-        dispose()
-        game.setScreen<GameScreen>()
     }
 }

@@ -5,7 +5,7 @@ import players.Player
 import regions.CompositeRegion
 import regions.CoordinateRegion
 
-data class WhitePawn(override val player: Player) :
+data class HexWhitePawn(override val player: Player) :
     ChessPawnHex(player, DirectionHex.UP, startingRegion, promotionRegion) {
     companion object {
         val startingRegion = CompositeRegion(listOf(
