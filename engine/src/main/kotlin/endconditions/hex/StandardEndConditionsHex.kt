@@ -6,12 +6,7 @@ import gameTypes.hex.AbstractChessHex
 import players.Player
 
 /**
- * End conditions in standard chess, which consists of:
- * Checkmate,
- * Stalemate by no legal moves,
- * Stalemate by three-fold-repetition,
- * Stalemate by the 50-move rules,
- * Stalemate by insufficient material.
+ * End conditions in standard hexagonal chess, which consists of Checkmate
  */
 class StandardEndConditionsHex : EndConditionHex<AbstractChessHex> {
     private val endConditions: List<EndConditionHex<AbstractChessHex>> = listOf(Checkmate())

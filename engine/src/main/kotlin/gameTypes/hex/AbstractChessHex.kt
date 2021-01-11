@@ -10,7 +10,7 @@ import pieces.hex.PieceHex
 import rules.hex.SpecialRulesHex
 
 /**
- * Represents a standard n-player game,
+ * Represents a standard 2-player game on a 2D hexagonal board,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)

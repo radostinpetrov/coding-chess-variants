@@ -1,28 +1,20 @@
 package gameTypes
 
 import boards.Board
-import boards.Board2D
 import coordinates.Coordinate
 import endconditions.EndCondition
-import moves.Move2D
 import moves.Move.*
 import moves.Move.SimpleMove.*
-import gameTypes.GameType2D
-import rules.SpecialRules2D
-import endconditions.StandardEndConditions
-import endconditions.EndCondition2D
 import gameTypes.GameType2P
 import moveGenerators.MoveGenerator
-import moveGenerators.MoveGenerator2D
 import moves.*
 import pieces.Piece
-import pieces.Piece2D
 import pieces.Royal
 import players.Player
 import rules.SpecialRules
 
 /**
- * Represents a standard n-player game,
+ * Represents a standard 2-player game,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)

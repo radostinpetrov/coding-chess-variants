@@ -7,9 +7,10 @@ import players.Player
 import regions.Region3D
 
 /**
- * Implementation of the Board interface for a 2d square board.
- * The board size is rows x cols and each coordinate can have upto one Piece2D.
+ * Implementation of the Board interface for a 3D square board.
+ * The board size is rows x cols and each coordinate can have upto one Piece3D.
  *
+ * @property dims the dimension
  * @property rows the number of rows
  * @property cols the number of columns
  * @property outOfBoundsRegion the region that is considered as out of bounds

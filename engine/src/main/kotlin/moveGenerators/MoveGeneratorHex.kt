@@ -8,7 +8,7 @@ import players.Player
 import regions.Region2D
 
 /**
- * Implementation of the Move Generator interface for a 2d square board.
+ * Implementation of the Move Generator interface for a 2d hexagonal board.
  */
 interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D> {
     /**
@@ -112,8 +112,6 @@ interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex,
 
     /**
      * A given move can only occur if it captures a piece
-     *
-     * @property moveGenerator the move to
      */
     data class CaptureOnly(val moveGenerator: MoveGeneratorHex) : MoveGeneratorHex {
         override fun generate(board: BoardHex, coordinate: Coordinate2D, piece: PieceHex, player: Player): List<BasicMoveHex> {
@@ -237,15 +235,4 @@ interface MoveGeneratorHex : MoveGenerator<BoardHex, MoveGeneratorHex, PieceHex,
             return moves
         }
     }
-
-//    /**
-//     * Skip move: a player may decide to pass if there is no safe or desirable move
-//     */
-//    object Skip : MoveGeneratorHex {
-//        override fun generate(board: BoardHex, coordinate: Coordinate2D, piece: PieceHex, player: Player): List<BasicMoveHex> {
-//            return listOf(
-//                BasicMoveHex(coordinate, coordinate, piece, player, null )
-//            )
-//        }
-//    }
 }

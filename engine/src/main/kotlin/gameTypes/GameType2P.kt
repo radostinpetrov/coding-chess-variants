@@ -9,7 +9,7 @@ import pieces.Piece
 import players.Player
 
 /**
- * Represents a standard n-player game,
+ * Represents a standard 2-player game,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)

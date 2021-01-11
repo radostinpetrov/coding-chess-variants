@@ -8,6 +8,6 @@ import moveGenerators.MoveGeneratorHex
 import pieces.hex.PieceHex
 
 /**
- * Implementation of the EndCondition interface for a Hex square board.
+ * Implementation of the EndCondition interface for a hexagonal square board.
  */
 interface EndConditionHex<out G : GameTypeHex> : EndCondition<G, BoardHex, MoveGeneratorHex, PieceHex, Coordinate2D>

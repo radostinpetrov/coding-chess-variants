@@ -83,7 +83,7 @@ class Board2D(val rows: Int, val cols: Int,
 
     /**
      * @throws ArrayIndexOutOfBoundsException if a given coordinate is invalid
-     * @throws Exception if a given piece not on the board
+     * @throws Exception if a given piece not on the given coordinate
      */
     override fun removePiece(coordinate: Coordinate2D, piece: Piece2D) {
         if (!isInBounds(coordinate)) {

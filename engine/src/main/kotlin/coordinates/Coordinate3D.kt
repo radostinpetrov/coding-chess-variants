@@ -1,11 +1,12 @@
 package coordinates
 
 /**
- * Coordinate on a 2D board representing
- * the x,y offset from the bottom left of the board
+ * Coordinate on a 3D board representing
+ * the x,y,z offset from the bottom left of the board
  *
  * @property x the x offset from the bottom left of the board
  * @property y the y offset from the bottom left of the board
+ * @property z the z offset from the bottom left of the board
  */
 data class Coordinate3D(val x: Int, val y: Int, val z: Int) : Coordinate {
     /**

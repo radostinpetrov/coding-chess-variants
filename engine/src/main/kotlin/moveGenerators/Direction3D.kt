@@ -3,7 +3,7 @@ package moveGenerators
 import coordinates.Coordinate3D
 
 /**
- * A collection of constants representing directions
+ * A collection of constants representing directions on a 3D board
  *
  * @property coordinate the vector corresponding to each direction
  */

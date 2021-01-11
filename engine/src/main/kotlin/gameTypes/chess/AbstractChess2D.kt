@@ -11,7 +11,7 @@ import pieces.Piece2D
 import rules.SpecialRules2D
 
 /**
- * Represents a standard n-player game,
+ * Represents a standard 2-player game on a 2D square board,
  * which contains no special rules and standard end conditions.
  *
  * @property rules the list of special rules (e.g. Castling, EnPassant)
