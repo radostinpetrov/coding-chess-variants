@@ -22,55 +22,63 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
      * @property D true if it can move diagonally along Z,Y axis
      * @property D3D true if it can move diagonally along X,Y,Z axis
      */
-    class Slider3D(val X: Boolean = false, val Y: Boolean = false, val Z: Boolean = false, val D2D: Boolean = false, val AD2D: Boolean = false, val D: Boolean = false, val D3D: Boolean = false) : MoveGenerator3D {
+    class Slider3D(val X: Boolean = false, val Y: Boolean = false, val Z: Boolean = false,
+                   val D2D: Boolean = false, val AD2D: Boolean = false, val D: Boolean = false, val D3D: Boolean = false) : MoveGenerator3D {
         override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
-            val result = mutableListOf<BasicMove3D>()
+            val directions = mutableListOf<Direction3D>()
             if (X) {
-                result.addAll(helper(board, coordinate, piece, 1, 0, 0, player))
-                result.addAll(helper(board, coordinate, piece, -1, 0, 0, player))
+                directions.addAll(listOf(Direction3D.EAST, Direction3D.WEST))
             }
             if (Y) {
-                result.addAll(helper(board, coordinate, piece, 0, 1, 0, player))
-                result.addAll(helper(board, coordinate, piece, 0, -1, 0, player))
+                directions.addAll(listOf(Direction3D.NORTH, Direction3D.SOUTH))
             }
             if (Z) {
-                result.addAll(helper(board, coordinate, piece, 0, 0, 1, player))
-                result.addAll(helper(board, coordinate, piece, 0, 0, -1, player))
+                directions.addAll(listOf(Direction3D.ZENITH, Direction3D.NADIR))
             }
             if (D2D) {
-                result.addAll(helper(board, coordinate, piece, 1, 1, 0, player))
-                result.addAll(helper(board, coordinate, piece, -1, -1, 0, player))
+                directions.addAll(listOf(Direction3D.NORTH_WEST, Direction3D.SOUTH_EAST))
             }
             if (AD2D) {
-                result.addAll(helper(board, coordinate, piece, 1, -1, 0, player))
-                result.addAll(helper(board, coordinate, piece, -1, 1, 0, player))
+                directions.addAll(listOf(Direction3D.NORTH_EAST, Direction3D.SOUTH_WEST))
             }
             if (D) {
-                result.addAll(helper(board, coordinate, piece, 1, 0, 1, player))
-                result.addAll(helper(board, coordinate, piece, -1, 0, -1, player))
-                result.addAll(helper(board, coordinate, piece, -1, 0, 1, player))
-                result.addAll(helper(board, coordinate, piece, 1, 0, -1, player))
-                result.addAll(helper(board, coordinate, piece, 0, 1, 1, player))
-                result.addAll(helper(board, coordinate, piece, 0, -1, -1, player))
-                result.addAll(helper(board, coordinate, piece, 0, -1, 1, player))
-                result.addAll(helper(board, coordinate, piece, 0, 1, -1, player))
+                directions.addAll(listOf(
+                    Direction3D.ZENITH_NORTH,
+                    Direction3D.ZENITH_EAST,
+                    Direction3D.ZENITH_SOUTH,
+                    Direction3D.ZENITH_WEST,
+                    Direction3D.NADIR_NORTH,
+                    Direction3D.NADIR_EAST,
+                    Direction3D.NADIR_SOUTH,
+                    Direction3D.NADIR_WEST,
+                ))
             }
             if (D3D) {
-                result.addAll(helper(board, coordinate, piece, 1, 1, 1, player))
-                result.addAll(helper(board, coordinate, piece, 1, 1, -1, player))
-                result.addAll(helper(board, coordinate, piece, -1, 1, 1, player))
-                result.addAll(helper(board, coordinate, piece, -1, 1, -1, player))
-                result.addAll(helper(board, coordinate, piece, 1, -1, 1, player))
-                result.addAll(helper(board, coordinate, piece, 1, -1, -1, player))
-                result.addAll(helper(board, coordinate, piece, -1, -1, 1, player))
-                result.addAll(helper(board, coordinate, piece, -1, -1, -1, player))
+                directions.addAll(listOf(
+                    Direction3D.ZENITH_NORTH_WEST,
+                    Direction3D.ZENITH_NORTH_EAST,
+                    Direction3D.ZENITH_SOUTH_EAST,
+                    Direction3D.ZENITH_SOUTH_WEST,
+                    Direction3D.NADIR_NORTH_WEST,
+                    Direction3D.NADIR_NORTH_EAST,
+                    Direction3D.NADIR_SOUTH_EAST,
+                    Direction3D.NADIR_SOUTH_WEST,
+                ))
             }
 
+            val result = mutableListOf<BasicMove3D>()
+            directions.map{
+                result.addAll(helper(board, coordinate, piece, it, player))
+            }
             return result
         }
 
-        private fun helper(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, dx: Int, dy: Int, dz: Int, player: Player): List<BasicMove3D> {
+        private fun helper(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, direction: Direction3D, player: Player): List<BasicMove3D> {
             val result = mutableListOf<BasicMove3D>()
+            val dx = direction.coordinate.x
+            val dy = direction.coordinate.y
+            val dz = direction.coordinate.z
+
             var nextCoordinate = Coordinate3D(coordinate.x + dx, coordinate.y + dy, coordinate.z + dz)
             while (board.isInBounds(nextCoordinate)) {
                 val destPiece = board.getPiece(nextCoordinate)
