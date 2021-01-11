@@ -149,10 +149,7 @@ class HexBoard(
                     }
 
                     var toCoordinates = moves.filter { m ->
-                        m.displayFrom == Coordinate2D(
-                            srcX / squareWidth.toInt(),
-                            srcY / squareWidth.toInt()
-                        )
+                        m.displayFrom == gameScreenHexagonal.getPieceCoordinateFromMousePosition(srcX, srcY)
                     }
                         .map { m -> m.displayTo }
 

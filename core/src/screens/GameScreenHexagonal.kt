@@ -482,7 +482,7 @@ class GameScreenHexagonal(
 
 
     fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int): Coordinate2D {
-        println("$srcX, $srcY")
+        // println("$srcX, $srcY")
         for (h in hexPositionToCoordHex) {
             if (inside(Pair(srcX.toFloat(), srcY.toFloat()), h.key)) {
                 return h.value
