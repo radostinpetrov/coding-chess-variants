@@ -173,12 +173,17 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         val batch = game.batch
         batch.begin()
         val coordinateMap = mutableMapOf<Int, Move2D>()
-        val xCoordinate = (rows - moves.size) / 2
-        val yCoordinate = (columns - 1) / 2
+        val xCoordinate = (columns - moves.size) / 2
+        val yCoordinate = (rows - 1) / 2
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
         /* Iterate over the possible promotion pieces and displays them. */
+        moves.forEach {
+            if (it.displayPiecePromotedTo == null) {
+                it.displayPiecePromotedTo = it.displayPieceMoved
+            }
+        }
         for ((i, m) in moves.withIndex()) {
             val p = m.displayPiecePromotedTo
 
@@ -412,7 +417,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
             return null
         }
 
-        if (playerMoves.all { m -> m.displayPiecePromotedTo != null }) {
+        if (playerMoves.any { m -> m.displayPiecePromotedTo != null }) {
             isPromotionScreen = true
             promotableMoves = playerMoves
             resetClicks()

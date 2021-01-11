@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.mygdx.game.MyGdxGame
 import gameTypes.GameType
-import ktx.app.KtxScreen
-import gameTypes.GameType2D
 import gameTypes.chess.AbstractChess2D
 import gameTypes.hex.HexagonalChess
+import ktx.app.KtxScreen
 import org.json.JSONObject
 import players.FrontendPlayer
 import players.FrontendPlayerHex
@@ -34,7 +33,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
 
     val title = Label("Looking for Players...", skin)
 
-    val websocketClientManager = WebsocketClientManager (
+    val websocketClientManager = WebsocketClientManager(
         { jsonMessage: JSONObject ->
             humanPlayer = jsonMessage.getInt("player")
             gameType.seed = jsonMessage.getDouble("seed")
@@ -42,13 +41,12 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
             opponentUsername = jsonMessage.getString("opponentUsername")
             playerElo = jsonMessage.getInt("playerElo")
             opponentElo = jsonMessage.getInt("opponentElo")
-
         },
         username,
         gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
     )
 
-    val websocketClientManagerHex = WebsocketClientManagerHex (
+    val websocketClientManagerHex = WebsocketClientManagerHex(
         { jsonMessage: JSONObject ->
             humanPlayer = jsonMessage.getInt("player")
             gameType.seed = jsonMessage.getDouble("seed")
@@ -56,13 +54,10 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
             opponentUsername = jsonMessage.getString("opponentUsername")
             playerElo = jsonMessage.getInt("playerElo")
             opponentElo = jsonMessage.getInt("opponentElo")
-
         },
         username,
         gameType::class.simpleName, if (clockList != null) (clockList[0]).toString() else ""
     )
-
-
 
     var humanPlayer: Int? = null
     var playerUsername: String = ""
@@ -112,7 +107,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
                     )
                     players.add(networkHumanPlayer)
                     networkEnemyPlayer = NetworkEnemyPlayerHex(
-                        gameScreenHex, Color.BLACK,"Black", opponentUsername, opponentElo
+                        gameScreenHex, Color.BLACK, "Black", opponentUsername, opponentElo
                     )
                     players.add(networkEnemyPlayer)
                     websocketClientManagerHex.networkEnemyPlayer = networkEnemyPlayer
@@ -148,7 +143,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
             game.addScreen(gameScreenHex)
             dispose()
             game.setScreen<GameScreenHexagonal>()
-        } else if ( gameType is AbstractChess2D) {
+        } else if (gameType is AbstractChess2D) {
             val gameScreen = GameScreen(game, gameType, clockFlag, true)
             websocketClientManager.gameScreen = gameScreen
             val players = mutableListOf<FrontendPlayer>()
@@ -161,7 +156,7 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
                     )
                     players.add(networkHumanPlayer)
                     networkEnemyPlayer = NetworkEnemyPlayer(
-                        gameScreen, Color.BLACK,"Black", opponentUsername, opponentElo
+                        gameScreen, Color.BLACK, "Black", opponentUsername, opponentElo
                     )
                     players.add(networkEnemyPlayer)
                     websocketClientManager.networkEnemyPlayer = networkEnemyPlayer
@@ -200,8 +195,5 @@ class OnlineScreen(val game: MyGdxGame, username: String, val gameType: GameType
         } else {
             throw Exception("Unsupported game type")
         }
-
-
-
     }
 }

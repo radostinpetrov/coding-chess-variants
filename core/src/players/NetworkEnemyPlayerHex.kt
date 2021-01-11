@@ -1,7 +1,6 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
-import screens.GameScreen
 import screens.GameScreenHexagonal
 
 class NetworkEnemyPlayerHex(game: GameScreenHexagonal, colour: Color, name: String, username: String, elo: Int?) :

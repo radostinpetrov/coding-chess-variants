@@ -9,7 +9,8 @@ import screens.GameScreen
  * moves list.
  */
 class ComputerPlayer(gameScreen: GameScreen, val delay: Long, colour: Color, name: String) : FrontendPlayer(
-    gameScreen, colour, name, "Computer Player") {
+    gameScreen, colour, name, "Computer Player"
+) {
 
     /**
      * Tells the gameScreen a random valid move to play.

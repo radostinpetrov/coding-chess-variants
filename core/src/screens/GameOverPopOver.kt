@@ -1,6 +1,5 @@
 package screens
 
-import endconditions.Outcome
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
@@ -14,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
-import players.FrontendPlayer
-import players.Player
+import endconditions.Outcome
 
 /**
  * Displays the game over screen when a player wins or stalemate and the game ends.
@@ -69,10 +67,9 @@ class GameOverPopUp(val game: MyGdxGame, val stage: Stage, val screen: Screen, v
         shapeRenderer.end()
         Gdx.gl.glDisable(GL20.GL_BLEND)
 
-        title.setPosition(windowWidth.toFloat()/2 - title.width/2, windowHeight.toFloat() * 2/3)
-        playAgainButton.setPosition(windowWidth.toFloat()/2 - playAgainButton.width/2, windowWidth.toFloat() * 1/2)
+        title.setPosition(windowWidth.toFloat() / 2 - title.width / 2, windowHeight.toFloat() * 2 / 3)
+        playAgainButton.setPosition(windowWidth.toFloat() / 2 - playAgainButton.width / 2, windowWidth.toFloat() * 1 / 2)
     }
-
 
     private fun switchToMenuScreen() {
         game.removeScreen<MenuScreen>()

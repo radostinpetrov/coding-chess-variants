@@ -7,15 +7,14 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import gameTypes.checkers.Checkers
-import pieces.hex.*
 import gameTypes.chess.BalbosGame
 import pieces.Piece
-import pieces.Piece2D
 import pieces.antichess.*
 import pieces.chess.*
+import pieces.hex.*
 import pieces.janggi.*
-import pieces.xiangqi.*
 import pieces.janggi.Elephant
+import pieces.xiangqi.*
 import playground.ChessPlayground
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
@@ -41,7 +40,6 @@ class Textures(assets: AssetManager) {
     val blackQueen = assets[TextureAssets.BlackQueen]
     val blackKing = assets[TextureAssets.BlackKing]
 
-
     /* --- Grand chess and Capablanca chess --- */
     /* White pieces. */
     val whiteCardinal = assets[TextureAssets.WhiteCardinal]
@@ -50,7 +48,6 @@ class Textures(assets: AssetManager) {
     /* Black pieces. */
     val blackCardinal = assets[TextureAssets.BlackCardinal]
     val blackMarshal = assets[TextureAssets.BlackMarshal]
-
 
     /* --- Xiangqi and Janggi --- */
     /* White pieces. */
@@ -124,8 +121,6 @@ class Textures(assets: AssetManager) {
         HexRook::class to whiteRook,
 
     )
-
-
 
     /* Contains the mappings to the textures for black pieces. */
     val blacks = mapOf(

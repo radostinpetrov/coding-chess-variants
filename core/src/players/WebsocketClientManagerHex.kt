@@ -1,11 +1,9 @@
 package players
 
-import gameTypes.chess.AbstractChess2D
 import gameTypes.hex.HexagonalChess
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
-import screens.GameScreen
 import screens.GameScreenHexagonal
 import java.net.URI
 
@@ -92,8 +90,8 @@ class WebsocketClientManagerHex(val startGameFunction: (JSONObject) -> Unit, var
     fun sendConcede() {
         webSocketClient.send(
             "{\n" +
-                    "    \"type\": \"concede\"\n" +
-                    "}"
+                "    \"type\": \"concede\"\n" +
+                "}"
         )
     }
 

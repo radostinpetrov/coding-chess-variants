@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.MyGdxGame
 import gameTypes.GameType
-import gameTypes.GameType2D
 import gameTypes.checkers.Checkers
 import gameTypes.chess.*
 import gameTypes.hex.HexagonalChess
@@ -214,7 +213,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
      * Online goes to OnlineScreen.
      * Local goes to PlayerScreen
      */
-    private fun switchToPreGameScreen(gameType: GameType<*,*,*,*>, isOnline: Boolean) {
+    private fun switchToPreGameScreen(gameType: GameType<*, *, *, *>, isOnline: Boolean) {
         if (!isOnline) {
             game.removeScreen<PlayerScreen>()
             game.addScreen(PlayerScreen(game, gameType, clockList))

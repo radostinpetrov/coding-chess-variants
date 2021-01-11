@@ -21,7 +21,6 @@ import gameTypes.hex.HexagonalChess
 import ktx.app.KtxScreen
 import moves.MoveHex
 import players.FrontendPlayerHex
-import players.HumanPlayer
 import players.HumanPlayerHex
 import players.NetworkHumanPlayerHex
 import players.Player
@@ -62,7 +61,7 @@ class GameScreenHexagonal(
 
     lateinit var guiBoard: HexBoard
 
-    private var squareWidth: Float = (windowHeight.toFloat() / 8.5 ).toFloat()
+    private var squareWidth: Float = (windowHeight.toFloat() / 8.5).toFloat()
     private val pieceWidth: Float = squareWidth * 0.85f
 
     val skin = Skin(Gdx.files.internal("skin/uiskin.json"))
@@ -166,29 +165,27 @@ class GameScreenHexagonal(
         for (i in 0 until board.rows) {
             for (j in 0 until board.cols) {
                 if (board.isInBounds(Coordinate2D(j, i))) {
-                    val hexagonRadius = squareWidth/2
+                    val hexagonRadius = squareWidth / 2
                     val ddx = hexagonRadius + hexagonRadius / 2
                     val ddy = (hexagonRadius * rootThree) / 2
                     val offsetx = hexagonRadius
-                    val offsety = (rootThree * hexagonRadius )/ 2.0
+                    val offsety = (rootThree * hexagonRadius) / 2.0
                     val x = offsetx + j * ddx
                     val y = (offsety + i * ddy).toFloat()
                     val ax: Float = x + hexagonRadius
                     val ay: Float = y.toFloat()
-                    val bx: Float = x + hexagonRadius/2
+                    val bx: Float = x + hexagonRadius / 2
                     val by: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
-                    val cx: Float = x - ( hexagonRadius/2)
+                    val cx: Float = x - (hexagonRadius / 2)
                     val cy: Float = (y + (rootThree * hexagonRadius) / 2).toFloat()
                     val dx: Float = x - hexagonRadius
                     val dy: Float = y.toFloat()
-                    val ex: Float = x - (hexagonRadius/2)
+                    val ex: Float = x - (hexagonRadius / 2)
                     val ey: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
-                    val fx: Float = x + hexagonRadius/2
+                    val fx: Float = x + hexagonRadius / 2
                     val fy: Float = (y - ((rootThree * hexagonRadius) / 2)).toFloat()
                     val key = listOf(Pair(ax, ay), Pair(bx, by), Pair(cx, cy), Pair(dx, dy), Pair(ex, ey), Pair(fx, fy))
                     hexPositionToCoordHex[key] = Coordinate2D(j, i)
-
-
                 }
             }
         }
@@ -212,8 +209,8 @@ class GameScreenHexagonal(
         val batch = game.batch
         batch.begin()
         val coordinateMap = mutableMapOf<Int, MoveHex>()
-        val xCoordinate = (rows - moves.size) / 2
-        val yCoordinate = (columns - 1) / 2
+        val xCoordinate = ((columns) - moves.size) / 2
+        val yCoordinate = ((rows / 2) - 1) / 2
         val x = xCoordinate * squareWidth
         val y = yCoordinate * squareWidth
 
@@ -236,8 +233,8 @@ class GameScreenHexagonal(
 
         /* Monitors users mouse input to select the promotion piece. */
         if (srcX != null && srcY != null) {
-            val coordinate = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
-            if (coordinate!!.y == yCoordinate && coordinateMap[coordinate.x] != null) {
+            val coordinate = Coordinate2D(srcX!! / squareWidth.toInt(), srcY!! / squareWidth.toInt())
+            if (coordinate.y == yCoordinate && coordinateMap[coordinate.x] != null) {
                 if (coordinateMap[coordinate.x] != null) {
                     (libToFrontendPlayer[currPlayer!!] as HumanPlayerHex).makeMove(coordinateMap[coordinate.x]!!)
                 }
@@ -352,12 +349,16 @@ class GameScreenHexagonal(
         val nextPlayer = gameEngine.getNextPlayer()
 
         /* Determines whether or not to flip the board orientation. */
-        val flip = (libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
-            nextPlayer
-        )) ||
-                (libToFrontendPlayer[currPlayer]!!.colour == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(
+        val flip = (
+            libToFrontendPlayer[currPlayer!!]!!.colour == Color.BLACK && humanPlayerSet.contains(currPlayer!!) && !humanPlayerSet.contains(
+                nextPlayer
+            )
+            ) ||
+            (
+                libToFrontendPlayer[currPlayer]!!.colour == Color.WHITE && !humanPlayerSet.contains(currPlayer!!) && humanPlayerSet.contains(
                     nextPlayer
-                ))
+                )
+                )
 
         if (gameOverPopUp != null) {
             guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
@@ -365,12 +366,11 @@ class GameScreenHexagonal(
             drawHistoryBox()
             drawUsers(flip)
             gameOverPopUp!!.show()
-
         } else {
             /* Draws the board and detects user input. */
             synchronized(this) {
                 guiBoard.draw(srcX, srcY, moves, flip, isPromotionScreen)
-                    controls(!isPromotionScreen && flip)
+                controls(!isPromotionScreen && flip)
             }
 
             /* Draws the side bar. */
@@ -412,6 +412,10 @@ class GameScreenHexagonal(
             y = graphics.height - y
         }
 
+        var coordinateFrom: Coordinate2D? = null
+        if (srcX != null && srcY != null) {
+            coordinateFrom = getPieceCoordinateFromMousePosition(srcX!!, srcY!!)
+        }
         /* Processes the user's clicks. Gets the piece at the coordinate. */
         if (input.isButtonJustPressed(Input.Buttons.LEFT)) {
             if (srcX == null || isPromotionScreen) {
@@ -419,18 +423,19 @@ class GameScreenHexagonal(
                 srcY = y
             } else if (srcX != null && dstX == null &&
                 moves.any { m ->
-                    m.displayFrom == getPieceCoordinateFromMousePosition(srcX!!, srcY!!) &&
+                    m.displayFrom == coordinateFrom &&
                         m.displayTo == getPieceCoordinateFromMousePosition(x, y)
                 }
             ) {
                 dstX = x
                 dstY = y
+                val coordinateTo = getPieceCoordinateFromMousePosition(x, y)
                 // TODO fix this -> either via changing fe player to be composition or otherwise
                 val signalPlayer = libToFrontendPlayer[currPlayer!!]
                 if (signalPlayer is HumanPlayerHex) {
                     val nextMove = getMove(
-                        getPieceCoordinateFromMousePosition(srcX!!, srcY!!)!!,
-                        getPieceCoordinateFromMousePosition(dstX!!, dstY!!)!!,
+                        coordinateFrom!!,
+                        coordinateTo,
                         moves
                     )
                     if (nextMove != null) {
@@ -478,8 +483,6 @@ class GameScreenHexagonal(
 
         return playerMoves[0]
     }
-
-
 
     fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int): Coordinate2D {
         // println("$srcX, $srcY")
@@ -614,7 +617,7 @@ class GameScreenHexagonal(
             val coor = move.displayTo
             if (i % 2 == 0) {
                 font.setColor(Color.GRAY)
-                val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() +  (coor.y + 1)}"
+                val str = "TURN ${offset + i / 2 + 1} :  ${move.displayPieceMoved.getSymbol() + "-" + (coor!!.x + 97).toChar().toUpperCase() + (coor.y + 1)}"
                 font.draw(
                     batch,
                     str,
@@ -640,7 +643,7 @@ class GameScreenHexagonal(
      */
     private fun drawUsers(flipped: Boolean) {
         batch.begin()
-        //TODO add user1 user2
+        // TODO add user1 user2
         val user1: String
         val user2: String
 

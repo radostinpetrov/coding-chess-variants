@@ -1,9 +1,7 @@
 package players
 
 import com.badlogic.gdx.graphics.Color
-import moves.Move2D
 import moves.MoveHex
-import screens.GameScreen
 import screens.GameScreenHexagonal
 
 /**
@@ -11,7 +9,8 @@ import screens.GameScreenHexagonal
  * moves list.
  */
 class ComputerPlayerHex(gameScreen: GameScreenHexagonal, val delay: Long, colour: Color, name: String) : FrontendPlayerHex(
-    gameScreen, colour, name, "Computer Player") {
+    gameScreen, colour, name, "Computer Player"
+) {
 
     /**
      * Tells the gameScreen a random valid move to play.
