@@ -25,6 +25,7 @@ import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
 import moves.Move2D
 import players.*
+import playground.ChessPlayground
 
 /**
  * Displays the game screen during play. ie. the board pieces, clock, history and takes user input.
@@ -133,7 +134,7 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
 
         /* Initialise the GUIBoard. */
         guiBoard = when (gameEngine) {
-            is Xiangqi, is Janggi -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
+            is Xiangqi, is Janggi, is ChessPlayground -> XiangqiBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer)
             else -> ChessBoard(shapeRenderer, board, game.batch, squareWidth, textures, libToFrontendPlayer, game.font)
         }
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.mygdx.game.assets.Textures
 import players.FrontendPlayer
 import players.Player
+import playground.ChessPlayground
 
 /**
  * Abstract class for Graphical User Interface boards. Initialised with the board to draw.
@@ -20,7 +21,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
     val columns = board.cols
     private val pieceWidth: Float = squareWidth * 0.85f
     private val possibleMoveCircleRadius = 8f
-    private val possibleMoveColour = Color.FOREST
+    private val possibleMoveColour = Color.GREEN
 
     /**
      * Draws the board, pieces and possible moves for a selected piece.
@@ -47,10 +48,19 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
      * @param flipped decides if the pieces should be drawn flipped. eg. for blacks turn.
      */
     private fun drawPieces(batch: Batch, flipped: Boolean) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         batch.begin()
         val pieces = board.getPieces()
 
         for ((p, c) in pieces) {
+            if (p is ChessPlayground.PlaygroundPiece) {
+                val position = squareWidth / 2
+
+                shapeRenderer.color = Color.FOREST
+                shapeRenderer.circle(squareWidth * c!!.x + position, squareWidth * c.y + position, possibleMoveCircleRadius)
+
+                continue
+            }
             val texture = textures.getTextureFromPiece(p, libToFrontEndPlayer[p.player]!!.colour)
             val sprite = Sprite(texture)
 
@@ -66,6 +76,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         }
 
         batch.end()
+        shapeRenderer.end()
     }
 
     /**
@@ -97,6 +108,7 @@ abstract class GUIBoard(val shapeRenderer: ShapeRenderer, val board: Board2D, va
         shapeRenderer.color = possibleMoveColour
         val position = squareWidth / 2
         for (c in toCoordinates) {
+//            shapeRenderer.rect(squareWidth * c!!.x, squareWidth * c.y, squareWidth, squareWidth)
             shapeRenderer.circle(squareWidth * c!!.x + position, squareWidth * c.y + position, possibleMoveCircleRadius)
         }
 

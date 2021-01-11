@@ -16,6 +16,7 @@ import gameTypes.hex.HexagonalChess
 import gameTypes.xiangqi.Janggi
 import gameTypes.xiangqi.Xiangqi
 import ktx.app.KtxScreen
+import playground.ChessPlayground
 import screens.leaderboard.LeaderboardScreen
 
 /**
@@ -72,7 +73,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         miniChessButton to MiniChess(),
         balbosGameButton to BalbosGame(),
         checkersGameButton to Checkers(),
-//        playgroundButton to ChessPlayground(),
+        playgroundButton to ChessPlayground(),
         tutorialButton to TutorialChess(),
         hexagonalChessButton to HexagonalChess()
     )
