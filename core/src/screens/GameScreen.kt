@@ -500,7 +500,11 @@ class GameScreen(val game: MyGdxGame, val gameEngine: GameType2D, val clockFlag:
         shapeRenderer.rect(windowWidth.toFloat() + panelWidth.toFloat() * 1 / 12, 0f + windowHeight.toFloat() * 1 / 8, panelWidth.toFloat() * 10 / 12, windowHeight.toFloat() * 6 / 8)
         shapeRenderer.end()
 
-        var history: List<Move2D> = gameEngine.moveLog.toList()
+        var history: List<Move2D>
+
+        synchronized(this) {
+            history = gameEngine.moveLog.toList()
+        }
 
         /* Get the last 40 moves from the history. */
         val len = history.size

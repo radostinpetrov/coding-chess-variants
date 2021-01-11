@@ -599,7 +599,11 @@ class GameScreenHexagonal(
         )
         shapeRenderer.end()
 
-        var history: List<MoveHex> = gameEngine.moveLog.toList()
+        var history: List<MoveHex>
+
+        synchronized(this) {
+            history = gameEngine.moveLog.toList()
+        }
 
         /* Get the last 40 moves from the history. */
         val len = history.size
