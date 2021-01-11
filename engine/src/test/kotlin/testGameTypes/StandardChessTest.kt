@@ -116,11 +116,11 @@ class StandardChessTest {
     fun testStandardChessInitialPositionsWithDepth3() {
         test(StandardChess(), 3, PerftUtility.PerftData(8902, 34, 12, 0))
     }
-//
-//    @Test
-//    fun testStandardChessInitialPositionsWithDepth4() {
-//        test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
-//    }
+
+    @Test
+    fun testStandardChessInitialPositionsWithDepth4() {
+        test(StandardChess(), 4, PerftUtility.PerftData(197281, 1576, 469, 8))
+    }
 
     @Test
     fun testStandardChessInGamePosition1WithDepth1() {
