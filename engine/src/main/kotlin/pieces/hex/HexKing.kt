@@ -1,14 +1,12 @@
 package pieces.hex
 
 import moveGenerators.DirectionHex.*
-import moveGenerators.MoveGenerator2D
 import moveGenerators.MoveGeneratorHex
-import pieces.Piece2D
 import pieces.Royal
 import players.Player
 
 /**
- * Represents a king in standard chess
+ * Represents a king in hexagonal chess
  */
 data class HexKing(override val player: Player) : PieceHex, Royal {
     override val moveGenerators = listOf(MoveGeneratorHex.Stepper(
