@@ -1,7 +1,7 @@
 package endconditions
 
-import moves.Move2D
 import gameTypes.chess.AbstractChess2D
+import moves.Move2D
 import pieces.Pawn
 import players.Player
 

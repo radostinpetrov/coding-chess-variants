@@ -17,6 +17,10 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
      * @property X true if it can move along X axis
      * @property Y true if it can move along Y axis
      * @property Z true if it can move along Z axis
+     * @property D2D true if it can move along diagonal direction on the X,Y plane
+     * @property AD2D true if it can move along anti-diagonal direction on the X,Y plane
+     * @property D true if it can move diagonally along Z,Y axis
+     * @property D3D true if it can move diagonally along X,Y,Z axis
      */
     class Slider3D(val X: Boolean = false, val Y: Boolean = false, val Z: Boolean = false, val D2D: Boolean = false, val AD2D: Boolean = false, val D: Boolean = false, val D3D: Boolean = false) : MoveGenerator3D {
         override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
@@ -120,11 +124,11 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
 
     /**
      * Performs single steps to specified target squares
-     * Takes in a step-vector, which is then mirrored to give a total of
-     * up to 8 target coordinates
+     * Takes in a step-vector, which is then mirrored
      *
      * @property dx x component of the step-vector
      * @property dy y component of the step-vector
+     * @property dz z component of the step-vector
      */
     data class Leaper3D(val dx: Int, val dy: Int, val dz: Int) : MoveGenerator3D {
         override fun generate(board: Board3D, coordinate: Coordinate3D, piece: Piece3D, player: Player): List<BasicMove3D> {
@@ -133,7 +137,12 @@ interface MoveGenerator3D : MoveGenerator<Board3D, MoveGenerator3D, Piece3D, Coo
             for (i in listOf(dx, -dx)) {
                 for (j in listOf(dy, -dy)) {
                     for (k in listOf(dz, -dz)) {
-                        destCoordinates.add(Coordinate3D(dx, dy, dz) + coordinate)
+                        destCoordinates.add(Coordinate3D(i, j, k) + coordinate)
+                        destCoordinates.add(Coordinate3D(i, k, j) + coordinate)
+                        destCoordinates.add(Coordinate3D(j, i, k) + coordinate)
+                        destCoordinates.add(Coordinate3D(j, j, i) + coordinate)
+                        destCoordinates.add(Coordinate3D(k, i, j) + coordinate)
+                        destCoordinates.add(Coordinate3D(k, j, i) + coordinate)
                     }
                 }
             }

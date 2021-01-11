@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MyGdxGame
 import com.mygdx.game.PlayerType
 import gameTypes.GameType
-import gameTypes.GameType2D
 import gameTypes.chess.AbstractChess2D
 import gameTypes.hex.HexagonalChess
 import ktx.app.KtxScreen
@@ -130,9 +129,11 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType<*, *, *, *>, val 
     /**
      * Initialises the players selected and switches to the gameScreen.
      */
-    private fun switchToGameScreen(gameType: GameType<*,*,*,*>) {
+    private fun switchToGameScreen(
+        gameType: GameType<*, *, *, *
+            >
+    ) {
         val clockFlag = clockList != null
-
 
         if (gameType is HexagonalChess) {
             val gameScreen = GameScreenHexagonal(game, gameType, clockFlag, false)
@@ -169,7 +170,6 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType<*, *, *, *>, val 
             dispose()
             game.setScreen<GameScreen>()
         }
-
     }
 
     /**

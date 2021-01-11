@@ -3,7 +3,9 @@ package gameTypes.chess3d
 import boards.Board3D
 import coordinates.Coordinate3D
 import pieces.chess3d.*
-
+/**
+ * Represents Raumschach Chess, a 5x5x5 3D chess game
+ */
 class RaumschachChess : AbstractChess3D() {
     override val board = Board3D(5, 5, 5)
     override val name = "Raumschach Chess"

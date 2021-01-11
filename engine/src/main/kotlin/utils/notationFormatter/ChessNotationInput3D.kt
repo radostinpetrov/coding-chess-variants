@@ -4,7 +4,7 @@ import coordinates.Coordinate3D
 import moves.*
 
 /**
- * ChessNotationInput
+ * ChessNotationInput3D
  * Converts standard ches notation to Coordinate3D and Coordinate3D,
  * Move3D to readable string format. Is used for console front end.
  */
@@ -27,7 +27,7 @@ class ChessNotationInput3D() {
     }
 
     /**
-     * Takes a Coordinate3D and converts it into standard chess notation. e.g Coordinate(0, 6) -> A1
+     * Takes a Coordinate3D and converts it into standard chess notation. e.g Coordinate(0, 0, 6) -> Aa1
      * @returns string coordinate.
      */
     fun coordinateToStr(c: Coordinate3D): String {

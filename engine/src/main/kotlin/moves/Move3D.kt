@@ -4,7 +4,9 @@ import boards.Board3D
 import coordinates.Coordinate3D
 import moveGenerators.MoveGenerator3D
 import pieces.Piece3D
-
+/**
+ * Represents a 3D move
+ */
 typealias Move3D = Move<Board3D, MoveGenerator3D, Piece3D, Coordinate3D>
 typealias SimpleMove3D = Move.SimpleMove<Board3D, MoveGenerator3D, Piece3D, Coordinate3D>
 typealias BasicMove3D = Move.SimpleMove.BasicMove<Board3D, MoveGenerator3D, Piece3D, Coordinate3D>

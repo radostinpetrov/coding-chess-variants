@@ -5,4 +5,8 @@ import pieces.chess.*
 import players.Player
 import regions.BoxRegion3D
 
+/**
+ * Represents a Standard White Pawn in 3D Chess
+ */
+
 data class StandardWhitePawn3D(override val player: Player) : WhitePawn3D(player, BoxRegion3D(Coordinate3D(0, 4, 0), Coordinate3D(4, 4, 4)), listOf())
