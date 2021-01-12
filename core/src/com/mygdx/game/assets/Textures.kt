@@ -1,8 +1,5 @@
 package com.mygdx.game.assets
 
-import Alfil
-import BerlinBlackPawn
-import BerlinWhitePawn
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -15,7 +12,6 @@ import pieces.hex.*
 import pieces.janggi.*
 import pieces.janggi.Elephant
 import pieces.xiangqi.*
-import playground.ChessPlayground
 import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 
@@ -74,13 +70,6 @@ class Textures(assets: AssetManager) {
     val redCheckerKing = assets[TextureAssets.RedCheckerKing]
     val whiteCheckerKing = assets[TextureAssets.WhiteCheckerKing]
 
-    /* Tutorial. */
-    val blackAlfil = assets[TextureAssets.BlackAlfil]
-    val whiteAlfil = assets[TextureAssets.WhiteAlfil]
-
-    /* Playground. */
-    val playgroundPiece = assets[TextureAssets.PlaygroundPiece]
-
     /* Contains the mappings to the textures for white pieces. */
     val whites = mapOf<KClass<*>, Texture>(
         /* Standard chess. */
@@ -106,13 +95,6 @@ class Textures(assets: AssetManager) {
 
         /* Checkers. */
         Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteCheckerKing,
-
-        /* Tutorial.*/
-        Alfil::class to whiteAlfil,
-        BerlinWhitePawn::class to whitePawn,
-
-        /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
 
         /* Hex. */
         HexBishop::class to whiteBishop,
@@ -149,13 +131,6 @@ class Textures(assets: AssetManager) {
 
         /* Checkers. */
         Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to redCheckerKing,
-
-        /* Tutorial. */
-        Alfil::class to blackAlfil,
-        BerlinBlackPawn::class to blackPawn,
-
-        /* Playground. */
-        ChessPlayground.PlaygroundPiece::class to playgroundPiece,
 
         /* Hex. */
         HexBishop::class to blackBishop,

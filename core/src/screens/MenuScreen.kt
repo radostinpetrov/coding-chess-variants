@@ -1,6 +1,5 @@
 package screens
 
-import TutorialChess
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -72,8 +71,6 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
         miniChessButton to MiniChess(),
         balbosGameButton to BalbosGame(),
         checkersGameButton to Checkers(),
-//        playgroundButton to ChessPlayground(),
-        tutorialButton to TutorialChess(),
         hexagonalChessButton to HexagonalChess()
     )
 
