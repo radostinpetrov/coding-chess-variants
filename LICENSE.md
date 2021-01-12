@@ -29,6 +29,8 @@ https://github.com/libktx/ktx/blob/master/LICENSE.txt
 
 Apache License Version 2.0 for mockK
 https://github.com/mockk/mockk/blob/master/LICENSE
+and for Gradle
+https://github.com/gradle/gradle/blob/master/LICENSE
 
 1. Definitions.
  
