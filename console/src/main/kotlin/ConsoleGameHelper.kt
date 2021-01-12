@@ -113,13 +113,17 @@ class ConsoleGameHelper(val gameType: Game, val player1: ConsolePlayer<*, *, *, 
         val player1 = gameType.players[0]
 
         val boardState = board.getBoardState()
-
+        print("  ")
         for (i in 0 until board.dims) {
-            print("--- BOARD ${('A'.toInt() + i).toChar()} ---\n")
-            for (j in (board.rows - 1) downTo 0) {
+            print("BOARD ${('A'.toInt() + i).toChar()}       ")
+        }
+        println()
+
+        for (j in (board.rows - 1) downTo 0) {
+            for (k in 0 until board.dims) {
                 print("${j + 1} ")
-                for (k in 0 until board.cols) {
-                    val coordinate = Coordinate3D(k, j, i)
+                for (i in 0 until board.cols) {
+                    val coordinate = Coordinate3D(i, j, k)
                     if (!board.isInBounds(coordinate)) {
                         print("  ")
                         continue
@@ -131,16 +135,18 @@ class ConsoleGameHelper(val gameType: Game, val player1: ConsolePlayer<*, *, *, 
                         print("_ ")
                     }
                 }
-                println()
+                print("  ")
             }
+            println()
+        }
+        for (i in 0 until board.dims) {
             print("  ")
-
             for (j in 0 until board.cols) {
                 print("${(j + 'a'.toInt()).toChar()} ")
             }
-            println()
-            println()
+            print("  ")
         }
+
         println("\n----------------- turn: $turn")
         turn++
     }
