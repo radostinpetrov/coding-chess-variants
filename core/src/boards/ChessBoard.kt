@@ -71,7 +71,6 @@ class ChessBoard(
 
         shapeRenderer.end()
 
-
         batch.begin()
         font!!.color = Color.BLACK
         font.data.setScale(1.3f)

@@ -181,14 +181,14 @@ class PlayerScreen(val game: MyGdxGame, val gameType: GameType<*, *, *, *>, val 
     private fun createPlayer(player: PlayerType, gameScreen: GameScreen, colour: Color, colourName: String): FrontendPlayer {
         return when (player) {
             PlayerType.HUMAN -> HumanPlayer(gameScreen, colour, colourName)
-            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 200, colour, colourName)
+            PlayerType.COMPUTER -> ComputerPlayer(gameScreen, 500, colour, colourName)
         }
     }
 
     private fun createPlayerHex(player: PlayerType, gameScreen: GameScreenHexagonal, colour: Color, colourName: String): FrontendPlayerHex {
         return when (player) {
             PlayerType.HUMAN -> HumanPlayerHex(gameScreen, colour, colourName)
-            PlayerType.COMPUTER -> ComputerPlayerHex(gameScreen, 200, colour, colourName)
+            PlayerType.COMPUTER -> ComputerPlayerHex(gameScreen, 500, colour, colourName)
         }
     }
 

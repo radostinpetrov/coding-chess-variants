@@ -1,9 +1,9 @@
 package gameTypes.chess
 
 import boards.Board2D
-import rules.Enpassant
 import endconditions.StandardEndConditions
 import pieces.chess.*
+import rules.Enpassant
 import utils.FenUtility
 
 /**
