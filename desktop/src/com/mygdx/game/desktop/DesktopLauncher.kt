@@ -11,6 +11,7 @@ object DesktopLauncher {
         config.resizable = false
         config.height = 800
         config.width = 800
+        config.title = "KChess"
         LwjglApplication(MyGdxGame(), config)
     }
 }
