@@ -4,13 +4,14 @@ import coordinates.Coordinate2D
 import gameTypes.chess.StandardChess
 import io.mockk.spyk
 import moves.*
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import pieces.chess.Bishop
 import pieces.chess.StandardBlackPawn
 import pieces.chess.StandardWhitePawn
 
-class TestRemovePieceMove {
+class RemovePieceMove {
     val mockStandardChess = spyk<StandardChess>()
 
     val board = mockStandardChess.board
@@ -31,12 +32,12 @@ class TestRemovePieceMove {
     fun removePieceMoveFieldsTest() {
         val bishopPiece = Bishop(player1)
         board.addPiece(Coordinate2D(4, 4), bishopPiece)
-        val removePieceMove = RemovePieceMove2D(player2, bishopPiece, Coordinate2D(34, 4))
+        val removePieceMove = RemovePieceMove2D(player2, bishopPiece, Coordinate2D(4, 4))
 
-        assertTrue(removePieceMove.displayFrom == Coordinate2D(-1, -1))
-        assertTrue(removePieceMove.displayTo == Coordinate2D(-1, -1))
-        assertTrue(removePieceMove.displayPiecePromotedTo == null)
-        assertTrue(removePieceMove.displayPieceCaptured == null)
+        assertTrue(removePieceMove.displayFrom == Coordinate2D(4, 4))
+        assertTrue(removePieceMove.displayTo == Coordinate2D(4, 4))
+        assertNull(removePieceMove.displayPiecePromotedTo)
+        assertNull(removePieceMove.displayPieceCaptured)
         assertTrue(removePieceMove.displayPieceMoved == bishopPiece)
     }
 }

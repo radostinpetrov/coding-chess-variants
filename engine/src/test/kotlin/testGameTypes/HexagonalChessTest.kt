@@ -88,16 +88,16 @@ class HexagonalChessTest {
 
     @Test
     fun testHexagonalInitialPositionsWithDepth1() {
-        perft.testSimple(HexagonalChess(), 1, 32)
+        perft.testSimple(HexagonalChess(), 1, 51)
     }
 
     @Test
     fun testHexagonalInitialPositionsWithDepth2() {
-        perft.testSimple(HexagonalChess(), 2, 1012)
+        perft.testSimple(HexagonalChess(), 2, 2586)
     }
 
     @Test
     fun testHexagonalInitialPositionsWithDepth3() {
-        perft.testSimple(HexagonalChess(), 3, 29697)
+        perft.testSimple(HexagonalChess(), 3, 137852)
     }
 }
