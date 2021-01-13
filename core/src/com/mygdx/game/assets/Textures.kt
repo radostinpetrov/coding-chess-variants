@@ -71,6 +71,8 @@ class Textures(assets: AssetManager) {
     /* Checkers. */
     val redChecker = assets[TextureAssets.RedChecker]
     val whiteChecker = assets[TextureAssets.WhiteChecker]
+    val redCheckerKing = assets[TextureAssets.RedCheckerKing]
+    val whiteCheckerKing = assets[TextureAssets.WhiteCheckerKing]
 
     /* Tutorial. */
     val blackAlfil = assets[TextureAssets.BlackAlfil]
@@ -103,7 +105,7 @@ class Textures(assets: AssetManager) {
         BalbosGame.BalboWhitePawn::class to whitePawn,
 
         /* Checkers. */
-        Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteKing,
+        Checkers.WhiteChecker::class to whiteChecker, Checkers.CheckerKing::class to whiteCheckerKing,
 
         /* Tutorial.*/
         Alfil::class to whiteAlfil,
@@ -146,7 +148,7 @@ class Textures(assets: AssetManager) {
         BalbosGame.BalboBlackPawn::class to blackPawn,
 
         /* Checkers. */
-        Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to blackKing,
+        Checkers.BlackChecker::class to redChecker, Checkers.CheckerKing::class to redCheckerKing,
 
         /* Tutorial. */
         Alfil::class to blackAlfil,

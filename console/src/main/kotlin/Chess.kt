@@ -12,28 +12,26 @@ import gameTypes.xiangqi.Xiangqi
 import moveGenerators.MoveGenerator
 import pieces.Piece
 
-object Chess {
-    val mappedVariants = mapOf(
-        1 to StandardChess(),
-        2 to GrandChess(),
-        3 to CapablancaChess(),
-        4 to Chess960(),
-        5 to MiniChess(),
-        6 to BalbosGame(),
-        7 to AntiChess(),
-        8 to Xiangqi(),
-        9 to Janggi(),
-        10 to Checkers(),
-        11 to RaumschachChess(),
-        12 to HexagonalChess()
-    )
-}
+val mappedVariants = mapOf(
+    1 to StandardChess(),
+    2 to GrandChess(),
+    3 to CapablancaChess(),
+    4 to Chess960(),
+    5 to MiniChess(),
+    6 to BalbosGame(),
+    7 to AntiChess(),
+    8 to Xiangqi(),
+    9 to Janggi(),
+    10 to Checkers(),
+    11 to RaumschachChess(),
+    12 to HexagonalChess()
+)
 
 fun main() {
     println("Let's play chess!")
     println("Input the index of the variant you want to play. ")
 
-    for ((i, v) in Chess.mappedVariants) {
+    for ((i, v) in mappedVariants) {
         println("$i: ${v.name}")
     }
 
@@ -42,7 +40,7 @@ fun main() {
         input = readLine()
     }
 
-    val chess = Chess.mappedVariants[input.toInt()]!!
+    val chess = mappedVariants[input.toInt()]!!
 
     println("Select players:")
     println("1: Human vs Human")

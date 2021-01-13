@@ -19,6 +19,9 @@ import players.Player
 import screens.GameScreenHexagonal
 import kotlin.math.pow
 
+/**
+ * Class to draw a hexagonal board 3 different colours of squares.
+ */
 class HexBoard(
     val shapeRenderer: ShapeRenderer,
     val board: BoardHex,
@@ -34,12 +37,27 @@ class HexBoard(
     private val possibleMoveCircleRadius = 8f
     private val possibleMoveColour = Color.FOREST
 
+    /**
+     * Draws the board, pieces and possible moves for a selected piece.
+     * @param srcX highlighted square x coord
+     * @param srcY highlighted square y coord
+     * @param moves list of moves the selected piece can make
+     * @param flipped decides if the board should be drawn flipped. eg. for blacks turn.
+     * @param isPromotionScreen decides if the highlighted square should be drawn
+     */
     fun draw(srcX: Int?, srcY: Int?, moves: List<MoveHex>, flipped: Boolean, isPromotionScreen: Boolean) {
         drawBoard(srcX, srcY, flipped, isPromotionScreen)
         drawPieces(batch, flipped)
         drawDots(srcX, srcY, isPromotionScreen, moves, flipped)
     }
 
+    /**
+     * Return a hexagon polygon region with x, y as the center filled in with a solid colour.
+     * @param x x coordinate of the center of hexagon.
+     * @param y y coordinate of the center of hexagon.
+     * @param colour colour type to fill the hexagon.
+     * @return PolygonRegion
+     */
     fun getPolyRegion(x: Float, y: Float, colour: Int): PolygonRegion {
         val rootThree = (3).toFloat().pow((1.0 / 2.0).toFloat())
         val ax: Float = x + hexagonRadius
@@ -79,6 +97,13 @@ class HexBoard(
         return PolygonRegion(TextureRegion(textureSolid), vertices, triangles)
     }
 
+    /**
+     * Draws the Hex chess board.
+     * @param srcX highlighted square x coord
+     * @param srcY highlighted square y coord
+     * @param flipped decides if the board should be drawn flipped. eg. for blacks turn.
+     * @param isPromotionScreen decides if the highlighted square should be drawn
+     */
     fun drawBoard(srcX: Int?, srcY: Int?, flipped: Boolean, isPromotionScreen: Boolean) {
 
         val polyBatch = PolygonSpriteBatch()
@@ -100,7 +125,10 @@ class HexBoard(
                         }
                     }
 
-                    val poly = PolygonSprite(getPolyRegion(offsetx + j * dx, (offsety + i * dy).toFloat(), colour))
+                    val x = if (flipped) (board.cols - j - 1) else j
+                    val y = if (flipped) (board.rows - i - 1) else i
+
+                    val poly = PolygonSprite(getPolyRegion(offsetx + x * dx, (offsety + y * dy).toFloat(), colour))
                     poly.draw(polyBatch)
                 }
             }
@@ -112,9 +140,13 @@ class HexBoard(
     val rootThree = (3).toFloat().pow((1.0 / 2.0).toFloat())
     val dx = hexagonRadius + hexagonRadius / 2
     val dy = (hexagonRadius * rootThree) / 2
-    // val offset = (hexagonRadius/2.0).toFloat()
     val offsetx = hexagonRadius
     val offsety = (rootThree * hexagonRadius) / 2.0
+
+    /**
+     * Draws the pieces sprites.
+     * @param flipped decides if the pieces should be drawn flipped. eg. for blacks turn.
+     */
     fun drawPieces(batch: Batch, flipped: Boolean) {
         batch.begin()
         val pieces = board.getPieces()
@@ -123,13 +155,13 @@ class HexBoard(
             val texture = textures.getTextureFromPiece(p, libToFrontEndPlayer[p.player]!!.colour)
             val sprite = Sprite(texture)
 
-            // val posWithinSquare = (squareWidth - pieceWidth) / 2
+            val indx = if (flipped) (board.cols - c.x - 1) else c.x
+            val indy = if (flipped) (board.rows - c.y - 1) else c.y
 
-            // val x = if (flipped) (columns - c.x - 1) else c.x
-            // val y = if (flipped) (rows - c.y - 1) else c.y
             val pieceWidth = squareWidth * 0.7f
-            val x = offsetx + c.x * dx - pieceWidth / 2
-            val y = offsety + c.y * dy - pieceWidth / 2
+
+            val x = offsetx + indx * dx - pieceWidth / 2
+            val y = offsety + indy * dy - pieceWidth / 2
 
             sprite.setPosition(x, y.toFloat())
 
@@ -140,6 +172,13 @@ class HexBoard(
         batch.end()
     }
 
+    /**
+     * Draws the possible moves of the selected piece in the form of dots on the valid hexagons
+     * the piece can move to.
+     * @param flipped decides if the pieces should be drawn flipped. eg. for blacks turn.
+     * @param moves list of possible moves the selected piece can make.
+     * @param isPromotionScreen does not draw on promotion screen.
+     */
     fun drawDots(srcX: Int?, srcY: Int?, isPromotionScreen: Boolean, moves: List<MoveHex>, flipped: Boolean) {
         if (srcX == null || srcY == null || isPromotionScreen) {
             return
@@ -151,9 +190,9 @@ class HexBoard(
         }
             .map { m -> m.displayTo }
 
-        // if (flipped) {
-        //     toCoordinates = toCoordinates.map { c -> Coordinate2D(columns - c!!.x - 1, rows - c.y - 1) }
-        // }
+        if (flipped) {
+            toCoordinates = toCoordinates.map { c -> Coordinate2D(board.cols - c!!.x - 1, board.rows - c.y - 1) }
+        }
 
         /* Draw toCoordinates dots for a selected piece. */
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)

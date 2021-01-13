@@ -42,6 +42,8 @@ enum class TextureAssets(val path: String) {
     PlaygroundPiece("PlaygroundPiece.png"),
     RedChecker("RedChecker.png"),
     WhiteChecker("WhiteChecker.png"),
+    RedCheckerKing("RedCheckerKing.png"),
+    WhiteCheckerKing("WhiteCheckerKing.png"),
     WhiteAlfil("WhiteAlfil.png"),
     BlackAlfil("BlackAlfil.png")
 }

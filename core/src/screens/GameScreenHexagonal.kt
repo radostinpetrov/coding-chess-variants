@@ -68,7 +68,6 @@ class GameScreenHexagonal(
     private val forfeitButton = TextButton("Forfeit", skin)
     private val forfeitButtonPosY = 23f
 
-    // TODO maybe don't need this?
     var currPlayer: Player? = null
 
     lateinit var libToFrontendPlayer: Map<Player, FrontendPlayerHex>
@@ -76,7 +75,6 @@ class GameScreenHexagonal(
 
     var networkHumanPlayer: NetworkHumanPlayerHex? = null
 
-    // TODO and this?
     val initialTime = System.currentTimeMillis() / 1000L
 
     var isPromotionScreen = false
@@ -265,7 +263,6 @@ class GameScreenHexagonal(
                     null
                 }
                 Gdx.app.postRunnable {
-//                    switchToGameOverScreen(gameEngine.getOutcome()!!)
                     gameOverPopUp = GameOverPopUp(
                         game,
                         stage,
@@ -411,7 +408,7 @@ class GameScreenHexagonal(
         var x = input.x
         var y = graphics.height - input.y
         if (flipped) {
-            x = ((columns * squareWidth) - x).toInt()
+            x = (windowWidth - x).toInt()
             y = graphics.height - y
         }
 
@@ -487,8 +484,8 @@ class GameScreenHexagonal(
         return playerMoves[0]
     }
 
+
     fun getPieceCoordinateFromMousePosition(srcX: Int, srcY: Int): Coordinate2D {
-        // println("$srcX, $srcY")
         for (h in hexPositionToCoordHex) {
             if (inside(Pair(srcX.toFloat(), srcY.toFloat()), h.key)) {
                 return h.value
@@ -497,6 +494,11 @@ class GameScreenHexagonal(
         return Coordinate2D(-1, -1)
     }
 
+    /**
+     * Checks if the mouse coordinate is in the polygon.
+     * @param p point coordinate of mouse click
+     * @param polygon a list of the vertice coordinates of the polygon
+     */
     private fun inside(p: Pair<Float, Float>, polygon: List<Pair<Float, Float>>): Boolean {
         var intersections = 0
         var prev: Pair<Float, Float> = polygon[polygon.size - 1]

@@ -12,11 +12,12 @@ import players.Player
 import regions.RowRegion
 import rules.ForcedCaptureRule
 import endconditions.EndCondition2D
+import rules.SpecialRules2D
 
 /**
  * Represents a checker game
  */
-class Checkers : AbstractChess2D(rules = listOf(ForcedCaptureRule()), endConditions = listOf(CheckersEndCondition())) {
+class Checkers : AbstractChess2D(rules = listOf(ForcedCaptureRule(), DoubleCaptureRule()), endConditions = listOf(CheckersEndCondition())) {
     override val name = "Checkers"
 
     /**
@@ -96,6 +97,36 @@ class Checkers : AbstractChess2D(rules = listOf(ForcedCaptureRule()), endConditi
         override fun getSymbol(): String = "K"
     }
 
+    /**
+     * Double capture rule.
+     * If previous move was a capture, next move must be as well.
+     */
+    class DoubleCaptureRule : SpecialRules2D<AbstractChess2D> {
+        override fun getPossibleMoves(game: AbstractChess2D, player: Player, moves: MutableList<Move2D>) {
+            val moveLog = game.moveLog
+
+            if (moveLog.isEmpty()) {
+                return
+            }
+
+            val prevMove = moveLog.last()
+
+            if (prevMove.player != player
+                || prevMove !is BasicMove2D
+                || prevMove.pieceCaptured == null) {
+                return
+            }
+
+            val pieceMoved = prevMove.pieceMoved
+
+            val pred = { it: Move2D -> it is BasicMove2D && it.pieceMoved == pieceMoved }
+            if (moves.any(pred)) {
+                moves.retainAll(pred)
+            }
+        }
+    }
+
+
     override val board: Board2D = Board2D(8, 8)
 
     override fun initBoard() {
@@ -113,7 +144,7 @@ class Checkers : AbstractChess2D(rules = listOf(ForcedCaptureRule()), endConditi
 
     override fun playerMakeMove(move: Move2D) {
         makeMove(move)
-        if (!(move is BasicMove2D && move.pieceCaptured != null && getValidMoves().any { it is BasicMove2D && it.pieceCaptured != null })) {
+        if (!(move is BasicMove2D && move.pieceCaptured != null && getValidMoves().any { it is BasicMove2D && it.pieceCaptured != null && it.pieceMoved == move.pieceMoved })) {
             nextPlayer()
         }
     }

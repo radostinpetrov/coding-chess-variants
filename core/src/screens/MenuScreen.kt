@@ -39,7 +39,7 @@ class MenuScreen(val game: MyGdxGame) : KtxScreen {
     val playgroundButton = TextButton("Playground", skin)
     val tutorialButton = TextButton("Tutorial Chess", skin)
     val hexagonalChessButton = TextButton("Hexagonal Chess", skin)
-    val title = Label("Welcome to Chess", skin)
+    val title = Label("Welcome to KChess", skin)
 
     val gameModeTitle = Label("Select Game Mode", skin)
     val onlineModeButton = TextButton("Play Online", skin)
